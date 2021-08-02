@@ -1,0 +1,31 @@
+name: Publish Publicly Facing Content
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-publish-public-actions-and-policies-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+      - name: Install jq
+        run: |
+          sudo apt-get update && sudo apt-get install jq -y
+      - name: Install yq
+        run: |
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Parse and dump content into bucket
+        run: |
+          bash .dassana-internal-devops/scripts/actions.sh | jq '.' -s > .dassana-internal-devops/public/actions.json
+          bash .dassana-internal-devops/scripts/policies.sh | jq '.' -s > .dassana-internal-devops/public/policies.json
+          aws s3 sync .dassana-internal-devops/public s3://${{ secrets.SAM_ARTIFACTS_BUCKET }}/dev/

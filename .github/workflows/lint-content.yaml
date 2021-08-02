@@ -1,0 +1,174 @@
+name: Dassana Linter
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  validate-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install jq
+        run: |
+          apt update && apt install sudo
+          sudo apt-get update && sudo apt-get install jq -y
+      - name: Install yq
+        run: |
+          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: Set Dassana Variables
+        id: dassana-variables
+        run: |
+          DASSANA_CATEGORIES=`yq -j e content/schemas/categories.yaml | jq -r 'keys | @csv'`
+          echo 'DASSANA_CATEGORIES<<EOF' >> $GITHUB_ENV
+          echo $DASSANA_CATEGORIES >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+          DASSANA_SUBCATEGORIES=`yq -j e content/schemas/categories.yaml | jq -r '. as $root | keys | .[] | $root[.]' | jq -r -s 'flatten | @csv'`
+          echo 'DASSANA_SUBCATEGORIES<<EOF' >> $GITHUB_ENV
+          echo $DASSANA_SUBCATEGORIES >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+          DASSANA_ACTIONS=`find content/actions -name "*.yaml" | xargs -I {} yq -j e {} | jq --sort-keys '.["id"]' | jq -r -s '. | @csv'`
+          echo 'DASSANA_ACTIONS<<EOF' >> $GITHUB_ENV
+          echo $DASSANA_ACTIONS >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+          DASSANA_VENDORS=`find content/workflows/vendors -name "*.yaml" | xargs -I {} yq -j e {} | jq --sort-keys '.["vendor-name"]' | jq -r -s '. | @csv'`
+          echo 'DASSANA_VENDORS<<EOF' >> $GITHUB_ENV
+          echo $DASSANA_VENDORS >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Find and Replace categories dassana-policy.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_CATEGORIES"
+          replace: ${{ env.DASSANA_CATEGORIES }}
+          include: content/schemas/dassana-policy.yaml
+      - name: Find and Replace subcategories in dassana-policy.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_SUBCATEGORIES"
+          replace: ${{ env.DASSANA_SUBCATEGORIES }}
+          include: content/schemas/dassana-policy.yaml
+      - name: Find and Replace actions in dassana-policy.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_ACTIONS"
+          replace: ${{ env.DASSANA_ACTIONS }}
+          include: content/schemas/dassana-policy.yaml
+      - name: Find and Replace vendors in dassana-policy.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_VENDORS"
+          replace: ${{ env.DASSANA_VENDORS }}
+          include: content/schemas/dassana-policy.yaml
+      - name: Find and Replace actions in dassana-vendor.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_ACTIONS"
+          replace: ${{ env.DASSANA_ACTIONS }}
+          include: content/schemas/dassana-vendor.yaml
+      - name: Find and Replace actions in dassana-resource-priority.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_ACTIONS"
+          replace: ${{ env.DASSANA_ACTIONS }}
+          include: content/schemas/dassana-resource-priority.yaml
+      - name: Check change
+        run: |
+          ls content/schemas/** | xargs cat
+      - name: Validating actions
+        uses: nrkno/yaml-schema-validator-github-action@master
+        with:
+          schema: content/schemas/dassana-action.yaml
+          target: content/actions
+          strict: "1"
+      - name: Validating policies
+        uses: nrkno/yaml-schema-validator-github-action@master
+        with:
+          schema: content/schemas/dassana-policy.yaml
+          target: content/workflows/policies/csp
+          strict: "1"
+      - name: Validating vendors
+        uses: nrkno/yaml-schema-validator-github-action@master
+        with:
+          schema: content/schemas/dassana-vendor.yaml
+          target: content/workflows/vendors
+          strict: "1"
+      - name: Validating resource-priority
+        uses: nrkno/yaml-schema-validator-github-action@master
+        with:
+          schema: content/schemas/dassana-resource-priority.yaml
+          target: content/workflows/resource-priority
+          strict: "1"
+  validate-content-dir-and-file-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - run: npm install -g @ls-lint/ls-lint
+        working-directory: .dassana-internal-devops
+      - run: ls-lint
+        working-directory: .dassana-internal-devops
+  validate-actions-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install -r content/pkg/deps/python/requirements.txt --upgrade pip
+      - name: Validate workflow steps
+        run: |
+          python .dassana-internal-devops/scripts/validate-actions-deployment.py
+  validate-workflow-steps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.11
+      - name: Install dependencies
+        run: |
+          python -m pip install -r content/pkg/deps/python/requirements.txt --upgrade pip
+      - name: Validate workflow steps
+        run: |
+          python .dassana-internal-devops/scripts/validate-workflow-steps.py
+
+#  TODO: rethink JQ validation
+#  validate-jq-rules:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#        with:
+#          persist-credentials: false
+#      - name: Install jq
+#        run: |
+#          apt update && apt install sudo
+#          sudo apt-get update && sudo apt-get install jq -y
+#      - name: Install yq
+#        run: |
+#          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
+#          sudo chmod +x /usr/local/bin/yq
+#      - name: Validate jq rules
+#        run: |
+#          chmod +x .dassana-internal-devops/scripts/validate-policies-rule-grammar.sh
+#          chmod +x .dassana-internal-devops/scripts/validate-vendors-rule-grammar.sh
+#          chmod +x .dassana-internal-devops/scripts/validate-resource-priority-rule-grammar.sh
+#          .dassana-internal-devops/scripts/validate-policies-rule-grammar.sh | jq -s -e 'any(.) | not'
+#          .dassana-internal-devops/scripts/validate-vendors-rule-grammar.sh | jq -s -e 'any(.) | not'
+#          .dassana-internal-devops/scripts/validate-resource-priority-rule-grammar.sh | jq -s -e 'any(.) | not'
