@@ -1,0 +1,4 @@
+ls:
+  content:
+    .dir: kebab-case
+    .yaml: kebab-case

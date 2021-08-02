@@ -1,0 +1,15 @@
+name: Pull Request Labels
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled]
+jobs:
+  check_pr_labels:
+    name: Verify that the PR has the appropriate label(s)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for issue type label
+        uses: mheap/github-action-required-labels@v1
+        with:
+          mode: minimum
+          count: 1
+          labels: "bug, feature, enhancement, chore, documentation"
