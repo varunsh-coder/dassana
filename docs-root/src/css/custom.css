@@ -38,7 +38,7 @@
 	--ifm-color-primary-lighter: #5b93ff;
 	--ifm-color-primary-lightest: #88b1ff;
 	--ifm-font-family-base: 'Inter var', sans-serif;
-	--ifm-code-font-size: 95%;
+	--ifm-code-font-size: 90%;
 }
 
 html[data-theme='dark'] {
