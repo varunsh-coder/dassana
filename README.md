@@ -19,21 +19,22 @@ Dassana can ingest any cloud security alert, enrich it with context and prioriti
 ### Salient (_silent_) Features:
 
 **_No-code_/Low-code**
+
 _Everyone is doing this these days. #fomo._
 
 Alerts are processed using declarative, YAML based workflows.
-
 The workflows use tiny serverless functions (a.k.a Dassana Actions) to decorate alerts with context. You can use dozens of open source actions or write your own serverless functions for limitless customization.
 
 **Open Source**
 
+
 Everything in Dassana is open source. Hack away (or far)!
 
 **Cloud Native**
+
 
 Single click cloudformation deployment.
 
 ---
 
 Curious? Head (or leg) over to [docs](https://docs.dassana.io/]) 📓
-
