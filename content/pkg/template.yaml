@@ -8,8 +8,8 @@ Metadata:
       by Dassana Actions which are open source lightweight lambda functions.
     Author: Dassana
     SpdxLicenseId: Apache-2.0
-    HomePageUrl: https://github.com/dassana-io/dassana-engine
-    SourceCodeUrl: https://github.com/dassana-io/dassana-engine
+    HomePageUrl: https://github.com/dassana-io/dassana
+    SourceCodeUrl: https://github.com/dassana-io/dassana
     SemanticVersion: 1.0.0 # do not change this, it is meant to be overridden when use "sam publish" cli to publish an updated version
     ReadmeUrl: ../../README.md
     LicenseUrl: ../../LICENSE.txt

@@ -9,7 +9,7 @@ module.exports = {
 	onBrokenMarkdownLinks: 'warn',
 	favicon: 'img/favicon.ico',
 	organizationName: 'dassana-io', // Usually your GitHub org/user name.
-	projectName: 'dassana-engine', // Usually your repo name.
+	projectName: 'dassana', // Usually your repo name.
 	scripts: [
 		{
 			src: 'https://plausible.io/js/plausible.outbound-links.js',
@@ -26,18 +26,7 @@ module.exports = {
 		hideableSidebar: true,
 		algolia: {
 			apiKey: 'YOUR_API_KEY',
-			indexName: 'YOUR_INDEX_NAME',
-
-			// Optional: see doc section below
-			contextualSearch: true,
-
-			// Optional: see doc section below
-			appId: 'YOUR_APP_ID',
-
-			// Optional: Algolia search parameters
-			searchParameters: {}
-
-			//... other Algolia params
+			indexName: 'YOUR_INDEX_NAME'
 		},
 		navbar: {
 			logo: {

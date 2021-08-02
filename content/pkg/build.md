@@ -19,10 +19,10 @@ Dassana Engine (and Actions) are available as [AWS SAM App](https://aws.amazon.c
 
 ## Build steps
 
-1. Get code: `git clone git@github.com:dassana-io/dassana-engine.git`
+1. Get code: `git clone git@github.com:dassana-io/dassana.git`
 1. Prepare Dassana engine maven project
 
-  `cd dassana-engine/engine; mvn clean install -DskipTests`
+  `cd dassana/engine; mvn clean install -DskipTests`
 
   This step will not be required in future as the SAM cli is anyhow going to build the code in the following steps. But we need it right now because SAM cli is not running the maven resources plugin. We need this plugin to run so that we can get the content available at `src/main/resources` directory.
 

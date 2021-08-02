@@ -37,4 +37,4 @@ Single click cloudformation deployment.
 
 ---
 
-Curious? Head (or leg) over to [docs](https://docs.dassana.io/]) 📓
+Curious? Head (or leg) over to [docs](https://docs.dassana.io/) 📓
