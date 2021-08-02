@@ -1,0 +1,1 @@
+Identifies if a S3 Bucket is associated with a website.

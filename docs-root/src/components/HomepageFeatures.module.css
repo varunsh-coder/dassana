@@ -1,0 +1,8 @@
+.features {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 64px 32px;
+	width: 100%;
+}

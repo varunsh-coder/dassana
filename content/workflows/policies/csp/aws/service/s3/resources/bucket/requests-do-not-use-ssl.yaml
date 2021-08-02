@@ -1,0 +1,26 @@
+schema: 1.0
+labels:
+  - contextualization
+type: contextualize
+category: networking
+subcategory: firewall
+id: "requests-do-not-use-ssl"
+name: "S3 bucket requests do not use SSL"
+
+risk-config:
+  default-risk: medium
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "s3-bucket-ssl-requests-only"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-ssl-requests-only"))
+    - name: prisma-cloud
+      policies:
+        - "7b0df373-006a-40d6-9f3d-68e6ea0bdd5d"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "7b0df373-006a-40d6-9f3d-68e6ea0bdd5d"

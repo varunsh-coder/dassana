@@ -1,0 +1,218 @@
+# Authoring actions
+
+import Actions from '../../common-fields/actions/about.md'
+
+<Actions />
+
+To write actions, the following need to be created:
+
+1. `dassana-action.yaml` - Describes the metadata of an action
+2. `input.json` - A JSON input schema describing the variables passed to the serverless function
+3. `README.md` - Describes the purpose of the action
+4. Programming language specific requirements
+
+:::info
+
+For a complete list of examples, look at the [available actions in GitHub](https://github.com/dassana-io/dassana/tree/main/content/actions).
+
+:::
+
+## `dassana-action.yaml`
+
+Here is an example metadata file for an action:
+
+:::info
+
+Schema is validated with [YAMALE](https://github.com/23andMe/Yamale).
+
+:::
+
+```yaml title="content/actions/does-nacl-allow-traffic-from-internet/dassana-action.yaml"
+schema: 1.0
+id: DoesNaclAllowTrafficFromInternet
+name: Does NACL Allow Traffic From Internet
+
+cloud-type: aws
+service: EC2
+resource-type: nacl
+
+runs-on: aws-lambda
+license:
+    url: https://www.apache.org/licenses/LICENSE-2.0
+    id: Apache
+author:
+    name: dassana
+    email: support@dassana.io
+compatible-type: contextualize
+labels:
+    - contextualize
+    - securityhub
+```
+
+import Schema from '../../common-fields/schema.md'
+import Id from '../../common-fields/actions/action-id.md'
+import Name from '../../common-fields/name.md'
+import Labels from '../../common-fields/labels.md'
+
+### `schema`
+
+<Schema />
+
+### `id`
+
+<Id />
+
+### `name`
+
+<Name />
+
+### `cloudType`
+
+Cloud service provider. Currently, only `aws` is supported.
+
+### `service`
+
+(Optional) The AWS service.
+
+### `resourceType`
+
+(Optional) The AWS resource type.
+
+### `runs-on`
+
+Currently, only `aws-lambda` is supported.
+
+### `license`
+
+The license under which the action is available. Please select one of the following:
+
+| `id`     | `url`                                        |
+| -------- | -------------------------------------------- |
+| `Apache` | https://www.apache.org/licenses/LICENSE-2.0  |
+| `BSD`    | https://opensource.org/licenses/BSD-3-Clause |
+| `MIT`    | https://opensource.org/licenses/MIT          |
+
+### `author`
+
+Information about the action creator/maintainer.
+
+#### `name`
+
+Organization or individual name
+
+#### `email`
+
+Contact email
+
+### `compatible-type`
+
+The workflow type that is compatible with the action. One of:
+
+-   `normalize`
+-   `resource-priority`
+-   `contextualize`
+
+### `labels`
+
+<Labels />
+
+## `input.json`
+
+```json title="content/actions/does-nacl-allow-traffic-from-internet/input.json"
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "DoesNaclAllowTrafficFromInternet",
+	"type": "object",
+	"properties": {
+		"networkAclId": {
+			"type": "string"
+		},
+		"awsRegion": {
+			"type": "string",
+			"default": "us-east-1"
+		}
+	},
+	"required": ["networkAclId"]
+}
+```
+
+Based on the JSON input schema example above, the serverless function would receive the following as input:
+
+```json
+{
+	"networkAclId": "xxx",
+	"awsRegion": "us-east-1"
+}
+```
+
+When creating actions, ensure that required fields are marked accordingly in the schema. The function should still work if optional fields are omitted.
+
+## `src`
+
+The code files required to run the action. Here is an example written using python:
+
+```py title="content/actions/does-nacl-allow-traffic-from-internet/src/handler.py"
+from json import load
+from typing import Dict, Any
+
+from aws_lambda_powertools.utilities.typing import LambdaContext
+from aws_lambda_powertools.utilities.validation import validator
+
+from dassana.common.aws_client import DassanaAwsObject
+
+with open('input.json', 'r') as schema:
+    schema = load(schema)
+    dassana_aws = DassanaAwsObject(
+        schema['properties']['awsRegion']['default'])
+
+
+@validator(inbound_schema=schema)
+def handle(event: Dict[str, Any], context: LambdaContext):
+    client = dassana_aws.create_aws_client(event, context, 'ec2')
+    resp = client.describe_network_acls(
+        NetworkAclIds=[
+            event['networkAclId']
+        ]
+    )
+    answer = False
+    assert len(resp['NetworkAcls']) == 1
+    for entry in resp['NetworkAcls'][0]['Entries']:
+        if entry['Egress'] is False and entry['Protocol'] == '-1' and entry[
+            'RuleAction'] == 'allow':
+            answer = True
+            break
+    return {"result": answer}
+
+```
+
+:::info
+Common code should be abstracted into [modules](https://github.com/dassana-io/dassana/tree/main/content/pkg/deps)
+
+Make sure to follow each runtime's [conventions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
+
+Above example uses **dassana.common** which is shared across actions as an AWS Lambda Layer.
+:::
+
+## `README.md`
+
+Should contain a decription of what the action does.
+
+## Programming language specific requirements
+
+### Python
+
+When using Python a `requirements.txt` file is required in the specific action folder. This file must always exist for the action to work with AWS Lambda. Feel free to leave it empty if you don't need any external dependencies.
+
+:::info
+
+Since a lot of Dassana actions are written using Python and because most of them have the same external dependencies, we have defined the dependencies in a more central location [here](https://github.com/dassana-io/dassana/blob/main/content/pkg/deps/python/requirements.txt) as opposed to within each action folder's `requirements.txt`.
+
+:::
+
+### Node.js
+
+When using node.js a `package.json` file is required in the specific action folder. This file must always exist for the action to work with AWS lambda. Feel free to leave it empty if you don't need any external dependencies.
+
+### Java
+
+TBD

@@ -1,0 +1,19 @@
+schema: 1.0
+id: WebsiteContext
+name: AWS Website Context Action
+
+cloud-type: aws
+service: s3
+resource-type: bucket
+
+runs-on: aws-lambda
+
+license:
+  url: https://www.apache.org/licenses/LICENSE-2.0
+  id: Apache
+author:
+  name: dassana
+  email: support@dassana.io
+compatible-type: contextualize
+labels:
+  - contextualize

@@ -1,0 +1,30 @@
+schema: 1.0
+labels:
+  - contextualization
+type: contextualize
+category: access-sharing
+subcategory: public-access
+id: "bucket-is-public"
+name: "S3 bucket is made public through public access block"
+
+risk-config:
+  default-risk: medium
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "s3-account-level-public-access-blocks"
+        - "s3-bucket-level-public-access-prohibited"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
+    - name: prisma-cloud
+      policies:
+        - "34064d53-1fd1-42e6-b075-45dce495caca"
+        - "630d3779-d932-4fbf-9cce-6e8d793c6916"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "34064d53-1fd1-42e6-b075-45dce495caca"
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "630d3779-d932-4fbf-9cce-6e8d793c6916"

@@ -1,0 +1,13 @@
+access-sharing:
+  - public-access
+cryptography:
+  - encryption
+  - ssl
+networking:
+  - firewall
+visibility:
+  - logging
+  - alerting
+  - monitoring
+iam:
+  - authentication

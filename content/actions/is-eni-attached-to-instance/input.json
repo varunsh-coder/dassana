@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IsEniAttachedToInstance",
+  "type": "object",
+  "properties": {
+    "instanceId": {
+      "type": "string"
+    },
+    "awsRegion": {
+      "type": "string",
+      "default": "us-east-1"
+    }
+  },
+  "required": [
+    "instanceId"
+  ]
+}

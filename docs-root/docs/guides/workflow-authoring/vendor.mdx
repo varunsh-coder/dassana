@@ -1,0 +1,210 @@
+# Introducing vendors
+
+We understand that different teams use different vendors. With that in mind, we made sure that Dassana can easily support the addition of new security vendors and their policies so that you can get the context you need.
+
+Several things need to happen to introduce a new vendor:
+
+1. A `normalize` workflow must be created to help Dassana identify the new vendor.
+2. An action must be created which would be responsible for extracting required fields.
+3. The security vendor's policies need to be mapped to Dassana policies so that the appropriate context gets added to the security vendor's alerts.
+
+We will demonstrate how to go about creating a vendor over the new few sections.
+
+## `normalize` workflow
+
+Here is what the AWS Security Hub workflow file looks like:
+
+```yaml title="content/workflows/vendors/security-hub/security-hub.yaml"
+schema: 1.0
+type: normalize
+vendor-name: security-hub
+id: security-hub
+
+filter:
+    match-type: all
+    rules:
+        - |-
+            $.source exists
+        - |-
+            "$.detail.findings[?(@.Workflow.Status contains 'NEW')]" exists
+        - |-
+            "$.detail.findings[?(@.RecordState == 'ACTIVE')]" exists
+        - |-
+            "$.detail.findings[?(@.ProductFields.aws/securityhub/ProductName == 'Security Hub')]" exists
+
+steps:
+    - id: resource-info
+      uses: SecurityHubResExtractor
+
+normalized-output:
+    step-id: resource-info
+    output:
+        canonicalId: $.resource-info.arn
+        vendor-policy: $.resource-info.alertId
+        csp: $.resource-info.csp
+        resourceContainer: $.resource-info.resourceContainer
+        region: $.resource-info.region
+        service: $.resource-info.service
+        resourceType: $.resource-info.resourceType
+        resourceId: $.resource-info.resourceId
+
+post-processor:
+    steps:
+        - id: update-security-hub-finding
+          uses: SecurityHubUpdateFinding
+
+output-queue:
+    enabled: false
+```
+
+import Schema from '../../common-fields/schema.md'
+import Id from '../../common-fields/workflows/workflow-id.md'
+import Labels from '../../common-fields/labels.md'
+import Filter from '../../common-fields/workflows/filter.md'
+import MatchType from '../../common-fields/workflows/match-type.md'
+import RuleSyntax from '../../common-fields/workflows/rule-syntax.md'
+import Steps from '../../common-fields/workflows/steps.mdx'
+
+### `schema`
+
+<Schema />
+
+### `type`
+
+Always `normalize` for this kind of workflow.
+
+### `vendor-name`
+
+The security vendor name in lower camel case.
+
+### `id`
+
+<Id />
+
+### `labels`
+
+<Labels />
+
+### `filter`
+
+<Filter />
+
+##### `match-type`
+
+<MatchType />
+
+##### `rules`
+
+<RuleSyntax />
+
+### `steps`
+
+<Steps />
+
+### `normalized-output`
+
+For Dassana to add the appropriate context, it first needs to understand the resource in question. From every alert, specific metadata needs to be extracted.
+
+#### `step-id`
+
+The [step](#steps) that is responsible for extracting the required fields listed below.
+
+#### `output`
+
+The list of required fields that need to be extracted.
+
+##### `canonicalId`
+
+The id as defined by the cloud service provider. For example, in AWS, this would be the resource arn.
+
+##### `vendor-policy`
+
+The vendor policy id.
+
+##### `csp`
+
+The cloud service provider (i.e.,` aws`) where the resource lives.
+
+##### `resourceContainer`
+
+The AWS cloud account id.
+
+##### `region`
+
+The region where the resource lives.
+
+##### `service`
+
+The AWS service.
+
+##### `resourceType`
+
+The AWS resource type.
+
+##### `resourceId`
+
+The resource id in the cloud.
+
+### `output-queue`
+
+## Field extr`action`
+
+The second step to supporting a new vendor is to write an action that extracts required fields. Here is an [example](https://github.com/dassana-io/dassana/tree/main/content/actions/security-hub-normalizer) written using Java to support AWS Security Hub alerts.
+
+:::note
+
+For more information on how to write actions, please see the [authoring actions](./action) page.
+
+:::
+
+## Mapping vendor policies
+
+The final step in adding a new vendor is mapping its policies to the policies in Dassana. You can do this by writing JSONpath based rules which can help Dassana identify a specific policy. Here is an example of how rule matching is done for `restricted-ssh` AWS security hub policy (see highlighted section).
+
+```yaml title="content/workflows/policies/csp/aws/service/ec2/resources/security-group/ssh-from-internet.yaml"
+schema: 1.0
+labels:
+    - contextualization
+type: contextualize
+category: networking
+subcategory: firewall
+id: 'ssh-from-internet'
+name: 'Security group is allowing incoming SSH traffic from internet'
+
+risk-config:
+    default-risk: high
+    rules:
+        - name: are-enis-attached-to-sg
+          condition: $.list-of-attached-eni.result is empty
+          risk: low
+
+filter:
+    vendors:
+        // highlight-start
+        - name: security-hub
+          policies:
+              - 'restricted-ssh'
+              - 'vpc-default-security-group-closed'
+          match-type: any
+          rules:
+              - |-
+                  "$.detail.findings[*].ProductFields['RelatedAWSResources:0/name']" contains restricted-ssh
+              - |-
+                  "$.detail.findings[*].ProductFields['RelatedAWSResources:0/name']" contains vpc-default-security-group-closed
+        // highlight-end
+
+steps:
+    - id: list-of-attached-eni
+      uses: WhatEnisAreAttachedToSg
+      with:
+          - name: groupId
+            value: $.resourceId
+          - name: AwsRegion
+            value: $.region
+```
+
+:::note
+
+For more information on how to write rules, please view the [customizing security policies](./contextualize#vendors) docs.
+
+:::

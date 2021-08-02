@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DoesSgAllowIncomingConnectionsFromInternet",
+  "type": "object",
+  "properties": {
+    "groupId": {
+      "type": "string"
+    },
+    "awsRegion": {
+      "type": "string",
+      "default": "us-east-1"
+    }
+  },
+  "required": [
+    "groupId"
+  ]
+}

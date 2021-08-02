@@ -1,0 +1,17 @@
+schema: enum(1.0)
+id: regex('[A-Za-z0-9-]+$')
+name: str()
+
+cloud-type: enum('aws','demo-cloud')
+service: regex('[a-z0-9-.]', required=False)
+resource-type: regex('[a-z0-9-.]', required=False)
+
+runs-on: enum('aws-lambda')
+license:
+  url: str()
+  id: str()
+author:
+  name: str(required=False)
+  email: regex('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+compatible-type: any(enum('normalize', 'contextualize', 'resource-priority'), list(enum('normalize', 'contextualize', 'resource-priority')))
+labels: list(required=False)

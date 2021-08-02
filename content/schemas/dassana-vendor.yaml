@@ -1,0 +1,59 @@
+schema: enum(1.0)
+type: enum('normalize')
+
+id: regex('[a-z0-9-]+$')
+name: str(required=False)
+labels: list(required=False)
+
+vendor-name: enum('security-hub','foo-cloud', 'prisma-cloud')
+
+filter:
+  match-type: enum('any', 'all')
+  rules: list(str())
+
+steps:
+  list(include('step'))
+
+macros: list(include('macro'), required=False)
+
+normalized-output:
+  step-id: str()
+  output:
+    alertId: str()
+    canonicalId: str()
+    vendorPolicy: str()
+    csp: str()
+    resourceContainer: str()
+    region : str()
+    service: str()
+    resourceType: str()
+    resourceId: str()
+
+post-processor: include('post-processor',required=False)
+
+output-queue:
+  enabled: bool(required=False)
+---
+step:
+  id: regex('[a-z0-9-]+$')
+  uses: enum(DASSANA_ACTIONS)
+  with: list(include('with'), required=False)
+
+with:
+  name: str()
+  value: str()
+  value-type: enum('string', 'jsonpath', 'macro', required=False)
+
+macro:
+  name: str()
+  value: list(include('macro-value'))
+
+macro-value:
+  name: str()
+  condition: str()
+  risk: enum('low', 'medium', 'high', 'critical')
+
+post-processor:
+  steps:
+    - id: regex('[a-z0-9-]+$')
+      uses: str()

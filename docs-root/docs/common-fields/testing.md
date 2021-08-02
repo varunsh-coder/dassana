@@ -1,0 +1,1 @@
+Dassana has multiple linters to ensure that workflows and actions are conforming to the defined standard. You can do test your work against our linters by opening up a PR against the main branch of the [Dassana repository](https://github.com/dassana-io/dassana/).

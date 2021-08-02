@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GetTags",
+  "type": "object",
+  "properties": {
+    "arn": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "region": {
+      "type": "string",
+      "default": "us-east-1"
+    }
+  },
+  "required": [
+    "arn","region"
+  ]
+}

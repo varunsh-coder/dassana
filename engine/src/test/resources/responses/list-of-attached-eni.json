@@ -1,0 +1,54 @@
+{
+  "result": [
+    {
+      "Association": {
+        "IpOwnerId": "amazon",
+        "PublicDnsName": "ec2-3-87-52-250.compute-1.amazonaws.com",
+        "PublicIp": "3.87.52.250"
+      },
+      "Attachment": {
+        "AttachTime": "2021-03-14 01:08:43+00:00",
+        "AttachmentId": "eni-attach-04d92d000ef478797",
+        "DeleteOnTermination": true,
+        "DeviceIndex": 0,
+        "NetworkCardIndex": 0,
+        "InstanceId": "i-054474987a390f341",
+        "InstanceOwnerId": "363265257036",
+        "Status": "attached"
+      },
+      "AvailabilityZone": "us-east-1a",
+      "Description": "Primary network interface",
+      "Groups": [
+        {
+          "GroupName": "bastionHost",
+          "GroupId": "sg-0c78a9d8a495828ad"
+        }
+      ],
+      "InterfaceType": "interface",
+      "Ipv6Addresses": [],
+      "MacAddress": "12:27:ba:72:a3:bf",
+      "NetworkInterfaceId": "eni-0ce198f0294017852",
+      "OwnerId": "363265257036",
+      "PrivateDnsName": "ip-172-16-4-235.ec2.interntal",
+      "PrivateIpAddress": "172.16.4.235",
+      "PrivateIpAddresses": [
+        {
+          "Association": {
+            "IpOwnerId": "amazon",
+            "PublicDnsName": "ec2-3-87-52-250.compute-1.amazonaws.com",
+            "PublicIp": "3.87.52.250"
+          },
+          "Primary": true,
+          "PrivateDnsName": "ip-172-16-4-235.ec2.internal",
+          "PrivateIpAddress": "172.16.4.235"
+        }
+      ],
+      "RequesterManaged": false,
+      "SourceDestCheck": true,
+      "Status": "in-use",
+      "SubnetId": "subnet-0fff96f44f61be3c8",
+      "TagSet": [],
+      "VpcId": "vpc-02400cbe81d28eadc"
+    }
+  ]
+}

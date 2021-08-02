@@ -1,0 +1,579 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Dassana
+    Description: |
+      Dassana adds contexts to AWS security hub alerts and priortizes alerts based on contexual risk. The context is addded
+      by Dassana Actions which are open source lightweight lambda functions.
+    Author: Dassana
+    SpdxLicenseId: Apache-2.0
+    HomePageUrl: https://github.com/dassana-io/dassana-engine
+    SourceCodeUrl: https://github.com/dassana-io/dassana-engine
+    SemanticVersion: 1.0.0 # do not change this, it is meant to be overridden when use "sam publish" cli to publish an updated version
+    ReadmeUrl: ../../README.md
+    LicenseUrl: ../../LICENSE.txt
+
+Parameters:
+  CrossAccountRoleName:
+    Description: If this account is going receive alerts from other accounts i.e. this is a central security account, enter the name of the cross account role which exists in this account and has permissions to assume role into the accounts from which alerts are received. For more information click here <tbd>
+    Type: String
+    Default: ""
+
+Conditions:
+  CreaeteCrossAccountRole: !Not [ !Equals [ !Ref CrossAccountRoleName, "" ] ]
+
+Resources:
+  ### Begin Dassana Engine Resources ###
+
+  ApiGatewayRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      ApiKeySourceType: HEADER
+      Description: Dassana API Gateway for debugging and updating workflows.
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      Name: !Join [ "", [ { "Ref": "AWS::StackName" }, "-api" ] ]
+
+  DebugApiResource:
+    Type: "AWS::ApiGateway::Resource"
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: "debug"
+
+  ApiGatewayModel:
+    Type: AWS::ApiGateway::Model
+    Properties:
+      ContentType: "application/json"
+      RestApiId: !Ref ApiGatewayRestApi
+      Schema: { }
+
+  ApiGatewayStage:
+    Type: AWS::ApiGateway::Stage
+    Properties:
+      DeploymentId: !Ref ApiGatewayDeployment
+      Description: Lambda API Stage v1
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: v1
+
+  ApiUsagePlan:
+    Type: "AWS::ApiGateway::UsagePlan"
+    DependsOn: ProxyResourcePOST
+    Properties:
+      ApiStages:
+        - ApiId: !Ref ApiGatewayRestApi
+          Stage: !Ref ApiGatewayStage
+      Description: !Join [ " ", [ { "Ref": "AWS::StackName" }, "usage plan" ] ]
+      UsagePlanName: !Join [ "", [ { "Ref": "AWS::StackName" }, "-usage-plan" ] ]
+
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ProxyResourcePOST
+    Properties:
+      Description: Lambda API Deployment
+      RestApiId: !Ref ApiGatewayRestApi
+
+  DassanaEngineApiInvokePermissionForApiGw:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !Ref DassanaEngineApi
+      Principal: "apigateway.amazonaws.com"
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/*"
+
+  ApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Name: !Join [ "", [ { "Ref": "AWS::StackName" }, "-apikey" ] ]
+      Description: !Join [ "", [ { "Ref": "AWS::StackName" }, "api key" ] ]
+      Enabled: true
+      GenerateDistinctId: false
+
+  ApiUsagePlanKey:
+    Type: "AWS::ApiGateway::UsagePlanKey"
+    Properties:
+      KeyId: !Ref ApiKey
+      KeyType: API_KEY
+      UsagePlanId: !Ref ApiUsagePlan
+
+  ProxyResourcePOST:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ResourceId: !Ref DebugApiResource
+      HttpMethod: POST
+      ApiKeyRequired: true
+      AuthorizationType: NONE
+      OperationName: !Ref DebugApiResource
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DassanaEngineApi.Arn}/invocations"
+
+  DassanaEngineApi:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Handler: app.dassana.core.launch.ApiHandler
+      Layers:
+        - !Ref DassanaEngineJavaLayer
+      Runtime: java11
+      MemorySize: 512
+      CodeUri: ../../engine
+      Role:
+        Fn::GetAtt: [ DassanaEngineRole, Arn ]
+      Timeout: 300
+      Environment:
+        Variables:
+          dassanaOutboundQueue: !Ref DassanaOutboundQueue
+          dassanaDeadLetterQueue: !Ref DassanaDeadLetterQueue
+          dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
+          dassanaBucket: !Ref DassanaBucket
+
+  DassanaBucket:
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: Retain
+
+  DassanaEngineRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: DassanaEngineRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Path: /
+      Policies:
+        - PolicyName: DassanaEnginePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Fn::If:
+                  - CreaeteCrossAccountRole
+                  - Effect: "Allow"
+                    Action:
+                      - "sts:AssumeRole"
+                    Resource:
+                      - !Sub arn:aws:iam::*:role/${CrossAccountRoleName}
+                  - Ref: AWS::NoValue
+
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource: !Sub arn:aws:s3:::${DassanaBucket}/*
+              - Effect: Allow
+                Action:
+                  - sqs:SendMessage
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage
+                  - sqs:GetQueueAttributes
+                  - cloudformation:Describe*
+                  - cloudformation:List*
+                  - cloudformation:Get*
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - lambda:InvokeFunction
+                  - lambda:GetFunction
+                Resource: "*"
+
+  DassanaInboundQueuePolicyForEventHub:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref DassanaInboundQueue
+      PolicyDocument:
+        Statement:
+          - Action:
+              - SQS:SendMessage
+            Effect: "Allow"
+            Resource: !GetAtt DassanaInboundQueue.Arn
+            Principal:
+              Service: events.amazonaws.com
+            Condition:
+              ArnEquals:
+                aws:SourceArn:
+                  Fn::GetAtt:
+                    - "DassanaSecurityHubToSqsRule"
+                    - "Arn"
+
+  DassanaInboundQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: DassanaInboundQueue
+      VisibilityTimeout: 300
+      RedrivePolicy:
+        deadLetterTargetArn:
+          Fn::GetAtt:
+            - "DassanaDeadLetterQueue"
+            - "Arn"
+        maxReceiveCount: 2
+
+  DassanaOutboundQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: DassanaOutboundQueue
+
+  DassanaDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: DassanaDeadLetterQueue
+
+  DassanaEngineJavaLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: Layer
+      Description: Java Dependencies of Dassana Engine
+      ContentUri: ../../engine
+      CompatibleRuntimes:
+        - java11
+    Metadata:
+      BuildMethod: makefile
+
+  DassanaEngine:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Handler: app.dassana.core.launch.Handler
+      Layers:
+        - !Ref DassanaEngineJavaLayer
+      Runtime: java11
+      MemorySize: 512
+      CodeUri: ../../engine
+      Role:
+        Fn::GetAtt: [ DassanaEngineRole, Arn ]
+      Timeout: 300
+      Environment:
+        Variables:
+          dassanaOutboundQueue: !Ref DassanaOutboundQueue
+          dassanaDeadLetterQueue: !Ref DassanaDeadLetterQueue
+          dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
+          dassanaBucket: !Ref DassanaBucket
+
+  DassanaEngineToQueueMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn:
+        Fn::GetAtt:
+          - "DassanaInboundQueue"
+          - "Arn"
+      FunctionName:
+        Fn::GetAtt:
+          - "DassanaEngine"
+          - "Arn"
+  DassanaSecurityHubToSqsRule:
+    Type: "AWS::Events::Rule"
+    Properties:
+      Description: Send new alerts generated by securityhub to Dassana inboud queue
+      Name: securityhub-to-sqs-rule
+      EventPattern:
+        source:
+          - aws.securityhub
+        detail-type:
+          - Security Hub Findings - Imported
+        detail:
+          findings:
+            UserDefinedFields:
+              DASSANA_ALERT_PATH:
+                - exists: false
+            Compliance:
+              Status:
+                - FAILED
+            RecordState:
+              - ACTIVE
+            Workflow:
+              Status:
+                - NEW
+
+      State: ENABLED
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - "DassanaInboundQueue"
+              - "Arn"
+          Id: dassana-inboud-queue
+
+    ### End Dassana Engine Resources ###
+    ### Begin Vendor Specific Actions ###
+
+  SecurityHubResExtractor:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.dassana.resourceid.sh.App
+      Runtime: java11
+      MemorySize: 256
+      CodeUri: ../actions/security-hub-normalizer/impl/sh-resourceid-extractor
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+
+  SecurityHubUpdateFinding:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.dassana.action.App
+      Runtime: java11
+      MemorySize: 256
+      CodeUri: ../actions/securityhub-update-finding
+      Policies:
+      Role:
+        Fn::GetAtt: [ SecurityHubUpdateFindingRole, Arn ]
+      Timeout: 60
+
+  SecurityHubUpdateFindingRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Path: /
+      Policies:
+        - PolicyName: sh-update-finding
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "securityhub:BatchUpdateFindings"
+                Resource: "*"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+    ### End Vendor Specific Actions ###
+    ### Begin Dassana Actions ###
+
+  DassanaActionsPythonLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: Layer
+      Description: Dependencies for Dassana Actions
+      ContentUri: deps/python/
+      CompatibleRuntimes:
+        - python3.7
+      LicenseInfo: "Apache-2.0"
+    Metadata:
+      BuildMethod: python3.7
+  DassanaMMDBLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: MMDBLayer
+      Description:
+      ContentUri: deps/mmdb
+  DassanaActionsRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/SecurityAudit
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  DoesNaclAllowTrafficFromInternet:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/does-nacl-allow-traffic-from-internet
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  DoesSgAllowIncomingConnectionsFromInternet:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/does-sg-allow-incoming-connections-from-internet
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  IsAutoscalingGroupTrackingTargetGroup:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/is-autoscaling-group-tracking-target-group
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  IsEniAttachedToInstance:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/is-eni-attached-to-instance
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  IsInstancePartOfAutoscalingGroup:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/is-instance-part-of-autoscaling-group
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  IsLoadBalancerInternal:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/is-load-balancer-internal
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  IsTargetGroupPartOfLoadBalancer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/is-target-group-part-of-load-balancer
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  IsTheInstanceBehindLoadBalancer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/is-the-instance-behind-load-balancer
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  WhichSubnetsAreAssociatedWithLoadBalancer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/which-subnets-are-associated-with-loadbalancer
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  GetTags:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.dassana.action.App
+      Runtime: java11
+      MemorySize: 256
+      CodeUri: ../actions/get-tags
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  WebsiteContext:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/website-context
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  WhatEnisAreAttachedToSg:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/what-enis-are-attached-to-sg
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  DecorateIp:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/decorate-ip
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+        - !Ref DassanaMMDBLayer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+  RiskCalcAction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.dassana.action.RequestHandler
+      Runtime: java11
+      MemorySize: 512
+      CodeUri: ../actions/risk-calc-action
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+
+  DemoCloudNormalizer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      MemorySize: 128
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      CodeUri: ../actions/demo-cloud-normalizer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+
+  PrismaCloudExtractor:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.8
+      MemorySize: 128
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      CodeUri: ../actions/prisma-cloud-normalizer
+      Role:
+        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+      Timeout: 60
+
+### End Dassana Actions ###
+
+Outputs:
+  ApiGatewayEndpoint:
+    Description: DassanaApiGatewayEndpointUrl
+    Value: !Sub "https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/"
+    Export:
+      Name: DassanaApiGatewayEndpointUrl

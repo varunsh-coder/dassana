@@ -1,0 +1,100 @@
+# Resource Prioritization
+
+The `resource-priority` workflow helps you answer the question "how important is this resource?".
+
+## Example
+
+Say, for example, you wanted to differentiate between dev and prod resources. You can write rules to assign critical risk for prod assets and low risk for dev assets. Let's take a look at an example:
+
+```yaml title="content/workflows/resource-priority/aws-tags.yaml"
+schema: 1.0
+type: resource-priority
+id: resource-priority-aws
+name: tag based risk
+
+filter:
+    match-type: all
+    rules:
+        - |-
+            .csp=="aws" and .canonicalId
+
+risk-config:
+    default-risk: ''
+    rules:
+        - name: dev enviornment risk is low
+          condition: |-
+              .getTags | any( select(.key | test("env" ; "ix")) | select(.value | test("dev" ; "ix")))
+          risk: low
+
+        - name: prod enviornment risk is high
+          condition: |-
+              .getTags | any( select(.key | test("env" ; "ix")) | select(.value | test("prod" ; "ix")))
+          risk: high
+
+steps:
+    - id: getTags
+      uses: GetTags
+      with:
+          - name: arn
+            value: .canonicalId
+          - name: region
+            value: .region
+
+output:
+    - name: environment
+      value: first(.getTags[] | select(.key == "env") .value)
+```
+
+## Reference
+
+Following is the reference for all the available fields.
+
+import Schema from '../../common-fields/schema.md'
+import Id from '../../common-fields/workflows/workflow-id.md'
+import Name from '../../common-fields/name.md'
+import Labels from '../../common-fields/labels.md'
+import Filter from '../../common-fields/workflows/filter.md'
+import MatchType from '../../common-fields/workflows/match-type.md'
+import RuleSyntax from '../../common-fields/workflows/rule-syntax.md'
+import RiskConfig from '../../common-fields/workflows/risk-config.mdx'
+import Steps from '../../common-fields/workflows/steps.mdx'
+
+### `schema`
+
+<Schema />
+
+### `type`
+
+Always `resource-priority` for this kind of workflow.
+
+### `id`
+
+<Id />
+
+### `name`
+
+<Name />
+
+### `labels`
+
+<Labels />
+
+### `filter`
+
+<Filter />
+
+#### `match-type`
+
+<MatchType />
+
+#### `rules`
+
+<RuleSyntax />
+
+### `risk-config`
+
+<RiskConfig />
+
+### `steps`
+
+<Steps />

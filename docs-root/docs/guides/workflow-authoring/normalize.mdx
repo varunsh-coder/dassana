@@ -1,0 +1,124 @@
+# Normalize
+
+This is the first workflow which gets run and its output is sent to all of the workflows which have type `resource-priority` and `contextualize` (don't worry, not all of then will run, only the ones which match the filters defined in those workflows will run)
+
+## Example
+
+Here is an example of an AWS security group policy for SSH from the internet.
+
+```yaml title="content/workflows/vendors/security-hub/security-hub.yaml"
+schema: 1.0
+type: normalize
+vendor-name: security-hub
+id: security-hub
+
+filter:
+    match-type: all
+    rules:
+        - |
+            .detail and .detail.findings
+        - |
+            any(.detail.findings[];.ProductFields.StandardsGuideArn |contains ("arn:aws:securityhub"))
+
+steps:
+    - id: resource-info
+      uses: SecurityHubResExtractor
+
+normalized-output:
+    step-id: resource-info
+    output:
+        alertId: ."resource-info".alertId
+        canonicalId: ."resource-info".arn
+        vendorPolicy: ."resource-info".policyId
+        csp: ."resource-info".csp
+        resourceContainer: ."resource-info".resourceContainer
+        region: ."resource-info".region
+        service: ."resource-info".service
+        resourceType: ."resource-info".resourceType
+        resourceId: ."resource-info".resourceId
+
+post-processor:
+    steps:
+        - id: update-security-hub-finding
+          uses: SecurityHubUpdateFinding
+
+#output queue is disabled because we use a post-processor. Output queue is used when we don't have a bi-directional integration with the vendor
+output-queue:
+    enabled: false
+```
+
+## Reference
+
+Following is the reference for all the available fields.
+
+import Schema from '../../common-fields/schema.md'
+import Id from '../../common-fields/workflows/workflow-id.md'
+import Name from '../../common-fields/name.md'
+import Labels from '../../common-fields/labels.md'
+import RiskConfig from '../../common-fields/workflows/risk-config.mdx'
+import Filter from '../../common-fields/workflows/filter.md'
+import MatchType from '../../common-fields/workflows/match-type.md'
+import RuleSyntax from '../../common-fields/workflows/rule-syntax.md'
+import Steps from '../../common-fields/workflows/steps.mdx'
+
+### `schema`
+
+<Schema />
+
+### `type`
+
+Always `contextualize` for this kind of workflow.
+
+### `id`
+
+<Id />
+
+### `name`
+
+<Name />
+
+### `category` & `subcategory`
+
+Used to organize security policies based on the use case. A list of all categories and their subcategories can be found [here](https://github.com/dassana-io/dassana/blob/main/content/workflows/policies/categories.yaml).
+
+### `labels`
+
+<Labels />
+
+### `risk-config`
+
+<RiskConfig />
+
+### `filter`
+
+<Filter />
+
+#### `vendors`
+
+Because Dassana is vendor-neutral, any vendors' policies can be mapped to a Dassana policy, allowing customers to switch between vendors and still get the context they need.
+
+##### `name`
+
+Security vendor name. A complete list of supported vendors can be found [here](https://github.com/dassana-io/dassana/tree/main/content/workflows/vendors).
+
+:::note
+
+Don't see your security vendor on the list? Learn how to go about adding a security vendor [here](./vendor).
+
+:::
+
+##### `policies`
+
+List of vendor policy IDs from which map to a Dassana policy. AWS has a policy with the id `restricted-ssh`. In Dassana, the equivalent policy has the id `ssh-from-internet`. This field is used to map AWS Config's `restricted-ssh` policy to Dassana's `ssh-from-internet` policy.
+
+##### `match-type`
+
+<MatchType />
+
+##### `rules`
+
+<RuleSyntax />
+
+### `steps`
+
+<Steps />

@@ -1,0 +1,13 @@
+content/pkg/.aws-sam
+content/actions/*/.idea
+content/actions/*/*.iml
+content/pkg/workflows*
+content/pkg/uploaded-template.yaml
+engine/target*
+engine/.idea/*
+engine/*.iml
+venv
+engine/src/main/resources/content/**
+.idea
+**/target/**
+.aws-sam/**

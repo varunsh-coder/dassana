@@ -1,0 +1,1 @@
+Can be either `all` or `any`. Always accompanied by a set of rules. If the setting is `all` then all rules need to match for workflow execution. If the setting is `any` then any rule needs to be truthy.

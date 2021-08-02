@@ -1,0 +1,15 @@
+{
+  "tagList": [
+    {
+      "value": "foo",
+      "key": "env"
+    }
+  ],
+  "csp": "aws",
+  "resourceId": "sg-04101d5687a91bc17",
+  "service": "ec2",
+  "resourceContainer": "363265257036",
+  "alertId": "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.3/finding/9ca2c485-aa3a-44c3-b801-04263849662e",
+  "region": "us-east-1",
+  "steps": {}
+}

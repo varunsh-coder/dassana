@@ -1,0 +1,26 @@
+schema: 1.0
+labels:
+  - contextualization
+type: contextualize
+category: access-sharing
+subcategory: public-access
+id: "rds-instance-is-public"
+name: "RDS instance is public"
+
+risk-config:
+  default-risk: critical
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "rds-instance-public-access-check"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("rds-instance-public-access-check"))
+    - name: prisma-cloud
+      policies:
+        - "1bb6005a-dca6-40e2-b0a6-24da968c0808"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "1bb6005a-dca6-40e2-b0a6-24da968c0808"

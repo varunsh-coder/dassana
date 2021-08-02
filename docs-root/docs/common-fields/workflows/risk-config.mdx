@@ -1,0 +1,38 @@
+#### `default-risk`
+
+Must be one of:
+
+-   critical
+-   high
+-   medium
+-   low
+-   ''
+
+:::note
+
+The empty string `''` denotes a null type when no risk wants to be added.
+
+:::
+
+#### `rules`
+
+(Optional) The rules to run in order to detemine what risk to assign.
+
+##### `name`
+
+Friendly name describing the rule.
+
+##### `condition`
+
+import RuleSyntax from './rule-syntax.md'
+
+<RuleSyntax />
+
+##### `risk`
+
+Must be one of:
+
+-   critical
+-   high
+-   med
+-   low

@@ -1,0 +1,39 @@
+schema: 1.0
+type: normalize
+vendor-name: security-hub
+id: security-hub
+
+filter:
+  match-type: all
+  rules:
+    - |
+       .detail and .detail.findings
+    - |
+       any(.detail.findings[];.ProductFields.StandardsGuideArn |contains ("arn:aws:securityhub"))
+
+
+steps:
+  - id: resource-info
+    uses: SecurityHubResExtractor
+
+normalized-output:
+  step-id: resource-info
+  output:
+    alertId: ."resource-info".alertId
+    canonicalId: ."resource-info".arn
+    vendorPolicy: ."resource-info".policyId
+    csp: ."resource-info".csp
+    resourceContainer: ."resource-info".resourceContainer
+    region : ."resource-info".region
+    service: ."resource-info".service
+    resourceType: ."resource-info".resourceType
+    resourceId: ."resource-info".resourceId
+
+post-processor:
+  steps:
+    - id: update-security-hub-finding
+      uses: SecurityHubUpdateFinding
+
+#output queue is disabled because we use a post-processor. Output queue is used when we don't have a bi-directional integration with the vendor
+output-queue:
+  enabled: false

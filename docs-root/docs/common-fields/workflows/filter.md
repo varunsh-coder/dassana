@@ -1,0 +1,1 @@
+Filter is used to identify which workflow to run in a given instance. By using rules we can write conditions which need to be met in order for the workflow to run. Say we received an alert for an open bucket. In this scenario, we would only want to trigger the open bucket security policy as opposed to any other policy.

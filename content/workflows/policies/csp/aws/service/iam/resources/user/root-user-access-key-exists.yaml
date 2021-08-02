@@ -1,0 +1,26 @@
+schema: 1.0
+labels:
+  - contextualization
+type: contextualize
+category: iam
+subcategory: authentication
+id: "root-user-access-key-exists"
+name: "IAM root user access key exists"
+
+risk-config:
+  default-risk: medium
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "iam-root-access-key-check"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-root-access-key-check"))
+    - name: prisma-cloud
+      policies:
+        - "88db4b66-4dec-48c0-9013-c7871d61b1c8"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "88db4b66-4dec-48c0-9013-c7871d61b1c8"

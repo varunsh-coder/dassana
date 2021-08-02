@@ -1,0 +1,113 @@
+@value mobile-breakpoint from '../css/custom.css';
+@value tablet-breakpoint from '../css/custom.css';
+
+.bannerImage {
+	width: 100vw;
+}
+
+.link {
+	align-items: center;
+	background-color: var(--blues-base);
+	border-radius: 4px;
+	color: var(--whites-base);
+	display: flex;
+	height: 40px;
+	justify-content: center;
+	margin: 0 auto;
+	margin-top: 16px;
+	text-decoration: none;
+	transition: background-color 0.3s;
+	width: 200px;
+}
+
+.link:hover {
+	background-color: var(--ifm-color-primary-darker);
+	color: var(--whites-base);
+	text-decoration: none;
+}
+
+.heroBanner {
+	background: var(--blacks-base);
+	overflow: hidden;
+	padding: 64px 0;
+	position: relative;
+	text-align: center;
+}
+
+.heroSubtitle {
+	align-items: center;
+	color: var(--blacks-lighten-50);
+	display: flex;
+	flex-wrap: wrap;
+	font-size: 20px;
+	justify-content: center;
+	line-height: 32px;
+	margin-bottom: 20px;
+}
+
+.heroTitle {
+	align-items: center;
+	color: var(--grays-base);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin-bottom: 8px;
+}
+
+.emphasizedWord {
+	position: relative;
+}
+
+.lightning {
+	margin-right: 2px;
+}
+
+.lightningContainer {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.strike {
+	animation-delay: 0.8s;
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
+	animation-iteration-count: 1;
+	animation-name: strike;
+	left: -6px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 0;
+}
+
+@keyframes strike {
+	0% {
+		width: 0;
+	}
+	100% {
+		width: 105.75%;
+	}
+}
+
+@media screen and (max-width: tablet-breakpoint) {
+	.heroBanner {
+		padding: 32px;
+	}
+}
+
+@media screen and (min-width: mobile-breakpoint) {
+	.heroTitle span:first-of-type {
+		margin-right: 12px;
+	}
+
+	.lightningContainer {
+		margin-right: 6px;
+	}
+}
+
+@media screen and (max-width: mobile-breakpoint) {
+	.link {
+		width: 100%;
+	}
+}

@@ -1,0 +1,31 @@
+A workflow contains a sequence of tasks called steps. Each step runs an action.
+
+:::note
+
+For more information on actions, check out this [guide](/docs/guides/workflow-authoring/action).
+
+:::
+
+#### `id`
+
+Must be unique for each step in a workflow file.
+
+#### `uses`
+
+The name of the action which to invoke.
+
+#### `with`
+
+(Optional) Most actions require input in a specific format. The `with` clause allows you to pass variables to the action.
+
+##### `name`
+
+The variable / key name required by the action.
+
+##### `value`
+
+The value which to pluck off the input JSON or from a prior step.
+
+import RuleSyntax from './rule-syntax.md'
+
+<RuleSyntax />

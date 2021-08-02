@@ -1,0 +1,8 @@
+.main {
+	flex: 1;
+	display: flex;
+}
+
+.jummie {
+	height: 100vh;
+}

@@ -1,0 +1,28 @@
+schema: 1.0
+labels:
+  - contextualization
+type: contextualize
+category: iam
+subcategory: authentication
+id: "mfa-disabled-for-iam-users"
+name: "MFA is disabled for IAM user"
+
+risk-config:
+  default-risk: medium
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "iam-user-mfa-enabled"
+        - "mfa-enabled-for-iam-console-access"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
+    - name: prisma-cloud
+      policies:
+        - "50af1c0a-ab70-44dd-b6f6-3529e795131f"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "50af1c0a-ab70-44dd-b6f6-3529e795131f"

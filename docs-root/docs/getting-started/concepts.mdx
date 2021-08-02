@@ -1,0 +1,56 @@
+# Concepts
+
+This document is a short version of [How it Works](../how-it-works/alert-lifecycle.md) which describes the architecture in greater detail.
+We highly recommend familiarization with these concepts. _It won't take more than three minutes (we've timed it)_
+
+## Alerts
+
+You send alerts to Dassana by putting them in a queue (automatically created when you deploy the cloudformation template). As soon as an alert is received, Dassana Engine will process the alert and put the alert in the outbound queue (which is also automatically created).
+
+:::note
+
+For certain alert generation vendors (such as AWS SecurityHub), Dassana has native bi-directional integration. You do not have to do anything! The alerts are automatically ingested, processed, and updated in SecurityHub.
+
+:::
+
+An alert is simply a JSON document, and Dassana interprets it using Normalization workflow (we will get to it in a moment). For now, remember that Dassana can process any valid JSON document.
+
+## Engine
+
+Dassana Engine is a lightweight serverless function that gets triggered when the inbound queue receives an alert. The alert is processed by passing it through the workflows.
+
+### Workflows
+
+The workflows are simple YAML files that tell the engine what to do with the alert. These files have a filter configuration on the top, which tells the engine whether to run it or not. Following workflow types are available:
+
+#### 1. Normalization
+
+import Normalization from '../getting-started/concepts/normalization.md'
+
+<Normalization />
+
+The output of the normalization (csp, service, resource type, resource id etc) is fed to the following two workflow types.
+
+#### 2. Resource Prioritization
+
+import ResourcePrioritization from '../getting-started/concepts/resource-priorization.md'
+
+<ResourcePrioritization />
+
+#### 3. Contextualization
+
+import Contextualization from '../getting-started/concepts/contextualization.md'
+
+<Contextualization />
+
+:::info
+
+Resource Prioritization and Contextualization workflows are run in parallel and hence exclusive to each other.
+
+:::
+
+### Actions
+
+import Actions from '../common-fields/actions/about.md'
+
+<Actions />

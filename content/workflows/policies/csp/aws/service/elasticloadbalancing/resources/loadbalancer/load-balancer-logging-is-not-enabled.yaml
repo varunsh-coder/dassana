@@ -1,0 +1,28 @@
+schema: 1.0
+labels:
+  - contextualization
+type: contextualize
+category: visibility
+subcategory: logging
+id: "load-balancer-logging-is-not-enabled"
+name: "ALB and ELB do not have logging enabled"
+
+risk-config:
+  default-risk: medium
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "elb-logging-enabled"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("elb-logging-enabled"))
+    - name: prisma-cloud
+      policies:
+        - "b675c604-e886-43aa-a60f-a9ad1f3742d3"
+        - "f2a2bcf1-2966-4cb5-9230-bd39c9903a02"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "b675c604-e886-43aa-a60f-a9ad1f3742d3"
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "f2a2bcf1-2966-4cb5-9230-bd39c9903a02"
