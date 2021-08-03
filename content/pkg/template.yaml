@@ -168,7 +168,9 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:*
-                Resource: !Sub arn:aws:s3:::${DassanaBucket}/*
+                Resource:
+                  - !Sub arn:aws:s3:::${DassanaBucket}/*
+                  - !Sub arn:aws:s3:::${DassanaBucket}
               - Effect: Allow
                 Action:
                   - sqs:SendMessage
