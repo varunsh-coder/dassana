@@ -1,6 +1,6 @@
 package app.dassana.core.resource.model;
 
-import app.dassana.core.risk.Risk;
+import app.dassana.core.risk.model.Risk;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;

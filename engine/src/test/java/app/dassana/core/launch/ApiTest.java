@@ -76,6 +76,8 @@ public class ApiTest {
 
     Assertions.assertTrue(normalize.getString("workflowId").contentEquals("security-hub"));
     Assertions.assertTrue(generalContext.getString("workflowId").contentEquals("general-context-aws"));
+    Assertions.assertTrue(generalContext.getJSONObject("risk").getString("riskValue").contentEquals("low"));
+
     Assertions.assertTrue(policyContext.getString("workflowId").contentEquals("ssh-from-internet"));
 
 
@@ -124,13 +126,7 @@ public class ApiTest {
 
       if (step.getId().contentEquals("list-of-attached-eni")) {
         stepRunResponse.setResponse(IOUtils.toString(
-            Thread.currentThread().getContextClassLoader().getResourceAsStream("responses/tags.json"),
-            Charset.defaultCharset()));
-      }
-
-      if (step.getId().contentEquals("riskCalc")) {
-        stepRunResponse.setResponse(IOUtils.toString(
-            Thread.currentThread().getContextClassLoader().getResourceAsStream("responses/resourceRiskCalcAction.json"),
+            Thread.currentThread().getContextClassLoader().getResourceAsStream("responses/list-of-attached-eni.json"),
             Charset.defaultCharset()));
       }
 

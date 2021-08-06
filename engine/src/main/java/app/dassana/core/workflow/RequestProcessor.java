@@ -14,7 +14,7 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
-import app.dassana.core.risk.CombinedRisk;
+import app.dassana.core.risk.model.CombinedRisk;
 import app.dassana.core.util.StringyThings;
 import app.dassana.core.workflow.model.Step;
 import app.dassana.core.workflow.model.Workflow;

@@ -3,15 +3,15 @@
 // (powered by FernFlower decompiler)
 //
 
-package app.dassana.action;
+package app.dassana.core.risk.eval;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import app.dassana.core.risk.model.Risk;
+import app.dassana.core.risk.model.Rule;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.core.annotation.Introspected;
-import io.micronaut.function.aws.MicronautRequestHandler;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import javax.inject.Singleton;
 import net.thisptr.jackson.jq.BuiltinFunctionLoader;
 import net.thisptr.jackson.jq.JsonQuery;
 import net.thisptr.jackson.jq.Scope;
@@ -19,43 +19,44 @@ import net.thisptr.jackson.jq.Version;
 import net.thisptr.jackson.jq.Versions;
 import org.json.JSONObject;
 
-@Introspected
-public class RequestHandler extends MicronautRequestHandler<Request, Risk> {
+@Singleton
+public class RiskEvaluator {
+
+  public RiskEvaluator() {
+    BuiltinFunctionLoader.getInstance().loadFunctions(Versions.JQ_1_6, rootScope);
+  }
 
   Scope rootScope = Scope.newEmptyScope();
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-
-  public RequestHandler() {
-    BuiltinFunctionLoader.getInstance().loadFunctions(Versions.JQ_1_6, rootScope);
-  }
-
-  public Risk execute(Request input) {
+  public Risk evaluate(RiskEvalRequest input) {
     Risk risk = new Risk();
     String defaultRisk = input.getDefaultRisk();
-    risk.setRisk(defaultRisk);
+    risk.setRiskValue(defaultRisk);
     risk.setName("default");
     List<Rule> riskRules = input.getRiskRules();
 
-    for (Rule riskRule : riskRules) {
+    for (app.dassana.core.risk.model.Rule riskRule : riskRules) {
       String condition = riskRule.getCondition();
       try {
 
         JsonQuery jsonQuery = JsonQuery.compile(condition, Version.LATEST);
         Scope childScope = Scope.newChildScope(rootScope);
-        JsonNode in = MAPPER.readTree(new JSONObject(input.getJsonData()).toString());
+        JSONObject jsonObject = new JSONObject(input.getJsonData());
+        JsonNode in = MAPPER.readTree(jsonObject.toString());
         AtomicBoolean result = new AtomicBoolean(false);
         jsonQuery.apply(childScope, in, jsonNode -> result.set(jsonNode.asBoolean()));
 
         if (result.get()) {
-          risk.setRisk(riskRule.getRisk());
+          risk.setRiskValue(riskRule.getRisk());
           risk.setName(riskRule.getName());
           risk.setCondition(condition);
           break;
         }
 
-      } catch (JsonProcessingException e) {
-        throw new RuntimeException(e);
+      } catch (Exception e) {
+        throw new RuntimeException(String.format("Unable to match rule %s condition %s", riskRule.getName(),
+            riskRule.getCondition()),e);
       }
     }
 

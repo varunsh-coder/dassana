@@ -21,7 +21,7 @@ Parameters:
     Default: ""
 
 Conditions:
-  CreaeteCrossAccountRole: !Not [ !Equals [ !Ref CrossAccountRoleName, "" ] ]
+  CreaeteCrossAccountRole: !Not [!Equals [!Ref CrossAccountRoleName, ""]]
 
 Resources:
   ### Begin Dassana Engine Resources ###
@@ -34,7 +34,7 @@ Resources:
       EndpointConfiguration:
         Types:
           - REGIONAL
-      Name: !Join [ "", [ { "Ref": "AWS::StackName" }, "-api" ] ]
+      Name: !Join ["", [{ "Ref": "AWS::StackName" }, "-api"]]
 
   DebugApiResource:
     Type: "AWS::ApiGateway::Resource"
@@ -48,7 +48,7 @@ Resources:
     Properties:
       ContentType: "application/json"
       RestApiId: !Ref ApiGatewayRestApi
-      Schema: { }
+      Schema: {}
 
   ApiGatewayStage:
     Type: AWS::ApiGateway::Stage
@@ -65,8 +65,8 @@ Resources:
       ApiStages:
         - ApiId: !Ref ApiGatewayRestApi
           Stage: !Ref ApiGatewayStage
-      Description: !Join [ " ", [ { "Ref": "AWS::StackName" }, "usage plan" ] ]
-      UsagePlanName: !Join [ "", [ { "Ref": "AWS::StackName" }, "-usage-plan" ] ]
+      Description: !Join [" ", [{ "Ref": "AWS::StackName" }, "usage plan"]]
+      UsagePlanName: !Join ["", [{ "Ref": "AWS::StackName" }, "-usage-plan"]]
 
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
@@ -86,8 +86,8 @@ Resources:
   ApiKey:
     Type: AWS::ApiGateway::ApiKey
     Properties:
-      Name: !Join [ "", [ { "Ref": "AWS::StackName" }, "-apikey" ] ]
-      Description: !Join [ "", [ { "Ref": "AWS::StackName" }, "api key" ] ]
+      Name: !Join ["", [{ "Ref": "AWS::StackName" }, "-apikey"]]
+      Description: !Join ["", [{ "Ref": "AWS::StackName" }, "api key"]]
       Enabled: true
       GenerateDistinctId: false
 
@@ -124,7 +124,7 @@ Resources:
       MemorySize: 512
       CodeUri: ../../engine
       Role:
-        Fn::GetAtt: [ DassanaEngineRole, Arn ]
+        Fn::GetAtt: [DassanaEngineRole, Arn]
       Timeout: 300
       Environment:
         Variables:
@@ -252,7 +252,7 @@ Resources:
       MemorySize: 512
       CodeUri: ../../engine
       Role:
-        Fn::GetAtt: [ DassanaEngineRole, Arn ]
+        Fn::GetAtt: [DassanaEngineRole, Arn]
       Timeout: 300
       Environment:
         Variables:
@@ -315,7 +315,7 @@ Resources:
       MemorySize: 256
       CodeUri: ../actions/security-hub-normalizer/impl/sh-resourceid-extractor
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
   SecurityHubUpdateFinding:
@@ -327,7 +327,7 @@ Resources:
       CodeUri: ../actions/securityhub-update-finding
       Policies:
       Role:
-        Fn::GetAtt: [ SecurityHubUpdateFindingRole, Arn ]
+        Fn::GetAtt: [SecurityHubUpdateFindingRole, Arn]
       Timeout: 60
 
   SecurityHubUpdateFindingRole:
@@ -400,7 +400,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   DoesSgAllowIncomingConnectionsFromInternet:
     Type: AWS::Serverless::Function
@@ -411,7 +411,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   IsAutoscalingGroupTrackingTargetGroup:
     Type: AWS::Serverless::Function
@@ -422,7 +422,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   IsEniAttachedToInstance:
     Type: AWS::Serverless::Function
@@ -433,7 +433,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   IsInstancePartOfAutoscalingGroup:
     Type: AWS::Serverless::Function
@@ -444,7 +444,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   IsLoadBalancerInternal:
     Type: AWS::Serverless::Function
@@ -455,7 +455,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   IsTargetGroupPartOfLoadBalancer:
     Type: AWS::Serverless::Function
@@ -466,7 +466,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   IsTheInstanceBehindLoadBalancer:
     Type: AWS::Serverless::Function
@@ -477,7 +477,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   WhichSubnetsAreAssociatedWithLoadBalancer:
     Type: AWS::Serverless::Function
@@ -488,7 +488,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   GetTags:
     Type: AWS::Serverless::Function
@@ -498,7 +498,7 @@ Resources:
       MemorySize: 256
       CodeUri: ../actions/get-tags
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   WebsiteContext:
     Type: AWS::Serverless::Function
@@ -509,7 +509,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   WhatEnisAreAttachedToSg:
     Type: AWS::Serverless::Function
@@ -520,7 +520,7 @@ Resources:
       Layers:
         - !Ref DassanaActionsPythonLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
   DecorateIp:
     Type: AWS::Serverless::Function
@@ -532,19 +532,8 @@ Resources:
         - !Ref DassanaActionsPythonLayer
         - !Ref DassanaMMDBLayer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
-  RiskCalcAction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: app.dassana.action.RequestHandler
-      Runtime: java11
-      MemorySize: 512
-      CodeUri: ../actions/risk-calc-action
-      Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
-      Timeout: 60
-
   DemoCloudNormalizer:
     Type: AWS::Serverless::Function
     Properties:
@@ -555,7 +544,7 @@ Resources:
         - !Ref DassanaActionsPythonLayer
       CodeUri: ../actions/demo-cloud-normalizer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
   PrismaCloudExtractor:
@@ -568,7 +557,7 @@ Resources:
         - !Ref DassanaActionsPythonLayer
       CodeUri: ../actions/prisma-cloud-normalizer
       Role:
-        Fn::GetAtt: [ DassanaActionsRole, Arn ]
+        Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
 ### End Dassana Actions ###

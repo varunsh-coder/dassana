@@ -1,4 +1,4 @@
-package app.dassana.core.risk;
+package app.dassana.core.risk.model;
 
 public class Rule {
 

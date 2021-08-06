@@ -1,6 +1,6 @@
 package app.dassana.core.policycontext.model;
 
-import app.dassana.core.risk.RiskConfig;
+import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.workflow.model.Workflow;
 import app.dassana.core.workflow.model.VendorFilter;
 import java.util.Collections;
