@@ -1,6 +1,8 @@
 name: Publish Publicly Facing Content
 on:
   push:
+    paths:
+      - "content/**"
     branches:
       - main
 jobs:

@@ -1,7 +1,7 @@
 name: Pull Request Labels
 on:
   pull_request:
-    types: [opened, labeled, unlabeled]
+    types: [opened, labeled, unlabeled, synchronize]
 jobs:
   check_pr_labels:
     name: Verify that the PR has the appropriate label(s)

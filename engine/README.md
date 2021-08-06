@@ -1,6 +1,6 @@
 ## Local Dev Setup Requirements
 
-Make sure to deploy Dassana CFT template in your account first.
+Make sure to deploy Dassana CFT template in your account first. Refer to instructions [here](https://docs.dassana.io/docs/getting-started/installation)
 
 Set the following env vars before running `app.dassana.core.launch.App`.
 
