@@ -1,12 +1,13 @@
-## Micronaut 2.4.2 Documentation
+## Local Dev Setup Requirements
 
-- [User Guide](https://docs.micronaut.io/2.4.2/guide/index.html)
-- [API Reference](https://docs.micronaut.io/2.4.2/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/2.4.2/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+Make sure to deploy Dassana CFT template in your account first.
 
-## Feature kafka documentation
+Set the following env vars before running `app.dassana.core.launch.App`.
 
-- [Micronaut Kafka Messaging documentation](https://micronaut-projects.github.io/micronaut-kafka/latest/guide/index.html)
-
+```bash 
+AWS_REGION=<region>;
+dassanaBucket=<refer to the cloudformation resources in AWS console and figure out which s3 bucket was created by 
+CFT deployment>;
+LOCAL_DEV_LOGGING=;
+DASSANA_STACK_NAME=<name of the stack>
+```
