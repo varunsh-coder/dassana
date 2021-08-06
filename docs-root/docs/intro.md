@@ -8,7 +8,7 @@
 
 Dassana fixes that 🧘
 
-Dassana can ingest any cloud security alert, enrich it with context and prioritize it with contextual risk.
+Dassana can ingest any cloud security alert, enrich it with context, and prioritize it with contextual risk.
 
 ---
 

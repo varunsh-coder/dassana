@@ -3,28 +3,35 @@ type: normalize
 vendor-name: foo-cloud
 id: foo-cloud-normalize
 
-filter:
-  match-type: all
-  rules:
-    - .badThingJustHappened and .badThingJustHappened.description
-    - .badThingJustHappened.description | contains ("fubar")
+filters:
+  - match-type: all
+    rules:
+      - .badThingJustHappened and .badThingJustHappened.description
+      - .badThingJustHappened.description | contains ("fubar")
 
 steps:
   - id: demo-resource-info
     uses: DemoCloudNormalizer
 
-normalized-output:
-  step-id: demo-resource-info
-  output:
-    alertId: ."demo-resource-info".alertId
-    canonicalId: ."demo-resource-info".canonicalId
-    vendorPolicy: ."demo-resource-info".vendorPolicy
-    csp: ."demo-resource-info".csp
-    resourceContainer: ."demo-resource-info".resourceContainer
-    region: ."demo-resource-info".region
-    service: ."demo-resource-info".service
-    resourceType: ."demo-resource-info".resourceType
-    resourceId: ."demo-resource-info".resourceId
+output:
+  - name: alertId
+    value: ."demo-resource-info".alertId
+  - name: canonicalId
+    value: ."demo-resource-info".canonicalId
+  - name: vendorPolicy
+    value: ."demo-resource-info".vendorPolicy
+  - name: csp
+    value: ."demo-resource-info".csp
+  - name: resourceContainer
+    value: ."demo-resource-info".resourceContainer
+  - name: region
+    value: ."demo-resource-info".region
+  - name: service
+    value: ."demo-resource-info".service
+  - name: resourceType
+    value: ."demo-resource-info".resourceType
+  - name: resourceId
+    value: ."demo-resource-info".resourceId
 
 output-queue:
   enabled: true

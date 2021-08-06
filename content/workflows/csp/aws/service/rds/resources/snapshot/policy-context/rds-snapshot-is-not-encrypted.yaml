@@ -1,0 +1,26 @@
+schema: 1.0
+type: policy-context
+id: "rds-snapshot-is-not-encrypted"
+name: "RDS snapshot is not encrypted"
+labels:
+  - contextualization
+
+category: cryptography
+subcategory: encryption
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "rds-snapshot-encrypted"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("rds-snapshot-encrypted"))
+  - vendor: prisma-cloud
+    policies:
+      - "74a52c45-75ae-404f-abf5-84b5cbd3d22f"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "74a52c45-75ae-404f-abf5-84b5cbd3d22f"
+
+risk-config:
+  default-risk: medium

@@ -1,0 +1,53 @@
+schema: 1.0
+type: policy-context
+id: "instance-is-exposed-to-internet"
+name: "EC2 instance is exposed to the internet"
+labels:
+  - contextualization
+
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "ec2-instance-no-public-ip"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("ec2-instance-no-public-ip"))
+  - vendor: prisma-cloud
+    policies:
+      - "0e44dabe-a8b9-401b-936b-bb8a0a80279a"
+      - "ba9eeea6-782c-45aa-a953-f639582412c7"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "0e44dabe-a8b9-401b-936b-bb8a0a80279a"
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "ba9eeea6-782c-45aa-a953-f639582412c7"
+
+steps:
+  - id: IsTheInstanceBehindLoadBalancer
+    uses: IsTheInstanceBehindLoadBalancer
+    with:
+      - name: instanceId
+        value: $.steps.resource-info.resourceId
+  - id: DoesSgAllowIncomingConnectionsFromInternet
+    uses: DoesSgAllowIncomingConnectionsFromInternet
+    with:
+      - name: groupId
+        value: $.steps.IsTheInstanceBehindLoadBalancer.Instances[*].NetworkInterfaces[*].Groups[*].GroupId
+  - id: DoesNaclAllowTrafficFromInternet
+    uses: DoesNaclAllowTrafficFromInternet
+    with:
+      - name: networkAclId
+        value: $.steps.resource-info.resourceId
+
+risk-config:
+  default-risk: high
+  rules:
+    - name: security-group-and-nacl-allow-traffic
+      condition: $.DoesSgAllowIncomingConnectionsFromInternet is true
+        and $.steps.DoesNaclAllowTrafficFromInternet is true
+      risk: critical
+    - name: security-group-allow-traffic
+      condition: $.DoesSgAllowIncomingConnectionsFromInternet is true
+      risk: high

@@ -13,5 +13,5 @@ license:
 author:
   name: str(required=False)
   email: regex('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-compatible-type: any(enum('normalize', 'contextualize', 'resource-priority'), list(enum('normalize', 'contextualize', 'resource-priority')))
+compatible-type: any(enum('normalize', 'general-context', 'resource-context', 'policy-context'), list(enum('normalize', 'general-context', 'resource-context', 'policy-context')))
 labels: list(required=False)

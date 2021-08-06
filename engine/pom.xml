@@ -206,6 +206,50 @@
 
     <plugins>
       <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>4.3.0</version>
+        <configuration>
+          <repoToken>${env.COVERALLS_TOKEN}</repoToken>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.2.3</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <excludes>
+            <exclude>app/dassana/core/workflow/infra/**</exclude>
+            <exclude>app/dassana/core/client/infra/**</exclude>
+            <exclude>app/dassana/core/contentmanager/infra/**</exclude>
+            <exclude>app/dassana/core/launch/App.class</exclude>
+            <exclude>app/dassana/core/launch/Handler.class</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.2.0</version>
         <executions>

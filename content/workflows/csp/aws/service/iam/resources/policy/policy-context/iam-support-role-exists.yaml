@@ -1,0 +1,27 @@
+schema: 1.0
+type: policy-context
+id: "iam-support-role-exists"
+name: "IAM Support Role Exists"
+labels:
+  - contextualization
+
+category: iam
+subcategory: authorization
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "iam-policy-in-use"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-policy-in-use"))
+    - name: prisma-cloud
+      policies:
+        - "0425bd06-9799-4d6b-8887-7f7304820424"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "0425bd06-9799-4d6b-8887-7f7304820424"
+
+risk-config:
+  default-risk: low

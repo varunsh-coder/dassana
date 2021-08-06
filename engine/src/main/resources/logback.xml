@@ -18,6 +18,8 @@
     </if>
   </appender>
 
+  <logger name="app.dassana.core" level="INFO" />
+
   <root level="INFO">
     <appender-ref ref="STDOUT"/>
   </root>

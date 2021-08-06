@@ -1,0 +1,26 @@
+schema: 1.0
+type: policy-context
+id: "vpc-flow-logs-are-disabled"
+name: "VPC flow logs are disabled"
+labels:
+  - contextualization
+
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "vpc-flow-logs-enabled"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("vpc-flow-logs-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - "49f4760d-c951-40e4-bfe1-08acaa17672a"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "49f4760d-c951-40e4-bfe1-08acaa17672a"
+
+risk-config:
+  default-risk: medium

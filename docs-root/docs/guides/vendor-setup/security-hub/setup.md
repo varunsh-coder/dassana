@@ -6,7 +6,7 @@ SecurityHub is natively integrated in Dassana! you don't have to do anything. Be
 
 ---
 
-# Fixing noisy "security group open to the internet" alerts
+## Fixing noisy "security group open to the internet" alerts
 
 In this section, we will create a security group that is open on the inbound SSH port. This will result in an alert being created in Security Hub because the `securityhub-restricted-ssh` policy will be noncompliant. This alert will automatically get picked up and processed by Dassana.
 
@@ -97,4 +97,4 @@ We will cover the purpose of the queues in the [following section](/docs/how-it-
 
 ![Contextualized Alert](/img/guides/vendor-setup/security-hub/contextualizedAlert.png)
 
-9. And there you have it! Depending upon if ENis are attached to the security group or not, the risk value changes
+9. And there you have it! Depending upon if ENIs are attached to the security group or not, the risk value changes

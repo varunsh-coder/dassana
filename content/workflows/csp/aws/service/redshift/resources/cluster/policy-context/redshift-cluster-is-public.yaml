@@ -1,0 +1,26 @@
+schema: 1.0
+type: policy-context
+id: "redshift-cluster-is-public"
+name: "Redshift cluster is public"
+labels:
+  - contextualization
+
+category: access-sharing
+subcategory: public-access
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "redshift-cluster-public-access-check"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
+  - vendor: prisma-cloud
+    policies:
+      - "d65fd313-1c5c-42a1-98b2-a73bdeda19a6"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "d65fd313-1c5c-42a1-98b2-a73bdeda19a6"
+
+risk-config:
+  default-risk: critical

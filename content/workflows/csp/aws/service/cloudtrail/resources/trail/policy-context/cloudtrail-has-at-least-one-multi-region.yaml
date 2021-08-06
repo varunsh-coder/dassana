@@ -1,0 +1,26 @@
+schema: 1.0
+type: policy-context
+id: "cloudtrail-has-at-least-one-multi-region"
+name: "CloudTrail is not configured for all regions"
+labels:
+  - contextualization
+
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "multi-region-cloudtrail-enabled"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("multi-region-cloudtrail-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - "36a5345a-230d-438e-a04c-a287a513e3dc"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "36a5345a-230d-438e-a04c-a287a513e3dc"
+
+risk-config:
+  default-risk: critical

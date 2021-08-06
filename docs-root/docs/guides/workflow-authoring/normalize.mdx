@@ -1,10 +1,10 @@
 # Normalize
 
-This is the first workflow which gets run and its output is sent to all of the workflows which have type `resource-priority` and `contextualize` (don't worry, not all of then will run, only the ones which match the filters defined in those workflows will run)
+This is the first workflow which gets run and its output is sent to all of the workflows which have type `general-context`, `resource-context` and `policy-context` (don't worry, not all of then will run, only the ones which match the filters defined in those workflows will run).
 
 ## Example
 
-Here is an example of an AWS security group policy for SSH from the internet.
+Here is an example of how AWS security hub alerts are normalized.
 
 ```yaml title="content/workflows/vendors/security-hub/security-hub.yaml"
 schema: 1.0
@@ -12,30 +12,37 @@ type: normalize
 vendor-name: security-hub
 id: security-hub
 
-filter:
-    match-type: all
-    rules:
-        - |
-            .detail and .detail.findings
-        - |
-            any(.detail.findings[];.ProductFields.StandardsGuideArn |contains ("arn:aws:securityhub"))
+filters:
+    - match-type: all
+      rules:
+          - |
+              .detail and .detail.findings
+          - |
+              any(.detail.findings[];.ProductFields.StandardsGuideArn |contains ("arn:aws:securityhub"))
 
 steps:
     - id: resource-info
       uses: SecurityHubResExtractor
 
-normalized-output:
-    step-id: resource-info
-    output:
-        alertId: ."resource-info".alertId
-        canonicalId: ."resource-info".arn
-        vendorPolicy: ."resource-info".policyId
-        csp: ."resource-info".csp
-        resourceContainer: ."resource-info".resourceContainer
-        region: ."resource-info".region
-        service: ."resource-info".service
-        resourceType: ."resource-info".resourceType
-        resourceId: ."resource-info".resourceId
+output:
+    - name: alertId
+      value: ."resource-info".alertId
+    - name: canonicalId
+      value: ."resource-info".arn
+    - name: vendorPolicy
+      value: ."resource-info".policyId
+    - name: csp
+      value: ."resource-info".csp
+    - name: resourceContainer
+      value: ."resource-info".resourceContainer
+    - name: region
+      value: ."resource-info".region
+    - name: service
+      value: ."resource-info".service
+    - name: resourceType
+      value: ."resource-info".resourceType
+    - name: resourceId
+      value: ."resource-info".resourceId
 
 post-processor:
     steps:
@@ -55,11 +62,11 @@ import Schema from '../../common-fields/schema.md'
 import Id from '../../common-fields/workflows/workflow-id.md'
 import Name from '../../common-fields/name.md'
 import Labels from '../../common-fields/labels.md'
-import RiskConfig from '../../common-fields/workflows/risk-config.mdx'
-import Filter from '../../common-fields/workflows/filter.md'
+import Filters from '../../common-fields/workflows/filters.md'
 import MatchType from '../../common-fields/workflows/match-type.md'
 import RuleSyntax from '../../common-fields/workflows/rule-syntax.md'
 import Steps from '../../common-fields/workflows/steps.mdx'
+import Output from '../../common-fields/workflows/output.md'
 
 ### `schema`
 
@@ -67,7 +74,11 @@ import Steps from '../../common-fields/workflows/steps.mdx'
 
 ### `type`
 
-Always `contextualize` for this kind of workflow.
+Always `normalize` for this kind of workflow.
+
+### `vendor-name`
+
+Security vendor name. A complete list of supported vendors can be found [here](https://github.com/dassana-io/dassana/tree/main/content/workflows/vendors).
 
 ### `id`
 
@@ -77,48 +88,38 @@ Always `contextualize` for this kind of workflow.
 
 <Name />
 
-### `category` & `subcategory`
-
-Used to organize security policies based on the use case. A list of all categories and their subcategories can be found [here](https://github.com/dassana-io/dassana/blob/main/content/workflows/policies/categories.yaml).
-
 ### `labels`
 
 <Labels />
 
-### `risk-config`
+### `filters`
 
-<RiskConfig />
+<Filters />
 
-### `filter`
-
-<Filter />
-
-#### `vendors`
-
-Because Dassana is vendor-neutral, any vendors' policies can be mapped to a Dassana policy, allowing customers to switch between vendors and still get the context they need.
-
-##### `name`
-
-Security vendor name. A complete list of supported vendors can be found [here](https://github.com/dassana-io/dassana/tree/main/content/workflows/vendors).
-
-:::note
-
-Don't see your security vendor on the list? Learn how to go about adding a security vendor [here](./vendor).
-
-:::
-
-##### `policies`
-
-List of vendor policy IDs from which map to a Dassana policy. AWS has a policy with the id `restricted-ssh`. In Dassana, the equivalent policy has the id `ssh-from-internet`. This field is used to map AWS Config's `restricted-ssh` policy to Dassana's `ssh-from-internet` policy.
-
-##### `match-type`
+#### `match-type`
 
 <MatchType />
 
-##### `rules`
+#### `rules`
 
 <RuleSyntax />
 
 ### `steps`
 
 <Steps />
+
+### `output`
+
+<Output />
+
+### `post-processor`
+
+Used for bidirectional sync for certain vendors (ie SecurityHub).
+
+### `output-queue`
+
+Used for sending alerts to the outbound queue.
+
+#### `enabled`
+
+If set to true, alerts will be sent to the outbound queue. A use case for not sending alerts to the outbound queue is when you have a bidirectional sync with a specific vendor (see [`post-processor`](#post-processor) above).

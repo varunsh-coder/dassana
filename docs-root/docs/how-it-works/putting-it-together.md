@@ -1,18 +1,18 @@
-# Putting it together
+# Putting It Together
 
 Now that you understand how the magic happens. Let's review the terminology and walk through a summary of the whole process.
 
 ## Terminology
 
-| Syntax   | Description                                                                                                     |
-| -------- | --------------------------------------------------------------------------------------------------------------- |
-| Engine   | Responsible for running workflows against an input JSON                                                         |
-| Workflow | Responsible for running actions and available in three flavors: normalize, resource priority, and contextualize |
-| Action   | Responsible for doing a single thing. Require a specific input and returns some output.                         |
+| Syntax   | Description                                                                                                                     |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Engine   | Responsible for running workflows against an input JSON                                                                         |
+| Workflow | Responsible for running actions and available in four flavors: normalize, general-context, resource-context, and policy-context |
+| Action   | Responsible for doing a single thing. Require a specific input and returns some output.                                         |
 
 ## Summary
 
-Alerts are sent to the inbound queue. Then, the engine processes alerts one at a time. The engine first runs the alert against the normalize workflow. Here, the vendor is identified, and required fields are plucked out into a normalized object. Next, the engine runs the alert against the resource priority workflow. Here, resources are risk ranked based on the tags assigned to them. Finally, the engine runs the alert against the contextualize workflow. Here a security policy determines the contextual risk of the alert.
+Alerts are sent to the inbound queue. Then, the engine processes alerts one at a time. The engine first runs the alert against the normalize workflow. Here, the vendor is identified, and required fields are plucked out into a normalized object. Next, the engine runs the alert against all three context workflows (general, resource, and policy) in parallel. Each of the context workflows can add a risk of their own.
 
 ## Dassana output
 
@@ -53,3 +53,9 @@ Here an example:
 	}
 }
 ```
+
+:::danger
+
+Update JSON
+
+:::

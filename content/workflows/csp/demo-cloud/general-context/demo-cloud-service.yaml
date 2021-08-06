@@ -1,0 +1,25 @@
+schema: 1.0
+type: general-context
+id: general-context-demo-cloud
+name: for demo cloud, risk of "some" account is low
+
+# general context workflows such as this one are executed only after normalization has been done
+# all of the fields such as csp,service etc emitted by normalization workflow are available.
+
+filters:
+  - match-type: all
+    rules:
+      - .csp == "demo-cloud" and .service == "some service"
+
+# notice that this worflow does not have any steps. In the real world, there would be steps in this workflow which will
+# bring in some information which can be used to assess the resource criticality. For example, refer to
+# content/workflows/csp/aws/general-context/general-context.yaml
+# which brings in AWS tag information and uses the tag values to determine resource criticality
+
+risk-config:
+  default-risk: ""
+  rules:
+    - name: low risk for some account
+      condition: |-
+        .resourceContainer | contains ("some")
+      risk: low

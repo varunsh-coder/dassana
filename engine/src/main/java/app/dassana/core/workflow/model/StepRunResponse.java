@@ -1,6 +1,6 @@
 package app.dassana.core.workflow.model;
 
-import app.dassana.core.workflow.LambdaStepRunner.RuntimeContext;
+import app.dassana.core.workflow.infra.LambdaStepRunner.RuntimeContext;
 
 public class StepRunResponse {
 

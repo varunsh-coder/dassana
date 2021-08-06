@@ -1,0 +1,20 @@
+schema: 1.0
+type: policy-context
+id: "root-object-is-not-configured"
+name: "CloudFront distribution is not configured to return default root object"
+labels:
+  - contextualization
+
+category: access-sharing
+subcategory: public-access
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "cloudfront-default-root-object-configured"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
+
+risk-config:
+  default-risk: critical

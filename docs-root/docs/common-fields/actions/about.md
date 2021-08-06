@@ -1,1 +1,1 @@
-When Dassana Engine runs a workflow, it is sequentially running the `steps` provided. Each step is a serverless function, and its output is available to the steps which follow. You can use any action in any workflow (wherever it makes sense)
+When Dassana Engine runs a workflow, it is sequentially running the `steps` provided. Each step is a serverless function, and its output is available to the steps which follow. You can use any action in any workflow (wherever it makes sense).

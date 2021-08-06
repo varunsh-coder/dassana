@@ -1,0 +1,21 @@
+schema: 1.0
+type: policy-context
+id: "user-has-console-and-access-keys"
+name: "user has console and access keys"
+labels:
+  - contextualization
+
+category: iam
+subcategory: authorization
+
+risk-config:
+  default-risk: medium
+
+filter:
+  vendors:
+    - name: prisma-cloud
+      policies:
+        - "6a34af3f-21ae-8008-0850-229761d01081"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "6a34af3f-21ae-8008-0850-229761d01081"

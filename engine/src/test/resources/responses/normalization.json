@@ -1,5 +1,5 @@
 {
-  "policyId": "foo",
+  "policyId": "restricted-ssh",
   "csp": "aws",
   "resourceContainer": "363265257036",
   "region": "us-east-1",

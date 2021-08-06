@@ -14,6 +14,6 @@ license:
 author:
   name: dassana
   email: support@dassana.io
-compatible-type: contextualize
+compatible-type: policy-context
 labels:
-  - contextualize
+  - policy-context

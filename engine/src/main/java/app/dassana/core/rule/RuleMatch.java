@@ -52,12 +52,17 @@ public class RuleMatch {
 
   private boolean getMatchResult(String rule, String jsonObj) throws Exception {
 
-    AtomicBoolean result = new AtomicBoolean(false);
-    JsonQuery jsonQuery = JsonQuery.compile(rule, Version.LATEST);
-    JsonNode in = MAPPER.readTree(jsonObj);
-    Scope childScope = Scope.newChildScope(rootScope);
-    jsonQuery.apply(childScope, in, jsonNode -> result.set(jsonNode.asBoolean()));
-    return result.get();
+    try {
+      AtomicBoolean result = new AtomicBoolean(false);
+      JsonQuery jsonQuery = JsonQuery.compile(rule, Version.LATEST);
+      JsonNode in = MAPPER.readTree(jsonObj);
+      Scope childScope = Scope.newChildScope(rootScope);
+      jsonQuery.apply(childScope, in, jsonNode -> result.set(jsonNode.asBoolean()));
+      return result.get();
+    } catch (Exception e) {
+      logger.error("Assuming the rule \"{}\" to not match due to error  against {}",rule,jsonObj,e);
+      return false;
+    }
 
   }
 

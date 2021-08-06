@@ -22,17 +22,17 @@ public class App {
     apiGatewayProxyRequestEvent.setIsBase64Encoded(false);
 
     Map<String, String> queryParams = new HashMap<>();
-    queryParams.put("skipResourcePrioritization", "false");
-    queryParams.put("skipResourceContextualization", "false");
+    queryParams.put("skipGeneralContext", "false");
+    queryParams.put("skipPolicyContext", "false");
     queryParams.put("skipPostProcessor", "false");
-    queryParams.put("S3Downloader","true");
+    queryParams.put("skipS3Upload", "false");
 
     apiGatewayProxyRequestEvent.setQueryStringParameters(queryParams);
 
     APIGatewayProxyResponseEvent responseEvent = apiHandler.execute(apiGatewayProxyRequestEvent);
     if (responseEvent.getStatusCode() != 200) {
       throw new RuntimeException(responseEvent.getBody());
-    }else {
+    } else {
       System.exit(0);
     }
   }

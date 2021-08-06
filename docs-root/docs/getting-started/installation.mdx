@@ -3,18 +3,21 @@
 You can get started with Dassana in minutes! (yes, we have timed that too ⏱️)
 
 export const LaunchStack = () => (
-	<a href='https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://s3.amazonaws.com/dassana-prod-oss-public.dassana.io/latest/cft.yaml&stackName=Dassana' target='_blank'>
+	<a
+		href='https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/review?templateURL=https://s3.amazonaws.com/dassana-prod-oss-public.dassana.io/latest/cft.yaml&stackName=Dassana'
+		target='_blank'
+	>
 		<img src='/img/getting-started/launchStack.png' alt='Launch Stack' />
 	</a>
 )
-
 
 <LaunchStack />
 
 Parameter Notes:
 
 ###### `CrossAccountRoleName`
-If you would like Dassana to process alerts belonging to other AWS accounts (i.e. you are deploying Dassana in a "central" account), enter the name of the role that Dassana engine will assume.
+
+If you would like Dassana to process alerts belonging to other AWS accounts (i.e. you are deploying Dassana in a "central" account), enter the name of the role that the Dassana engine will assume.
 For more information, refer to [cross account role section](./aws-cross-account-role).
 
 ### 🏃🏽‍♂️ Running into issues?

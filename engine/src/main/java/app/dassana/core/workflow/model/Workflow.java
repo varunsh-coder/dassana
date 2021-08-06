@@ -1,15 +1,60 @@
 package app.dassana.core.workflow.model;
 
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class Workflow {
 
-  private String id="";
-  private String name="";
-  private List<Step> steps;
-  private List<Map<String, String>> output;
+  private WorkflowSchemaVersion schema;
+  private String type;
+  private String id = "";
+  private String name = "";
+  List<String> labels = new LinkedList<>();
+  List<Filter> filters = new LinkedList<>();
+  private List<Step> steps = new LinkedList<>();
+  private List<Output> output = new LinkedList<>();
+
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public WorkflowSchemaVersion getSchema() {
+    return schema;
+  }
+
+  public void setSchema(WorkflowSchemaVersion schema) {
+    this.schema = schema;
+  }
+
+  public List<String> getLabels() {
+    return labels;
+  }
+
+  public void setLabels(List<String> labels) {
+    this.labels = labels;
+  }
+
+  public List<Filter> getFilters() {
+    return filters;
+  }
+
+  public void setFilters(List<Filter> filters) {
+    this.filters = filters;
+  }
+
+  public List<Output> getOutput() {
+    return output;
+  }
+
+  public void setOutput(List<Output> output) {
+    this.output = output;
+  }
 
   public String getName() {
     return name;
@@ -18,15 +63,6 @@ public class Workflow {
   public void setName(String name) {
     this.name = name;
   }
-
-  public List<Map<String, String>> getOutput() {
-    return output;
-  }
-
-  public void setOutput(List<Map<String, String>> output) {
-    this.output = output;
-  }
-
 
   public String getId() {
     return id;

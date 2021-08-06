@@ -1,0 +1,45 @@
+schema: enum(1.0)
+type: enum('policy-context')
+
+id: regex('[a-z0-9-]+$')
+name: str(required=False)
+labels: list(required=False)
+
+category: enum(DASSANA_CATEGORIES)
+subcategory: enum(DASSANA_SUBCATEGORIES)
+
+filters: list(include('filter'))
+
+steps: list(include('step'), required=False)
+
+risk-config:
+  default-risk: enum('low', 'medium', 'high', 'critical')
+  rules:
+    list(include('rule'), required=False)
+
+output: list(include('output'), required=False)
+---
+step:
+  id: regex('[A-Za-z0-9-]+$')
+  uses: enum(DASSANA_ACTIONS)
+  with: list(include('with'), required=False)
+
+with:
+  name: str()
+  value: str()
+  value-type: enum('string', 'jsonpath', 'macro', required=False)
+
+filter:
+  vendor: enum(DASSANA_VENDORS)
+  policies: list(str(), required=False)
+  rules: list(str())
+  match-type: enum('any', 'all')
+
+rule:
+  name: str()
+  condition: str()
+  risk: enum('low', 'medium', 'high', 'critical')
+
+output:
+  name: str()
+  value: str()

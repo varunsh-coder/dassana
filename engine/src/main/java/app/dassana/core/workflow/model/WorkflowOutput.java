@@ -6,19 +6,26 @@ import java.util.Map;
 
 public class WorkflowOutput {
 
-  List<Map<String, Object>> workflowOutput;
+  Map<String, Object> simpleOutput;
   List<Map<String, Object>> stepOutput;
+  String workflowId;
 
-  public List<Map<String, Object>> getWorkflowOutput() {
-    if (workflowOutput == null) {
-      workflowOutput = new LinkedList<>();
-    }
-    return workflowOutput;
+  public Map<String, Object> getSimpleOutput() {
+    return simpleOutput;
   }
 
-  public void setWorkflowOutput(List<Map<String, Object>> workflowOutput) {
-    this.workflowOutput = workflowOutput;
+  public void setSimpleOutput(Map<String, Object> simpleOutput) {
+    this.simpleOutput = simpleOutput;
   }
+
+  public String getWorkflowId() {
+    return workflowId;
+  }
+
+  public void setWorkflowId(String workflowId) {
+    this.workflowId = workflowId;
+  }
+
 
   public List<Map<String, Object>> getStepOutput() {
     if (stepOutput == null) {
@@ -30,4 +37,5 @@ public class WorkflowOutput {
   public void setStepOutput(List<Map<String, Object>> stepOutput) {
     this.stepOutput = stepOutput;
   }
+  
 }

@@ -1,6 +1,6 @@
 package app.dassana.core.launch;
 
-import app.dassana.core.client.Factories;
+import app.dassana.core.client.infra.Factories;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Replaces;
 import javax.inject.Singleton;

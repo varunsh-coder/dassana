@@ -1,7 +1,8 @@
 package app.dassana.core.launch;
 
 import app.dassana.core.contentmanager.ContentManagerApi;
-import app.dassana.core.launch.model.RequestConfig;
+import app.dassana.core.launch.model.Request;
+import app.dassana.core.workflow.RequestProcessor;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent.SQSMessage;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,16 +37,15 @@ public class Handler extends MicronautRequestHandler<SQSEvent, Void> {
     for (SQSMessage message : sqsMessages) {
       try {
         checkValidJson(message);
-        RequestConfig requestConfig = new RequestConfig();
-        requestConfig.setInputJson(message.getBody());
+        Request request = new Request(message.getBody());
 
-        requestConfig.setQueueProcessing(true);
+        request.setQueueProcessing(true);
 
-        requestConfig.setSkipResourcePrioritization(false);
-        requestConfig.setSkipResourceContextualization(false);
-        requestConfig.setSkipPostProcessor(false);
+        request.setSkipGeneralContext(false);
+        request.setSkipPolicyContext(false);
+        request.setSkipPostProcessor(false);
 
-        requestProcessor.processRequest(requestConfig);
+        requestProcessor.processRequest(request);
 
       } catch (Exception e) {
         handleException(e, message.getBody());

@@ -7,27 +7,11 @@ labels: list(required=False)
 
 vendor-name: enum('security-hub','foo-cloud', 'prisma-cloud')
 
-filter:
-  match-type: enum('any', 'all')
-  rules: list(str())
+filters: list(include('filter'))
 
-steps:
-  list(include('step'))
+steps: list(include('step'))
 
-macros: list(include('macro'), required=False)
-
-normalized-output:
-  step-id: str()
-  output:
-    alertId: str()
-    canonicalId: str()
-    vendorPolicy: str()
-    csp: str()
-    resourceContainer: str()
-    region : str()
-    service: str()
-    resourceType: str()
-    resourceId: str()
+output: list(include('output'))
 
 post-processor: include('post-processor',required=False)
 
@@ -44,14 +28,13 @@ with:
   value: str()
   value-type: enum('string', 'jsonpath', 'macro', required=False)
 
-macro:
-  name: str()
-  value: list(include('macro-value'))
+filter:
+  match-type: enum('any', 'all')
+  rules: list(str())
 
-macro-value:
-  name: str()
-  condition: str()
-  risk: enum('low', 'medium', 'high', 'critical')
+output:
+  name: enum('alertId', 'canonicalId', 'vendorPolicy', 'csp', 'resourceContainer', 'region', 'service', 'resourceType', 'resourceId')
+  value: str()
 
 post-processor:
   steps:

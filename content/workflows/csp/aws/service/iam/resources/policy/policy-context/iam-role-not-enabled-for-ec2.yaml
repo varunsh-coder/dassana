@@ -1,0 +1,21 @@
+schema: 1.0
+type: policy-context
+id: "iam-role-not-enabled-for-ec2"
+name: "EC2 instance IAM role not enabled"
+labels:
+  - contextualization
+
+category: iam
+subcategory: authorization
+
+filter:
+  vendors:
+    - name: prisma-cloud
+      policies:
+        - "8f2a2ff7-b484-463d-95df-aecd038f62b0"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "8f2a2ff7-b484-463d-95df-aecd038f62b0"
+
+risk-config:
+  default-risk: medium

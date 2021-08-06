@@ -3,30 +3,36 @@ type: normalize
 vendor-name: prisma-cloud
 id: prisma-cloud
 
-filter:
-  match-type: all
-  rules:
-    - .policy and .policy.policyId
-    - .policy.policyType| contains ("config")
-    - .resource.rrn| contains ("rrn")
-
+filters:
+  - match-type: all
+    rules:
+      - .policy and .policy.policyId
+      - .policy.policyType| contains ("config")
+      - .resource.rrn| contains ("rrn")
 
 steps:
   - id: resource-info
     uses: PrismaCloudExtractor
 
-normalized-output:
-  step-id: resource-info
-  output:
-    alertId: ."resource-info".alertId
-    canonicalId: ."resource-info".canonicalId
-    vendorPolicy: ."resource-info".vendorPolicy
-    csp: ."resource-info".csp
-    resourceContainer: ."resource-info".resourceContainer
-    region: ."resource-info".region
-    service: ."resource-info".service
-    resourceType: ."resource-info".resourceType
-    resourceId: ."resource-info".resourceId
+output:
+  - name: alertId
+    value: ."resource-info".alertId
+  - name: canonicalId
+    value: ."resource-info".canonicalId
+  - name: vendorPolicy
+    value: ."resource-info".vendorPolicy
+  - name: csp
+    value: ."resource-info".csp
+  - name: resourceContainer
+    value: ."resource-info".resourceContainer
+  - name: region
+    value: ."resource-info".region
+  - name: service
+    value: ."resource-info".service
+  - name: resourceType
+    value: ."resource-info".resourceType
+  - name: resourceId
+    value: ."resource-info".resourceId
 
 output-queue:
   enabled: true

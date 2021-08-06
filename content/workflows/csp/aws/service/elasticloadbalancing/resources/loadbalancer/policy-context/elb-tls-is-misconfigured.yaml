@@ -1,0 +1,28 @@
+schema: 1.0
+type: policy-context
+id: "elb-tls-is-misconfigured"
+name: "ELB is not securely configured with SSL listeners"
+labels:
+  - contextualization
+
+category: cryptography
+subcategory: ssl
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "elb-tls-https-listeners-only"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("elb-tls-https-listeners-only"))
+  - vendor: prisma-cloud
+    policies:
+      - "836a7c8c-34c2-4861-be1e-df2f8cd27aab"
+      - "dd7588a1-79f0-4b2b-8139-891eb50f570e"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "836a7c8c-34c2-4861-be1e-df2f8cd27aab"
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "dd7588a1-79f0-4b2b-8139-891eb50f570e"
+
+risk-config:
+  default-risk: medium

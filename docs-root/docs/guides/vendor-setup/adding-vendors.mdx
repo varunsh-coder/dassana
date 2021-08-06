@@ -1,0 +1,68 @@
+# Adding New Vendors & Their Policies
+
+We understand that different teams use different vendors. With that in mind, we made sure that Dassana can easily support the addition of new security vendors and their policies so that you can get the context you need.
+
+Several things need to happen to introduce a new vendor:
+
+1. A `normalize` workflow must be created to help Dassana identify the new vendor.
+2. An action must be created which would be responsible for extracting required fields.
+3. The security vendor's policies need to be mapped to Dassana policies so that the appropriate context gets added to the security vendor's alerts.
+
+We will demonstrate how to go about creating a vendor over the new few sections.
+
+## `normalize` workflow
+
+Please see the [`normalize`](../workflow-authoring/normalize) page to learn about how to create the workflow.
+
+## Field extr`action`
+
+The second step to supporting a new vendor is to write an action that extracts required fields.
+
+Here is an [example](https://github.com/dassana-io/dassana/tree/main/content/actions/security-hub-normalizer) written using Java to support AWS Security Hub alerts.
+Here is an [example](https://github.com/dassana-io/dassana/tree/main/content/actions/prisma-cloud-normalizer) written using Python to support Prisma Cloud alerts.
+
+:::note
+
+For more information on how to write actions, please see the [authoring actions](../action-authoring/action) page.
+
+:::
+
+## Mapping vendor policies
+
+The final step in adding a new vendor is mapping its policies to the policies in Dassana. You can do this by writing rules that can help Dassana identify a specific policy. Here is an example of how rule matching is done for the `restricted-ssh` AWS security hub policy (see highlighted section).
+
+```yaml title="content/workflows/csp/aws/service/ec2/resources/security-group/policy-context/ssh-from-internet.yaml"
+schema: 1.0
+type: policy-context
+id: ssh-from-internet
+name: Security group is allowing incoming SSH traffic from internet
+labels:
+  - contextualization
+
+category: networking
+subcategory: firewall
+
+filters:
+//highlight-start
+  - vendor: security-hub
+    policies:
+      - "restricted-ssh"
+    match-type: any
+    rules:
+      # here workflowId refers to the normalizer workflowId which normalized the alert
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("restricted-ssh") )
+  - vendor: prisma-cloud
+    policies:
+      - "617b9138-584b-4e8e-ad15-7fbabafbed1a"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "617b9138-584b-4e8e-ad15-7fbabafbed1a"
+//highlight-end
+...
+```
+
+:::note
+
+For more information, please view the [customizing security policies](../workflow-authoring/policy-context#vendors) docs.
+
+:::

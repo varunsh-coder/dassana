@@ -1,0 +1,20 @@
+schema: 1.0
+type: policy-context
+id: "alb-drop-http-headers"
+name: "ALB is not configured to drop http headers"
+labels:
+  - contextualization
+
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "alb-http-drop-invalid-header-enabled"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("alb-http-drop-invalid-header-enabled"))
+
+risk-config:
+  default-risk: medium

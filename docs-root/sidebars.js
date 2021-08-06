@@ -18,7 +18,7 @@ module.exports = {
 		'intro',
 		{
 			type: 'category',
-			label: 'Getting started',
+			label: 'Getting Started',
 			items: [
 				'getting-started/concepts',
 				'getting-started/installation',
@@ -28,7 +28,7 @@ module.exports = {
 		},
 		{
 			type: 'category',
-			label: 'How it works',
+			label: 'How It Works',
 			items: [
 				'how-it-works/alert-lifecycle',
 				'how-it-works/under-the-hood',
@@ -45,27 +45,29 @@ module.exports = {
 					label: 'Vendor Setup',
 					items: [
 						'guides/vendor-setup/security-hub/setup',
-						'guides/vendor-setup/prisma-cloud/setup'
+						'guides/vendor-setup/prisma-cloud/setup',
+						'guides/vendor-setup/adding-vendors'
 					]
 				},
 				{
 					type: 'category',
-					label: 'Operations',
-					items: ['guides/ops/updating-dassana']
-				},
-				{
-					type: 'category',
-					label: 'Workflow',
+					label: 'Workflows',
 					items: [
 						'guides/workflow-authoring/normalize',
-						'guides/workflow-authoring/resource-priority',
-						'guides/workflow-authoring/contextualize'
+						'guides/workflow-authoring/general-context',
+						'guides/workflow-authoring/resource-context',
+						'guides/workflow-authoring/policy-context'
 					]
 				},
 				{
 					type: 'category',
 					label: 'Actions',
-					items: ['guides/workflow-authoring/action']
+					items: ['guides/action-authoring/action']
+				},
+				{
+					type: 'category',
+					label: 'Operations',
+					items: ['guides/ops/updating-dassana']
 				}
 			]
 		},

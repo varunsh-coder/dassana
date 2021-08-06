@@ -7,7 +7,7 @@ on:
     - main
 jobs:
   validate-schema:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -42,69 +42,82 @@ jobs:
           echo $DASSANA_VENDORS >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Find and Replace categories dassana-policy.yaml
+      - name: Find and Replace categories dassana-policy-context.yaml
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "DASSANA_CATEGORIES"
           replace: ${{ env.DASSANA_CATEGORIES }}
-          include: content/schemas/dassana-policy.yaml
-      - name: Find and Replace subcategories in dassana-policy.yaml
+          include: content/schemas/dassana-policy-context.yaml
+      - name: Find and Replace subcategories in dassana-policy-context.yaml
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "DASSANA_SUBCATEGORIES"
           replace: ${{ env.DASSANA_SUBCATEGORIES }}
-          include: content/schemas/dassana-policy.yaml
-      - name: Find and Replace actions in dassana-policy.yaml
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: "DASSANA_ACTIONS"
-          replace: ${{ env.DASSANA_ACTIONS }}
-          include: content/schemas/dassana-policy.yaml
-      - name: Find and Replace vendors in dassana-policy.yaml
+          include: content/schemas/dassana-policy-context.yaml
+      - name: Find and Replace vendors in dassana-policy-context.yaml
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "DASSANA_VENDORS"
           replace: ${{ env.DASSANA_VENDORS }}
-          include: content/schemas/dassana-policy.yaml
+          include: content/schemas/dassana-policy-context.yaml
       - name: Find and Replace actions in dassana-vendor.yaml
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "DASSANA_ACTIONS"
           replace: ${{ env.DASSANA_ACTIONS }}
           include: content/schemas/dassana-vendor.yaml
-      - name: Find and Replace actions in dassana-resource-priority.yaml
+      - name: Find and Replace actions in dassana-general-context.yaml
         uses: jacobtomlinson/gha-find-replace@master
         with:
           find: "DASSANA_ACTIONS"
           replace: ${{ env.DASSANA_ACTIONS }}
-          include: content/schemas/dassana-resource-priority.yaml
+          include: content/schemas/dassana-general-context.yaml
+      - name: Find and Replace actions in dassana-resource-context.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_ACTIONS"
+          replace: ${{ env.DASSANA_ACTIONS }}
+          include: content/schemas/dassana-resource-context.yaml
+      - name: Find and Replace actions in dassana-policy-context.yaml
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "DASSANA_ACTIONS"
+          replace: ${{ env.DASSANA_ACTIONS }}
+          include: content/schemas/dassana-policy-context.yaml
       - name: Check change
         run: |
           ls content/schemas/** | xargs cat
       - name: Validating actions
-        uses: nrkno/yaml-schema-validator-github-action@master
+        uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
         with:
           schema: content/schemas/dassana-action.yaml
           target: content/actions
-          strict: "1"
-      - name: Validating policies
-        uses: nrkno/yaml-schema-validator-github-action@master
-        with:
-          schema: content/schemas/dassana-policy.yaml
-          target: content/workflows/policies/csp
-          strict: "1"
       - name: Validating vendors
-        uses: nrkno/yaml-schema-validator-github-action@master
+        uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
         with:
           schema: content/schemas/dassana-vendor.yaml
           target: content/workflows/vendors
-          strict: "1"
-      - name: Validating resource-priority
-        uses: nrkno/yaml-schema-validator-github-action@master
+      #yaml-schema-validator-github-action requires target to be a directory so we copy the workflows to a specific directory and then give it to the actions
+      - name: prepare content for yamale
+        run: |
+
+          mkdir content/general-context-tmp
+          find content/workflows/csp/*/general-context -name "*.yaml" -exec cp "{}" ./content/general-context-tmp \;
+
+          mkdir content/policy-context
+          find content/workflows/csp/aws/service/*/resources/*/policy-context -name "*.yaml" -exec cp "{}" ./content/policy-context-tmp \;
+
+      - name: Validating general context
+        uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
         with:
-          schema: content/schemas/dassana-resource-priority.yaml
-          target: content/workflows/resource-priority
-          strict: "1"
+          schema: content/schemas/dassana-general-context.yaml
+          target: ./content/general-context-tmp
+
+      - name: Validating policy context
+        uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
+        with:
+          schema: content/schemas/dassana-policy-context.yaml
+          target: ./content/policy-context-tmp
   validate-content-dir-and-file-structure:
     runs-on: ubuntu-latest
     steps:

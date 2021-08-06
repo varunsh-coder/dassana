@@ -1,0 +1,3 @@
+This workflow adds generic resource context to an alert. For example, say you want the resource tags, the creation event, or even last change made? Once we have the tag information about resources, we can figure out how important a resource is compared to other resources. For example, if a resource has a tag of `environment` with the value `dev`. It perhaps isn't as critical as one with the value `prod`.
+
+After all of the steps defined in the workflow have been run, the risk is set using the configuration defined in the `risk-config` section of the workflow. Have a look at the [AWS general context workflow](https://github.com/dassana-io/dassana/blob/main/content/workflows/csp/aws/general-context/general-context.yaml).

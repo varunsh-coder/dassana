@@ -13,8 +13,8 @@ author:
   name: dassana
   email: support@dassana.io
 compatible-type:
-  - contextualize
-  - resource-priority
+  - policy-context
+  - general-context
 labels:
-  - contextualize
+  - policy-context
   - securityhub

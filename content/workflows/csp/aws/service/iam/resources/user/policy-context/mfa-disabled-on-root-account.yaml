@@ -1,0 +1,26 @@
+schema: 1.0
+type: policy-context
+id: "mfa-disabled-on-root-account"
+name: "MFA is disabled for root account"
+labels:
+  - contextualization
+
+category: iam
+subcategory: authentication
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "root-account-mfa-enabled"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("root-account-mfa-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - "478434a1-ff6c-492e-b411-c427c06291d9"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "478434a1-ff6c-492e-b411-c427c06291d9"
+
+risk-config:
+  default-risk: critical

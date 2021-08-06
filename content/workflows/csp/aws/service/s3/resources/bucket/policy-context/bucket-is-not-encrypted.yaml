@@ -1,0 +1,28 @@
+schema: 1.0
+type: policy-context
+id: "bucket-is-not-encrypted"
+name: "S3 bucket is not encrypted"
+labels:
+  - contextualization
+
+category: cryptography
+subcategory: encryption
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "s3-default-encryption-kms"
+      - "s3-bucket-server-side-encryption-enabled"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-default-encryption-kms"))
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-server-side-encryption-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - "7913fcbf-b679-5aac-d979-1b6817becb22"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "7913fcbf-b679-5aac-d979-1b6817becb22"
+
+risk-config:
+  default-risk: medium

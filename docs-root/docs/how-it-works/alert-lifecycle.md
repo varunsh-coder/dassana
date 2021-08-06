@@ -1,4 +1,4 @@
-# The lifecycle of an alert
+# The Alert Lifecycle
 
 In the previous section, we got Dassana up and running. In this section, we will cover what is going on behind the scenes. Remember that deployment that we did during the installation? That deployed several different components in your environment.
 
@@ -12,9 +12,9 @@ This is the entry point for all alerts. In the case of Security Hub, alerts are 
 
 Once alerts are processed, they are sent to the outbound queue. Any valid JSON object sent to the inbound queue will make its way to the outbound queue regardless of whether the context was added or not. Say, for example, you sent an alert whose policy Dassana didn't recognize. This alert would still make it into the outbound queue since it was a valid JSON object. If Dassana does understand the alert in question, the alert will have an additional `dassana` object added to the original JSON containing the context.
 
-## Native 2-way sync
+## Native bidirectional sync
 
-For some vendors we support a 2 way sync. In the case of security hub, we add additional metadata directly to your alerts for your convenience.
+For some vendors we support a bidirectional sync. In the case of security hub, we add additional metadata directly to your alerts for your convenience.
 
 ## Dead letter queue
 

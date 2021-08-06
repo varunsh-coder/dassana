@@ -1,4 +1,4 @@
-# Under the hood
+# Under The Hood
 
 Here is the part that you have been waiting for so eagerly. We are finally going to uncover the magic! Under the hood, Dassana has two primary components:
 
@@ -26,45 +26,56 @@ The workflows run actions.
 
 ### Workflows
 
-Workflows are configurable processes written using YAML. There are three types of workflows.
+Workflows are configurable processes written using YAML. There are four types of workflows.
 
 -   normalize
--   resource priority
--   contextualize
+-   general context
+-   resource context
+-   policy context
 
-The engine runs the normalize, resource priority, and contextualize workflows (in that order). Every workflow can have steps that call [actions](#actions).
+The engine first runs the normalize workflow. Then it runs all three context workflows in parallel. Every workflow can have steps that call [actions](#actions).
 
 #### Normalize workflow
 
-This workflow type is responsible for normalizing alerts from security vendors. These workflows take an alert from a specific vendor and extract standard fields like account id, region id, service, etc.
+import Normalization from '../getting-started/concepts/normalization.md'
+
+<Normalization />
 
 :::info
 
-The complete list of required fields can be found [here](/docs/guides/workflow-authoring/normalize#normalized-output).
+For more information, view our [normalize workflow docs](/docs/guides/workflow-authoring/normalize).
 
 :::
 
 :::note
 
-If Dassana does not support the security vendor you use, you can add support by following the steps highlighted [here](/docs/guides/workflow-authoring/contextualize).
+If Dassana does not support the security vendor you use, you can add support by following the steps highlighted [here](/docs/guides/vendor-setup/adding-vendors).
 
 :::
 
-#### Resource priority workflow
+#### General context workflow
 
-This workflow type is responsible for adding the severity of a resource. Say, for example, you have two public buckets. Most security systems would create two alerts, both of which are marked critical. However, what if one of the buckets is in dev and the other is in prod? Resource priority workflows allow you to write tag-based rules to demarcate resources and give them the appropriate resource risk. So, for example, you may say that all dev resources are low, whereas prod resources are critical.
+import GeneralContext from '../getting-started/concepts/general-context.md'
+
+<GeneralContext />
 
 :::note
 
-To configure your tagging logic for appropriate resource-based risk, see this [guide](/docs/guides/workflow-authoring/resource-priority).
+To configure your tagging logic and accompanying risk, see this [guide](/docs/guides/workflow-authoring/general-context).
 
 :::
 
-#### Contextualize workflow
+#### Resource context workflow
 
-Think of contextualize workflows as security policies. These workflows are responsible for adding context to alerts. Say, for example, you have a public bucket. Most security systems would say you have a critical alert in your hands. However, what if you left the bucket public on purpose because you have a static website associated with it? With this workflow type, you can define rules based on the context added to adjust the contextual risk of an alert (not to be confused with resource risk covered in the previous section).
+import ResourceContext from '../getting-started/concepts/resource-context.md'
 
-Actions take care of adding context to an alert. Checking to see if a static website is associated with a bucket is handled via an action.
+<ResourceContext />
+
+#### Policy context workflow
+
+import PolicyContext from '../getting-started/concepts/policy-context.md'
+
+<PolicyContext />
 
 :::info
 
@@ -74,7 +85,7 @@ To view a complete list of security policies supported by Dassana, go [here](htt
 
 :::note
 
-Cannot find your security policy in the list above? Learn how to write your security policy [here](/docs/guides/workflow-authoring/contextualize).
+Cannot find your security policy in the list above? Learn how to write your security policy [here](/docs/guides/workflow-authoring/policy-context).
 
 :::
 
@@ -92,6 +103,6 @@ To view a complete list of actions supported by Dassana, go [here](https://polic
 
 :::note
 
-Interested in learning how to add your own context? Check out this [guide](/docs/guides/workflow-authoring/action).
+Interested in learning how to add your own context? Check out this [guide](/docs/guides/action-authoring/action).
 
 :::

@@ -1,0 +1,42 @@
+schema: 1.0
+type: policy-context
+id: ssh-from-internet
+name: Security group is allowing incoming SSH traffic from internet
+labels:
+  - contextualization
+
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "restricted-ssh"
+    match-type: any
+    rules:
+      # here workflowId refers to the normalizer workflowId which normalized the alert
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("restricted-ssh") )
+  - vendor: prisma-cloud
+    policies:
+      - "617b9138-584b-4e8e-ad15-7fbabafbed1a"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "617b9138-584b-4e8e-ad15-7fbabafbed1a"
+
+steps:
+  - id: list-of-attached-eni
+    uses: WhatEnisAreAttachedToSg
+    with:
+      - name: groupId
+        value: .resourceId
+      - name: awsRegion
+        value: .region
+
+risk-config:
+  default-risk: high
+  rules:
+    - name: are-enis-attached-to-sg
+      #in the below condition, we are checking if the step with id "list-of-attached-eni" has a key with nameed 'result' and its value (array size) has length 0
+      # i.e. we are checking if ENIs are attached to the security group or not
+      condition: ."list-of-attached-eni".result| length == 0
+      risk: low

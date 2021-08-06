@@ -1,0 +1,27 @@
+schema: 1.0
+type: policy-context
+id: "iam-policy-with-admin-access"
+name: "IAM policy with admin access"
+labels:
+  - contextualization
+
+category: iam
+subcategory: authorization
+
+filter:
+  vendors:
+    - name: security-hub
+      policies:
+        - "iam-policy-no-statements-with-admin-access"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-policy-no-statements-with-admin-access"))
+    - name: prisma-cloud
+      policies:
+        - "d9b86448-11a2-f9d4-74a5-f6fc590caeef"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "d9b86448-11a2-f9d4-74a5-f6fc590caeef"
+
+risk-config:
+  default-risk: low

@@ -2,16 +2,20 @@ package app.dassana.core.contentmanager;
 
 import app.dassana.core.contentmanager.model.SyncResult;
 import app.dassana.core.contentmanager.model.WorkflowProcessingResult;
-import app.dassana.core.contextualize.model.ContextWorkflow;
-import app.dassana.core.launch.model.RequestConfig;
+import app.dassana.core.policycontext.model.PolicyContext;
+import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
-import app.dassana.core.resource.model.ResourcePriorityWorkflow;
+import app.dassana.core.resource.model.GeneralContext;
 import app.dassana.core.risk.RiskConfig;
 import app.dassana.core.risk.Rule;
 import app.dassana.core.rule.MatchType;
+import app.dassana.core.workflow.model.Filter;
+import app.dassana.core.workflow.model.Output;
 import app.dassana.core.workflow.model.Step;
-import app.dassana.core.workflow.model.Vendor;
+import app.dassana.core.workflow.model.ValueType;
+import app.dassana.core.workflow.model.VendorFilter;
 import app.dassana.core.workflow.model.Workflow;
+import app.dassana.core.workflow.model.WorkflowSchemaVersion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.micronaut.core.util.StringUtils;
@@ -19,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -41,10 +44,14 @@ public class ContentManager implements ContentManagerApi {
   private static final int SYNC_INTERVAL_IN_MINS = 10;
 
   private final RemoteContentDownloadApi contentDownloader;
-  private final Set<NormalizerWorkflow> normalizerWorkflows = ConcurrentHashMap.newKeySet();
-  private final Set<ContextWorkflow> contextWorkflows = ConcurrentHashMap.newKeySet();
-  private final Set<ResourcePriorityWorkflow> resourcePriorities = ConcurrentHashMap.newKeySet();
+  private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
   private long lastUpdated = 0;
+
+  public static final String POLICY_CONTEXT="policy-context";
+  public static final String POLICY_CONTEXT_CAT="category";
+  public static final String POLICY_CONTEXT_SUB_CAT="subcategory";
+  public static final String GENERAL_CONTEXT="general-context";
+  public static final String NORMALIZE="normalize";
 
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
 
@@ -88,149 +95,38 @@ public class ContentManager implements ContentManagerApi {
 
   }
 
-  ResourcePriorityWorkflow getResourcePriorityWorkflow(JSONObject jsonObject) {
-    ResourcePriorityWorkflow resourcePriorityWorkflow = new ResourcePriorityWorkflow();
 
-    JSONObject filter = jsonObject.optJSONObject("filter");
-    if (filter != null) {
+  PolicyContext getPolicyContext(JSONObject jsonObject) {
 
-      String filterString = filter.getString("match-type");
+    PolicyContext policyContext = new PolicyContext();
+    policyContext.setCategory(jsonObject.optString("category"));
+    policyContext.setSubCategory(jsonObject.optString("subcategory"));
 
-      if (filterString.contentEquals("all")) {
-        resourcePriorityWorkflow.setMatchType(MatchType.ALL);
-      } else if (filterString.contentEquals("any")) {
-        resourcePriorityWorkflow.setMatchType(MatchType.ANY);
-      }
-
-      JSONArray rules = filter.optJSONArray("rules");
-      List<String> rulesForEvent = new LinkedList<>();
-
-      if (rules != null) {
-        for (int j = 0; j < rules.length(); j++) {
-          String rulesString = rules.getString(j);
-          rulesForEvent.add(rulesString);
-        }
-        Collections.reverse(rulesForEvent);
-        resourcePriorityWorkflow.setFilterRules(rulesForEvent);
-
-      }
-    } else {
-      resourcePriorityWorkflow.setFilterRules(new LinkedList<>());
-    }
-    RiskConfig riskConfig = getRiskConfig(jsonObject);
-    resourcePriorityWorkflow.setRiskConfig(riskConfig);
-    return resourcePriorityWorkflow;
+    return policyContext;
 
 
   }
 
-  ContextWorkflow getContextWorkflow(JSONObject jsonObject) {
-    var contextWorkflow = new ContextWorkflow();
+  Workflow getWorkflow(JSONObject jsonObject) {
+    Workflow workflow = new Workflow();
 
-    JSONObject filterJsonObj = jsonObject.getJSONObject("filter");
-    JSONArray vendorsArray = filterJsonObj.getJSONArray("vendors");
+    String type = jsonObject.optString("type");
 
-    contextWorkflow.setCategory(jsonObject.optString("category"));
-    contextWorkflow.setSubCategory(jsonObject.optString("subcategory"));
+    if (StringUtils.isNotEmpty(type) && type.contentEquals(NORMALIZE)) {
+      workflow = new NormalizerWorkflow();
 
-    List<Vendor> vendors = new LinkedList<>();
-
-    for (int i = 0; i < vendorsArray.length(); i++) {
-      JSONObject vendorObj = vendorsArray.getJSONObject(i);
-      Vendor vendor = new Vendor();
-      String name = vendorObj.getString("name");
-      vendor.setName(name);
-      String matchTypeStr = vendorObj.getString("match-type");
-      if (matchTypeStr.contentEquals("any")) {
-        vendor.setMatchType(MatchType.ANY);
-      } else if (matchTypeStr.contentEquals("all")) {
-        vendor.setMatchType(MatchType.ALL);
-      } else {
-        throw new IllegalArgumentException(
-            String.format("Unexpected match type %s", matchTypeStr));
-      }
-
-      JSONArray rulesArray = vendorObj.getJSONArray("rules");
-      List<String> rules = new LinkedList<>();
-      for (int j = 0; j < rulesArray.length(); j++) {
-        rules.add(rulesArray.getString(j));
-      }
-      Collections.reverse(rules);
-      vendor.setRules(rules);
-      vendors.add(vendor);
-    }
-    contextWorkflow.setVendors(vendors);
-
-    RiskConfig riskConfig = getRiskConfig(jsonObject);
-    contextWorkflow.setRiskConfig(riskConfig);
-    return contextWorkflow;
-
-
-  }
-
-  NormalizerWorkflow getNormalizerWorkflow(JSONObject jsonObject) {
-
-    var normalizerWorkflow = new NormalizerWorkflow();
-
-    JSONObject normalizedOutput = jsonObject.getJSONObject("normalized-output");
-
-    normalizerWorkflow.setStepId(normalizedOutput.getString("step-id"));
-
-    JSONObject output = normalizedOutput.getJSONObject("output");
-    normalizerWorkflow.setAlertIdJsonPath(output.getString("alertId"));
-    normalizerWorkflow.setVendorPolicyJqPath(output.getString("vendorPolicy"));
-    normalizerWorkflow.setCspJqPath(output.getString("csp"));
-    normalizerWorkflow.setResourceContainerJqPath(output.getString("resourceContainer"));
-    normalizerWorkflow.setRegionJqPath(output.getString("region"));
-    normalizerWorkflow.setServiceJqPath(output.getString("service"));
-    normalizerWorkflow.setResourceTypeJqPath(output.getString("resourceType"));
-    normalizerWorkflow.setResourceIdJqPath(output.getString("resourceId"));
-    normalizerWorkflow.setCanonicalIdJqPath(output.getString("canonicalId"));
-
-    normalizerWorkflow.setVendorName(jsonObject.getString("vendor-name"));
-
-    JSONObject outPutQueue = jsonObject.optJSONObject("output-queue");
-    if (outPutQueue != null) {
-      boolean outputQueueEnabled = outPutQueue.getBoolean("enabled");
-      normalizerWorkflow.setOutputQueueEnabled(outputQueueEnabled);
-    } else {
-      normalizerWorkflow.setOutputQueueEnabled(false);
-    }
-
-    JSONObject filter = jsonObject.optJSONObject("filter");
-    if (filter != null) {
-
-      String filterString = filter.getString("match-type");
-
-      if (filterString.contentEquals("all")) {
-        normalizerWorkflow.setMatchType(MatchType.ALL);
-      } else if (filterString.contentEquals("any")) {
-        normalizerWorkflow.setMatchType(MatchType.ANY);
-      }
-
-      JSONArray rules = filter.optJSONArray("rules");
-      List<String> rulesForEvent = new LinkedList<>();
-
-      if (rules != null) {
-        for (int j = 0; j < rules.length(); j++) {
-          String rulesString = rules.getString(j);
-          rulesForEvent.add(rulesString);
-        }
-        Collections.reverse(rulesForEvent);
-        normalizerWorkflow.setFilterRules(rulesForEvent);
-
-      }
+      ((NormalizerWorkflow) workflow).setVendorName(jsonObject.getString("vendor-name"));
 
       JSONObject postProcessor = jsonObject.optJSONObject("post-processor");
 
       List<Step> postProcessorSteps = new LinkedList<>();
 
       if (postProcessor != null) {
-        JSONArray steps = postProcessor.optJSONArray("steps");
+        JSONArray postProcessorStepsJsonArray = postProcessor.optJSONArray("steps");
 
-        if (steps != null) {
-          for (int i = 0; i < steps.length(); i++) {
-            JSONObject stepsJSONObject = steps.getJSONObject(i);
+        if (postProcessorStepsJsonArray != null) {
+          for (int i = 0; i < postProcessorStepsJsonArray.length(); i++) {
+            JSONObject stepsJSONObject = postProcessorStepsJsonArray.getJSONObject(i);
             Step step = new Step();
             step.setId(stepsJSONObject.getString("id"));
             step.setUses(stepsJSONObject.getString("uses"));
@@ -238,9 +134,127 @@ public class ContentManager implements ContentManagerApi {
           }
         }
       }
-      normalizerWorkflow.setPostProcessorSteps(postProcessorSteps);
+      ((NormalizerWorkflow) workflow).setPostProcessorSteps(postProcessorSteps);
+      var outputQueue = jsonObject.optJSONObject("output-queue");
+      if (outputQueue != null) {
+        boolean outputQueueEnabled = outputQueue.getBoolean("enabled");
+        ((NormalizerWorkflow) workflow).setOutputQueueEnabled(outputQueueEnabled);
+      } else {
+        ((NormalizerWorkflow) workflow).setOutputQueueEnabled(false);
+      }
+    } else if (type.contentEquals(POLICY_CONTEXT)) {
+      workflow = getPolicyContext(jsonObject);
+      ((PolicyContext) workflow).setCategory(jsonObject.optString(POLICY_CONTEXT_CAT));
+      ((PolicyContext) workflow).setSubCategory(jsonObject.optString(POLICY_CONTEXT_SUB_CAT));
+      ((PolicyContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
+
+      PolicyContext policyContext = (PolicyContext) workflow;
+      policyContext.setVendorFilters(getFilters(jsonObject));
+
+
+    } else if (type.contentEquals(GENERAL_CONTEXT)) {
+      workflow = new GeneralContext();
+      ((GeneralContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
     }
-    return normalizerWorkflow;
+
+    String schema = String.valueOf(jsonObject.getBigDecimal("schema"));
+    if (schema.contentEquals("1.0")) {
+      workflow.setSchema(WorkflowSchemaVersion.v1_0);
+    } else {
+      throw new IllegalArgumentException("Unrecognized schema version ".concat(schema));
+    }
+    workflow.setType(jsonObject.getString("type"));
+    workflow.setId(jsonObject.getString("id"));
+    workflow.setName(jsonObject.optString("name"));
+    JSONArray labels = jsonObject.optJSONArray("labels");
+    if (labels != null) {
+      var labelsArray = new LinkedList<String>();
+      for (int i = 0; i < labels.length(); i++) {
+        labelsArray.add(labels.getString(i));
+      }
+      workflow.setLabels(labelsArray);
+    }
+
+    workflow.setOutput(getOutputs(jsonObject));
+    workflow.setSteps(getSteps(jsonObject));
+
+    if (!workflow.getType().equals(POLICY_CONTEXT)) {
+
+      List<VendorFilter> filters = getFilters(jsonObject);
+      List<Filter> filterList = new LinkedList<>();
+      for (VendorFilter filter : filters) {
+        Filter simpleFilter = new Filter();
+        simpleFilter.setRules(filter.getRules());
+        simpleFilter.setMatchType(filter.getMatchType());
+        filterList.add(simpleFilter);
+      }
+
+      workflow.setFilters(filterList);
+
+    }
+
+    return workflow;
+
+
+  }
+
+  private List<Output> getOutputs(JSONObject jsonObject) {
+
+    List<Output> outputs = new LinkedList<>();
+    JSONArray optOutputJsonArray = jsonObject.optJSONArray("output");
+    if (optOutputJsonArray != null) {
+      for (int i = 0; i < optOutputJsonArray.length(); i++) {
+        JSONObject outputObj = optOutputJsonArray.getJSONObject(i);
+        Output output = new Output();
+        output.setValue(outputObj.getString("value"));
+        output.setName(outputObj.getString("name"));
+        String valueType = outputObj.optString("valueType");
+        if (StringUtils.isEmpty(valueType)) {
+          output.setValueType(ValueType.JQ_EXPRESSION);
+        } else {
+          output.setValueType(ValueType.valueOf(valueType));
+        }
+        outputs.add(output);
+      }
+
+    }
+    return outputs;
+
+  }
+
+
+  private List<VendorFilter> getFilters(JSONObject jsonObject) {
+    List<VendorFilter> filters = new LinkedList<>();
+
+    JSONArray optJSONArray = jsonObject.optJSONArray("filters");
+    if (optJSONArray != null) {
+      for (int i = 0; i < optJSONArray.length(); i++) {
+        VendorFilter filter = new VendorFilter();
+        JSONObject filterObj = optJSONArray.getJSONObject(i);
+        String matchType = filterObj.getString("match-type");
+        if (matchType.toLowerCase().contentEquals("any")) {
+          filter.setMatchType(MatchType.ANY);
+        } else if (matchType.toLowerCase().contentEquals("all")) {
+          filter.setMatchType(MatchType.ALL);
+        } else {
+          throw new IllegalArgumentException("Unrecognized filter type ".concat(matchType));
+        }
+        JSONArray rulesJsonArray = filterObj.optJSONArray("rules");
+        List<String> rules = new LinkedList<>();
+        if (rulesJsonArray != null) {
+          for (int j = 0; j < rulesJsonArray.length(); j++) {
+            String rule = rulesJsonArray.optString(j);
+            rules.add(rule);
+          }
+        }
+
+        filter.setRules(rules);
+        filters.add(filter);
+      }
+
+    }
+    return filters;
+
   }
 
   private void processWorkFlowFile(File file) throws IOException {
@@ -254,35 +268,10 @@ public class ContentManager implements ContentManagerApi {
 
     JSONObject jsonObject = new JSONObject(json);
 
-    String type = jsonObject.optString("type");
-    if (StringUtils.isNotEmpty(type)) {//if type is missing, it is not a workflow
-      if (type.contentEquals("normalize")) {
-        NormalizerWorkflow normalizerWorkflow = getNormalizerWorkflow(jsonObject);
-        normalizerWorkflow.setOutput(getOutputFields(jsonObject));
-        normalizerWorkflow.setId(jsonObject.getString("id"));
-        normalizerWorkflow.setSteps(getSteps(jsonObject));
-        normalizerWorkflows.remove(normalizerWorkflow);
-        normalizerWorkflows.add(normalizerWorkflow);
-      } else if (type.contentEquals("contextualize")) {
-        ContextWorkflow contextWorkflow = getContextWorkflow(jsonObject);
-        contextWorkflow.setOutput(getOutputFields(jsonObject));
-        contextWorkflow.setId(jsonObject.getString("id"));
-        contextWorkflow.setSteps(getSteps(jsonObject));
-        contextWorkflows.remove(contextWorkflow);
-        contextWorkflows.add(contextWorkflow);
-      } else if (type.contentEquals("resource-priority")) {
-        ResourcePriorityWorkflow resourcePriorityWorkflow = getResourcePriorityWorkflow(jsonObject);
-        resourcePriorityWorkflow.setId(jsonObject.getString("id"));
-        resourcePriorityWorkflow.setSteps(getSteps(jsonObject));
-        resourcePriorityWorkflow.setOutput(getOutputFields(jsonObject));
-        resourcePriorities.remove(resourcePriorityWorkflow);
-        resourcePriorities.add(resourcePriorityWorkflow);
+    Workflow workflow = getWorkflow(jsonObject);
+    workflowSet.remove(workflow);
+    workflowSet.add(workflow);
 
-      } else {
-        throw new IllegalArgumentException("Unrecognized workflow type :".concat(type));
-      }
-
-    }
   }
 
   private List<Step> getSteps(JSONObject jsonObject) {
@@ -352,7 +341,7 @@ public class ContentManager implements ContentManagerApi {
     return workflowProcessingResult;
   }
 
-  public SyncResult syncRemoteContent(Long lastSuccessfulSync, RequestConfig requestConfig) {
+  public SyncResult syncRemoteContent(Long lastSuccessfulSync, Request request) {
 
     SyncResult syncResult = new SyncResult();
     syncResult.setCacheHit(true);
@@ -360,7 +349,7 @@ public class ContentManager implements ContentManagerApi {
     boolean stale = System.currentTimeMillis() - lastUpdated > TimeUnit.MINUTES.toMillis(SYNC_INTERVAL_IN_MINS);
 
     //sync every SYNC_INTERVAL_IN_MINS
-    if ((requestConfig != null && requestConfig.isRefreshFromS3()) || stale) {
+    if ((request != null && request.isRefreshFromS3()) || stale) {
       syncResult.setCacheHit(false);
       Optional<File> optionalFile;
       optionalFile = contentDownloader.downloadContent(lastSuccessfulSync);
@@ -375,41 +364,17 @@ public class ContentManager implements ContentManagerApi {
   }
 
   @Override
-  public Set<? extends Workflow> getWorkflowSet(Class workflow, RequestConfig requestConfig) {
-    syncRemoteContent(lastUpdated, requestConfig);
-    if (workflow.getName().contentEquals(ResourcePriorityWorkflow.class.getName())) {
-      return resourcePriorities;
-    } else if (workflow.getName().contentEquals(NormalizerWorkflow.class.getName())) {
-      return normalizerWorkflows;
-    } else if (workflow.getName().contentEquals(ContextWorkflow.class.getName())) {
-      return contextWorkflows;
-    } else {
-      throw new RuntimeException("Unsupported workflow type ".concat(workflow.getName()));
-    }
+  public Set<Workflow> getWorkflowSet(Request request) {
+    syncRemoteContent(lastUpdated, request);
+    return workflowSet;
   }
 
+  @Override
+  public Map<String, Workflow> getWorkflowIdToWorkflowMap(Request request) {
 
-  private List<Map<String, String>> getOutputFields(JSONObject jsonObject) {
-    List<Map<String, String>> outputFields = new LinkedList<>();
-
-    var output = jsonObject.optJSONArray("output");
-    if (output != null) {
-      for (int i = 0; i < output.length(); i++) {
-
-        JSONObject field = output.getJSONObject(i);
-        String name = field.getString("name");
-        String value = field.getString("value");
-        Map<String, String> fieldMap = new HashMap<>();
-        fieldMap.put("name", name);
-        fieldMap.put("value", value);
-        outputFields.add(fieldMap);
-
-      }
-      return outputFields;
-
-    } else {
-      return new LinkedList<>();
-    }
-
+    Map<String, Workflow> map = new HashMap<>();
+    getWorkflowSet(request).forEach(workflow -> map.put(workflow.getId(), workflow));
+    return map;
   }
+
 }

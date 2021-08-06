@@ -1,0 +1,26 @@
+schema: 1.0
+type: policy-context
+id: "rds-snapshot-is-public"
+name: "RDS snapshot is public"
+labels:
+  - contextualization
+
+category: access-sharing
+subcategory: public-access
+
+filters:
+  - vendor: security-hub
+    policies:
+      - "rds-snapshots-public-prohibited"
+    match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("rds-snapshots-public-prohibited"))
+  - vendor: prisma-cloud
+    policies:
+      - "a707de6a-11b7-478a-b636-5e21ee1f6162"
+    match-type: any
+    rules:
+      - .workflowId == "prisma-cloud" and .vendorPolicy == "a707de6a-11b7-478a-b636-5e21ee1f6162"
+
+risk-config:
+  default-risk: critical

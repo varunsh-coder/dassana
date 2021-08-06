@@ -26,7 +26,7 @@ public class App implements RequestHandler<Map<String, Object>, BatchUpdateFindi
     JSONObject jsonObject = new JSONObject(input);
     JSONObject dassanaObject = jsonObject.getJSONObject("dassana");
 
-    String findingId = dassanaObject.getJSONObject("normalize").getString("alertId");
+    String findingId = dassanaObject.getJSONObject("normalize").getJSONObject("output").getString("alertId");
 
     String productArn = jsonObject.getJSONObject("detail").getJSONArray("findings").getJSONObject(0)
         .getString("ProductArn");
@@ -41,26 +41,28 @@ public class App implements RequestHandler<Map<String, Object>, BatchUpdateFindi
 
     userDefinedFields.put("DASSANA_ALERT_PATH", alertKey);
 
-    JSONObject riskResourcePriority = dassanaObject.getJSONObject("risk").optJSONObject("resourcePriority");
+    JSONObject resPriorityJsonObj = dassanaObject.optJSONObject("resourcePriority");
     String resourceRisk = "";
     String resourceRiskRuleName = "";
-    if (riskResourcePriority != null) {
-      resourceRisk = riskResourcePriority.optString("riskValue");
-      resourceRiskRuleName = riskResourcePriority.optString("name");
+    if (resPriorityJsonObj != null) {
+      JSONObject risk = resPriorityJsonObj.optJSONObject("risk");
+      resourceRisk = risk.optString("riskValue");
+      resourceRiskRuleName = risk.optString("name");
     }
 
-    JSONObject contextualRiskName = dassanaObject.getJSONObject("risk").optJSONObject("contextualRisk");
-
+    JSONObject contextObj = dassanaObject.optJSONObject("policy-context");
     String contextualRisk = "";
     String contextualRiskRuleName = "";
 
-    if (contextualRiskName != null) {
-      contextualRisk = contextualRiskName.optString("riskValue");
-      contextualRiskRuleName = contextualRiskName.optString("name");
+    if (contextObj != null) {
+      JSONObject risk = contextObj.optJSONObject("risk");
+      contextualRisk = risk.optString("riskValue");
+      contextualRiskRuleName = risk.optString("name");
     }
 
     userDefinedFields
-        .put("DASSANA_NORMALIZE_WORKFLOW_ID", dassanaObject.getJSONObject("normalize").getString("workflowId"));
+        .put("DASSANA_NORMALIZE_WORKFLOW_ID",
+            dassanaObject.getJSONObject("normalize").getString("workflowId"));
 
     JSONObject optContext = dassanaObject.optJSONObject("context");
     if (optContext != null) {

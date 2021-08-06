@@ -1,4 +1,4 @@
-[![Generic badge](https://img.shields.io/badge/license-apache2.0-green.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Generic badge](https://img.shields.io/badge/docs-blue.svg)](https://docs.dassana.io/)
+[![Generic badge](https://img.shields.io/badge/license-apache2.0-green.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Generic badge](https://img.shields.io/badge/docs-blue.svg)](https://docs.dassana.io/)[![Coverage Status](https://coveralls.io/repos/github/dassana-io/dassana/badge.svg?branch=main)](https://coveralls.io/github/dassana-io/dassana?branch=main)
 
 # Introduction
 
@@ -27,11 +27,9 @@ The workflows use tiny serverless functions (a.k.a Dassana Actions) to decorate 
 
 **Open Source**
 
-
 Everything in Dassana is open source. Hack away (or far)!
 
 **Cloud Native**
-
 
 Single click cloudformation deployment.
 

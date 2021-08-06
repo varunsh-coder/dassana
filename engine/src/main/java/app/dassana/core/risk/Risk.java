@@ -1,7 +1,6 @@
 package app.dassana.core.risk;
 
 public class Risk {
-
   String name = "";
   String riskValue = "";
   String condition = "";

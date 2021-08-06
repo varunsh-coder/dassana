@@ -1,0 +1,129 @@
+# Policy Context
+
+Security policies are written using `policy-context` workflows. A single Dassana policy can be mapped to multiple vendor policies.
+
+## Example
+
+Here is an example of an AWS security group policy for SSH from the internet.
+
+```yaml title="content/workflows/csp/aws/service/ec2/resources/security-group/policy-context/ssh-from-internet.yaml"
+schema: 1.0
+type: policy-context
+id: ssh-from-internet
+name: Security group is allowing incoming SSH traffic from internet
+labels:
+    - contextualization
+
+category: networking
+subcategory: firewall
+
+filters:
+    - vendor: security-hub
+      policies:
+          - 'restricted-ssh'
+      match-type: any
+      rules:
+          # here workflowId refers to the normalizer workflowId which normalized the alert
+          - .workflowId == "security-hub" and (.vendorPolicy |contains ("restricted-ssh") )
+    - vendor: prisma-cloud
+      policies:
+          - '617b9138-584b-4e8e-ad15-7fbabafbed1a'
+      match-type: any
+      rules:
+          - .workflowId == "prisma-cloud" and .vendorPolicy == "617b9138-584b-4e8e-ad15-7fbabafbed1a"
+
+steps:
+    - id: list-of-attached-eni
+      uses: WhatEnisAreAttachedToSg
+      with:
+          - name: groupId
+            value: .resourceId
+          - name: awsRegion
+            value: .region
+
+risk-config:
+    default-risk: high
+    rules:
+        - name: are-enis-attached-to-sg
+          #in the below condition, we are checking if the step with id "list-of-attached-eni" has a key with nameed 'result' and its value (array size) has length 0
+          # i.e. we are checking if ENIs are attached to the security group or not
+          condition: ."list-of-attached-eni".result| length == 0
+          risk: low
+```
+
+## Reference
+
+Following is the reference for all the available fields.
+
+import Schema from '../../common-fields/schema.md'
+import Id from '../../common-fields/workflows/workflow-id.md'
+import Name from '../../common-fields/name.md'
+import Labels from '../../common-fields/labels.md'
+import RiskConfig from '../../common-fields/workflows/risk-config.mdx'
+import Filters from '../../common-fields/workflows/filters.md'
+import MatchType from '../../common-fields/workflows/match-type.md'
+import RuleSyntax from '../../common-fields/workflows/rule-syntax.md'
+import Steps from '../../common-fields/workflows/steps.mdx'
+import Output from '../../common-fields/workflows/output.md'
+
+### `schema`
+
+<Schema />
+
+### `type`
+
+Always `policy-context` for this kind of workflow.
+
+### `id`
+
+<Id />
+
+### `name`
+
+<Name />
+
+### `labels`
+
+<Labels />
+
+### `category` & `subcategory`
+
+Used to organize security policies based on the use case. A list of all categories and their subcategories can be found [here](https://github.com/dassana-io/dassana/blob/main/content/workflows/policies/categories.yaml).
+
+### `filters`
+
+<Filters />
+
+#### `vendor`
+
+Security vendor name. A complete list of supported vendors can be found [here](https://github.com/dassana-io/dassana/tree/main/content/workflows/vendors).
+
+:::note
+
+Don't see your security vendor on the list? Learn how to go about adding a security vendor [here](../vendor-setup/adding-vendors).
+
+:::
+
+#### `policies`
+
+List of vendor policy IDs from which map to a Dassana policy. AWS has a policy with the id `restricted-ssh`. In Dassana, the equivalent policy has the id `ssh-from-internet`. This field is used to map AWS Config's `restricted-ssh` policy to Dassana's `ssh-from-internet` policy.
+
+#### `match-type`
+
+<MatchType />
+
+#### `rules`
+
+<RuleSyntax />
+
+### `steps`
+
+<Steps />
+
+### `risk-config`
+
+<RiskConfig />
+
+### `output`
+
+<Output />
