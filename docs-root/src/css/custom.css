@@ -68,6 +68,10 @@ html[data-theme='dark'] .alert--warning {
 	fill: var(--blacks-lighten-80);
 }
 
+.alert--info .admonition-icon svg path {
+	fill: var(--ifm-color-primary-lighter);
+}
+
 .alert--success .admonition-icon svg path {
 	fill: var(--greens-base);
 }
@@ -86,7 +90,11 @@ html[data-theme='dark'] .alert--warning {
 
 .alert--info,
 .alert--secondary {
-	border-color: var(--blacks-lighten-10);
+	border-color: var(--blacks-lighten-80);
+}
+
+.alert--info {
+	border-color: var(--ifm-color-primary-lighter);
 }
 
 .alert--success {
