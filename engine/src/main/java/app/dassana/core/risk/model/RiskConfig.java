@@ -1,11 +1,11 @@
-package app.dassana.core.risk;
+package app.dassana.core.risk.model;
 
-import java.util.Set;
+import java.util.List;
 
 public class RiskConfig {
 
   String defaultRisk;
-  Set<Rule> riskRules;
+  List<Rule> riskRules;
 
 
   public String getDefaultRisk() {
@@ -16,11 +16,11 @@ public class RiskConfig {
     this.defaultRisk = defaultRisk;
   }
 
-  public Set<Rule> getRiskRules() {
+  public List<Rule> getRiskRules() {
     return riskRules;
   }
 
-  public void setRiskRules(Set<Rule> riskRules) {
+  public void setRiskRules(List<Rule> riskRules) {
     this.riskRules = riskRules;
   }
 }

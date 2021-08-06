@@ -1,13 +1,14 @@
 package app.dassana.core.workflow;
 
 import app.dassana.core.contentmanager.ContentManagerApi;
-import app.dassana.core.policycontext.RiskCalcActionRequest;
-import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
+import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
-import app.dassana.core.risk.Risk;
-import app.dassana.core.risk.RiskConfig;
+import app.dassana.core.risk.eval.RiskEvalRequest;
+import app.dassana.core.risk.eval.RiskEvaluator;
+import app.dassana.core.risk.model.Risk;
+import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.workflow.model.Output;
 import app.dassana.core.workflow.model.Step;
 import app.dassana.core.workflow.model.ValueType;
@@ -49,6 +50,7 @@ public class WorkflowRunner {
   @Inject StepRunnerApi stepRunnerApi;
   @Inject private FilterMatch filterMatch;
   @Inject private ContentManagerApi contentManagerApi;
+  @Inject private RiskEvaluator riskEvaluator;
 
 
   Gson gson = new Gson();
@@ -238,28 +240,11 @@ public class WorkflowRunner {
       }
     }
 
-    RiskCalcActionRequest riskCalcActionRequest = new RiskCalcActionRequest();
-    riskCalcActionRequest.setJsonData(requestJsonObjForRiskCalc);
-    riskCalcActionRequest.setRiskRules(riskConfig.getRiskRules());
-    riskCalcActionRequest.setDefaultRisk(riskConfig.getDefaultRisk());
-
-    JSONObject jsonObject = new JSONObject(riskCalcActionRequest);
-    Step step = new Step();
-    step.setUses("RiskCalcAction");
-    step.setId("riskCalc");
-
-    String responseFromRiskCalcAction = stepRunnerApi
-        .runStep(workflow, step, jsonObject.toString(), new HashMap<>())
-        .getResponse();
-
-    Risk risk = new Risk();
-    JSONObject riskCalcActionResponseJsonObj = new JSONObject(responseFromRiskCalcAction);
-
-    risk.setName(riskCalcActionResponseJsonObj.getString("name"));
-    risk.setRiskValue(riskCalcActionResponseJsonObj.getString("risk"));
-    risk.setCondition(riskCalcActionResponseJsonObj.optString("condition"));
-
-    return risk;
+    RiskEvalRequest riskEvalRequest = new RiskEvalRequest();
+    riskEvalRequest.setJsonData(requestJsonObjForRiskCalc.toString());
+    riskEvalRequest.setRiskRules(riskConfig.getRiskRules());
+    riskEvalRequest.setDefaultRisk(riskConfig.getDefaultRisk());
+    return riskEvaluator.evaluate(riskEvalRequest);
   }
 
   private String getPayloadForStep(List<Map<String, String>> fields,

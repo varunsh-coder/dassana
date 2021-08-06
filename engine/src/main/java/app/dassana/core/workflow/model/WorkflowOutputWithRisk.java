@@ -1,6 +1,6 @@
 package app.dassana.core.workflow.model;
 
-import app.dassana.core.risk.Risk;
+import app.dassana.core.risk.model.Risk;
 
 public class WorkflowOutputWithRisk extends WorkflowOutput {
 

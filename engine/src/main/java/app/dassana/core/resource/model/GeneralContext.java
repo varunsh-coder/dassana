@@ -1,6 +1,6 @@
 package app.dassana.core.resource.model;
 
-import app.dassana.core.risk.RiskConfig;
+import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.workflow.model.Workflow;
 
 public class GeneralContext extends Workflow {

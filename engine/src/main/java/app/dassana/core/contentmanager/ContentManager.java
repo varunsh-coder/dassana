@@ -2,12 +2,12 @@ package app.dassana.core.contentmanager;
 
 import app.dassana.core.contentmanager.model.SyncResult;
 import app.dassana.core.contentmanager.model.WorkflowProcessingResult;
-import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
+import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
-import app.dassana.core.risk.RiskConfig;
-import app.dassana.core.risk.Rule;
+import app.dassana.core.risk.model.RiskConfig;
+import app.dassana.core.risk.model.Rule;
 import app.dassana.core.rule.MatchType;
 import app.dassana.core.workflow.model.Filter;
 import app.dassana.core.workflow.model.Output;
@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +66,7 @@ public class ContentManager implements ContentManagerApi {
   RiskConfig getRiskConfig(JSONObject workFlowJson) {
 
     RiskConfig riskConfig = new RiskConfig();
-    Set<Rule> riskRules = new HashSet<>();
+    List<Rule> riskRules = new LinkedList<>();
 
     JSONObject riskConfigObj = workFlowJson.optJSONObject("risk-config");
 

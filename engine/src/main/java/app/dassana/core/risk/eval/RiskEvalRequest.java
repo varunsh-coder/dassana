@@ -3,26 +3,26 @@
 // (powered by FernFlower decompiler)
 //
 
-package app.dassana.action;
+package app.dassana.core.risk.eval;
 
+import app.dassana.core.risk.model.Rule;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-public class Request {
+public class RiskEvalRequest {
 
-  private Map<String, Object> jsonData;
+  private String jsonData;
   private String defaultRisk;
   private List<Rule> riskRules;
 
-  public Request() {
+  public RiskEvalRequest() {
   }
 
-  public Map<String, Object> getJsonData() {
+  public String getJsonData() {
     return jsonData;
   }
 
-  public void setJsonData(Map<String, Object> jsonData) {
+  public void setJsonData(String jsonData) {
     this.jsonData = jsonData;
   }
 
