@@ -1,8 +1,10 @@
 name: Dassana Linter
 on:
   pull_request:
-    branches:
-      - main
+   paths:
+    - 'content/**'
+   branches:
+    - main
 jobs:
   validate-schema:
     runs-on: ubuntu-latest
