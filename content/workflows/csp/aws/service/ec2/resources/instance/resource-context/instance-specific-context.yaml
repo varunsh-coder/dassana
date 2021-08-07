@@ -1,0 +1,26 @@
+schema: 1.0
+type: resource-context
+id: ec2-instance-context
+name: Provides context to any ec2 instance. Currently limited to finding out if the instnace is behing an ALB
+
+filters:
+  - match-type: any
+    rules:
+      - .workflowId == "security-hub" and (.vendorPolicy |contains ("restricted-ssh") )
+steps:
+  - id: list-of-attached-eni
+    uses: WhatEnisAreAttachedToSg
+    with:
+      - name: groupId
+        value: .resourceId
+      - name: awsRegion
+        value: .region
+
+risk-config:
+  default-risk: high
+  rules:
+    - name: are-enis-attached-to-sg
+      #in the below condition, we are checking if the step with id "list-of-attached-eni" has a key with nameed 'result' and its value (array size) has length 0
+      # i.e. we are checking if ENIs are attached to the security group or not
+      condition: ."list-of-attached-eni".result| length == 0
+      risk: low

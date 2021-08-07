@@ -14,6 +14,7 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
+import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.model.CombinedRisk;
 import app.dassana.core.util.StringyThings;
 import app.dassana.core.workflow.model.Step;
@@ -118,6 +119,13 @@ public class RequestProcessor {
             .submit(() ->
                 workflowRunner
                     .runWorkFlow(PolicyContext.class, request, normalizedWorkflowOutput.getSimpleOutput())));
+      }
+
+      if (!request.isSkipResourceContext()) {
+        futureList.add(executorCompletionService
+            .submit(() ->
+                workflowRunner
+                    .runWorkFlow(ResourceContext.class, request, normalizedWorkflowOutput.getSimpleOutput())));
       }
 
       for (Future<Optional<WorkflowOutputWithRisk>> ignored : futureList) {

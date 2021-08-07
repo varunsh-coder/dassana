@@ -8,12 +8,21 @@ public class Request {
   private boolean includeOriginalJson;
   private boolean skipGeneralContext;
   private boolean skipPolicyContext;
+  private boolean skipResourceContext;
   private boolean skipS3Upload;
   private boolean refreshFromS3;
 
   //engine specific
   private boolean queueProcessing;
   private boolean skipPostProcessor;
+
+  public boolean isSkipResourceContext() {
+    return skipResourceContext;
+  }
+
+  public void setSkipResourceContext(boolean skipResourceContext) {
+    this.skipResourceContext = skipResourceContext;
+  }
 
   public Request(String inputJson) {
     this.inputJson = inputJson;
