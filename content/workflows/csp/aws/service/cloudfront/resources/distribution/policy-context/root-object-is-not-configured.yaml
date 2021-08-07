@@ -9,12 +9,12 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "cloudfront-default-root-object-configured"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
 
 risk-config:
   default-risk: critical

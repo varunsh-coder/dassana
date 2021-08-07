@@ -5,6 +5,7 @@ import static app.dassana.core.contentmanager.ContentManager.NORMALIZE;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT_CAT;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT_SUB_CAT;
+import static app.dassana.core.contentmanager.ContentManager.RESOURCE_CONTEXT;
 
 import app.dassana.core.contentmanager.ContentManagerApi;
 import app.dassana.core.launch.ApiHandler;
@@ -14,6 +15,7 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
+import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.model.CombinedRisk;
 import app.dassana.core.util.StringyThings;
 import app.dassana.core.workflow.model.Step;
@@ -34,6 +36,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,6 +96,7 @@ public class RequestProcessor {
 
     Optional<WorkflowOutputWithRisk> normalizationResult;
     Optional<WorkflowOutputWithRisk> policyContext = Optional.empty();
+    Optional<WorkflowOutputWithRisk> resourceContext = Optional.empty();
     Optional<WorkflowOutputWithRisk> generalContext = Optional.empty();
 
     normalizationResult = workflowRunner
@@ -111,6 +116,12 @@ public class RequestProcessor {
             .submit(() ->
                 workflowRunner
                     .runWorkFlow(GeneralContext.class, request, normalizedWorkflowOutput.getSimpleOutput())));
+      }
+      if (!request.isSkipResourceContext()) {
+        futureList.add(executorCompletionService
+            .submit(() ->
+                workflowRunner
+                    .runWorkFlow(ResourceContext.class, request, normalizedWorkflowOutput.getSimpleOutput())));
       }
 
       if (!request.isSkipPolicyContext()) {
@@ -132,6 +143,8 @@ public class RequestProcessor {
                 policyContext = workflowOutputWithRisk;
               } else if (workflow.getType().contentEquals(GENERAL_CONTEXT)) {
                 generalContext = workflowOutputWithRisk;
+              } else if (workflow.getType().contentEquals(RESOURCE_CONTEXT)) {
+                resourceContext = workflowOutputWithRisk;
               }
             }
           }
@@ -140,7 +153,7 @@ public class RequestProcessor {
       }
 
       String dassanaDecoratedJson =
-          getDassanaDecoratedJson(request, normalizationResult.get(), policyContext, generalContext);
+          getDassanaDecoratedJson(request, normalizationResult.get(), policyContext, resourceContext, generalContext);
 
       //after alerts have been processed we upload the alert to a
       // s3 bucket. This allows any post processors to access the fully decorated json object.
@@ -171,7 +184,17 @@ public class RequestProcessor {
                     finalJson,
                     normalizationResult.get().getSimpleOutput())
                 .getResponse();
-            stepIdToResponse.put(step.getId(), new JSONObject(stepOutput));
+            //we expect the post processor to provide either a json obj or an array, failing which we simply consider
+            // it as a string
+            try {
+              stepIdToResponse.put(step.getId(), new JSONObject(stepOutput));
+            } catch (JSONException e) {
+              try {
+                stepIdToResponse.put(step.getId(), new JSONArray(stepOutput));
+              } catch (JSONException jsonException) {
+                stepIdToResponse.put(step.getId(), stepOutput);
+              }
+            }
             logger.info("Post processor {} response :{}", step.getId(), stepOutput);
           }
           JSONObject finalJsonObj = new JSONObject(finalJson);
@@ -273,6 +296,7 @@ public class RequestProcessor {
   private String getDassanaDecoratedJson(Request request,
       WorkflowOutputWithRisk normalizationOutput,
       Optional<WorkflowOutputWithRisk> policyContextWorkflowOutput,
+      Optional<WorkflowOutputWithRisk> resourceContextWorkflowOutput,
       Optional<WorkflowOutputWithRisk> generalContextWorkflowOutput) {
 
     CombinedRisk combinedRisk = new CombinedRisk();
@@ -317,12 +341,26 @@ public class RequestProcessor {
       combinedRisk.setGeneralContextRisk(policyContextWorkflowOutput.get().getRisk());
 
     }
-    messageBody.put("dassana", dassanaMap);
 
-    if (!request.isIncludeOriginalJson()) {
-      messageBody.clear();
-      messageBody.put("dassana", dassanaMap);
+    if (resourceContextWorkflowOutput.isPresent()) {
+      ResourceContext resourceContext = (ResourceContext) contentManagerApi.getWorkflowIdToWorkflowMap(request)
+          .get(resourceContextWorkflowOutput.get().getWorkflowId());
+
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("workflowId", resourceContext.getId());
+      jsonObject.put("output", resourceContextWorkflowOutput.get().getSimpleOutput());
+
+      Map<String, Object> riskObj = new HashMap<>();
+      riskObj.put("riskValue", resourceContextWorkflowOutput.get().getRisk().getRiskValue());
+      riskObj.put("condition", resourceContextWorkflowOutput.get().getRisk().getCondition());
+      riskObj.put("name", resourceContextWorkflowOutput.get().getRisk().getName());
+      jsonObject.put("risk", riskObj);
+      dassanaMap.put(RESOURCE_CONTEXT, jsonObject);
+      combinedRisk.setResourceContextRisk(resourceContextWorkflowOutput.get().getRisk());
+
     }
+
+    messageBody.put("dassana", dassanaMap);
 
     return messageBody.toString();
 

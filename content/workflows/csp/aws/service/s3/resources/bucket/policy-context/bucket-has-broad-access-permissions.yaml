@@ -9,16 +9,16 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "s3-bucket-blacklisted-actions-prohibited"
       - "s3-bucket-public-read-prohibited"
       - "s3-bucket-public-write-prohibited"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-blacklisted-actions-prohibited"))
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-public-read-prohibited"))
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-public-write-prohibited"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-blacklisted-actions-prohibited"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-public-read-prohibited"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-public-write-prohibited"))
   - vendor: prisma-cloud
     policies:
       - "085de1e7-7eb5-4fde-9a14-56f563c54ed3"

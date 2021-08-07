@@ -1,7 +1,7 @@
 schema: 1.0
 type: policy-context
-id: ssh-from-internet
-name: Security group is allowing incoming SSH traffic from internet
+id: security-group-wide-open
+name: Security group is wide open
 labels:
   - contextualization
 
@@ -9,13 +9,15 @@ category: networking
 subcategory: firewall
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
-      - "restricted-ssh"
+      - restricted-ssh
+      - vpc-sg-restricted-common-ports
     match-type: any
     rules:
       # here workflowId refers to the normalizer workflowId which normalized the alert
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("restricted-ssh") )
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("sg-restricted-common-ports") )
   - vendor: prisma-cloud
     policies:
       - "617b9138-584b-4e8e-ad15-7fbabafbed1a"

@@ -9,12 +9,12 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "ebs-snapshot-public-restorable-check"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("ebs-snapshot-public-restorable-check"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("ebs-snapshot-public-restorable-check"))
   - vendor: prisma-cloud
     policies:
       - "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"

@@ -15,7 +15,7 @@ filter:
         - "iam-user-no-policies-check"
       match-type: any
       rules:
-        - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-user-no-policies-check"))
+        - .workflowId == "aws-config" and (.vendorPolicy |contains ("iam-user-no-policies-check"))
     - name: prisma-cloud
       policies:
         - "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"

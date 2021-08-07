@@ -1,107 +1,99 @@
 {
+  "version": "0",
+  "id": "d0731104-32d1-cab5-062e-848cc3bd884e",
   "detail-type": "Security Hub Findings - Imported",
-  "resources": [
-    "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/92e9ba9a-52d7-443a-949f-a1c6498c08fe"
-  ],
-  "id": "319643ea-4388-4e44-78ba-d2701cfe4a3d",
   "source": "aws.securityhub",
-  "time": "2021-07-28T17:34:57Z",
+  "account": "363265257036",
+  "time": "2021-08-07T21:54:44Z",
+  "region": "us-east-1",
+  "resources": [
+    "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/aws-foundational-security-best-practices/v/1.0.0/APIGateway.4/finding/227ca420-48fa-4df8-ad47-f747521d169a"
+  ],
   "detail": {
     "findings": [
       {
         "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
         "Types": [
-          "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+          "Software and Configuration Checks/Industry and Regulatory Standards/AWS-Foundational-Security-Best-Practices"
         ],
-        "Description": "Security groups provide stateful filtering of ingress/egress network traffic to AWS resources. It is recommended that no security group allows unrestricted ingress access to port 22.",
+        "Description": "This control checks to see if an API Gateway stage is using an AWS WAF Web ACL. This control fails if an AWS WAF Web ACL is not attached to a REST API Gateway stage.",
         "Compliance": {
           "Status": "FAILED"
         },
         "ProductName": "Security Hub",
-        "SchemaVersion": "2018-10-08",
-        "FirstObservedAt": "2021-07-28T17:34:45.782Z",
-        "GeneratorId": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0/rule/4.1",
-        "CreatedAt": "2021-07-28T17:34:45.782Z",
-        "RecordState": "ACTIVE",
-        "Title": "4.1 Ensure no security groups allow ingress from 0.0.0.0/0 to port 22",
-        "Workflow": {
-          "Status": "NEW"
-        },
-        "LastObservedAt": "2021-07-28T17:34:49.796Z",
-        "Severity": {
-          "Normalized": 70,
-          "Label": "HIGH",
-          "Product": 70,
-          "Original": "HIGH"
-        },
-        "UpdatedAt": "2021-07-28T17:34:45.782Z",
+        "FirstObservedAt": "2021-08-07T00:10:26.826Z",
+        "CreatedAt": "2021-08-07T00:10:26.826Z",
+        "LastObservedAt": "2021-08-07T21:54:40.927Z",
         "CompanyName": "AWS",
         "FindingProviderFields": {
           "Types": [
-            "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+            "Software and Configuration Checks/Industry and Regulatory Standards/AWS-Foundational-Security-Best-Practices"
           ],
           "Severity": {
-            "Normalized": 70,
-            "Label": "HIGH",
-            "Product": 70,
-            "Original": "HIGH"
+            "Normalized": 40,
+            "Label": "MEDIUM",
+            "Product": 40,
+            "Original": "MEDIUM"
           }
         },
-        "WorkflowState": "NEW",
         "ProductFields": {
+          "StandardsArn": "arn:aws:securityhub:::standards/aws-foundational-security-best-practices/v/1.0.0",
+          "StandardsSubscriptionArn": "arn:aws:securityhub:us-east-1:363265257036:subscription/aws-foundational-security-best-practices/v/1.0.0",
+          "ControlId": "APIGateway.4",
+          "RecommendationUrl": "https://docs.aws.amazon.com/console/securityhub/APIGateway.4/remediation",
+          "RelatedAWSResources:0/name": "securityhub-api-gw-associated-with-waf-a3d255be",
           "RelatedAWSResources:0/type": "AWS::Config::ConfigRule",
-          "Resources:0/Id": "arn:aws:ec2:us-east-1:363265257036:security-group/sg-04101d5687a91bc17",
-          "RuleId": "4.1",
-          "RecommendationUrl": "https://docs.aws.amazon.com/console/securityhub/standards-cis-4.1/remediation",
+          "StandardsControlArn": "arn:aws:securityhub:us-east-1:363265257036:control/aws-foundational-security-best-practices/v/1.0.0/APIGateway.4",
           "aws/securityhub/ProductName": "Security Hub",
-          "StandardsControlArn": "arn:aws:securityhub:us-east-1:363265257036:control/cis-aws-foundations-benchmark/v/1.2.0/4.1",
           "aws/securityhub/CompanyName": "AWS",
-          "StandardsGuideSubscriptionArn": "arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0",
-          "StandardsGuideArn": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0",
-          "RelatedAWSResources:0/name": "securityhub-restricted-ssh-26b848ae",
-          "aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/92e9ba9a-52d7-443a-949f-a1c6498c08fe"
+          "Resources:0/Id": "arn:aws:apigateway:us-east-1::/restapis/6u20vtvjpk/stages/v1",
+          "aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/aws-foundational-security-best-practices/v/1.0.0/APIGateway.4/finding/227ca420-48fa-4df8-ad47-f747521d169a"
         },
-        "AwsAccountId": "363265257036",
-        "Region": "us-east-1",
         "Remediation": {
           "Recommendation": {
-            "Text": "For directions on how to fix this issue, please consult the AWS Security Hub CIS documentation.",
-            "Url": "https://docs.aws.amazon.com/console/securityhub/standards-cis-4.1/remediation"
+            "Text": "For directions on how to fix this issue, please consult the AWS Security Hub Foundational Security Best Practices documentation.",
+            "Url": "https://docs.aws.amazon.com/console/securityhub/APIGateway.4/remediation"
           }
         },
-        "Id": "arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/92e9ba9a-52d7-443a-949f-a1c6498c08fe",
+        "SchemaVersion": "2018-10-08",
+        "GeneratorId": "aws-foundational-security-best-practices/v/1.0.0/APIGateway.4",
+        "RecordState": "ACTIVE",
+        "Title": "APIGateway.4 API Gateway should be associated with a WAF Web ACL",
+        "Workflow": {
+          "Status": "NEW"
+        },
+        "Severity": {
+          "Normalized": 40,
+          "Label": "MEDIUM",
+          "Product": 40,
+          "Original": "MEDIUM"
+        },
+        "UpdatedAt": "2021-08-07T21:54:39.106Z",
+        "WorkflowState": "NEW",
+        "AwsAccountId": "363265257036",
+        "Region": "us-east-1",
+        "Id": "arn:aws:securityhub:us-east-1:363265257036:subscription/aws-foundational-security-best-practices/v/1.0.0/APIGateway.4/finding/227ca420-48fa-4df8-ad47-f747521d169a",
         "Resources": [
           {
             "Partition": "aws",
-            "Type": "AwsEc2SecurityGroup",
+            "Type": "AwsApiGatewayStage",
             "Details": {
-              "AwsEc2SecurityGroup": {
-                "GroupName": "default",
-                "OwnerId": "363265257036",
-                "VpcId": "vpc-02400cbe81d28eadc",
-                "IpPermissions": [
-                  {
-                    "FromPort": 22,
-                    "ToPort": 22,
-                    "IpProtocol": "tcp",
-                    "IpRanges": [
-                      {
-                        "CidrIp": "0.0.0.0/0"
-                      }
-                    ]
-                  }
-                ],
-                "GroupId": "sg-04101d5687a91bc17"
+              "AwsApiGatewayStage": {
+                "LastUpdatedDate": "2021-07-31T00:25:00.000Z",
+                "DeploymentId": "pcp2gy",
+                "Description": "Lambda API Stage v1",
+                "CacheClusterStatus": "NOT_AVAILABLE",
+                "StageName": "v1",
+                "TracingEnabled": false,
+                "CreatedDate": "2021-07-31T00:24:59.000Z",
+                "CacheClusterEnabled": false
               }
             },
             "Region": "us-east-1",
-            "Id": "arn:aws:ec2:us-east-1:363265257036:security-group/sg-04101d5687a91bc17"
+            "Id": "arn:aws:apigateway:us-east-1::/restapis/6u20vtvjpk/stages/v1"
           }
         ]
       }
     ]
-  },
-  "region": "us-east-1",
-  "version": "0",
-  "account": "363265257036"
-}
+  }
+} 

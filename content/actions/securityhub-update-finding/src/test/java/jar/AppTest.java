@@ -13,7 +13,7 @@ import software.amazon.awssdk.utils.IoUtils;
 public class AppTest {
 
   @Test
- // @Disabled//enable it for local testing, it makes real aws api calls
+  @Disabled//enable it for local testing, it makes real aws api calls
   public void handleRequest_shouldReturnConstantValue() throws IOException {
     App function = new App();
 

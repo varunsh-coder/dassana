@@ -31,7 +31,10 @@ public class RuleMatch {
 
     if (matchType.equals(MatchType.ANY)) {
       for (String rule : ruleSet) {
-        return getMatchResult(rule, jsonData);
+        boolean matchResult = getMatchResult(rule, jsonData);
+        if (matchResult) {
+          return true;
+        }
       }
       return false;
     } else if (matchType.equals(MatchType.ALL)) {
@@ -50,7 +53,7 @@ public class RuleMatch {
 
   }
 
-  private boolean getMatchResult(String rule, String jsonObj) throws Exception {
+  private boolean getMatchResult(String rule, String jsonObj) {
 
     try {
       AtomicBoolean result = new AtomicBoolean(false);
@@ -60,7 +63,7 @@ public class RuleMatch {
       jsonQuery.apply(childScope, in, jsonNode -> result.set(jsonNode.asBoolean()));
       return result.get();
     } catch (Exception e) {
-      logger.error("Assuming the rule \"{}\" to not match due to error  against {}",rule,jsonObj,e);
+      logger.error("Assuming the rule \"{}\" to not match due to error  against {}", rule, jsonObj, e);
       return false;
     }
 

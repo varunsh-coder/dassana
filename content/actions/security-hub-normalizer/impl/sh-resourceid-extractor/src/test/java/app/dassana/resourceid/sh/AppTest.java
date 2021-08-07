@@ -20,9 +20,9 @@ class AppTest {
     NormalizationResult normalizationResult = app.handleRequest(jsonObject.toMap(), null);
     Assertions.assertEquals("aws",normalizationResult.getCsp());
     Assertions.assertEquals("363265257036",normalizationResult.getResourceContainer());
-    Assertions.assertEquals("ec2",normalizationResult.getService());
-    Assertions.assertEquals("sg-04101d5687a91bc17",normalizationResult.getResourceId());
-    Assertions.assertEquals("arn:aws:ec2:us-east-1:363265257036:security-group/sg-04101d5687a91bc17",normalizationResult.getArn());
+    Assertions.assertEquals("apigateway",normalizationResult.getService());
+    Assertions.assertEquals("/restapis/6u20vtvjpk/stages/v1",normalizationResult.getResourceId());
+    Assertions.assertEquals("arn:aws:apigateway:us-east-1::/restapis/6u20vtvjpk/stages/v1",normalizationResult.getArn());
 
 
   }

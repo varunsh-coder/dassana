@@ -9,12 +9,12 @@ category: iam
 subcategory: authentication
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "access-keys-rotated"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("access-keys-rotated"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("access-keys-rotated"))
   - vendor: prisma-cloud
     policies:
       - "6ea06abf-bfd3-49f2-9332-9aee02c31d58"

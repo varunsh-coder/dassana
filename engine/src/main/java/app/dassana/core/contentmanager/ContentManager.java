@@ -6,6 +6,7 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
+import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.risk.model.Rule;
 import app.dassana.core.rule.MatchType;
@@ -46,11 +47,12 @@ public class ContentManager implements ContentManagerApi {
   private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
   private long lastUpdated = 0;
 
-  public static final String POLICY_CONTEXT="policy-context";
-  public static final String POLICY_CONTEXT_CAT="category";
-  public static final String POLICY_CONTEXT_SUB_CAT="subcategory";
-  public static final String GENERAL_CONTEXT="general-context";
-  public static final String NORMALIZE="normalize";
+  public static final String POLICY_CONTEXT = "policy-context";
+  public static final String POLICY_CONTEXT_CAT = "category";
+  public static final String POLICY_CONTEXT_SUB_CAT = "subcategory";
+  public static final String GENERAL_CONTEXT = "general-context";
+  public static final String RESOURCE_CONTEXT = "resource-context";
+  public static final String NORMALIZE = "normalize";
 
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
 
@@ -154,6 +156,11 @@ public class ContentManager implements ContentManagerApi {
     } else if (type.contentEquals(GENERAL_CONTEXT)) {
       workflow = new GeneralContext();
       ((GeneralContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
+    } else if (type.contentEquals(RESOURCE_CONTEXT)) {
+      workflow = new ResourceContext();
+      ((ResourceContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
+    } else {
+      throw new IllegalArgumentException("Sorry, we do not recognize the workflow type ".concat(type));
     }
 
     String schema = String.valueOf(jsonObject.getBigDecimal("schema"));

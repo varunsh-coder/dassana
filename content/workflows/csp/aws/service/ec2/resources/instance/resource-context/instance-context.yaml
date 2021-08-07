@@ -1,0 +1,25 @@
+schema: 1.0
+type: resource-context
+id: ec2-instance-context
+name: Ec2 instance general context
+
+filters:
+  - match-type: any
+    rules:
+      - .resourceType == "instance" and .csp =="aws"
+
+steps:
+  - id: isInstanceBehindAlb
+    uses: IsTheInstanceBehindLoadBalancer
+    with:
+      - name: instanceId
+        value: .resourceId
+      - name: awsRegion
+        value: .region
+
+risk-config:
+  default-risk: ""
+  rules:
+    - name: isInstanceBehindAlb
+      condition: .isInstanceBehindAlb == true
+      risk: high

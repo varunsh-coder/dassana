@@ -15,7 +15,7 @@ filter:
         - "iam-policy-no-statements-with-admin-access"
       match-type: any
       rules:
-        - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-policy-no-statements-with-admin-access"))
+        - .workflowId == "aws-config" and (.vendorPolicy |contains ("iam-policy-no-statements-with-admin-access"))
     - name: prisma-cloud
       policies:
         - "d9b86448-11a2-f9d4-74a5-f6fc590caeef"

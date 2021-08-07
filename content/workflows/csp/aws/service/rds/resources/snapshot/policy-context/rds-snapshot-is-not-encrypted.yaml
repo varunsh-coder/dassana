@@ -9,12 +9,12 @@ category: cryptography
 subcategory: encryption
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "rds-snapshot-encrypted"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("rds-snapshot-encrypted"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("rds-snapshot-encrypted"))
   - vendor: prisma-cloud
     policies:
       - "74a52c45-75ae-404f-abf5-84b5cbd3d22f"

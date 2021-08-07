@@ -9,12 +9,12 @@ category: iam
 subcategory: authentication
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "root-account-mfa-enabled"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("root-account-mfa-enabled"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("root-account-mfa-enabled"))
   - vendor: prisma-cloud
     policies:
       - "478434a1-ff6c-492e-b411-c427c06291d9"

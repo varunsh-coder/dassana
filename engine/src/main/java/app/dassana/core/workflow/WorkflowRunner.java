@@ -5,6 +5,7 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
+import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.eval.RiskEvalRequest;
 import app.dassana.core.risk.eval.RiskEvaluator;
 import app.dassana.core.risk.model.Risk;
@@ -177,15 +178,20 @@ public class WorkflowRunner {
       }
       //handle risk
 
-      if (workflow instanceof GeneralContext || workflow instanceof PolicyContext) {
+      if (workflow instanceof GeneralContext
+          || workflow instanceof ResourceContext
+          || workflow instanceof PolicyContext) {
 
         RiskConfig riskConfig;
         if (workflow instanceof GeneralContext) {
           var resPriWorkflow = (GeneralContext) workflow;
           riskConfig = resPriWorkflow.getRiskConfig();
-        } else {
+        } else if (workflow instanceof PolicyContext) {
           var resPriWorkflow = (PolicyContext) workflow;
           riskConfig = resPriWorkflow.getRiskConfig();
+        } else {
+          var resourceContext = (ResourceContext) workflow;
+          riskConfig = resourceContext.getRiskConfig();
         }
 
         workflowOutputWithRisk

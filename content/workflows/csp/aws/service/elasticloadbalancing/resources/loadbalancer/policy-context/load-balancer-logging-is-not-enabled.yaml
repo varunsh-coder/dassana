@@ -9,12 +9,12 @@ category: visibility
 subcategory: logging
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "elb-logging-enabled"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("elb-logging-enabled"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("elb-logging-enabled"))
   - vendor: prisma-cloud
     policies:
       - "b675c604-e886-43aa-a60f-a9ad1f3742d3"

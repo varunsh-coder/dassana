@@ -5,8 +5,8 @@ public class Request {
   private final String inputJson;
 
   //content management
-  private boolean includeOriginalJson;
   private boolean skipGeneralContext;
+  private boolean skipResourceContext;
   private boolean skipPolicyContext;
   private boolean skipS3Upload;
   private boolean refreshFromS3;
@@ -19,13 +19,6 @@ public class Request {
     this.inputJson = inputJson;
   }
 
-  public boolean isIncludeOriginalJson() {
-    return includeOriginalJson;
-  }
-
-  public void setIncludeOriginalJson(boolean includeOriginalJson) {
-    this.includeOriginalJson = includeOriginalJson;
-  }
 
   public boolean isRefreshFromS3() {
     return refreshFromS3;
@@ -80,4 +73,11 @@ public class Request {
     this.skipPostProcessor = skipPostProcessor;
   }
 
+  public boolean isSkipResourceContext() {
+    return skipResourceContext;
+  }
+
+  public void setSkipResourceContext(boolean skipResourceContext) {
+    this.skipResourceContext = skipResourceContext;
+  }
 }

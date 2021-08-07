@@ -9,14 +9,14 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "s3-account-level-public-access-blocks"
       - "s3-bucket-level-public-access-prohibited"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
   - vendor: prisma-cloud
     policies:
       - "34064d53-1fd1-42e6-b075-45dce495caca"

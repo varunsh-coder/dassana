@@ -40,10 +40,10 @@ public class Handler extends MicronautRequestHandler<SQSEvent, Void> {
         Request request = new Request(message.getBody());
 
         request.setQueueProcessing(true);
-
         request.setSkipGeneralContext(false);
         request.setSkipPolicyContext(false);
         request.setSkipPostProcessor(false);
+        request.setSkipS3Upload(false);
 
         requestProcessor.processRequest(request);
 

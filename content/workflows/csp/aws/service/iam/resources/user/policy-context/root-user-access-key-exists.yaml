@@ -9,12 +9,12 @@ category: iam
 subcategory: authentication
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "iam-root-access-key-check"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-root-access-key-check"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("iam-root-access-key-check"))
   - vendor: prisma-cloud
     policies:
       - "88db4b66-4dec-48c0-9013-c7871d61b1c8"

@@ -9,12 +9,12 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "rds-instance-public-access-check"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("rds-instance-public-access-check"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("rds-instance-public-access-check"))
   - vendor: prisma-cloud
     policies:
       - "1bb6005a-dca6-40e2-b0a6-24da968c0808"

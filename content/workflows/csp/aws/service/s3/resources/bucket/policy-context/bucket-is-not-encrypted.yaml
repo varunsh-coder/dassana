@@ -9,14 +9,14 @@ category: cryptography
 subcategory: encryption
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "s3-default-encryption-kms"
       - "s3-bucket-server-side-encryption-enabled"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-default-encryption-kms"))
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-server-side-encryption-enabled"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-default-encryption-kms"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-server-side-encryption-enabled"))
   - vendor: prisma-cloud
     policies:
       - "7913fcbf-b679-5aac-d979-1b6817becb22"

@@ -18,13 +18,13 @@ category: networking
 subcategory: firewall
 
 filters:
-    - vendor: aws-config-via-securityhub
+    - vendor: aws-config
       policies:
           - 'restricted-ssh'
       match-type: any
       rules:
           # here workflowId refers to the normalizer workflowId which normalized the alert
-          - .workflowId == "security-hub" and (.vendorPolicy |contains ("restricted-ssh") )
+          - .workflowId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
     - vendor: prisma-cloud
       policies:
           - '617b9138-584b-4e8e-ad15-7fbabafbed1a'

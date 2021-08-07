@@ -9,12 +9,12 @@ category: cryptography
 subcategory: ssl
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "elb-tls-https-listeners-only"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("elb-tls-https-listeners-only"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("elb-tls-https-listeners-only"))
   - vendor: prisma-cloud
     policies:
       - "836a7c8c-34c2-4861-be1e-df2f8cd27aab"

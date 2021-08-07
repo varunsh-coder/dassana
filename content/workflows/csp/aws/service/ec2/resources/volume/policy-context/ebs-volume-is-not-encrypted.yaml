@@ -9,14 +9,14 @@ category: cryptography
 subcategory: encryption
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "ec2-ebs-encryption-by-default"
       - "encrypted-volumes"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("ec2-ebs-encryption-by-default"))
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("encrypted-volumes"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("ec2-ebs-encryption-by-default"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("encrypted-volumes"))
   - vendor: prisma-cloud
     policies:
       - "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"

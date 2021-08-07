@@ -9,12 +9,12 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "redshift-cluster-public-access-check"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
   - vendor: prisma-cloud
     policies:
       - "d65fd313-1c5c-42a1-98b2-a73bdeda19a6"

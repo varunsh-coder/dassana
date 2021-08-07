@@ -6,7 +6,8 @@ name: General context + tag-based risk for AWS resources
 filters:
   - match-type: all
     rules:
-      - .csp=="aws" and .canonicalId
+      - .csp=="aws" and .canonicalId and .resourceType != "AwsAccount" # for alerts belonging to an account, the resource type is set to "AwsAccount" by security hub
+      #todo: try to get tags from aws org for the account
 
 steps:
   - id: getTags

@@ -74,11 +74,11 @@ public class ApiTest {
     JSONObject generalContext = dassana.getJSONObject(GENERAL_CONTEXT);
     JSONObject policyContext = dassana.getJSONObject(POLICY_CONTEXT);
 
-    Assertions.assertTrue(normalize.getString("workflowId").contentEquals("security-hub"));
+    Assertions.assertTrue(normalize.getString("workflowId").contentEquals("aws-config"));
     Assertions.assertTrue(generalContext.getString("workflowId").contentEquals("general-context-aws"));
     Assertions.assertTrue(generalContext.getJSONObject("risk").getString("riskValue").contentEquals("low"));
 
-    Assertions.assertTrue(policyContext.getString("workflowId").contentEquals("ssh-from-internet"));
+    Assertions.assertTrue(policyContext.getString("workflowId").contentEquals("security-group-wide-open"));
 
 
   }

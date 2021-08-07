@@ -9,12 +9,12 @@ category: visibility
 subcategory: logging
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "vpc-flow-logs-enabled"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("vpc-flow-logs-enabled"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("vpc-flow-logs-enabled"))
   - vendor: prisma-cloud
     policies:
       - "49f4760d-c951-40e4-bfe1-08acaa17672a"

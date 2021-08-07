@@ -9,12 +9,12 @@ category: visibility
 subcategory: logging
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "multi-region-cloudtrail-enabled"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("multi-region-cloudtrail-enabled"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("multi-region-cloudtrail-enabled"))
   - vendor: prisma-cloud
     policies:
       - "36a5345a-230d-438e-a04c-a287a513e3dc"

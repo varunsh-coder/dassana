@@ -1,13 +1,13 @@
 schema: 1.0
 type: normalize
-vendor-name: aws-config-via-securityhub
-id: aws-config-via-security-hub
+vendor-name: aws-config
+id: aws-config
 
 filters:
   - match-type: all
     rules:
       - |
-        .detail and .detail.findings and .detail.findings[].ProductFields.StandardsGuideArn
+        .detail and .detail.findings and (.detail.findings[].ProductFields.StandardsGuideArn or .detail.findings[].ProductFields.StandardsArn )
 
 steps:
   - id: resource-info

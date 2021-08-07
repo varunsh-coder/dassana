@@ -9,14 +9,14 @@ category: iam
 subcategory: authentication
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "iam-user-mfa-enabled"
       - "mfa-enabled-for-iam-console-access"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
   - vendor: prisma-cloud
     policies:
       - "50af1c0a-ab70-44dd-b6f6-3529e795131f"

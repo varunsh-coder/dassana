@@ -91,8 +91,6 @@ public class ApiHandler extends
     boolean skipS3Upload = parameters
         .getOrDefault(API_PARAM_SKIP_S3UPLOAD, "false").contentEquals("true");
 
-    boolean includeInputRequestJson = parameters.getOrDefault(API_INCLUDE_INPUT_REQUEST, "true").contentEquals("true");
-
     boolean refreshFromS3 = Boolean.parseBoolean(parameters.getOrDefault(API_PARAM_SKIP_REFRESH_FROM_S3, "false"));
 
     Request request = new Request(inputJsonStr);
@@ -103,7 +101,6 @@ public class ApiHandler extends
     request.setSkipGeneralContext(skipGeneralContext);
     request.setSkipPolicyContext(skipPolicyContext);
     request.setSkipS3Upload(skipS3Upload);
-    request.setIncludeOriginalJson(includeInputRequestJson);
     return request;
   }
 

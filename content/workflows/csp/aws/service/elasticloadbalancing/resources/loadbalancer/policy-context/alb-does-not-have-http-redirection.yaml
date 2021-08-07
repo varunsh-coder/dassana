@@ -9,12 +9,12 @@ category: networking
 subcategory: firewall
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "alb-http-to-https-redirection-check"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("alb-http-to-https-redirection-check"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("alb-http-to-https-redirection-check"))
   - vendor: prisma-cloud
     policies:
       - "81c50f65-faa1-4d66-b8e2-d26eaeb08447"

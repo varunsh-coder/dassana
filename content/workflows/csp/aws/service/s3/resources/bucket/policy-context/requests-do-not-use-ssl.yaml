@@ -9,12 +9,12 @@ category: networking
 subcategory: firewall
 
 filters:
-  - vendor: aws-config-via-securityhub
+  - vendor: aws-config
     policies:
       - "s3-bucket-ssl-requests-only"
     match-type: any
     rules:
-      - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-ssl-requests-only"))
+      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-ssl-requests-only"))
   - vendor: prisma-cloud
     policies:
       - "7b0df373-006a-40d6-9f3d-68e6ea0bdd5d"

@@ -15,7 +15,7 @@ filter:
         - "iam-policy-in-use"
       match-type: any
       rules:
-        - .workflowId == "security-hub" and (.vendorPolicy |contains ("iam-policy-in-use"))
+        - .workflowId == "aws-config" and (.vendorPolicy |contains ("iam-policy-in-use"))
     - name: prisma-cloud
       policies:
         - "0425bd06-9799-4d6b-8887-7f7304820424"
