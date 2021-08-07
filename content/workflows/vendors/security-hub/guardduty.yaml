@@ -1,20 +1,17 @@
 schema: 1.0
 type: normalize
-vendor-name: security-hub
-id: security-hub
+vendor-name: guardduty-via-securityhub
+id: aws-gd-via-security-hub
 
 filters:
   - match-type: all
     rules:
       - |
-         .detail and .detail.findings
-      - |
-         any(.detail.findings[];.ProductFields.StandardsGuideArn |contains ("arn:aws:securityhub"))
-
+        .detail and .detail.findings and  .detail.findings[].ProductArn and any(.detail.findings[];.ProductArn | contains ("guardduty"))
 
 steps:
   - id: resource-info
-    uses: SecurityHubResExtractor
+    uses: GuardDutyExtractor
 
 output:
   - name: alertId

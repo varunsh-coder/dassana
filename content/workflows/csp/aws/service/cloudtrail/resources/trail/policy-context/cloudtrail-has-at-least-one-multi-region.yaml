@@ -9,7 +9,7 @@ category: visibility
 subcategory: logging
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "multi-region-cloudtrail-enabled"
     match-type: any

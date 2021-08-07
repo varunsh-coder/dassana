@@ -9,7 +9,7 @@ category: networking
 subcategory: firewall
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "alb-http-to-https-redirection-check"
     match-type: any

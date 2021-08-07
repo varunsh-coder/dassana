@@ -1,6 +1,6 @@
 schema: 1.0
-id: SecurityHubResExtractor
-name: AWS Config (via SecurityHub) Normalizer
+id: GuardDutyExtractor
+name: AWS GuardDuty (via SecurityHub) Normalizer
 
 cloud-type: aws
 

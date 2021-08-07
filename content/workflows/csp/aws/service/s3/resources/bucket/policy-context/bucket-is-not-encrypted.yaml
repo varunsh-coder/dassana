@@ -9,7 +9,7 @@ category: cryptography
 subcategory: encryption
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "s3-default-encryption-kms"
       - "s3-bucket-server-side-encryption-enabled"

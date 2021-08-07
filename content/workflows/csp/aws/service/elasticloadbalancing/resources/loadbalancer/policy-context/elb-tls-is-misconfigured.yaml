@@ -9,7 +9,7 @@ category: cryptography
 subcategory: ssl
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "elb-tls-https-listeners-only"
     match-type: any

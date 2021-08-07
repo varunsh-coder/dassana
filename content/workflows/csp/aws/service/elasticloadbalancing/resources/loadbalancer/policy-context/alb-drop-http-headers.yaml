@@ -9,7 +9,7 @@ category: networking
 subcategory: firewall
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "alb-http-drop-invalid-header-enabled"
     match-type: any

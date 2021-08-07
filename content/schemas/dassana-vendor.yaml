@@ -5,7 +5,7 @@ id: regex('[a-z0-9-]+$')
 name: str(required=False)
 labels: list(required=False)
 
-vendor-name: enum('security-hub','foo-cloud', 'prisma-cloud')
+vendor-name: enum('aws-config-via-securityhub','foo-cloud', 'prisma-cloud','guardduty-via-securityhub')
 
 filters: list(include('filter'))
 

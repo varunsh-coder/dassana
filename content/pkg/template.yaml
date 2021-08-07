@@ -560,6 +560,17 @@ Resources:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
+  GuardDutyExtractor:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.dassana.actions.App::handleRequest
+      Runtime: java11
+      MemorySize: 256
+      CodeUri: ../actions/gd-via-sh
+      Role:
+        Fn::GetAtt: [DassanaActionsRole, Arn]
+      Timeout: 60
+
 ### End Dassana Actions ###
 
 Outputs:

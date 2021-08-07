@@ -1,48 +1,5 @@
 {
   "detail-type": "Security Hub Findings - Imported",
-  "dassana": {
-    "timing": {
-      "contextualization": 0,
-      "resourcePrioritization": 24915,
-      "normalize": 3216,
-      "totalTimeTaken": 28148
-    },
-    "normalize": {
-      "csp": "aws",
-      "resourceId": "sg-04101d5687a91bc17",
-      "canonicalId": "arn:aws:ec2:us-east-1:363265257036:security-group/sg-04101d5687a91bc17",
-      "service": "ec2",
-      "vendorPolicy": "securityhub-restricted-ssh-26b848ae",
-      "resourceContainer": "363265257036",
-      "alertId": "securityhub-restricted-ssh-26b848ae",
-      "region": "us-east-1",
-      "workflowId": "security-hub",
-      "resourceType": "security-group"
-    },
-    "context": {
-      "hints": [
-        {
-          "msg": "No contextualization workflows were run, check filter config of the workflow you intended to run",
-          "severity": "WARN"
-        }
-      ]
-    },
-    "resourcePriority": {
-      "output": [
-        {
-          "environment": "foo"
-        }
-      ]
-    },
-    "risk": {
-      "resourcePriority": {
-        "condition": ".getTags | any( select(.key | test(\"env\" ; \"ix\")) | select(.value | test(\"foo\" ; \"ix\")))",
-        "riskValue": "low",
-        "name": "dev enviornment risk is low"
-      }
-    },
-    "alertKey": "s3://dassana-core-dassanabucket-1toq9eyus7ca5/2021/7/30/security-hub/securityhub-restricted-ssh-26b848ae"
-  },
   "resources": [
     "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/92e9ba9a-52d7-443a-949f-a1c6498c08fe"
   ],

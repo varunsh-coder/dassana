@@ -9,7 +9,7 @@ category: cryptography
 subcategory: encryption
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "ec2-ebs-encryption-by-default"
       - "encrypted-volumes"

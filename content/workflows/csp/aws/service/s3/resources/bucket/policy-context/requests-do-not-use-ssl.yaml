@@ -9,7 +9,7 @@ category: networking
 subcategory: firewall
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "s3-bucket-ssl-requests-only"
     match-type: any

@@ -9,7 +9,7 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "s3-account-level-public-access-blocks"
       - "s3-bucket-level-public-access-prohibited"

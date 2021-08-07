@@ -9,7 +9,7 @@ category: iam
 subcategory: authentication
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "iam-user-mfa-enabled"
       - "mfa-enabled-for-iam-console-access"

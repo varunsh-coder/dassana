@@ -9,7 +9,7 @@ category: iam
 subcategory: authentication
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "access-keys-rotated"
     match-type: any

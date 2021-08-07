@@ -9,7 +9,7 @@ category: visibility
 subcategory: logging
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "vpc-flow-logs-enabled"
     match-type: any

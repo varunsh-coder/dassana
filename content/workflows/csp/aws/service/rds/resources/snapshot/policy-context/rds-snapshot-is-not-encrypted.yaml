@@ -9,7 +9,7 @@ category: cryptography
 subcategory: encryption
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "rds-snapshot-encrypted"
     match-type: any

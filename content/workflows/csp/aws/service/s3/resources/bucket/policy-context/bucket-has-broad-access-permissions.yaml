@@ -9,7 +9,7 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "s3-bucket-blacklisted-actions-prohibited"
       - "s3-bucket-public-read-prohibited"

@@ -1,7 +1,7 @@
 set -eu
 sam build --cached --parallel --region $2
 cd ../../engine
-mvn clean compile -DkskipTests
+mvn process-resources -DkskipTests
 cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngine/
 cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngineApi/
 

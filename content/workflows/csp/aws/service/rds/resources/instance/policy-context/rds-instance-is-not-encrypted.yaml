@@ -9,7 +9,7 @@ category: cryptography
 subcategory: encryption
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "rds-storage-encrypted"
     match-type: any

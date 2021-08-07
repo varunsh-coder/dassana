@@ -9,7 +9,7 @@ category: networking
 subcategory: firewall
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "restricted-ssh"
     match-type: any

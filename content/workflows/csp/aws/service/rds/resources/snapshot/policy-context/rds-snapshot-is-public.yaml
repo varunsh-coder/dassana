@@ -9,7 +9,7 @@ category: access-sharing
 subcategory: public-access
 
 filters:
-  - vendor: security-hub
+  - vendor: aws-config-via-securityhub
     policies:
       - "rds-snapshots-public-prohibited"
     match-type: any
