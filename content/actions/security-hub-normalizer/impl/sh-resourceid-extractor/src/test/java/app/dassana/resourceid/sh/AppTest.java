@@ -18,8 +18,11 @@ class AppTest {
             + ".json"));
     JSONObject jsonObject = new JSONObject(alertJson);
     NormalizationResult normalizationResult = app.handleRequest(jsonObject.toMap(), null);
+
     Assertions.assertEquals("aws",normalizationResult.getCsp());
     Assertions.assertEquals("363265257036",normalizationResult.getResourceContainer());
+    Assertions.assertEquals("control/aws-foundational-security-best-practices/v/1.0.0/APIGateway.4",
+        normalizationResult.getPolicyId());
     Assertions.assertEquals("apigateway",normalizationResult.getService());
     Assertions.assertEquals("/restapis/6u20vtvjpk/stages/v1",normalizationResult.getResourceId());
     Assertions.assertEquals("arn:aws:apigateway:us-east-1::/restapis/6u20vtvjpk/stages/v1",normalizationResult.getArn());

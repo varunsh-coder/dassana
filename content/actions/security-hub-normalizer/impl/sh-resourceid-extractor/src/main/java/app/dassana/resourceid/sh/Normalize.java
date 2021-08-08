@@ -19,20 +19,22 @@ public class Normalize {
     JSONObject jsonObject = new JSONObject(jsonAlertData);
     JSONObject detailJsonObject = jsonObject.getJSONObject("detail");
     JSONArray findingsJsonArray = detailJsonObject.getJSONArray("findings");
+    JSONObject finding = findingsJsonArray.getJSONObject(0);
 
-    String policyId = findingsJsonArray.getJSONObject(0).getJSONObject("ProductFields")
-        .getString("RelatedAWSResources:0/name");
+    String policyId = finding.getJSONObject("ProductFields").getString("StandardsControlArn");
+    String[] split = policyId.split(":");
+    policyId = split[5];
 
-    String resourceArn = findingsJsonArray.getJSONObject(0).getJSONObject("ProductFields").getString("Resources:0/Id");
+    String resourceArn = finding.getJSONObject("ProductFields").getString("Resources:0/Id");
 
-    String findingId = findingsJsonArray.getJSONObject(0).getString("Id");
+    String findingId = finding.getString("Id");
 
     Arn arn = Arn.fromString(resourceArn);
 
     ArnResource resource = arn.resource();
 
     String resourceType = "";
-    if (resource.resourceType().isPresent()&&StringUtils.isNotBlank(resourceType)) {
+    if (resource.resourceType().isPresent() && StringUtils.isNotBlank(resource.resourceType().get())) {
       resourceType = resource.resourceType().get();
     } else {
       JSONArray resources = findingsJsonArray.getJSONObject(0).optJSONArray("Resources");
@@ -65,9 +67,9 @@ public class Normalize {
 
     normalizationResult.setService(arn.service());
 
-    if (arn.accountId().isPresent()&&StringUtils.isNotBlank(arn.accountId().get())) {
+    if (arn.accountId().isPresent() && StringUtils.isNotBlank(arn.accountId().get())) {
       normalizationResult.setResourceContainer(arn.accountId().get());
-    }else {
+    } else {
       JSONArray resources = findingsJsonArray.getJSONObject(0).optJSONArray("Resources");
       if (resources != null) {
         String awsAccountId = findingsJsonArray.getJSONObject(0).optString("AwsAccountId");
