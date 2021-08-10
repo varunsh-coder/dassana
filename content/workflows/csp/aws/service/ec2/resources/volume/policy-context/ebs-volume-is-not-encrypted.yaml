@@ -7,6 +7,9 @@ labels:
 
 category: cryptography
 subcategory: encryption
+csp: aws
+service: ec2
+resource-type: volume
 
 filters:
   - vendor: aws-config
@@ -15,14 +18,14 @@ filters:
       - "encrypted-volumes"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("ec2-ebs-encryption-by-default"))
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("encrypted-volumes"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("ec2-ebs-encryption-by-default"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("encrypted-volumes"))
   - vendor: prisma-cloud
     policies:
       - "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"
 
 risk-config:
   default-risk: medium

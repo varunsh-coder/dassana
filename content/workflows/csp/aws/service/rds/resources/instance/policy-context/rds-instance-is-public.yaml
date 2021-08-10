@@ -7,6 +7,9 @@ labels:
 
 category: access-sharing
 subcategory: public-access
+csp: aws
+service: rds
+resource-type: instance
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "rds-instance-public-access-check"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("rds-instance-public-access-check"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("rds-instance-public-access-check"))
   - vendor: prisma-cloud
     policies:
       - "1bb6005a-dca6-40e2-b0a6-24da968c0808"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "1bb6005a-dca6-40e2-b0a6-24da968c0808"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "1bb6005a-dca6-40e2-b0a6-24da968c0808"
 
 risk-config:
   default-risk: critical

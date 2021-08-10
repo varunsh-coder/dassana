@@ -7,6 +7,9 @@ labels:
 
 category: cryptography
 subcategory: encryption
+csp: aws
+service: rds
+resource-type: snapshot
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "rds-snapshot-encrypted"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("rds-snapshot-encrypted"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("rds-snapshot-encrypted"))
   - vendor: prisma-cloud
     policies:
       - "74a52c45-75ae-404f-abf5-84b5cbd3d22f"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "74a52c45-75ae-404f-abf5-84b5cbd3d22f"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "74a52c45-75ae-404f-abf5-84b5cbd3d22f"
 
 risk-config:
   default-risk: medium

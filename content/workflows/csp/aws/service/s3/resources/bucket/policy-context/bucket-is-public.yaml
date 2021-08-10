@@ -7,6 +7,9 @@ labels:
 
 category: access-sharing
 subcategory: public-access
+csp: aws
+service: s3
+resource-type: bucket
 
 filters:
   - vendor: aws-config
@@ -15,8 +18,8 @@ filters:
       - "s3-bucket-level-public-access-prohibited"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
   - vendor: prisma-cloud
     policies:
       - "34064d53-1fd1-42e6-b075-45dce495caca"
@@ -24,9 +27,9 @@ filters:
       - "b76ad441-e715-4fd0-bbc3-cd3b2bee34bf"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "34064d53-1fd1-42e6-b075-45dce495caca"
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "630d3779-d932-4fbf-9cce-6e8d793c6916"
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "b76ad441-e715-4fd0-bbc3-cd3b2bee34bf"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "34064d53-1fd1-42e6-b075-45dce495caca"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "630d3779-d932-4fbf-9cce-6e8d793c6916"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "b76ad441-e715-4fd0-bbc3-cd3b2bee34bf"
 
 risk-config:
-  default-risk: medium
+  default-risk: ""

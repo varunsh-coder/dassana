@@ -7,6 +7,9 @@ labels:
 
 category: visibility
 subcategory: logging
+csp: aws
+service: ec2
+resource-type: flow-log
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "vpc-flow-logs-enabled"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("vpc-flow-logs-enabled"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("vpc-flow-logs-enabled"))
   - vendor: prisma-cloud
     policies:
       - "49f4760d-c951-40e4-bfe1-08acaa17672a"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "49f4760d-c951-40e4-bfe1-08acaa17672a"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "49f4760d-c951-40e4-bfe1-08acaa17672a"
 
 risk-config:
   default-risk: medium

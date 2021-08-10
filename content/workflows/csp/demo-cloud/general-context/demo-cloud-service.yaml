@@ -3,6 +3,8 @@ type: general-context
 id: general-context-demo-cloud
 name: for demo cloud, risk of "some" account is low
 
+csp: demo-cloud
+
 # general context workflows such as this one are executed only after normalization has been done
 # all of the fields such as csp,service etc emitted by normalization workflow are available.
 

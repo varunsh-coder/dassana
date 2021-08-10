@@ -7,6 +7,9 @@ labels:
 
 category: access-sharing
 subcategory: public-access
+csp: aws
+service: ec2
+resource-type: snapshot
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "ebs-snapshot-public-restorable-check"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("ebs-snapshot-public-restorable-check"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("ebs-snapshot-public-restorable-check"))
   - vendor: prisma-cloud
     policies:
       - "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"
 
 risk-config:
   default-risk: critical

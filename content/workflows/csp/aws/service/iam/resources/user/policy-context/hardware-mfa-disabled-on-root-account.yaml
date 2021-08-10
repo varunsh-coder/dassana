@@ -7,6 +7,9 @@ labels:
 
 category: iam
 subcategory: authentication
+csp: aws
+service: iam
+resource-type: user
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "root-account-hardware-mfa-enabled"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("root-account-hardware-mfa-enabled"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("root-account-hardware-mfa-enabled"))
   - vendor: prisma-cloud
     policies:
       - "2c0a0859-928e-46e7-a3b0-bf5af467b444"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "2c0a0859-928e-46e7-a3b0-bf5af467b444"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "2c0a0859-928e-46e7-a3b0-bf5af467b444"
 
 risk-config:
   default-risk: critical

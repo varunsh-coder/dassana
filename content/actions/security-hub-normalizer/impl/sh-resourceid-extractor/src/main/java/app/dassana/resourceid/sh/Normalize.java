@@ -21,9 +21,14 @@ public class Normalize {
     JSONArray findingsJsonArray = detailJsonObject.getJSONArray("findings");
     JSONObject finding = findingsJsonArray.getJSONObject(0);
 
+    String possiblePolicyId = finding.getJSONObject("ProductFields").optString("RelatedAWSResources:0/name");
     String policyId = finding.getJSONObject("ProductFields").getString("StandardsControlArn");
     String[] split = policyId.split(":");
     policyId = split[5];
+
+    if (StringUtils.isNotBlank(possiblePolicyId)) {
+      policyId = possiblePolicyId;
+    }
 
     String resourceArn = finding.getJSONObject("ProductFields").getString("Resources:0/Id");
 
@@ -34,19 +39,21 @@ public class Normalize {
     ArnResource resource = arn.resource();
 
     String resourceType = "";
+    String resourceId = "";
     if (resource.resourceType().isPresent() && StringUtils.isNotBlank(resource.resourceType().get())) {
       resourceType = resource.resourceType().get();
+      resourceId = resource.resource();
     } else {
-      JSONArray resources = findingsJsonArray.getJSONObject(0).optJSONArray("Resources");
-      if (resources != null) {
-        resourceType = resources.getJSONObject(0).getString("Type");
+
+      String[] arnElements = resourceArn.split(":");
+      String resourceInfo = arnElements[5];
+      if (resourceInfo.contains("/")) {
+        String[] resourceSplit = resourceInfo.split("/");
+        resourceType = resourceSplit[1];
+        resourceId = resourceSplit[2];
       }
+
     }
-
-    String resourceId;
-
-    String[] arnElements = resourceArn.split(":");
-    resourceId = arnElements[arnElements.length - 1];
 
     NormalizationResult normalizationResult = new NormalizationResult("aws", resourceType, resourceId, findingId);
     normalizationResult.setArn(resourceArn);

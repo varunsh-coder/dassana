@@ -17,7 +17,6 @@ public class AppTest {
         .toUtf8String(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample-gd.json"));
     Response result = function.handleRequest(new JSONObject(inputJson).toMap(), null);
 
-    Assertions.assertTrue(result.getResourceId().contentEquals("i-054474987a390f341"));
     Assertions.assertTrue(result.getResourceType().contentEquals("instance"));
     Assertions.assertTrue(result.getService().contentEquals("ec2"));
     Assertions.assertTrue(result.getRegion().contentEquals("us-east-1"));

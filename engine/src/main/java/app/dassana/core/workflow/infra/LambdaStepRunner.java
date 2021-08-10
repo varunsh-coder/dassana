@@ -81,7 +81,7 @@ public class LambdaStepRunner implements StepRunnerApi {
       throws Exception {
     ObjectMapper mapper = new ObjectMapper();
     JsonNode jsonNode = mapper.readValue(payLoad, JsonNode.class);
-    logger.info("Running step {} with payload {}", step.getId(), jsonNode.toString());
+    logger.info("Running step {} of workflow {} with payload {}", step.getId(), workflow.getId(), jsonNode.toString());
 
     StepRunResponse stepRunResponse = new StepRunResponse();
 

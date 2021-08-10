@@ -4,7 +4,17 @@ import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.workflow.model.Workflow;
 
 public class GeneralContext extends Workflow {
-  RiskConfig riskConfig;
+
+  private String csp;
+  private RiskConfig riskConfig;
+
+  public String getCsp() {
+    return csp;
+  }
+
+  public void setCsp(String csp) {
+    this.csp = csp;
+  }
 
   public RiskConfig getRiskConfig() {
     return riskConfig;

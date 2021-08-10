@@ -3,6 +3,10 @@ type: resource-context
 id: ec2-instance-context
 name: Ec2 instance general context
 
+csp: aws
+service: ec2
+resource-type: instance
+
 filters:
   - match-type: any
     rules:

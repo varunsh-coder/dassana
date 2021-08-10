@@ -7,6 +7,9 @@ labels:
 
 category: visibility
 subcategory: logging
+csp: aws
+service: cloudtrail
+resource-type: trail
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "multi-region-cloudtrail-enabled"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("multi-region-cloudtrail-enabled"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("multi-region-cloudtrail-enabled"))
   - vendor: prisma-cloud
     policies:
       - "36a5345a-230d-438e-a04c-a287a513e3dc"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "36a5345a-230d-438e-a04c-a287a513e3dc"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "36a5345a-230d-438e-a04c-a287a513e3dc"
 
 risk-config:
   default-risk: critical

@@ -3,15 +3,14 @@
   "title": "WhatEnisAreAttachedToSg",
   "type": "object",
   "properties": {
-    "groupId": {
+    "canonicalId": {
       "type": "string"
     },
     "awsRegion": {
-      "type": "string",
-      "default": "us-east-1"
+      "type": "string"
     }
   },
   "required": [
-    "groupId"
+    "canonicalId"
   ]
 }

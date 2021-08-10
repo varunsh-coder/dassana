@@ -155,9 +155,12 @@ public class ContentManager implements ContentManagerApi {
 
     } else if (type.contentEquals(GENERAL_CONTEXT)) {
       workflow = new GeneralContext();
+      ((GeneralContext) workflow).setCsp(jsonObject.getString("csp"));
       ((GeneralContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
     } else if (type.contentEquals(RESOURCE_CONTEXT)) {
       workflow = new ResourceContext();
+      ((ResourceContext) workflow).setService(jsonObject.getString("service"));
+      ((ResourceContext) workflow).setResourceType(jsonObject.getString("resource-type"));
       ((ResourceContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
     } else {
       throw new IllegalArgumentException("Sorry, we do not recognize the workflow type ".concat(type));

@@ -1,9 +1,27 @@
 package app.dassana.core.resource.model;
 
 import app.dassana.core.risk.model.RiskConfig;
-import app.dassana.core.workflow.model.Workflow;
 
-public class ResourceContext extends Workflow {
+public class ResourceContext extends GeneralContext {
+
+  String service;
+  String resourceType;
+
+  public String getService() {
+    return service;
+  }
+
+  public void setService(String service) {
+    this.service = service;
+  }
+
+  public String getResourceType() {
+    return resourceType;
+  }
+
+  public void setResourceType(String resourceType) {
+    this.resourceType = resourceType;
+  }
 
   RiskConfig riskConfig;
 

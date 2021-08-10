@@ -28,27 +28,26 @@ public class App implements RequestHandler<Map<String, Object>, Response> {
     response.setResourceContainer(finding.getString("AwsAccountId"));
     response.setRegion(finding.getJSONArray("Resources").getJSONObject(0).getString("Region"));
     response.setService(Arn.fromString(response.getArn()).service());
-    ArnResource resource = Arn.fromString(response.getArn()).resource();
+    Arn arn = Arn.fromString(response.getArn());
+    ArnResource resource = arn.resource();
+
     String resourceType = "";
+    String resourceId = "";
     if (resource.resourceType().isPresent() && StringUtils.isNotBlank(resource.resourceType().get())) {
       resourceType = resource.resourceType().get();
+      resourceId = resource.resource();
     } else {
-      JSONArray resources = finding.optJSONArray("Resources");
-      if (resources != null) {
-        resourceType = resources.getJSONObject(0).getString("Type");
+
+      String[] arnElements = response.getArn().split(":");
+      String resourceInfo = arnElements[5];
+      if (resourceInfo.contains("/")) {
+        String[] resourceSplit = resourceInfo.split("/");
+        resourceType = resourceSplit[1];
+        resourceId = resourceSplit[2];
       }
+
     }
     response.setResourceType(resourceType);
-
-    String resourceId;
-
-    String[] arnElements = response.getArn().split(":");
-    resourceId = arnElements[arnElements.length - 1];
-
-    if (resourceId.contains("/")) {
-      String[] split = resourceId.split("/");
-      resourceId = split[1];
-    }
     response.setResourceId(resourceId);
 
     return response;

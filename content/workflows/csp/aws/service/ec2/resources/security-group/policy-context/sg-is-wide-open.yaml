@@ -7,6 +7,9 @@ labels:
 
 category: networking
 subcategory: firewall
+csp: aws
+service: ec2
+resource-type: security-group
 
 filters:
   - vendor: aws-config
@@ -15,15 +18,15 @@ filters:
       - vpc-sg-restricted-common-ports
     match-type: any
     rules:
-      # here workflowId refers to the normalizer workflowId which normalized the alert
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("sg-restricted-common-ports") )
+      # here normalizerId refers to the normalizer normalizerId which normalized the alert
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("sg-restricted-common-ports") )
   - vendor: prisma-cloud
     policies:
       - "617b9138-584b-4e8e-ad15-7fbabafbed1a"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "617b9138-584b-4e8e-ad15-7fbabafbed1a"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "617b9138-584b-4e8e-ad15-7fbabafbed1a"
 
 steps:
   - id: list-of-attached-eni

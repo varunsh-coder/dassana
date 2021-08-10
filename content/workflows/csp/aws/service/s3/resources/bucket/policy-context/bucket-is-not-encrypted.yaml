@@ -7,6 +7,9 @@ labels:
 
 category: cryptography
 subcategory: encryption
+csp: aws
+service: s3
+resource-type: bucket
 
 filters:
   - vendor: aws-config
@@ -15,14 +18,14 @@ filters:
       - "s3-bucket-server-side-encryption-enabled"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-default-encryption-kms"))
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-server-side-encryption-enabled"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-default-encryption-kms"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-server-side-encryption-enabled"))
   - vendor: prisma-cloud
     policies:
       - "7913fcbf-b679-5aac-d979-1b6817becb22"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "7913fcbf-b679-5aac-d979-1b6817becb22"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "7913fcbf-b679-5aac-d979-1b6817becb22"
 
 risk-config:
-  default-risk: medium
+  default-risk: ""

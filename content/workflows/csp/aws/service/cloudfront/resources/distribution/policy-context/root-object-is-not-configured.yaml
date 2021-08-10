@@ -7,6 +7,9 @@ labels:
 
 category: access-sharing
 subcategory: public-access
+csp: aws
+service: cloudfront
+resource-type: distribution
 
 filters:
   - vendor: aws-config
@@ -14,7 +17,7 @@ filters:
       - "cloudfront-default-root-object-configured"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
 
 risk-config:
   default-risk: critical

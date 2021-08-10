@@ -7,6 +7,9 @@ labels:
 
 category: iam
 subcategory: authorization
+csp: aws
+service: iam
+resource-type: user
 
 filter:
   vendors:
@@ -15,13 +18,13 @@ filter:
         - "iam-user-no-policies-check"
       match-type: any
       rules:
-        - .workflowId == "aws-config" and (.vendorPolicy |contains ("iam-user-no-policies-check"))
+        - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-user-no-policies-check"))
     - name: prisma-cloud
       policies:
         - "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
       match-type: any
       rules:
-        - .workflowId == "prisma-cloud" and .vendorPolicy == "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
+        - .normalizerId == "prisma-cloud" and .vendorPolicy == "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
 
 risk-config:
   default-risk: low

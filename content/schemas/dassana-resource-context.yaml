@@ -5,13 +5,31 @@ id: regex('[a-z0-9-]+$')
 name: str(required=False)
 labels: list(required=False)
 
-risk-config:
-  default-risk: enum('low', 'medium', 'high', 'critical', '')
-  rules: list(include('rule'), required=False)
+csp: enum('aws','demo-cloud')
+service: enum('s3', 'cloudfront', 'elasticloadbalancing', 'redshift', 'cloudtrail', 'iam', 'rds', 'ec2')
+resource-type: enum('bucket',
+  'distribution',
+  'loadbalancer',
+  'cluster',
+  'trail',
+  'user',
+  'policy',
+  'snapshot',
+  'instance',
+  'snapshot',
+  'security-group',
+  'flow-log',
+  'instance',
+  'flow-log',
+  'volume')
 
 filters: list(include('filter'))
 
 steps: list(include('step'), required=False)
+
+risk-config:
+  default-risk: enum('low', 'medium', 'high', 'critical', '')
+  rules: list(include('rule'), required=False)
 
 output: list(include('output'), required=False)
 ---
@@ -27,7 +45,7 @@ with:
 
 filter:
   match-type: enum('any', 'all')
-  rules: list(str())   
+  rules: list(str())
 
 rule:
   name: str()

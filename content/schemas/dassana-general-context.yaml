@@ -4,6 +4,7 @@ type: enum('general-context')
 id: regex('[a-z0-9-]+$')
 name: str(required=False)
 labels: list(required=False)
+csp: regex('[a-z0-9-]+$')
 
 risk-config:
   default-risk: enum('low', 'medium', 'high', 'critical', '')
@@ -27,7 +28,7 @@ with:
 
 filter:
   match-type: enum('any', 'all')
-  rules: list(str())   
+  rules: list(str())
 
 rule:
   name: str()

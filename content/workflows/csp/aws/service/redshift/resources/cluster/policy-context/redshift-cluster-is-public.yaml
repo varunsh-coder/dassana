@@ -7,6 +7,9 @@ labels:
 
 category: access-sharing
 subcategory: public-access
+csp: aws
+service: redshift
+resource-type: cluster
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "redshift-cluster-public-access-check"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
   - vendor: prisma-cloud
     policies:
       - "d65fd313-1c5c-42a1-98b2-a73bdeda19a6"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "d65fd313-1c5c-42a1-98b2-a73bdeda19a6"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "d65fd313-1c5c-42a1-98b2-a73bdeda19a6"
 
 risk-config:
   default-risk: critical

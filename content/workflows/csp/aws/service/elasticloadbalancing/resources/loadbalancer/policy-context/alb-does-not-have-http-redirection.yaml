@@ -7,6 +7,9 @@ labels:
 
 category: networking
 subcategory: firewall
+csp: aws
+service: elasticloadbalancing
+resource-type: loadbalancer
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "alb-http-to-https-redirection-check"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("alb-http-to-https-redirection-check"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("alb-http-to-https-redirection-check"))
   - vendor: prisma-cloud
     policies:
       - "81c50f65-faa1-4d66-b8e2-d26eaeb08447"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "81c50f65-faa1-4d66-b8e2-d26eaeb08447"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "81c50f65-faa1-4d66-b8e2-d26eaeb08447"
 
 risk-config:
   default-risk: medium

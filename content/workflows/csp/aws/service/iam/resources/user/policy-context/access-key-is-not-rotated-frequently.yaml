@@ -7,6 +7,9 @@ labels:
 
 category: iam
 subcategory: authentication
+csp: aws
+service: iam
+resource-type: user
 
 filters:
   - vendor: aws-config
@@ -14,13 +17,13 @@ filters:
       - "access-keys-rotated"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("access-keys-rotated"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("access-keys-rotated"))
   - vendor: prisma-cloud
     policies:
       - "6ea06abf-bfd3-49f2-9332-9aee02c31d58"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "6ea06abf-bfd3-49f2-9332-9aee02c31d58"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "6ea06abf-bfd3-49f2-9332-9aee02c31d58"
 
 risk-config:
   default-risk: medium

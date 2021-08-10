@@ -3,6 +3,8 @@ type: general-context
 id: general-context-aws
 name: General context + tag-based risk for AWS resources
 
+csp: aws
+
 filters:
   - match-type: all
     rules:

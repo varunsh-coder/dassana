@@ -7,6 +7,9 @@ labels:
 
 category: networking
 subcategory: firewall
+csp: aws
+service: ec2
+resource-type: flow-log
 
 filters:
   - vendor: aws-config
@@ -14,15 +17,15 @@ filters:
       - "ec2-instance-no-public-ip"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("ec2-instance-no-public-ip"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("ec2-instance-no-public-ip"))
   - vendor: prisma-cloud
     policies:
       - "0e44dabe-a8b9-401b-936b-bb8a0a80279a"
       - "ba9eeea6-782c-45aa-a953-f639582412c7"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "0e44dabe-a8b9-401b-936b-bb8a0a80279a"
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "ba9eeea6-782c-45aa-a953-f639582412c7"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "0e44dabe-a8b9-401b-936b-bb8a0a80279a"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "ba9eeea6-782c-45aa-a953-f639582412c7"
 
 risk-config:
   default-risk: high

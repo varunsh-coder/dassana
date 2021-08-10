@@ -7,6 +7,9 @@ labels:
 
 category: iam
 subcategory: authentication
+csp: aws
+service: iam
+resource-type: user
 
 filters:
   - vendor: aws-config
@@ -15,14 +18,14 @@ filters:
       - "mfa-enabled-for-iam-console-access"
     match-type: any
     rules:
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
-      - .workflowId == "aws-config" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
   - vendor: prisma-cloud
     policies:
       - "50af1c0a-ab70-44dd-b6f6-3529e795131f"
     match-type: any
     rules:
-      - .workflowId == "prisma-cloud" and .vendorPolicy == "50af1c0a-ab70-44dd-b6f6-3529e795131f"
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "50af1c0a-ab70-44dd-b6f6-3529e795131f"
 
 risk-config:
   default-risk: medium

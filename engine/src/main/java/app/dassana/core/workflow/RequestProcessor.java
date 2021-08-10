@@ -109,7 +109,7 @@ public class RequestProcessor {
     if (normalizationResult.isPresent()) {
       WorkflowOutputWithRisk normalizedWorkflowOutput = normalizationResult.get();
 
-      normalizedWorkflowOutput.getSimpleOutput().put("workflowId", normalizedWorkflowOutput.getWorkflowId());
+      normalizedWorkflowOutput.getSimpleOutput().put("normalizerId", normalizedWorkflowOutput.getWorkflowId());
 
       if (!request.isSkipGeneralContext()) {
         futureList.add(executorCompletionService
