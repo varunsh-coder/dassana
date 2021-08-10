@@ -33,7 +33,7 @@ steps:
     uses: WhatEnisAreAttachedToSg
     with:
       - name: canonicalId
-        value: .resourceId
+        value: .canonicalId
 
 risk-config:
   default-risk: high
