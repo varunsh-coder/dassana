@@ -104,7 +104,7 @@ jobs:
           mkdir content/general-context-tmp
           find content/workflows/csp/*/general-context -name "*.yaml" -exec cp "{}" ./content/general-context-tmp \;
 
-          mkdir content/policy-context
+          mkdir content/policy-context-tmp
           find content/workflows/csp/aws/service/*/resources/*/policy-context -name "*.yaml" -exec cp "{}" ./content/policy-context-tmp \;
 
       - name: Validating general context
