@@ -32,10 +32,8 @@ steps:
   - id: list-of-attached-eni
     uses: WhatEnisAreAttachedToSg
     with:
-      - name: groupId
+      - name: canonicalId
         value: .resourceId
-      - name: awsRegion
-        value: .region
 
 risk-config:
   default-risk: high
