@@ -21,7 +21,7 @@ Parameters:
     Default: ""
 
 Conditions:
-  CreaeteCrossAccountRole: !Not [!Equals [!Ref CrossAccountRoleName, ""]]
+  CreateCrossAccountRole: !Not [!Equals [!Ref CrossAccountRoleName, ""]]
 
 Resources:
   ### Begin Dassana Engine Resources ###
@@ -157,7 +157,7 @@ Resources:
             Version: "2012-10-17"
             Statement:
               - Fn::If:
-                  - CreaeteCrossAccountRole
+                  - CreateCrossAccountRole
                   - Effect: "Allow"
                     Action:
                       - "sts:AssumeRole"
@@ -173,19 +173,22 @@ Resources:
                   - !Sub arn:aws:s3:::${DassanaBucket}
               - Effect: Allow
                 Action:
+                  - cloudformation:Describe*
+                  - cloudformation:List*
+                  - cloudformation:Get*
+                  - logs:CreateLogGroup # todo: create a log group via this CFT and restrict access
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - lambda:InvokeFunction #todo: restrict lambda invocation permission to only Dasssana functions
+                  - lambda:GetFunction
+                Resource: "*"
+              - Effect: Allow
+                Action:
                   - sqs:SendMessage
                   - sqs:ReceiveMessage
                   - sqs:DeleteMessage
                   - sqs:GetQueueAttributes
-                  - cloudformation:Describe*
-                  - cloudformation:List*
-                  - cloudformation:Get*
-                  - logs:CreateLogGroup
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                  - lambda:InvokeFunction
-                  - lambda:GetFunction
-                Resource: "*"
+                Resource: !GetAtt DassanaInboundQueue.Arn
 
   DassanaInboundQueuePolicyForEventHub:
     Type: AWS::SQS::QueuePolicy
@@ -285,11 +288,15 @@ Resources:
         detail:
           findings:
             UserDefinedFields:
-              DASSANA_ALERT_PATH:
+              DASSANA_ALERT_PATH: # when Dassana updates the finding, SecurityHub generates BatchImportFinding event which will cause an infitinte loop so we check if the event we received is the one we actually generated
                 - exists: false
+            ProductArn:
+              - !Sub arn:aws:securityhub:${AWS::Region}::product/aws/securityhub
+              - !Sub arn:aws:securityhub:${AWS::Region}::product/aws/guardduty
             Compliance:
               Status:
                 - FAILED
+                - NOT_AVAILABLE
             RecordState:
               - ACTIVE
             Workflow:
