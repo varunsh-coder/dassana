@@ -11,20 +11,19 @@ csp: aws
 service: iam
 resource-type: user
 
-filter:
-  vendors:
-    - name: security-hub
-      policies:
-        - "iam-user-no-policies-check"
-      match-type: any
-      rules:
-        - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-user-no-policies-check"))
-    - name: prisma-cloud
-      policies:
-        - "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
-      match-type: any
-      rules:
-        - .normalizerId == "prisma-cloud" and .vendorPolicy == "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
+filters:
+  - vendor: aws-config
+    policies:
+      - "iam-user-no-policies-check"
+    match-type: any
+    rules:
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-user-no-policies-check"))
+  - vendor: prisma-cloud
+    policies:
+      - "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
+    match-type: any
+    rules:
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
 
 risk-config:
   default-risk: low

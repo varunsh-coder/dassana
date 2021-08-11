@@ -2,16 +2,15 @@ import json
 import unittest
 from unittest import TestCase
 
-from aws_lambda_powertools.utilities.typing import LambdaContext
+from dassana.common.aws_client import LambdaTestContext
 
 import handler
 
 
 class Test(TestCase):
-    # @unittest.SkipTest()
+    # enable it by commenting the line below2 for local testing only
+    @unittest.SkipTest
     def test_handle(self):
-        input_json = '{ "canonicalId":"arn:aws:ec2:us-east-1:363265257036:security-group/sg-04b9324dd3fd32ffd"}'
-        context = LambdaContext()
-        context.__setattr__(context.client_context, None)
-        result = handler.handle(json.loads(input_json), context)
+        input_json = '{"canonicalId": "arn:aws:ec2:us-east-1:363265257036:security-group/sg-0c78a9d8a495828ad"} '
+        result = handler.handle(json.loads(input_json), LambdaTestContext("foobar"))
         print(result)
