@@ -1,7 +1,7 @@
 schema: 1.0
 type: policy-context
-id: "cloudtrail-has-at-least-one-multi-region"
-name: "CloudTrail is not configured for all regions"
+id: cloudtrail-is-not-configured-for-all-regions
+name: CloudTrail is not configured for all regions
 labels:
   - contextualization
 

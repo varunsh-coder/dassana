@@ -21,7 +21,9 @@ resource-type: enum('bucket',
   'flow-log',
   'instance',
   'flow-log',
-  'volume')
+  'route-table',
+  'volume',
+  'cmk')
 
 filters: list(include('filter'))
 

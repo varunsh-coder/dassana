@@ -1,0 +1,23 @@
+schema: 1.0
+type: policy-context
+id: config-recording-not-enabled
+name: Config recording not enabled
+labels:
+  - contextualization
+
+category: visibility
+subcategory: logging
+csp: aws
+service: config
+resource-type: config-recorder
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - "ca5c571e-6930-44af-a47b-ebde3ac20ca5"
+    match-type: any
+    rules:
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "ca5c571e-6930-44af-a47b-ebde3ac20ca5"
+
+risk-config:
+  default-risk: medium

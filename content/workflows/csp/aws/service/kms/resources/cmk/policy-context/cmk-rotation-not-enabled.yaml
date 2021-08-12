@@ -1,0 +1,29 @@
+schema: 1.0
+type: policy-context
+id: cmk-rotation-not-enabled
+name: CMK rotation not enabled
+labels:
+  - contextualization
+
+category: cryptography
+subcategory: authentication
+csp: aws
+service: kms
+resource-type: cmk
+
+filters:
+  - vendor: aws-config
+    policies:
+      - "cmk-backing-key-rotation-enabled"
+    match-type: any
+    rules:
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cmk-backing-key-rotation-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - "497f7e2c-b702-47c7-9a07-f0f6404ac896"
+    match-type: any
+    rules:
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "497f7e2c-b702-47c7-9a07-f0f6404ac896"
+
+risk-config:
+  default-risk: medium

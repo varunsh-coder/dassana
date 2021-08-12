@@ -9,7 +9,7 @@ category: enum(DASSANA_CATEGORIES)
 subcategory: enum(DASSANA_SUBCATEGORIES)
 
 csp: enum('aws','demo-cloud')
-service: enum('s3', 'cloudfront', 'elasticloadbalancing', 'redshift', 'cloudtrail', 'iam', 'rds', 'ec2')
+service: enum('s3', 'cloudfront', 'elasticloadbalancing', 'redshift', 'cloudtrail', 'iam', 'rds', 'ec2', 'kms')
 resource-type: enum('bucket',
   'distribution',
   'loadbalancer',
@@ -24,7 +24,9 @@ resource-type: enum('bucket',
   'flow-log',
   'instance',
   'flow-log',
-  'volume')
+  'route-table',
+  'volume',
+  'cmk')
 
 filters: list(include('filter'))
 

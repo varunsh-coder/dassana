@@ -1,0 +1,29 @@
+schema: 1.0
+type: policy-context
+id: cloudtrail-encryption-not-enabled
+name: CloudTrail encryption not enabled
+labels:
+  - contextualization
+
+category: cryptography
+subcategory: encryption
+csp: aws
+service: cloudtrail
+resource-type: trail
+
+filters:
+  - vendor: aws-config
+    policies:
+      - "cloud-trail-encryption-enabled"
+    match-type: any
+    rules:
+      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cloud-trail-encryption-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - "c2b84f89-7ec8-473e-a6af-404feeeb96c5"
+    match-type: any
+    rules:
+      - .normalizerId == "prisma-cloud" and .vendorPolicy == "c2b84f89-7ec8-473e-a6af-404feeeb96c5"
+
+risk-config:
+  default-risk: medium
