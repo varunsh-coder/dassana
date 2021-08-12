@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "content/**"
+      - ".dassana-internal-devops/scripts/**"
     branches:
       - main
 jobs:
