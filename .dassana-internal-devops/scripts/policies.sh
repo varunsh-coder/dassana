@@ -3,5 +3,5 @@ do
   # yq -j eval $file | jq '.'
   yq -j eval $file | \
   jq --arg relpath "$file" \
-  '{policy: ., "rel-path": $relpath}'
+  '. + {"rel-path": $relpath}'
 done
