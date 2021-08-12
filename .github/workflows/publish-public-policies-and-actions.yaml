@@ -1,9 +1,6 @@
 name: Publish Publicly Facing Content
 on:
   push:
-    paths:
-      - "content/**"
-      - ".dassana-internal-devops/scripts/**"
     branches:
       - main
 jobs:
