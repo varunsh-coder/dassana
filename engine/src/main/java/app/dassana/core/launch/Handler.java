@@ -5,8 +5,6 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.workflow.RequestProcessor;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent.SQSMessage;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.aws.MicronautRequestHandler;
 import java.util.List;
@@ -36,7 +34,6 @@ public class Handler extends MicronautRequestHandler<SQSEvent, Void> {
 
     for (SQSMessage message : sqsMessages) {
       try {
-        checkValidJson(message);
         Request request = new Request(message.getBody());
 
         request.setQueueProcessing(true);
@@ -70,20 +67,6 @@ public class Handler extends MicronautRequestHandler<SQSEvent, Void> {
             .messageBody(jsonObject.toString())
             .build());
 
-
-  }
-
-  private void checkValidJson(SQSMessage message) {
-
-    try {
-      ObjectMapper mapper = new ObjectMapper();
-      mapper.readValue(message.getBody(), JsonNode.class);
-    } catch (Exception e) {
-      throw new RuntimeException(
-          String.format("Dassana Engine can only process JSON input, input sent was %s",
-              message.getBody()));
-
-    }
 
   }
 

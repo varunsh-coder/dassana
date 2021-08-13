@@ -22,6 +22,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.micronaut.core.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -45,6 +47,7 @@ public class ContentManager implements ContentManagerApi {
 
   private final RemoteContentDownloadApi contentDownloader;
   private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
+  Map<String, String> workflowIdToYamlContext = new HashMap<>();
   private long lastUpdated = 0;
 
   public static final String POLICY_CONTEXT = "policy-context";
@@ -64,6 +67,9 @@ public class ContentManager implements ContentManagerApi {
     processDir(new File(embeddedContentPath));
   }
 
+  public Map<String, String> getWorkflowIdToYamlContext() {
+    return workflowIdToYamlContext;
+  }
 
   RiskConfig getRiskConfig(JSONObject workFlowJson) {
 
@@ -108,7 +114,7 @@ public class ContentManager implements ContentManagerApi {
 
   }
 
-  Workflow getWorkflow(JSONObject jsonObject) {
+  public Workflow getWorkflow(JSONObject jsonObject) {
     Workflow workflow = new Workflow();
 
     String type = jsonObject.optString("type");
@@ -266,12 +272,17 @@ public class ContentManager implements ContentManagerApi {
 
   }
 
-  private void processWorkFlowFile(File file) throws IOException {
-    logger.debug("Processing workflow file {}", file.getAbsolutePath());
-    String content = new String(Files.readAllBytes(Paths.get(file.getPath())));
+
+  private String processWorkFlowFile(Optional<File> file, String workflowYamlStr) throws IOException {
+
+    if (file.isPresent()) {
+      File fileToProcess = file.get();
+      logger.debug("Processing workflow file {}", fileToProcess.getAbsolutePath());
+      workflowYamlStr = new String(Files.readAllBytes(Paths.get(fileToProcess.getPath())));
+    }
 
     ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-    Object obj = yamlReader.readValue(content, Object.class);
+    Object obj = yamlReader.readValue(workflowYamlStr, Object.class);
     ObjectMapper jsonWriter = new ObjectMapper();
     String json = jsonWriter.writeValueAsString(obj);
 
@@ -280,6 +291,7 @@ public class ContentManager implements ContentManagerApi {
     Workflow workflow = getWorkflow(jsonObject);
     workflowSet.remove(workflow);
     workflowSet.add(workflow);
+    return workflow.getId();
 
   }
 
@@ -337,7 +349,10 @@ public class ContentManager implements ContentManagerApi {
           processDir(file);
         } else {
           try {
-            processWorkFlowFile(file);
+            String workFlowId = processWorkFlowFile(Optional.of(file), "");
+            String readFileToString = FileUtils.readFileToString(file, Charset.defaultCharset());
+            workflowIdToYamlContext.put(workFlowId, readFileToString);
+
           } catch (Exception e) {
             fileToExceptionMap.put(file.getName(), e);
             logger.warn("{} will be skipped due to error ", file, e);
@@ -373,13 +388,19 @@ public class ContentManager implements ContentManagerApi {
   }
 
   @Override
-  public Set<Workflow> getWorkflowSet(Request request) {
+  public Set<Workflow> getWorkflowSet(Request request) throws Exception {
     syncRemoteContent(lastUpdated, request);
+    //add the additional workflow if available
+    if (StringUtils.isNotEmpty(request.getAdditionalWorkflowYaml())) {
+      processWorkFlowFile(Optional.empty(), request.getAdditionalWorkflowYaml());
+
+    }
+
     return workflowSet;
   }
 
   @Override
-  public Map<String, Workflow> getWorkflowIdToWorkflowMap(Request request) {
+  public Map<String, Workflow> getWorkflowIdToWorkflowMap(Request request) throws Exception {
 
     Map<String, Workflow> map = new HashMap<>();
     getWorkflowSet(request).forEach(workflow -> map.put(workflow.getId(), workflow));

@@ -1,7 +1,7 @@
 package app.dassana.core.rule;
 
+import app.dassana.core.util.JsonyThings;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Singleton;
@@ -10,6 +10,7 @@ import net.thisptr.jackson.jq.JsonQuery;
 import net.thisptr.jackson.jq.Scope;
 import net.thisptr.jackson.jq.Version;
 import net.thisptr.jackson.jq.Versions;
+import net.thisptr.jackson.jq.exception.JsonQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +20,21 @@ public class RuleMatch {
   private static final Logger logger = LoggerFactory.getLogger(RuleMatch.class);
 
   Scope rootScope = Scope.newEmptyScope();
-  private static final ObjectMapper MAPPER = new ObjectMapper();
 
 
   public RuleMatch() {
     BuiltinFunctionLoader.getInstance().loadFunctions(Versions.JQ_1_6, rootScope);
+  }
+
+  public boolean isValidRule(String rule) {
+    try {
+      JsonQuery.compile(rule, Version.LATEST);
+    } catch (JsonQueryException e) {
+      return false;
+    }
+
+    return true;
+
   }
 
 
@@ -58,7 +69,7 @@ public class RuleMatch {
     try {
       AtomicBoolean result = new AtomicBoolean(false);
       JsonQuery jsonQuery = JsonQuery.compile(rule, Version.LATEST);
-      JsonNode in = MAPPER.readTree(jsonObj);
+      JsonNode in = JsonyThings.MAPPER.readTree(jsonObj);
       Scope childScope = Scope.newChildScope(rootScope);
       jsonQuery.apply(childScope, in, jsonNode -> result.set(jsonNode.asBoolean()));
       return result.get();

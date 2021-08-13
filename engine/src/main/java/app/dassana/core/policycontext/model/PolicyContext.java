@@ -1,17 +1,15 @@
 package app.dassana.core.policycontext.model;
 
-import app.dassana.core.risk.model.RiskConfig;
-import app.dassana.core.workflow.model.Workflow;
+import app.dassana.core.resource.model.GeneralContext;
 import app.dassana.core.workflow.model.VendorFilter;
 import java.util.Collections;
 import java.util.List;
 
-public class PolicyContext extends Workflow {
+public class PolicyContext extends GeneralContext {
 
   String category = "";
   String subCategory = "";
 
-  RiskConfig riskConfig;
   List<VendorFilter> vendorFilters;
 
   public String getCategory() {
@@ -30,13 +28,6 @@ public class PolicyContext extends Workflow {
     this.subCategory = subCategory;
   }
 
-  public RiskConfig getRiskConfig() {
-    return riskConfig;
-  }
-
-  public void setRiskConfig(RiskConfig riskConfig) {
-    this.riskConfig = riskConfig;
-  }
 
   public List<VendorFilter> getVendorFilters() {
     return vendorFilters;

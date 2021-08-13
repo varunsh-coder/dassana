@@ -25,6 +25,36 @@ Conditions:
 
 Resources:
   ### Begin Dassana Engine Resources ###
+  OptionsMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      RestApiId:
+        Ref: ApiGatewayRestApi
+      ResourceId:
+        Ref: ProxyApiResource
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,x-api-key'"
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS,GET'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            ResponseTemplates:
+              application/json: ""
+        PassthroughBehavior: WHEN_NO_MATCH
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - StatusCode: 200
+          ResponseModels:
+            application/json: "Empty"
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: false
+            method.response.header.Access-Control-Allow-Methods: false
+            method.response.header.Access-Control-Allow-Origin: false
 
   ApiGatewayRestApi:
     Type: AWS::ApiGateway::RestApi
@@ -36,12 +66,12 @@ Resources:
           - REGIONAL
       Name: !Join ["", [{ "Ref": "AWS::StackName" }, "-api"]]
 
-  DebugApiResource:
+  ProxyApiResource:
     Type: "AWS::ApiGateway::Resource"
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
       ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
-      PathPart: "debug"
+      PathPart: "{proxy+}"
 
   ApiGatewayModel:
     Type: AWS::ApiGateway::Model
@@ -60,7 +90,7 @@ Resources:
 
   ApiUsagePlan:
     Type: "AWS::ApiGateway::UsagePlan"
-    DependsOn: ProxyResourcePOST
+    DependsOn: ProxyResource
     Properties:
       ApiStages:
         - ApiId: !Ref ApiGatewayRestApi
@@ -70,7 +100,7 @@ Resources:
 
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
-    DependsOn: ProxyResourcePOST
+    DependsOn: ProxyResource
     Properties:
       Description: Lambda API Deployment
       RestApiId: !Ref ApiGatewayRestApi
@@ -98,15 +128,25 @@ Resources:
       KeyType: API_KEY
       UsagePlanId: !Ref ApiUsagePlan
 
-  ProxyResourcePOST:
+  MockMethod:
     Type: "AWS::ApiGateway::Method"
     Properties:
       RestApiId: !Ref ApiGatewayRestApi
-      ResourceId: !Ref DebugApiResource
-      HttpMethod: POST
+      ResourceId: !GetAtt ApiGatewayRestApi.RootResourceId
+      HttpMethod: OPTIONS
+      AuthorizationType: NONE
+      Integration:
+        Type: MOCK
+
+  ProxyResource:
+    Type: "AWS::ApiGateway::Method"
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      ResourceId: !Ref ProxyApiResource
+      HttpMethod: ANY
       ApiKeyRequired: true
       AuthorizationType: NONE
-      OperationName: !Ref DebugApiResource
+      OperationName: !Ref ProxyApiResource
       Integration:
         Type: AWS_PROXY
         IntegrationHttpMethod: POST
@@ -213,7 +253,8 @@ Resources:
   DassanaInboundQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: DassanaInboundQueue
+      QueueName:
+        !Join ["", [{ "Ref": "AWS::StackName" }, "-DassanaInboundQueue"]]
       VisibilityTimeout: 300
       RedrivePolicy:
         deadLetterTargetArn:
@@ -225,12 +266,14 @@ Resources:
   DassanaOutboundQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: DassanaOutboundQueue
+      QueueName:
+        !Join ["", [{ "Ref": "AWS::StackName" }, "-DassanaOutboundQueue"]]
 
   DassanaDeadLetterQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: DassanaDeadLetterQueue
+      QueueName:
+        !Join ["", [{ "Ref": "AWS::StackName" }, "-DassanaDeadLetterQueue"]]
 
   DassanaEngineJavaLayer:
     Type: AWS::Serverless::LayerVersion
@@ -582,7 +625,7 @@ Resources:
 
 Outputs:
   ApiGatewayEndpoint:
-    Description: DassanaApiGatewayEndpointUrl
-    Value: !Sub "https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/"
+    Description: Api Gateway URL that you can use provide to workflow editor to manage and debug your workflows
+    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ApiGatewayStage}
     Export:
       Name: DassanaApiGatewayEndpointUrl

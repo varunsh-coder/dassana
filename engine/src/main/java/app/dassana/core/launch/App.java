@@ -28,6 +28,8 @@ public class App {
     queryParams.put("skipS3Upload", "false");
 
     apiGatewayProxyRequestEvent.setQueryStringParameters(queryParams);
+    apiGatewayProxyRequestEvent.setHttpMethod("post");
+    apiGatewayProxyRequestEvent.setPath("/run");
 
     APIGatewayProxyResponseEvent responseEvent = apiHandler.execute(apiGatewayProxyRequestEvent);
     if (responseEvent.getStatusCode() != 200) {

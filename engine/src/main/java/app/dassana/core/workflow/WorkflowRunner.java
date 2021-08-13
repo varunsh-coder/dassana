@@ -3,13 +3,12 @@ package app.dassana.core.workflow;
 import app.dassana.core.contentmanager.ContentManagerApi;
 import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
-import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
-import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.eval.RiskEvalRequest;
 import app.dassana.core.risk.eval.RiskEvaluator;
 import app.dassana.core.risk.model.Risk;
 import app.dassana.core.risk.model.RiskConfig;
+import app.dassana.core.util.JsonyThings;
 import app.dassana.core.workflow.model.Output;
 import app.dassana.core.workflow.model.Step;
 import app.dassana.core.workflow.model.ValueType;
@@ -38,7 +37,6 @@ import net.thisptr.jackson.jq.JsonQuery;
 import net.thisptr.jackson.jq.Scope;
 import net.thisptr.jackson.jq.Version;
 import net.thisptr.jackson.jq.Versions;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,12 +77,8 @@ public class WorkflowRunner {
 
     Map<String, Object> stepToOutPutMap = new HashMap<>();
     JSONObject jsonObject;
-    try {
-      jsonObject = new JSONObject(jsonToUse);
-    } catch (JSONException e) {
-      throw new IllegalArgumentException("Dassana Engine can only process JSON objects, please ensure input is a "
-          + "valid json");
-    }
+    JsonyThings.throwExceptionIfNotValidJsonObj(jsonToUse);
+    jsonObject = new JSONObject(jsonToUse);
 
     //let's find out applicable workflows
     Set<Workflow> candidates = new HashSet<>();
@@ -178,29 +172,17 @@ public class WorkflowRunner {
       }
       //handle risk
 
-      if (workflow instanceof GeneralContext
-          || workflow instanceof ResourceContext
-          || workflow instanceof PolicyContext) {
-
+      if (workflow instanceof GeneralContext) {
         RiskConfig riskConfig;
-        if (workflow instanceof GeneralContext) {
-          var resPriWorkflow = (GeneralContext) workflow;
-          riskConfig = resPriWorkflow.getRiskConfig();
-        } else if (workflow instanceof PolicyContext) {
-          var resPriWorkflow = (PolicyContext) workflow;
-          riskConfig = resPriWorkflow.getRiskConfig();
-        } else {
-          var resourceContext = (ResourceContext) workflow;
-          riskConfig = resourceContext.getRiskConfig();
-        }
-
+        var resPriWorkflow = (GeneralContext) workflow;
+        riskConfig = resPriWorkflow.getRiskConfig();
         workflowOutputWithRisk
             .setRisk(getRisk(workflow, riskConfig, workflowOutputWithRisk, simpleOutput));
       }
 
-      //add workflowId to the simple output so that filters can access it even though it may not be defined in the
+    /*  //add workflowId to the simple output so that filters can access it even though it may not be defined in the
       // output section
-      simpleOutput.put("workflowId", workflow.getId());
+      simpleOutput.put("workflowId", workflow.getId());*/
       workflowOutputWithRisk.setSimpleOutput(getSimpleOutput(workflowOutPut, workflow));
       return Optional.of(workflowOutputWithRisk);
 

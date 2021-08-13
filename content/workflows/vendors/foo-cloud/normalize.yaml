@@ -10,28 +10,28 @@ filters:
       - .badThingJustHappened.description | contains ("fubar")
 
 steps:
-  - id: demo-resource-info
+  - id: resource-info
     uses: DemoCloudNormalizer
 
 output:
   - name: alertId
-    value: ."demo-resource-info".alertId
+    value: ."resource-info".alertId
   - name: canonicalId
-    value: ."demo-resource-info".canonicalId
+    value: ."resource-info".canonicalId
   - name: vendorPolicy
-    value: ."demo-resource-info".vendorPolicy
+    value: ."resource-info".vendorPolicy
   - name: csp
-    value: ."demo-resource-info".csp
+    value: ."resource-info".csp
   - name: resourceContainer
-    value: ."demo-resource-info".resourceContainer
+    value: ."resource-info".resourceContainer
   - name: region
-    value: ."demo-resource-info".region
+    value: ."resource-info".region
   - name: service
-    value: ."demo-resource-info".service
+    value: ."resource-info".service
   - name: resourceType
-    value: ."demo-resource-info".resourceType
+    value: ."resource-info".resourceType
   - name: resourceId
-    value: ."demo-resource-info".resourceId
+    value: ."resource-info".resourceId
 
 output-queue:
   enabled: true

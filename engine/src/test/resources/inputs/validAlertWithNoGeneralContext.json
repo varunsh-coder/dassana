@@ -1,0 +1,8 @@
+{
+  "badThingJustHappened": {
+    "description": "fubar"
+  },
+  "test-hint": {
+    "resource-info": "responses/just-normalization.json"
+  }
+}

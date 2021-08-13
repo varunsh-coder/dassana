@@ -26,12 +26,62 @@ public class Helper {
         Charset.defaultCharset());
   }
 
-
-  public String executeApi(String inputJsonStr, boolean includeInputRequest) {
+  private APIGatewayProxyRequestEvent getApiGatewayProxyRequestEvent(Map<String, String> parameters) {
     APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent = new APIGatewayProxyRequestEvent();
-
-    apiGatewayProxyRequestEvent.setBody(inputJsonStr);
+    if (parameters != null && parameters.size() > 0) {
+      apiGatewayProxyRequestEvent.setQueryStringParameters(parameters);
+    }
     apiGatewayProxyRequestEvent.setIsBase64Encoded(false);
+    return apiGatewayProxyRequestEvent;
+  }
+
+
+  public String executeValidateApi(String inputJsonStr) {
+
+    APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent = getApiGatewayProxyRequestEvent(null);
+    apiGatewayProxyRequestEvent.setPath("/validate");
+    apiGatewayProxyRequestEvent.setBody(inputJsonStr);
+    apiGatewayProxyRequestEvent.setHttpMethod("post");
+
+    ApiHandler apiHandler = new ApiHandler();
+    APIGatewayProxyResponseEvent responseEvent = apiHandler.execute(apiGatewayProxyRequestEvent);
+    if (responseEvent.getStatusCode() != 200) {
+      throw new RuntimeException(responseEvent.getBody());
+    }
+
+    return responseEvent.getBody();
+
+  }
+
+
+  public APIGatewayProxyResponseEvent executeRunApiGet(Map<String, String> parameters) {
+
+    APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent = getApiGatewayProxyRequestEvent(parameters);
+    apiGatewayProxyRequestEvent.setHttpMethod("get");
+    apiGatewayProxyRequestEvent.setPath("/run");
+    ApiHandler apiHandler = new ApiHandler();
+    return apiHandler.execute(apiGatewayProxyRequestEvent);
+  }
+
+  public String executeRunApi(String inputJsonStr, Map<String, String> parameters) {
+
+    APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent = getApiGatewayProxyRequestEvent(parameters);
+    apiGatewayProxyRequestEvent.setBody(inputJsonStr);
+    apiGatewayProxyRequestEvent.setPath("/run");
+    apiGatewayProxyRequestEvent.setHttpMethod("post");
+    ApiHandler apiHandler = new ApiHandler();
+    APIGatewayProxyResponseEvent responseEvent = apiHandler.execute(apiGatewayProxyRequestEvent);
+    if (responseEvent.getStatusCode() != 200) {
+      throw new RuntimeException(responseEvent.getBody());
+    }
+    return responseEvent.getBody();
+  }
+
+  //todo: use builder pattern
+  Map<String, String> getQueryParams(boolean skipGeneralContext,
+      boolean skipResourceContext,
+      boolean skipPolicyContext,
+      boolean skipS3Upload, boolean includeInputRequest) {
 
     Map<String, String> queryParams = new HashMap<>();
     queryParams.put(API_PARAM_SKIP_GENERAL_CONTEXT, "false");
@@ -44,19 +94,9 @@ public class Helper {
       queryParams.put(API_INCLUDE_INPUT_REQUEST, "false");
     }
 
-    apiGatewayProxyRequestEvent.setQueryStringParameters(queryParams);
+    return queryParams;
 
-    ApiHandler apiHandler = new ApiHandler();
-    APIGatewayProxyResponseEvent responseEvent = apiHandler.execute(apiGatewayProxyRequestEvent);
-    if (responseEvent.getStatusCode() != 200) {
-      throw new RuntimeException(responseEvent.getBody());
-    }
-    return responseEvent.getBody();
   }
 
-
-  public String executeApi(String inputJsonStr) throws IOException {
-    return executeApi(inputJsonStr, false);
-  }
 
 }

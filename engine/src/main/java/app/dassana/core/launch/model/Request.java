@@ -10,6 +10,7 @@ public class Request {
   private boolean skipPolicyContext;
   private boolean skipS3Upload;
   private boolean refreshFromS3;
+  private String additionalWorkflowYaml;
 
   //engine specific
   private boolean queueProcessing;
@@ -22,6 +23,15 @@ public class Request {
 
   public boolean isRefreshFromS3() {
     return refreshFromS3;
+  }
+
+
+  public String getAdditionalWorkflowYaml() {
+    return additionalWorkflowYaml;
+  }
+
+  public void setAdditionalWorkflowYaml(String additionalWorkflowYaml) {
+    this.additionalWorkflowYaml = additionalWorkflowYaml;
   }
 
   public void setRefreshFromS3(boolean refreshFromS3) {

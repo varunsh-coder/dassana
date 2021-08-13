@@ -1,4 +1,7 @@
 {
+  "test-hint": {
+    "resource-info": "responses/normalization.json"
+  },
   "detail-type": "Security Hub Findings - Imported",
   "source": "aws.securityhub",
   "time": "2021-07-14T03:54:44Z",

@@ -297,7 +297,7 @@ public class RequestProcessor {
       WorkflowOutputWithRisk normalizationOutput,
       Optional<WorkflowOutputWithRisk> policyContextWorkflowOutput,
       Optional<WorkflowOutputWithRisk> resourceContextWorkflowOutput,
-      Optional<WorkflowOutputWithRisk> generalContextWorkflowOutput) {
+      Optional<WorkflowOutputWithRisk> generalContextWorkflowOutput) throws Exception {
 
     CombinedRisk combinedRisk = new CombinedRisk();
 
