@@ -1,5 +1,7 @@
 # Under active development. DO NOT USE. 
 
+[![IaC](https://app.soluble.cloud/api/v1/public/badges/64563abd-191f-4960-8724-1812db5fa34d.svg)](https://app.soluble.cloud/repos/details/github.com/dassana-io/dassana)  
+
 
 [![Generic badge](https://img.shields.io/badge/license-apache2.0-green.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Generic badge](https://img.shields.io/badge/docs-blue.svg)](https://docs.dassana.io/) [![Coverage Status](https://coveralls.io/repos/github/dassana-io/dassana/badge.svg?branch=main)](https://coveralls.io/github/dassana-io/dassana?branch=main)
 
