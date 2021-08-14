@@ -248,6 +248,7 @@
         </executions>
         <configuration>
           <excludes>
+            <exclude>app/dassana/core/launch/**</exclude>
             <exclude>app/dassana/core/workflow/infra/**</exclude>
             <exclude>app/dassana/core/api/PingHandler.class</exclude>
             <exclude>app/dassana/core/client/infra/**</exclude>
