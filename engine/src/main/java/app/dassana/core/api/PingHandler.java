@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import javax.inject.Singleton;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
-import software.amazon.awssdk.utils.IoUtils;
 
 @Singleton
 public class PingHandler {
@@ -44,14 +45,27 @@ public class PingHandler {
   }
 
 
-  String getLatestVersion() throws IOException {
-    try (InputStream outputStream = con.getInputStream()) {
-      String response = IoUtils.toUtf8String(outputStream);
-      JSONObject jsonObject = new JSONObject(response);
-      return jsonObject.getString("tag_name");
+  private String getLatestVersion() throws IOException {
 
+    JSONObject jsonObject = new JSONObject(getServerResponse(con.getInputStream()));
+    return jsonObject.getString("tag_name");
+
+
+  }
+
+  private String getServerResponse(InputStream inputStream) throws IOException {
+    try {
+      return IOUtils.toString(inputStream, Charset.defaultCharset());
+    } catch (IOException e) {
+      if (e.getMessage().contains("stream is closed")) {
+        con = (HttpURLConnection) url.openConnection();
+        return IOUtils.toString(con.getInputStream(), Charset.defaultCharset());
+      } else {
+        throw new RuntimeException(e);
+      }
     }
 
   }
+
 
 }
