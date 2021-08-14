@@ -172,6 +172,7 @@ Resources:
           dassanaDeadLetterQueue: !Ref DassanaDeadLetterQueue
           dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
           dassanaBucket: !Ref DassanaBucket
+          version: __version-to-be-replaced-by-cicd__
 
   DassanaBucket:
     Type: "AWS::S3::Bucket"
@@ -628,4 +629,4 @@ Outputs:
     Description: Api Gateway URL that you can use provide to workflow editor to manage and debug your workflows
     Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ApiGatewayStage}
     Export:
-      Name: DassanaApiGatewayEndpointUrl
+      Name: !Join ["", [{ "Ref": "AWS::StackName" }, "ApiUrl"]]

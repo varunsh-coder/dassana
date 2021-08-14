@@ -19,7 +19,7 @@
     <jdk.version>11</jdk.version>
     <release.version>11</release.version>
     <micronaut.version>2.5.11</micronaut.version>
-    <aws-sdk-version>2.17.8</aws-sdk-version>
+    <aws-sdk-version>2.17.19</aws-sdk-version>
   </properties>
 
   <repositories>
@@ -35,7 +35,6 @@
 
     The order of the dependencies is -
 
-    Business layer (Dassana rule engine etc)
     Utilities (Json processing etc)
     Infra Layer (AWS SDK)
     Framework (Micronaut)
@@ -44,16 +43,6 @@
     Core Java
 
     -->
-
-    <!-- Begin Dassana dependencies -->
-
-    <dependency>
-      <groupId>app.dassana</groupId>
-      <artifactId>rule-engine</artifactId>
-      <version>1.9.0</version>
-    </dependency>
-
-    <!-- End Dassana dependencies -->
 
     <!-- Begin Json related dependencies -->
 
@@ -69,12 +58,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.jayway.jsonpath</groupId>
-      <artifactId>json-path</artifactId>
-      <version>2.6.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20210307</version>
@@ -87,6 +70,26 @@
     </dependency>
 
     <!-- End Json related dependencies -->
+
+    <!-- ping related  -->
+    <dependency>
+      <groupId>com.vdurmont</groupId>
+      <artifactId>semver4j</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+
+    <!-- apache common thingys -->
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.11.0</version>
+    </dependency>
 
 
     <!-- Begin AWS dependencies -->
@@ -106,6 +109,11 @@
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>lambda</artifactId>
       <version>${aws-sdk-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-lambda-java-events</artifactId>
+      <version>3.9.0</version>
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
@@ -241,6 +249,7 @@
         <configuration>
           <excludes>
             <exclude>app/dassana/core/workflow/infra/**</exclude>
+            <exclude>app/dassana/core/api/PingHandler.class</exclude>
             <exclude>app/dassana/core/client/infra/**</exclude>
             <exclude>app/dassana/core/contentmanager/infra/**</exclude>
             <exclude>app/dassana/core/launch/App.class</exclude>

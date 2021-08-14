@@ -3,19 +3,17 @@ package app.dassana.core.launch;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.io.IOUtils;
+import software.amazon.awssdk.utils.IoUtils;
 
 public class App {
 
   public static void main(String[] args) throws IOException {
 
     ApiHandler apiHandler = new ApiHandler();
-    String event = IOUtils
-        .toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("TestEvent.json"),
-            Charset.defaultCharset());
+    String event = IoUtils
+        .toUtf8String(Thread.currentThread().getContextClassLoader().getResourceAsStream("TestEvent.json"));
     APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent = new APIGatewayProxyRequestEvent();
 
     apiGatewayProxyRequestEvent.setBody(event);

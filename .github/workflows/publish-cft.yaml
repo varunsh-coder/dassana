@@ -15,8 +15,8 @@ jobs:
         run: echo "GIT_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: '11'
+          distribution: "adopt"
+          java-version: "11"
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -26,15 +26,17 @@ jobs:
       - uses: aws-actions/setup-sam@v1
       - uses: actions/setup-python@v2
         with:
-            python-version: '3.7'
-      - run: |
-             cd content/pkg
-             sam build --cached --parallel --use-container
-             cd ../../engine
-             mvn  -ntp -B clean compile -DkskipTests
-             cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngine/
-             cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngineApi/
-             cd ../content/pkg
-             tag=`git describe --tags`
-             sam package -t .aws-sam/build/template.yaml --s3-bucket ${{ secrets.SAM_ARTIFACTS_BUCKET }}  --s3-prefix $tag --region ${{ secrets.AWS_REGION }} --output-template-file uploaded-template.yaml
-             aws s3 cp uploaded-template.yaml s3://${{ secrets.SAM_ARTIFACTS_BUCKET }}/$tag/cft.yaml
+          python-version: "3.7"
+      - name: pack it up!
+        run: |
+          cd content/pkg
+          sam build --cached --parallel --use-container
+          cd ../../engine
+          mvn  -ntp -B clean compile -DkskipTest
+          cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngine/
+          cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngineApi/
+          cd ../content/pkg
+          tag=`git describe --tags`
+          sam package -t .aws-sam/build/template.yaml --s3-bucket ${{ secrets.SAM_ARTIFACTS_BUCKET }}  --s3-prefix $tag --region ${{ secrets.AWS_REGION }} --output-template-file uploaded-template.yaml
+          sed -i 's/__version-to-be-replaced-by-cicd__/$tag/g' uploaded-template.yaml
+          aws s3 cp uploaded-template.yaml s3://${{ secrets.SAM_ARTIFACTS_BUCKET }}/$tag/cft.yaml

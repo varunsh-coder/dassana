@@ -5,6 +5,7 @@ import static app.dassana.core.contentmanager.ContentManager.NORMALIZE;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.RESOURCE_CONTEXT;
 
+import app.dassana.core.api.PingHandler;
 import app.dassana.core.contentmanager.ContentManager;
 import app.dassana.core.launch.model.Message;
 import app.dassana.core.launch.model.ProcessingResponse;
@@ -58,6 +59,8 @@ public class ApiHandler extends
   @Inject RequestProcessor requestProcessor;
   @Inject Gson gson;
   @Inject RuleMatch ruleMatch;
+  @Inject PingHandler pingHandler;
+
   @Inject ContentManager contentManager; //todo: not a good idea to inject an implementation
 
   private static final Logger logger = LoggerFactory.getLogger(ApiHandler.class);
@@ -180,7 +183,8 @@ public class ApiHandler extends
           return gatewayProxyResponseEvent;
         }
       } else if (input.getPath().startsWith("/ping")) {
-        gatewayProxyResponseEvent.setBody("watermelon sugar high");
+        gatewayProxyResponseEvent.setBody(gson.toJson(pingHandler.getPingResponse()));
+
       } else if (input.getPath().startsWith("/validate")) {
         ValidationResult validationResult = handleValidate(
             getRequestFromQueryParam(input.getQueryStringParameters(), inputJson));
