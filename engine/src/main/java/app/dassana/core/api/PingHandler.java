@@ -59,6 +59,7 @@ public class PingHandler {
     } catch (IOException e) {
       if (e.getMessage().contains("stream is closed")) {
         con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
         return IOUtils.toString(con.getInputStream(), Charset.defaultCharset());
       } else {
         throw new RuntimeException(e);
