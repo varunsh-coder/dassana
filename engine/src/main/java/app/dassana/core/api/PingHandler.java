@@ -3,28 +3,24 @@ package app.dassana.core.api;
 import app.dassana.core.launch.model.PingResponse;
 import com.vdurmont.semver4j.Semver;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.Charset;
 import javax.inject.Singleton;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 
 @Singleton
 public class PingHandler {
 
-  URL url = new URL("https://api.github.com/repos/dassana-io/dassana/releases/latest");
-  HttpURLConnection con;
-
-  public PingHandler() throws IOException {
-    con = (HttpURLConnection) url.openConnection();
-    con.setRequestMethod("GET");
-  }
+  CloseableHttpClient httpClient = HttpClients.createDefault();
 
 
   public PingResponse getPingResponse() throws IOException {
-    String latestVersion = getLatestVersion();
+    String latestVersionJsonResponse = getLatestVersion();
+    String latestVersion = new JSONObject(latestVersionJsonResponse).getString("tag_name");
     String currentVersion = System.getenv().get("version");
     PingResponse pingResponse = new PingResponse();
     pingResponse.setLatestVersion(latestVersion);
@@ -46,27 +42,16 @@ public class PingHandler {
 
 
   private String getLatestVersion() throws IOException {
-
-    JSONObject jsonObject = new JSONObject(getServerResponse(con.getInputStream()));
-    return jsonObject.getString("tag_name");
-
-
-  }
-
-  private String getServerResponse(InputStream inputStream) throws IOException {
-    try {
-      return IOUtils.toString(inputStream, Charset.defaultCharset());
-    } catch (IOException e) {
-      if (e.getMessage().contains("stream is closed")) {
-        con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        return IOUtils.toString(con.getInputStream(), Charset.defaultCharset());
+    HttpGet request = new HttpGet("https://api.github.com/repos/dassana-io/dassana/releases/latest");
+    try (CloseableHttpResponse response = httpClient.execute(request)) {
+      if (response.getStatusLine().getStatusCode() == 200) {
+        return IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());
       } else {
-        throw new RuntimeException(e);
+        throw new RuntimeException(
+            "Github API failed :( with response code ".concat(response.getStatusLine().getReasonPhrase()));
       }
+
     }
-
   }
-
 
 }
