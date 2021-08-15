@@ -24,10 +24,10 @@ module.exports = {
 			disableSwitch: true
 		},
 		hideableSidebar: true,
-		// algolia: {
-		// 	apiKey: 'YOUR_API_KEY',
-		// 	indexName: 'YOUR_INDEX_NAME'
-		// },
+		algolia: {
+			apiKey: '55a0aff7668a72fee6d0c38474863f60',
+			indexName: 'dassana'
+		},
 		navbar: {
 			logo: {
 				alt: 'Dassana Logo',
