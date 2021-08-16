@@ -13,8 +13,7 @@ author:
   name: dassana
   email: support@dassana.io
 compatible-type:
-  - policy-context
   - general-context
 labels:
-  - policy-context
+  - general-context
   - securityhub
