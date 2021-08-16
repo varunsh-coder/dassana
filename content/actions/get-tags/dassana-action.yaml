@@ -12,8 +12,7 @@ license:
 author:
   name: dassana
   email: support@dassana.io
-compatible-type:
-  - general-context
+compatible-type: general-context
 labels:
   - general-context
   - securityhub
