@@ -14,7 +14,7 @@ license:
 author:
   name: dassana
   email: support@dassana.io
-compatible-type: policy-context
+compatible-type: resource-context
 labels:
-  - policy-context
+  - resource-context
   - securityhub
