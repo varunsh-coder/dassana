@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "redshift-cluster-is-public"
-name: "Redshift cluster is public"
+
+id: redshift-cluster-is-public
+name: Redshift cluster is public
 labels:
   - contextualization
 
-category: access-sharing
-subcategory: public-access
 csp: aws
 service: redshift
 resource-type: cluster
+
+class: risk
+subclass: config
+category: access-sharing
+subcategory: public-access
 
 filters:
   - vendor: aws-config

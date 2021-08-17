@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "alb-does-not-have-http-redirection"
-name: "ALB allows http connections without https redirection"
+
+id: alb-does-not-have-http-redirection
+name: ALB allows http connections without https redirection
 labels:
   - contextualization
 
-category: networking
-subcategory: firewall
 csp: aws
 service: elasticloadbalancing
 resource-type: loadbalancer
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
 
 filters:
   - vendor: aws-config

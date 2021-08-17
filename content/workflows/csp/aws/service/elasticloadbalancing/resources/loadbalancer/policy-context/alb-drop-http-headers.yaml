@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "alb-drop-http-headers"
-name: "ALB is not configured to drop http headers"
+
+id: alb-drop-http-headers
+name: ALB is not configured to drop http headers
 labels:
   - contextualization
 
-category: networking
-subcategory: firewall
 csp: aws
 service: elasticloadbalancing
 resource-type: loadbalancer
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
 
 filters:
   - vendor: aws-config

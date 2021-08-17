@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "load-balancer-logging-is-not-enabled"
-name: "ALB and ELB do not have logging enabled"
+
+id: load-balancer-logging-is-not-enabled
+name: ALB and ELB do not have logging enabled
 labels:
   - contextualization
 
-category: visibility
-subcategory: logging
 csp: aws
 service: elasticloadbalancing
 resource-type: loadbalancer
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
 
 filters:
   - vendor: aws-config

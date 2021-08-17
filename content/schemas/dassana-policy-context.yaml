@@ -5,9 +5,6 @@ id: regex('[a-z0-9-]+$')
 name: str(required=False)
 labels: list(required=False)
 
-category: enum(DASSANA_CATEGORIES)
-subcategory: enum(DASSANA_SUBCATEGORIES)
-
 csp: enum('aws','demo-cloud')
 service: enum('s3', 'cloudfront', 'elasticloadbalancing', 'redshift', 'cloudtrail', 'iam', 'rds', 'ec2', 'kms')
 resource-type: enum('bucket',
@@ -27,6 +24,11 @@ resource-type: enum('bucket',
   'route-table',
   'volume',
   'cmk')
+
+class: str()
+subclass: str()
+category: str()
+subcategory: str(required=False)
 
 filters: list(include('filter'))
 

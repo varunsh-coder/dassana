@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
+
 id: config-recording-not-enabled
 name: Config recording not enabled
 labels:
   - contextualization
 
-category: visibility
-subcategory: logging
 csp: aws
 service: config
 resource-type: config-recorder
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
 
 filters:
   - vendor: prisma-cloud

@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
+
 id: security-group-wide-open
 name: Security group is wide open
 labels:
   - contextualization
 
-category: networking
-subcategory: firewall
 csp: aws
 service: ec2
 resource-type: security-group
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
 
 filters:
   - vendor: aws-config

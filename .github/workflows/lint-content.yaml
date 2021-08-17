@@ -22,16 +22,6 @@ jobs:
       - name: Set Dassana Variables
         id: dassana-variables
         run: |
-          DASSANA_CATEGORIES=`yq -j e content/schemas/categories.yaml | jq -r 'keys | @csv'`
-          echo 'DASSANA_CATEGORIES<<EOF' >> $GITHUB_ENV
-          echo $DASSANA_CATEGORIES >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
-          DASSANA_SUBCATEGORIES=`yq -j e content/schemas/categories.yaml | jq -r '. as $root | keys | .[] | $root[.]' | jq -r -s 'flatten | @csv'`
-          echo 'DASSANA_SUBCATEGORIES<<EOF' >> $GITHUB_ENV
-          echo $DASSANA_SUBCATEGORIES >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-
           DASSANA_ACTIONS=`find content/actions -name "*.yaml" | xargs -I {} yq -j e {} | jq --sort-keys '.["id"]' | jq -r -s '. | @csv'`
           echo 'DASSANA_ACTIONS<<EOF' >> $GITHUB_ENV
           echo $DASSANA_ACTIONS >> $GITHUB_ENV
@@ -41,19 +31,6 @@ jobs:
           echo 'DASSANA_VENDORS<<EOF' >> $GITHUB_ENV
           echo $DASSANA_VENDORS >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
-      - name: Find and Replace categories dassana-policy-context.yaml
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: "DASSANA_CATEGORIES"
-          replace: ${{ env.DASSANA_CATEGORIES }}
-          include: content/schemas/dassana-policy-context.yaml
-      - name: Find and Replace subcategories in dassana-policy-context.yaml
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: "DASSANA_SUBCATEGORIES"
-          replace: ${{ env.DASSANA_SUBCATEGORIES }}
-          include: content/schemas/dassana-policy-context.yaml
       - name: Find and Replace vendors in dassana-policy-context.yaml
         uses: jacobtomlinson/gha-find-replace@master
         with:

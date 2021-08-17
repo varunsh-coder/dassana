@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "mfa-disabled-for-iam-users"
-name: "MFA is disabled for IAM user"
+
+id: mfa-disabled-for-iam-users
+name: MFA is disabled for IAM user
 labels:
   - contextualization
 
-category: iam
-subcategory: authentication
 csp: aws
 service: iam
 resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
 
 filters:
   - vendor: aws-config

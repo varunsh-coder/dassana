@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
+
 id: bucket-logging-not-enabled
 name: Bucket logging not enabled
 labels:
   - contextualization
 
-category: visibility
-subcategory: logging
 csp: aws
 service: s3
 resource-type: bucket
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
 
 filters:
   - vendor: aws-config

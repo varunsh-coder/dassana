@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "bucket-is-public"
-name: "S3 bucket is made public through public access block"
+
+id: bucket-is-public
+name: S3 bucket is made public through public access block
 labels:
   - contextualization
 
-category: access-sharing
-subcategory: public-access
 csp: aws
 service: s3
 resource-type: bucket
+
+class: risk
+subclass: config
+category: access-sharing
+subcategory: public-access
 
 filters:
   - vendor: aws-config

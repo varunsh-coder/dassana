@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
+
 id: logs-validation-not-enabled-in-all-regions
 name: Logs validation not enabled in all regions
 labels:
   - contextualization
 
-category: visibility
-subcategory: logging
 csp: aws
 service: cloudtrail
 resource-type: trail
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
 
 filters:
   - vendor: aws-config

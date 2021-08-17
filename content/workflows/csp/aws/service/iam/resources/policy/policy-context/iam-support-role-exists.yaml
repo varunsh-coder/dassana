@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "iam-support-role-exists"
-name: "IAM Support Role Exists"
+
+id: iam-support-role-exists
+name: IAM Support Role Exists
 labels:
   - contextualization
 
-category: iam
-subcategory: authorization
 csp: aws
 service: iam
 resource-type: policy
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
 
 filters:
   - vendor: aws-config

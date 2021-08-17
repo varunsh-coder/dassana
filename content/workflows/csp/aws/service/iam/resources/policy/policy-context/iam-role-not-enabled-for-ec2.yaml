@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "iam-role-not-enabled-for-ec2"
-name: "EC2 instance IAM role not enabled"
+
+id: iam-role-not-enabled-for-ec2
+name: EC2 instance IAM role not enabled
 labels:
   - contextualization
 
-category: iam
-subcategory: authorization
 csp: aws
 service: iam
 resource-type: policy
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
 
 filters:
   - vendor: prisma-cloud

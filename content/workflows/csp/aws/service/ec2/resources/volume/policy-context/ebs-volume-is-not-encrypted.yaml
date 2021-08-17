@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "ebs-volume-is-not-encrypted"
-name: "EBS snapshot is public"
+
+id: ebs-volume-is-not-encrypted
+name: EBS snapshot is public
 labels:
   - contextualization
 
-category: cryptography
-subcategory: encryption
 csp: aws
 service: ec2
 resource-type: volume
+
+class: risk
+subclass: config
+category: cryptography
+subcategory: encryption
 
 filters:
   - vendor: aws-config

@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "hardware-mfa-disabled-on-root-account"
-name: "Hardware MFA is disabled for root account"
+
+id: hardware-mfa-disabled-on-root-account
+name: Hardware MFA is disabled for root account
 labels:
   - contextualization
 
-category: iam
-subcategory: authentication
 csp: aws
 service: iam
 resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
 
 filters:
   - vendor: aws-config

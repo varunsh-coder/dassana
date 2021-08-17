@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "bucket-has-broad-access-permissions"
-name: "S3 bucket is configured with an overly broad ACL"
+
+id: bucket-has-broad-access-permissions
+name: S3 bucket is configured with an overly broad ACL
 labels:
   - contextualization
 
-category: access-sharing
-subcategory: public-access
 csp: aws
 service: s3
 resource-type: bucket
+
+class: risk
+subclass: config
+category: access-sharing
+subcategory: public-access
 
 filters:
   - vendor: aws-config

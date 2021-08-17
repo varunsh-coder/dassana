@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "elb-tls-is-misconfigured"
-name: "ELB is not securely configured with SSL listeners"
+
+id: elb-tls-is-misconfigured
+name: ELB is not securely configured with SSL listeners
 labels:
   - contextualization
 
-category: cryptography
-subcategory: ssl
 csp: aws
 service: elasticloadbalancing
 resource-type: loadbalancer
+
+class: risk
+subclass: config
+category: cryptography
+subcategory: ssl
 
 filters:
   - vendor: aws-config

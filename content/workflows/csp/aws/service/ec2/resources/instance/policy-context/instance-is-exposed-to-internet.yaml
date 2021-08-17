@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "instance-is-exposed-to-internet"
-name: "EC2 instance is exposed to the internet"
+
+id: instance-is-exposed-to-internet
+name: EC2 instance is exposed to the internet
 labels:
   - contextualization
 
-category: networking
-subcategory: firewall
 csp: aws
 service: ec2
 resource-type: flow-log
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
 
 filters:
   - vendor: aws-config

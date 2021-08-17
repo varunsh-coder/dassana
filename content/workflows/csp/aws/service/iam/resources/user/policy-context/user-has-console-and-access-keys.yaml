@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "user-has-console-and-access-keys"
-name: "user has console and access keys"
+
+id: user-has-console-and-access-keys
+name: user has console and access keys
 labels:
   - contextualization
 
-category: iam
-subcategory: authorization
 csp: aws
 service: iam
 resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
 
 risk-config:
   default-risk: medium

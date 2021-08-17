@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "rds-instance-is-public"
-name: "RDS instance is public"
+
+id: rds-instance-is-public
+name: RDS instance is public
 labels:
   - contextualization
 
-category: access-sharing
-subcategory: public-access
 csp: aws
 service: rds
 resource-type: instance
+
+class: risk
+subclass: config
+category: access-sharing
+subcategory: public-access
 
 filters:
   - vendor: aws-config

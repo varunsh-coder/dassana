@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
+
 id: cloudtrail-encryption-not-enabled
 name: CloudTrail encryption not enabled
 labels:
   - contextualization
 
-category: cryptography
-subcategory: encryption
 csp: aws
 service: cloudtrail
 resource-type: trail
+
+class: risk
+subclass: config
+category: cryptography
+subcategory: encryption
 
 filters:
   - vendor: aws-config

@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
+
 id: cmk-rotation-not-enabled
 name: CMK rotation not enabled
 labels:
   - contextualization
 
-category: cryptography
-subcategory: authentication
 csp: aws
 service: kms
 resource-type: cmk
+
+class: risk
+subclass: config
+category: cryptography
+subcategory: authentication
 
 filters:
   - vendor: aws-config

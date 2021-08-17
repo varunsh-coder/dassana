@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "access-key-is-not-rotated-frequently"
-name: "IAM user's access keys are not rotated frequently"
+
+id: access-key-is-not-rotated-frequently
+name: IAM user's access keys are not rotated frequently
 labels:
   - contextualization
 
-category: iam
-subcategory: authentication
 csp: aws
 service: iam
 resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
 
 filters:
   - vendor: aws-config

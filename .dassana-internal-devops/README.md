@@ -15,13 +15,9 @@ find and replace relevant DASSANA_XYZ variables within schema files,
 which are wired as env variables as part of `dassana-variables` step in the validate-schema job.
 
 The following variables have been wired:
-1. DASSANA_CATEGORIES
-All root level fields defined in categories.yaml
-2. DASSANA_SUBCATEGORIES
-All subroot level fields defined in categories.yaml
-3. DASSANA_ACTIONS
+1. DASSANA_ACTIONS
 ALl function-names fetched from action.yamls under content/actions
-4. DASSANA_VENDORS
+2. DASSANA_VENDORS
 ALl vendor-names fetched from *.yamls under vendors
 ### validate-content-dir-and-file-structure
 This job uses [ls-lint](https://ls-lint.org/) to ensure directories and files follow the proper conventions which

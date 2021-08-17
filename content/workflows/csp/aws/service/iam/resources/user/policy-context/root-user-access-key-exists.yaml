@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "root-user-access-key-exists"
-name: "IAM root user access key exists"
+
+id: root-user-access-key-exists
+name: IAM root user access key exists
 labels:
   - contextualization
 
-category: iam
-subcategory: authentication
 csp: aws
 service: iam
 resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
 
 filters:
   - vendor: aws-config

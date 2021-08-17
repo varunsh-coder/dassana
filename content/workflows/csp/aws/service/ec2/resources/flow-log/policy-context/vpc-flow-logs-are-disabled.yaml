@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "vpc-flow-logs-are-disabled"
-name: "VPC flow logs are disabled"
+
+id: vpc-flow-logs-are-disabled
+name: VPC flow logs are disabled
 labels:
   - contextualization
 
-category: visibility
-subcategory: logging
 csp: aws
 service: ec2
 resource-type: flow-log
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
 
 filters:
   - vendor: aws-config

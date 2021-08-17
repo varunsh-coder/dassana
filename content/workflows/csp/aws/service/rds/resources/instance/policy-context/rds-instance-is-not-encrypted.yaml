@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "rds-instance-is-not-encrypted"
-name: "RDS instance is not encrypted"
+
+id: rds-instance-is-not-encrypted
+name: RDS instance is not encrypted
 labels:
   - contextualization
 
-category: cryptography
-subcategory: encryption
 csp: aws
 service: rds
 resource-type: instance
+
+class: risk
+subclass: config
+category: cryptography
+subcategory: encryption
 
 filters:
   - vendor: aws-config

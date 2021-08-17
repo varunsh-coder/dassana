@@ -1,5 +1,6 @@
 schema: 1.0
 type: normalize
+
 vendor-name: prisma-cloud
 id: prisma-cloud
 

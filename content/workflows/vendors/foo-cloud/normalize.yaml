@@ -1,5 +1,6 @@
 schema: 1.0
 type: normalize
+
 vendor-name: foo-cloud
 id: foo-cloud-normalize
 

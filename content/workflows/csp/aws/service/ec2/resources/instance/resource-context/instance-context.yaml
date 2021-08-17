@@ -1,7 +1,8 @@
 schema: 1.0
 type: resource-context
+
 id: ec2-instance-context
-name: Ec2 instance general context
+name: EC2 instance general context
 
 csp: aws
 service: ec2

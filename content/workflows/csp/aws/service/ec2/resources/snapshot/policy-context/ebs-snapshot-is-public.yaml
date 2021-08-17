@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "ebs-snapshot-is-public"
-name: "EBS snapshot is public"
+
+id: ebs-snapshot-is-public
+name: EBS snapshot is public
 labels:
   - contextualization
 
-category: access-sharing
-subcategory: public-access
 csp: aws
 service: ec2
 resource-type: snapshot
+
+class: risk
+subclass: config
+category: access-sharing
+subcategory: public-access
 
 filters:
   - vendor: aws-config

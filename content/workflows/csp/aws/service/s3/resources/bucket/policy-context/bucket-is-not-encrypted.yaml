@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "bucket-is-not-encrypted"
-name: "S3 bucket is not encrypted"
+
+id: bucket-is-not-encrypted
+name: S3 bucket is not encrypted
 labels:
   - contextualization
 
-category: cryptography
-subcategory: encryption
 csp: aws
 service: s3
 resource-type: bucket
+
+class: risk
+subclass: config
+category: cryptography
+subcategory: encryption
 
 filters:
   - vendor: aws-config

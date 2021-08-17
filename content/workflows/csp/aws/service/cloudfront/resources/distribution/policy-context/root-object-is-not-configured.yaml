@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "root-object-is-not-configured"
-name: "CloudFront distribution is not configured to return default root object"
+
+id: root-object-is-not-configured
+name: CloudFront distribution is not configured to return default root object
 labels:
   - contextualization
 
-category: access-sharing
-subcategory: public-access
 csp: aws
 service: cloudfront
 resource-type: distribution
+
+class: risk
+subclass: config
+category: access-sharing
+subcategory: public-access
 
 filters:
   - vendor: aws-config

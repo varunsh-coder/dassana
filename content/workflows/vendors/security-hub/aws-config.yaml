@@ -1,5 +1,6 @@
 schema: 1.0
 type: normalize
+
 vendor-name: aws-config
 id: aws-config
 

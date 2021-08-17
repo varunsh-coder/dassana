@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
+
 id: vpc-route-table-is-overly-permissive
 name: VPC route table is overly permissive
 labels:
   - contextualization
 
-category: networking
-subcategory: firewall
 csp: aws
 service: ec2
 resource-type: route-table
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
 
 filters:
   - vendor: prisma-cloud

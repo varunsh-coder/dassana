@@ -1,15 +1,19 @@
 schema: 1.0
 type: policy-context
-id: "requests-do-not-use-ssl"
-name: "S3 bucket requests do not use SSL"
+
+id: requests-do-not-use-ssl
+name: S3 bucket requests do not use SSL
 labels:
   - contextualization
 
-category: networking
-subcategory: firewall
 csp: aws
 service: s3
 resource-type: bucket
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
 
 filters:
   - vendor: aws-config
