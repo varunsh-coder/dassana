@@ -17,8 +17,6 @@ which are wired as env variables as part of `dassana-variables` step in the vali
 The following variables have been wired:
 1. DASSANA_ACTIONS
 ALl function-names fetched from action.yamls under content/actions
-2. DASSANA_VENDORS
-ALl vendor-names fetched from *.yamls under vendors
 ### validate-content-dir-and-file-structure
 This job uses [ls-lint](https://ls-lint.org/) to ensure directories and files follow the proper conventions which
 are defined in .dassana-internal-devops/.ls-lint.yml

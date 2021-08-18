@@ -1,7 +1,7 @@
 schema: 1.0
 type: normalize
 
-vendor-name: guardduty-via-securityhub
+vendor-id: guardduty
 id: aws-gd-via-security-hub
 
 filters:

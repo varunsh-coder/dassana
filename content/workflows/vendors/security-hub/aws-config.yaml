@@ -1,7 +1,7 @@
 schema: 1.0
 type: normalize
 
-vendor-name: aws-config
+vendor-id: aws-config
 id: aws-config
 
 filters:

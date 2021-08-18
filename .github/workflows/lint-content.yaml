@@ -26,17 +26,6 @@ jobs:
           echo 'DASSANA_ACTIONS<<EOF' >> $GITHUB_ENV
           echo $DASSANA_ACTIONS >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
-
-          DASSANA_VENDORS=`find content/workflows/vendors -name "*.yaml" | xargs -I {} yq -j e {} | jq --sort-keys '.["vendor-name"]' | jq -r -s '. | @csv'`
-          echo 'DASSANA_VENDORS<<EOF' >> $GITHUB_ENV
-          echo $DASSANA_VENDORS >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
-      - name: Find and Replace vendors in dassana-policy-context.yaml
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: "DASSANA_VENDORS"
-          replace: ${{ env.DASSANA_VENDORS }}
-          include: content/schemas/dassana-policy-context.yaml
       - name: Find and Replace actions in dassana-vendor.yaml
         uses: jacobtomlinson/gha-find-replace@master
         with:
@@ -61,9 +50,6 @@ jobs:
           find: "DASSANA_ACTIONS"
           replace: ${{ env.DASSANA_ACTIONS }}
           include: content/schemas/dassana-policy-context.yaml
-      - name: Check change
-        run: |
-          ls content/schemas/** | xargs cat
       - name: Validating actions
         uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
         with:

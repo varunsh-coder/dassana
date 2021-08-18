@@ -52,7 +52,7 @@ with:
   value-type: enum('string', 'jsonpath', 'macro', required=False)
 
 filter:
-  vendor: enum(DASSANA_VENDORS)
+  vendor: str()
   policies: list(str(), required=False)
   rules: list(str())
   match-type: enum('any', 'all')

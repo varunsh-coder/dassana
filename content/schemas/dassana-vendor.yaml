@@ -1,7 +1,7 @@
 schema: enum(1.0)
 type: enum('normalize')
 
-vendor-name: enum('aws-config','foo-cloud', 'prisma-cloud','guardduty-via-securityhub')
+vendor-id: enum('aws-config','foo-cloud', 'prisma-cloud', 'guardduty')
 id: regex('[a-z0-9-]+$')
 name: str(required=False)
 labels: list(required=False)

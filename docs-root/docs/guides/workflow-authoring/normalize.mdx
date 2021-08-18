@@ -6,19 +6,18 @@ This is the first workflow which gets run and its output is sent to all of the w
 
 Here is an example of how AWS security hub alerts are normalized.
 
-```yaml title="content/workflows/vendors/security-hub/security-hub.yaml"
+```yaml title="content/workflows/vendors/security-hub/aws-config.yaml"
 schema: 1.0
 type: normalize
-vendor-name: security-hub
-id: security-hub
+
+vendor-id: aws-config
+id: aws-config
 
 filters:
     - match-type: all
       rules:
           - |
-              .detail and .detail.findings
-          - |
-              any(.detail.findings[];.ProductFields.StandardsGuideArn |contains ("arn:aws:securityhub"))
+              .detail and .detail.findings and (.detail.findings[].ProductFields.StandardsGuideArn or .detail.findings[].ProductFields.StandardsArn )
 
 steps:
     - id: resource-info
@@ -76,9 +75,9 @@ import Output from '../../common-fields/workflows/output.md'
 
 Always `normalize` for this kind of workflow.
 
-### `vendor-name`
+### `vendor-id`
 
-Security vendor name. A complete list of supported vendors can be found [here](https://github.com/dassana-io/dassana/tree/main/content/workflows/vendors).
+Security vendor id. A complete list of supported vendors can be found [here](https://github.com/dassana-io/dassana/tree/main/content/schemas/vendors/vendor-list.yaml).
 
 ### `id`
 
