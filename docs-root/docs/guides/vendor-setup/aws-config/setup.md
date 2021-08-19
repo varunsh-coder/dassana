@@ -1,20 +1,16 @@
-# SecurityHub
+# AWS Config
 
 :::info
-SecurityHub is natively integrated in Dassana! you don't have to do anything. Below section is a tutorial
+
+AWS Config (via Security Hub) is natively integrated in Dassana! You don't have to do anything.
+
 :::
 
 ---
 
-## Fixing noisy "security group open to the internet" alerts
+## Tutorial
 
-In this section, we will create a security group that is open on the inbound SSH port. This will result in an alert being created in Security Hub because the `securityhub-restricted-ssh` policy will be noncompliant. This alert will automatically get picked up and processed by Dassana.
-
-:::note
-
-You must have both AWS Config and AWS Security Hub enabled.
-
-:::
+In this section, we will create a security group that is open on the inbound SSH port. This will result in an AWS Config alert being created in Security Hub because the `securityhub-restricted-ssh` policy will be noncompliant. This alert will automatically get picked up and processed by Dassana.
 
 ## Creating a security group
 

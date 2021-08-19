@@ -1,8 +1,14 @@
 # Updating Dassana
 
-Updating Dassana simply means updating the CloudFormation stack you have deployed.
-Simply visit the [installation page](https://docs.dassana.io/docs/getting-started/installation) and click on `Launch Stack`.
+The Dassana team and community are hard at work publishing regular updates, including new actions and more workflows to help you stay on top of your alerts.
 
-:::info
-You must use the same `Stack name` that you uses during initial deployment. If you change stack name, a new stack will be created
-:::
+Updating Dassana to the latest and greatest version is dead simple.
+
+1. In the AWS console, navigate to the CloudFormation service.
+2. Click on the Dassana stack you deployed.
+3. Click on the `Update` button on the top right.
+4. Select `Replace current template`.
+5. For the `Template source`, select `Amazon S3 URL` and enter the following `https://s3.amazonaws.com/dassana-prod-oss-public.dassana.io/latest/cft.yaml`.
+6. Click next until the final page, select `I acknowledge` for all the checkboxes, and `Update stack`.
+
+Easy peasy 🍋 squeezy.

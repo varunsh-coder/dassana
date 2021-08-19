@@ -35,7 +35,7 @@ Workflows are configurable processes written using YAML. There are four types of
 
 The engine first runs the normalize workflow. Then it runs all three context workflows in parallel. Every workflow can have steps that call [actions](#actions).
 
-#### Normalize workflow
+#### Normalize
 
 import Normalization from '../getting-started/concepts/normalization.md'
 
@@ -53,11 +53,17 @@ If Dassana does not support the security vendor you use, you can add support by 
 
 :::
 
-#### General context workflow
+#### General Context
 
 import GeneralContext from '../getting-started/concepts/general-context.md'
 
 <GeneralContext />
+
+:::info
+
+To view all the general context workflows supported by Dassana, go [here](https://contexthub.dassana.io/?explore=workflows&workflow=general-context#explore).
+
+:::
 
 :::note
 
@@ -65,13 +71,25 @@ To configure your tagging logic and accompanying risk, see this [guide](/docs/gu
 
 :::
 
-#### Resource context workflow
+#### Resource Context
 
 import ResourceContext from '../getting-started/concepts/resource-context.md'
 
 <ResourceContext />
 
-#### Policy context workflow
+:::info
+
+To view all the resoure context workflows supported by Dassana, go [here](https://contexthub.dassana.io/?explore=workflows&workflow=resource-context#explore).
+
+:::
+
+:::note
+
+To configure your tagging logic and accompanying risk, see this [guide](/docs/guides/workflow-authoring/general-context).
+
+:::
+
+#### Policy Context
 
 import PolicyContext from '../getting-started/concepts/policy-context.md'
 
@@ -79,7 +97,7 @@ import PolicyContext from '../getting-started/concepts/policy-context.md'
 
 :::info
 
-To view a complete list of security policies supported by Dassana, go [here](https://policyhub.dassana.io/details/policies).
+To view a complete list of security policies supported by Dassana, go [here](https://contexthub.dassana.io/?explore=workflows&workflow=policy-context#explore).
 
 :::
 
@@ -97,7 +115,7 @@ import Actions from '../common-fields/actions/about.md'
 
 :::info
 
-To view a complete list of actions supported by Dassana, go [here](https://policyhub.dassana.io/details/context).
+To view a complete list of actions supported by Dassana, go [here](https://contexthub.dassana.io/?explore=actions#explore).
 
 :::
 

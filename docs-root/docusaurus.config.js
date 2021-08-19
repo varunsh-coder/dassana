@@ -58,8 +58,8 @@ module.exports = {
 							to: 'https://oss.dassana.io/'
 						},
 						{
-							label: 'Policy Hub',
-							href: 'https://policyhub.dassana.io/'
+							label: 'Context Hub',
+							href: 'https://contexthub.dassana.io/'
 						},
 						{
 							label: 'GitHub',

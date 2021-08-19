@@ -44,7 +44,8 @@ module.exports = {
 					type: 'category',
 					label: 'Vendor Setup',
 					items: [
-						'guides/vendor-setup/security-hub/setup',
+						'guides/vendor-setup/aws-config/setup',
+						'guides/vendor-setup/guardduty/setup',
 						'guides/vendor-setup/prisma-cloud/setup',
 						'guides/vendor-setup/adding-vendors'
 					]
