@@ -1,0 +1,19 @@
+schema: 1.0
+id: WhatIsEc2Exposure
+name: What is EC2 instance's exposure to the internet
+
+cloud-type: aws
+service: ec2
+resource-type: instance
+
+runs-on: aws-lambda
+
+license:
+  url: https://www.apache.org/licenses/LICENSE-2.0
+  id: Apache
+author:
+  name: dassana
+  email: support@dassana.io
+compatible-type: policy-context
+labels:
+  - policy-context

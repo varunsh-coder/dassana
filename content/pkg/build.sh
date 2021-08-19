@@ -1,5 +1,5 @@
 set -eu
-sam build --cached --parallel --region $2
+sam build --cached --parallel --region $2 --use-container
 cd ../../engine
 mvn process-resources -DkskipTests
 cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngine/content/

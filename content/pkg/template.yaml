@@ -585,6 +585,17 @@ Resources:
       Role:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
+  WhatIsEc2Exposure:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/what-is-exposure-of-ec2-instance
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [DassanaActionsRole, Arn]
+      Timeout: 60
   DemoCloudNormalizer:
     Type: AWS::Serverless::Function
     Properties:

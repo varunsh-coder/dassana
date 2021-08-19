@@ -28,10 +28,7 @@ class DassanaAwsObject(object):
         self._session = Session()
 
     def create_aws_client(self, context: LambdaContext, service, region: str) -> client:
-
-
-        if context is None or context.client_context is None or context.client_context.custom is None or len(
-                context.client_context.custom.keys()) == 0:
+        if context is None or context.client_context is None or context.client_context.custom is None or len(context.client_context.custom) == 0:
             return self._session.client(service, region)
         else:
             access_key = context.client_context.custom.get('AWS_ACCESS_KEY_ID')
