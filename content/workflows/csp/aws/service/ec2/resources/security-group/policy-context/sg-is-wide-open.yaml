@@ -46,10 +46,10 @@ steps:
         value: .canonicalId
 
 risk-config:
-  default-risk: high
+  default-risk: ''
   rules:
     - name: are-enis-attached-to-sg
-      #in the below condition, we are checking if the step with id "list-of-attached-eni" has a key with nameed 'result' and its value (array size) has length 0
+      #in the below condition, we are checking if the step with id "list-of-attached-eni" has a key with nameed 'result' and its value (array size) has length > 0
       # i.e. we are checking if ENIs are attached to the security group or not
-      condition: ."list-of-attached-eni".result| length == 0
-      risk: low
+      condition: ."list-of-attached-eni".result| length > 0
+      risk: high
