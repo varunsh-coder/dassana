@@ -207,4 +207,4 @@ We recommend you checkout [examples](https://github.com/dassana-io/rule-engine/b
 
 ## What's next?
 
-Checkout some of the [vendor integrations](../guides/vendor-setup/security-hub/setup.md) to process some real alerts this time. Or, if you hungry, order a pizza 🍕 with pineapple 🍍
+Checkout some of the [vendor integrations](../guides/vendor-setup/aws-config/setup.md) to process some real alerts this time. Or, if you hungry, order a pizza 🍕 with pineapple 🍍
