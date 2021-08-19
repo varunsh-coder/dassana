@@ -1,0 +1,26 @@
+aws:
+  cloudfront:
+    - distribution
+  cloudtrail:
+    - trail
+  ec2:
+    - flow-log
+    - instance
+    - route-table
+    - security-group
+    - snapshot
+    - volume
+  elasticloadbalancing:
+    - loadbalancer
+  iam:
+    - policy
+    - user
+  kms:
+    - cmk
+  rds:
+    - instance
+    - snapshot
+  redshift:
+    - cluster
+  s3:
+    - bucket
