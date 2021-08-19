@@ -19,7 +19,6 @@ import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
 import app.dassana.core.resource.model.ResourceContext;
-import app.dassana.core.risk.model.Risk;
 import app.dassana.core.rule.RuleMatch;
 import app.dassana.core.util.JsonyThings;
 import app.dassana.core.util.StringyThings;
@@ -136,8 +135,8 @@ public class ApiHandler extends
 
         if (workflowOutputWithRisk.isPresent()) {
           WorkflowOutputWithRisk outputWithRisk = workflowOutputWithRisk.get();
-          outputWithRisk.setStepOutput(null);
-          outputWithRisk.setWorkflowId(null);
+          outputWithRisk.setStepOutput(outputWithRisk.getStepOutput());
+          outputWithRisk.setWorkflowId(outputWithRisk.getWorkflowId());
           return gson.toJson(outputWithRisk);
         } else {//this shouldn't happen but still to be safe..
           return "{}";
