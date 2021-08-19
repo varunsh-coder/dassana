@@ -6,16 +6,16 @@ import java.util.Map;
 
 public class WorkflowOutput {
 
-  Map<String, Object> simpleOutput;
+  Map<String, Object> output;
   List<Map<String, Object>> stepOutput;
   String workflowId;
 
-  public Map<String, Object> getSimpleOutput() {
-    return simpleOutput;
+  public Map<String, Object> getOutput() {
+    return output;
   }
 
-  public void setSimpleOutput(Map<String, Object> simpleOutput) {
-    this.simpleOutput = simpleOutput;
+  public void setOutput(Map<String, Object> output) {
+    this.output = output;
   }
 
   public String getWorkflowId() {

@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: root-object-is-not-configured
@@ -21,7 +21,7 @@ filters:
       - "cloudfront-default-root-object-configured"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
 
 risk-config:
   default-risk: critical

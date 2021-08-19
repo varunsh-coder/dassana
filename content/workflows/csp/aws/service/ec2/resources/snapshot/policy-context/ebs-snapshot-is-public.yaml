@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: ebs-snapshot-is-public
@@ -21,7 +21,7 @@ filters:
       - "ebs-snapshot-public-restorable-check"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("ebs-snapshot-public-restorable-check"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("ebs-snapshot-public-restorable-check"))
   - vendor: prisma-cloud
     policies:
       - "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"

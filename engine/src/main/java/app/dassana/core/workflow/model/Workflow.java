@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Workflow {
 
-  private WorkflowSchemaVersion schema;
+  private Integer schema;
   private String type;
   private String id = "";
   private String name = "";
@@ -15,6 +15,13 @@ public class Workflow {
   private List<Step> steps = new LinkedList<>();
   private List<Output> output = new LinkedList<>();
 
+  public Integer getSchema() {
+    return schema;
+  }
+
+  public void setSchema(Integer schema) {
+    this.schema = schema;
+  }
 
   public String getType() {
     return type;
@@ -24,13 +31,6 @@ public class Workflow {
     this.type = type;
   }
 
-  public WorkflowSchemaVersion getSchema() {
-    return schema;
-  }
-
-  public void setSchema(WorkflowSchemaVersion schema) {
-    this.schema = schema;
-  }
 
   public List<String> getLabels() {
     return labels;

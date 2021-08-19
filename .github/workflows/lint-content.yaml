@@ -1,10 +1,10 @@
 name: Dassana Linter
 on:
   pull_request:
-   paths:
-    - 'content/**'
-   branches:
-    - main
+    paths:
+      - "content/**"
+    branches:
+      - main
 jobs:
   validate-schema:
     runs-on: ubuntu-20.04
@@ -55,32 +55,7 @@ jobs:
         with:
           schema: content/schemas/dassana-action.yaml
           target: content/actions
-      - name: Validating vendors
-        uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
-        with:
-          schema: content/schemas/dassana-vendor.yaml
-          target: content/workflows/vendors
-      #yaml-schema-validator-github-action requires target to be a directory so we copy the workflows to a specific directory and then give it to the actions
-      - name: prepare content for yamale
-        run: |
 
-          mkdir content/general-context-tmp
-          find content/workflows/csp/*/general-context -name "*.yaml" -exec cp "{}" ./content/general-context-tmp \;
-
-          mkdir content/policy-context-tmp
-          find content/workflows/csp/aws/service/*/resources/*/policy-context -name "*.yaml" -exec cp "{}" ./content/policy-context-tmp \;
-
-      - name: Validating general context
-        uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
-        with:
-          schema: content/schemas/dassana-general-context.yaml
-          target: ./content/general-context-tmp
-
-      - name: Validating policy context
-        uses: dassana-io/yaml-schema-validator-github-action@v1.0.1
-        with:
-          schema: content/schemas/dassana-policy-context.yaml
-          target: ./content/policy-context-tmp
   validate-content-dir-and-file-structure:
     runs-on: ubuntu-latest
     steps:

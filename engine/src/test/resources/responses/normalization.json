@@ -1,4 +1,5 @@
 {
+  "vendorId": "aws-config",
   "policyId": "restricted-ssh",
   "csp": "aws",
   "resourceContainer": "363265257036",

@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: security-group-wide-open
@@ -24,9 +24,9 @@ filters:
     match-type: any
     rules:
       # here normalizerId refers to the normalizer normalizerId which normalized the alert
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("restricted-common-ports"))
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("vpc-default-security-group-closed"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("restricted-common-ports"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("vpc-default-security-group-closed"))
   - vendor: prisma-cloud
     policies:
       - "617b9138-584b-4e8e-ad15-7fbabafbed1a"

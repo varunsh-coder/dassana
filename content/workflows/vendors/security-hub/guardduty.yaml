@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: normalize
 
 vendor-id: guardduty
@@ -15,6 +15,9 @@ steps:
     uses: GuardDutyExtractor
 
 output:
+  - name: vendorId
+    value: aws-guardduty
+    value-type: STRING
   - name: alertId
     value: ."resource-info".alertId
   - name: canonicalId

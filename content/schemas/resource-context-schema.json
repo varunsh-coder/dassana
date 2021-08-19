@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "required": ["csp", "service", "resource-type"],
+  "properties": {
+    "csp": {
+      "$id": "#/properties/csp",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9-_]+$",
+      "title": "The csp schema"
+    },
+    "service": {
+      "$id": "#/properties/service",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9-_]+$",
+      "title": "The service schema"
+    },
+    "resource-type": {
+      "$id": "#/properties/resource-type",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9-_]+$",
+      "title": "The resource-type schema"
+    }
+  },
+  "additionalProperties": true
+}

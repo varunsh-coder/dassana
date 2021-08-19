@@ -73,7 +73,14 @@ public class WorkflowRunner {
 
     WorkflowOutputWithRisk workflowOutputWithRisk = new WorkflowOutputWithRisk();
 
-    Set<Workflow> workflowSet = contentManagerApi.getWorkflowSet(request);
+    Set<Workflow> workflowSet;
+    if (StringUtils.isNotEmpty(request.getWorkflowId())) {
+      workflowSet = new HashSet<>();
+      workflowSet.add(contentManagerApi.getWorkflowIdToWorkflowMap(request).get(request.getWorkflowId()));
+
+    } else {
+      workflowSet = contentManagerApi.getWorkflowSet(request);
+    }
 
     Map<String, Object> stepToOutPutMap = new HashMap<>();
     JSONObject jsonObject;
@@ -138,7 +145,7 @@ public class WorkflowRunner {
         String fieldName = map.getName();
         String value = map.getValue();
 
-        if (map.getValueType().equals(ValueType.JQ_EXPRESSION)) {//we currently don't have use case for returning
+        if (map.getValueType().equals(ValueType.JQ_EXPRESSION)) {
           // anything other than JQ_EXPRESSION
           JsonQuery jsonQuery = JsonQuery.compile(value, Version.LATEST);
           JsonNode in = MAPPER.readTree(jsonObject.toString());
@@ -167,6 +174,11 @@ public class WorkflowRunner {
 
           });
 
+        } else if (map.getValueType().equals(ValueType.STRING)) {
+          Map<String, Object> field = new HashMap<>();
+          field.put(map.getName(), map.getValue());
+          workflowOutPut.add(field);
+
         }
 
       }
@@ -180,10 +192,7 @@ public class WorkflowRunner {
             .setRisk(getRisk(workflow, riskConfig, workflowOutputWithRisk, simpleOutput));
       }
 
-    /*  //add workflowId to the simple output so that filters can access it even though it may not be defined in the
-      // output section
-      simpleOutput.put("workflowId", workflow.getId());*/
-      workflowOutputWithRisk.setSimpleOutput(getSimpleOutput(workflowOutPut, workflow));
+      workflowOutputWithRisk.setOutput(getSimpleOutput(workflowOutPut, workflow));
       return Optional.of(workflowOutputWithRisk);
 
 

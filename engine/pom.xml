@@ -27,6 +27,11 @@
       <id>central</id>
       <url>https://repo.maven.apache.org/maven2</url>
     </repository>
+
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -45,6 +50,14 @@
     -->
 
     <!-- Begin Json related dependencies -->
+
+
+    <dependency>
+      <groupId>com.github.everit-org.json-schema</groupId>
+      <artifactId>org.everit.json.schema</artifactId>
+      <version>1.13.0</version>
+    </dependency>
+
 
     <dependency>
       <groupId>net.thisptr</groupId>
@@ -277,11 +290,14 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>${basedir}/target/classes/workflows</outputDirectory>
+              <outputDirectory>${basedir}/target/classes/content</outputDirectory>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../content/workflows</directory>
+                  <directory>${project.basedir}/../content</directory>
                   <filtering>true</filtering>
+                  <include>**/*.yaml</include>
+                  <include>**/*schema*.json</include>
+                  <exclude>pkg/**</exclude>
                 </resource>
               </resources>
             </configuration>

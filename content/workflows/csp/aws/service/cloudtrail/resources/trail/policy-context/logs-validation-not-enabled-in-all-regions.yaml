@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: logs-validation-not-enabled-in-all-regions
@@ -21,7 +21,7 @@ filters:
       - "cloud-trail-log-file-validation-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cloud-trail-log-file-validation-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cloud-trail-log-file-validation-enabled"))
   - vendor: prisma-cloud
     policies:
       - "38e3d3cf-b694-46ec-8bd2-8f02194b5040"

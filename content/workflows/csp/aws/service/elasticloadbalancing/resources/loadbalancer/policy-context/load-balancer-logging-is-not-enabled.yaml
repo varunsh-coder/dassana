@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: load-balancer-logging-is-not-enabled
@@ -21,7 +21,7 @@ filters:
       - "elb-logging-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("elb-logging-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("elb-logging-enabled"))
   - vendor: prisma-cloud
     policies:
       - "b675c604-e886-43aa-a60f-a9ad1f3742d3"

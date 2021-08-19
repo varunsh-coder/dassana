@@ -41,6 +41,8 @@ public class Handler extends MicronautRequestHandler<SQSEvent, Void> {
         request.setSkipPolicyContext(false);
         request.setSkipPostProcessor(false);
         request.setSkipS3Upload(false);
+        request.setIncludeAlertInOutput(true);
+        request.setIncludeStepOutput(true);
 
         requestProcessor.processRequest(request);
 

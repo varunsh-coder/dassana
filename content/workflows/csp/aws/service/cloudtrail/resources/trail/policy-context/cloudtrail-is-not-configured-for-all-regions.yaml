@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: cloudtrail-is-not-configured-for-all-regions
@@ -21,7 +21,7 @@ filters:
       - "multi-region-cloudtrail-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("multi-region-cloudtrail-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("multi-region-cloudtrail-enabled"))
   - vendor: prisma-cloud
     policies:
       - "36a5345a-230d-438e-a04c-a287a513e3dc"

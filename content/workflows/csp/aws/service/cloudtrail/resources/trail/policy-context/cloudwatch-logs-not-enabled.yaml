@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: cloudwatch-logs-not-enabled
@@ -21,7 +21,7 @@ filters:
       - "cloud-trail-cloud-watch-logs-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cloud-trail-cloud-watch-logs-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cloud-trail-cloud-watch-logs-enabled"))
   - vendor: prisma-cloud
     policies:
       - "0d07ac51-fbfe-44fe-8edb-3314c9995ee0"

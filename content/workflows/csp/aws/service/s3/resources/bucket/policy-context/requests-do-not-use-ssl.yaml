@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: requests-do-not-use-ssl
@@ -21,7 +21,7 @@ filters:
       - "s3-bucket-ssl-requests-only"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-ssl-requests-only"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-ssl-requests-only"))
   - vendor: prisma-cloud
     policies:
       - "7b0df373-006a-40d6-9f3d-68e6ea0bdd5d"

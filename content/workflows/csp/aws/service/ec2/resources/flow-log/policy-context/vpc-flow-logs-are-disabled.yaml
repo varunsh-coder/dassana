@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: vpc-flow-logs-are-disabled
@@ -21,7 +21,7 @@ filters:
       - "vpc-flow-logs-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("vpc-flow-logs-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("vpc-flow-logs-enabled"))
   - vendor: prisma-cloud
     policies:
       - "49f4760d-c951-40e4-bfe1-08acaa17672a"

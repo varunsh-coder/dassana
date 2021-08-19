@@ -1,5 +1,6 @@
 package app.dassana.core.contentmanager;
 
+import app.dassana.core.api.DassanaWorkflowValidationException;
 import app.dassana.core.contentmanager.model.SyncResult;
 import app.dassana.core.contentmanager.model.WorkflowProcessingResult;
 import app.dassana.core.launch.model.Request;
@@ -10,15 +11,13 @@ import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.risk.model.Rule;
 import app.dassana.core.rule.MatchType;
+import app.dassana.core.util.StringyThings;
 import app.dassana.core.workflow.model.Filter;
 import app.dassana.core.workflow.model.Output;
 import app.dassana.core.workflow.model.Step;
 import app.dassana.core.workflow.model.ValueType;
 import app.dassana.core.workflow.model.VendorFilter;
 import app.dassana.core.workflow.model.Workflow;
-import app.dassana.core.workflow.model.WorkflowSchemaVersion;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import io.micronaut.core.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +42,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class ContentManager implements ContentManagerApi {
 
-  private static final int SYNC_INTERVAL_IN_MINS = 10;
+  private static final int SYNC_INTERVAL_IN_SECONDS = 30;
 
   private final RemoteContentDownloadApi contentDownloader;
   private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
@@ -63,7 +62,8 @@ public class ContentManager implements ContentManagerApi {
   public ContentManager(RemoteContentDownloadApi contentDownloader) {
     this.contentDownloader = contentDownloader;
     syncRemoteContent(0L, null);//because we are in init/constructor, we fetch all workflows from s3
-    String embeddedContentPath = Thread.currentThread().getContextClassLoader().getResource("workflows/").getFile();
+    String embeddedContentPath =
+        Thread.currentThread().getContextClassLoader().getResource("content/workflows/").getFile();
     processDir(new File(embeddedContentPath));
   }
 
@@ -122,7 +122,7 @@ public class ContentManager implements ContentManagerApi {
     if (StringUtils.isNotEmpty(type) && type.contentEquals(NORMALIZE)) {
       workflow = new NormalizerWorkflow();
 
-      ((NormalizerWorkflow) workflow).setVendorName(jsonObject.getString("vendor-name"));
+      ((NormalizerWorkflow) workflow).setVendorId(jsonObject.getString("vendor-id"));
 
       JSONObject postProcessor = jsonObject.optJSONObject("post-processor");
 
@@ -169,15 +169,14 @@ public class ContentManager implements ContentManagerApi {
       ((ResourceContext) workflow).setResourceType(jsonObject.getString("resource-type"));
       ((ResourceContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
     } else {
-      throw new IllegalArgumentException("Sorry, we do not recognize the workflow type ".concat(type));
+      DassanaWorkflowValidationException dassanaWorkflowValidationException = new DassanaWorkflowValidationException();
+      LinkedList<String> messages = new LinkedList<>();
+      messages.add("Sorry, we don't recognize workflow type ".concat(type));
+      dassanaWorkflowValidationException.setIssues(messages);
+      throw dassanaWorkflowValidationException;
     }
 
-    String schema = String.valueOf(jsonObject.getBigDecimal("schema"));
-    if (schema.contentEquals("1.0")) {
-      workflow.setSchema(WorkflowSchemaVersion.v1_0);
-    } else {
-      throw new IllegalArgumentException("Unrecognized schema version ".concat(schema));
-    }
+    workflow.setSchema(jsonObject.getInt("schema"));
     workflow.setType(jsonObject.getString("type"));
     workflow.setId(jsonObject.getString("id"));
     workflow.setName(jsonObject.optString("name"));
@@ -223,7 +222,7 @@ public class ContentManager implements ContentManagerApi {
         Output output = new Output();
         output.setValue(outputObj.getString("value"));
         output.setName(outputObj.getString("name"));
-        String valueType = outputObj.optString("valueType");
+        String valueType = outputObj.optString("value-type");
         if (StringUtils.isEmpty(valueType)) {
           output.setValueType(ValueType.JQ_EXPRESSION);
         } else {
@@ -273,25 +272,27 @@ public class ContentManager implements ContentManagerApi {
   }
 
 
-  private String processWorkFlowFile(Optional<File> file, String workflowYamlStr) throws IOException {
+  private List<String> processWorkFlow(Optional<File> file, List<String> workflowYamlStr) throws IOException {
+
+    if (workflowYamlStr == null) {
+      workflowYamlStr = new LinkedList<>();
+    }
+    List<String> workflowIdsProcessed = new LinkedList<>();
 
     if (file.isPresent()) {
       File fileToProcess = file.get();
-      logger.debug("Processing workflow file {}", fileToProcess.getAbsolutePath());
-      workflowYamlStr = new String(Files.readAllBytes(Paths.get(fileToProcess.getPath())));
+      workflowYamlStr.add(new String(Files.readAllBytes(Paths.get(fileToProcess.getPath()))));
     }
 
-    ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-    Object obj = yamlReader.readValue(workflowYamlStr, Object.class);
-    ObjectMapper jsonWriter = new ObjectMapper();
-    String json = jsonWriter.writeValueAsString(obj);
+    for (String s : workflowYamlStr) {
+      String jsonFromYaml = StringyThings.getJsonFromYaml(s);
+      Workflow workflow = getWorkflow(new JSONObject(jsonFromYaml));
+      workflowSet.remove(workflow);
+      workflowSet.add(workflow);
+      workflowIdsProcessed.add(workflow.getId());
+    }
 
-    JSONObject jsonObject = new JSONObject(json);
-
-    Workflow workflow = getWorkflow(jsonObject);
-    workflowSet.remove(workflow);
-    workflowSet.add(workflow);
-    return workflow.getId();
+    return workflowIdsProcessed;
 
   }
 
@@ -349,10 +350,9 @@ public class ContentManager implements ContentManagerApi {
           processDir(file);
         } else {
           try {
-            String workFlowId = processWorkFlowFile(Optional.of(file), "");
+            List<String> workflowIdsProcessed = processWorkFlow(Optional.of(file), new LinkedList<>());
             String readFileToString = FileUtils.readFileToString(file, Charset.defaultCharset());
-            workflowIdToYamlContext.put(workFlowId, readFileToString);
-
+            workflowIdToYamlContext.put(workflowIdsProcessed.get(0), readFileToString);
           } catch (Exception e) {
             fileToExceptionMap.put(file.getName(), e);
             logger.warn("{} will be skipped due to error ", file, e);
@@ -370,7 +370,7 @@ public class ContentManager implements ContentManagerApi {
     SyncResult syncResult = new SyncResult();
     syncResult.setCacheHit(true);
 
-    boolean stale = System.currentTimeMillis() - lastUpdated > TimeUnit.MINUTES.toMillis(SYNC_INTERVAL_IN_MINS);
+    boolean stale = System.currentTimeMillis() - lastUpdated > TimeUnit.SECONDS.toMillis(SYNC_INTERVAL_IN_SECONDS);
 
     //sync every SYNC_INTERVAL_IN_MINS
     if ((request != null && request.isRefreshFromS3()) || stale) {
@@ -391,8 +391,9 @@ public class ContentManager implements ContentManagerApi {
   public Set<Workflow> getWorkflowSet(Request request) throws Exception {
     syncRemoteContent(lastUpdated, request);
     //add the additional workflow if available
-    if (StringUtils.isNotEmpty(request.getAdditionalWorkflowYaml())) {
-      processWorkFlowFile(Optional.empty(), request.getAdditionalWorkflowYaml());
+    if (request.getAdditionalWorkflowYamls() != null
+        && request.getAdditionalWorkflowYamls().size() > 0) {
+      processWorkFlow(Optional.empty(), request.getAdditionalWorkflowYamls());
 
     }
 

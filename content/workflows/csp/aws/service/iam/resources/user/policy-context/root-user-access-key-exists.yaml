@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: root-user-access-key-exists
@@ -21,7 +21,7 @@ filters:
       - "iam-root-access-key-check"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-root-access-key-check"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-root-access-key-check"))
   - vendor: prisma-cloud
     policies:
       - "88db4b66-4dec-48c0-9013-c7871d61b1c8"

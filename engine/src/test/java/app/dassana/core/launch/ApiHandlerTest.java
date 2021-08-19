@@ -6,6 +6,7 @@ import static app.dassana.core.contentmanager.ContentManager.NORMALIZE;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT;
 import static app.dassana.core.launch.ApiHandler.MISSING_NORMALIZATION_MSG;
 
+import app.dassana.core.api.DassanaWorkflowValidationException;
 import app.dassana.core.contentmanager.RemoteContentDownloadApi;
 import app.dassana.core.contentmanager.infra.S3Downloader;
 import app.dassana.core.workflow.StepRunnerApi;
@@ -32,7 +33,7 @@ import org.junit.platform.commons.util.StringUtils;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @MicronautTest
-public class ApiTest {
+public class ApiHandlerTest {
 
   @Inject Helper helper;
 
@@ -40,11 +41,11 @@ public class ApiTest {
   void testIncludeJson() throws Exception {
 
     String file = "inputs/validSecurityHubAlert.json";
-    Map<String, String> queryParams = helper.getQueryParams(false,
-        false,
-        false,
-        true,
-        false);
+
+    Map<String, String> queryParams = helper.getQueryParams(true);
+    String executeRunApi = helper.executeRunApi(helper.getFileContent(file), queryParams);
+
+    queryParams = helper.getQueryParams(false);
     String response = helper.executeRunApi(helper.getFileContent(file), queryParams);
     JSONObject jsonObject = new JSONObject(response);
     if (jsonObject.has("dassana")) {
@@ -76,57 +77,59 @@ public class ApiTest {
   @Test
   void testValidateApi() throws Exception {
 
-    String executeValidateApi = helper.executeValidateApi(helper.getFileContent(
-        "validationRequests/validWorkflow.json"));
+    helper.executeValidateApi("validationRequests/validWorkflow.yaml");
 
-    //{"isValidYaml":true,"isValidWorkflowType":true,"invalidRules":[]}
-    JSONObject jsonObject = new JSONObject(executeValidateApi);
-    Assertions.assertTrue(jsonObject.getJSONObject("validYaml").getBoolean("isValidYaml"));
-    Assertions.assertTrue(jsonObject.getJSONObject("validWorkflowType").getBoolean("isValidType"));
-    Assertions.assertEquals(0, jsonObject.getJSONArray("invalidRules").length());
-
-    String executeValidateApi1 = helper.executeValidateApi(helper.getFileContent(
-        "validationRequests/invalidWorkflowYaml.json"));
-
-    jsonObject = new JSONObject(executeValidateApi1);
-    Assertions.assertFalse(jsonObject.getJSONObject("validYaml").getBoolean("isValidYaml"));
-
-    String executeValidateApi2 = helper.executeValidateApi(helper.getFileContent(
-        "validationRequests/validWorkflowButWithInvalidRule.json"));
-
-    jsonObject = new JSONObject(executeValidateApi2);
-    Assertions.assertTrue(jsonObject.getJSONObject("validYaml").getBoolean("isValidYaml"));
-    Assertions.assertEquals(1, jsonObject.getJSONArray("invalidRules").length());
-
-    String executeValidateApi3 = helper.executeValidateApi(helper.getFileContent(
-        "validationRequests/invalidWorkflowType.json"));
-
-    jsonObject = new JSONObject(executeValidateApi3);
-    Assertions.assertFalse(jsonObject.getJSONObject("validWorkflowType").getBoolean("isValidType"));
-
+    boolean exceptionThrown = false;
+    try {
+      helper.executeValidateApi("validationRequests/invalidWorkflowYaml.json");
+    } catch (DassanaWorkflowValidationException exception) {
+      exceptionThrown = true;
+    }
+    Assertions.assertTrue(exceptionThrown, "expected to see invalidWorkflowYaml.json fail the "
+        + "validation test");
+    exceptionThrown = false;
+    try {
+      helper.executeValidateApi("validationRequests/validWorkflowButWithInvalidRule.json");
+    } catch (DassanaWorkflowValidationException exception) {
+      exceptionThrown = true;
+    }
+    Assertions.assertTrue(exceptionThrown, "expected to see validWorkflowButWithInvalidRule fail the "
+        + "validation test");
+    exceptionThrown = false;
+    try {
+      helper.executeValidateApi("validationRequests/invalidWorkflowType.json");
+    } catch (DassanaWorkflowValidationException e) {
+      exceptionThrown = true;
+    }
+    Assertions.assertTrue(exceptionThrown, "expected to see invalidWorkflowType fail the "
+        + "validation test");
 
   }
 
   @Test
   void testWorkflowGet() {
-    Map<String, String> queryParams = helper.getQueryParams(false, false, false, false, false);
+    Map<String, String> queryParams = helper.getQueryParams(false);
     queryParams.put("workflowId", "foo");
     APIGatewayProxyResponseEvent apiGatewayProxyResponseEvent = helper.executeRunApiGet(queryParams);
     Assertions.assertEquals(404, (int) apiGatewayProxyResponseEvent.getStatusCode());
     queryParams.put("workflowId", "foo-cloud-normalize");
     Assertions.assertEquals(200, (int) helper.executeRunApiGet(queryParams).getStatusCode());
+  }
 
+  @Test
+  void handleRunTestForASpecificWorkflow() throws IOException {
+    Map<String, String> queryParams = helper.getQueryParams(false);
+    queryParams.put("workflowId", "foo-cloud-normalize");
+    String executeRunApiResponse = helper.executeRunApi(helper.getFileContent("inputs/validSecurityHubAlert.json"),
+        queryParams);
+    Assertions.assertTrue(executeRunApiResponse.contentEquals("{}"));
 
   }
 
 
   @Test
   void testDraftWorkflow() throws IOException {
-    Map<String, String> queryParams = helper.getQueryParams(false,
-        false,
-        false,
-        true,
-        false);
+    Map<String, String> queryParams = helper.getQueryParams(false);
     String response = helper
         .executeRunApi(helper.getFileContent("inputs/validAlertWithDraftWorkflow.json"), queryParams);
     JSONObject jsonObject = new JSONObject(response);
@@ -139,11 +142,7 @@ public class ApiTest {
   void ensureValidJsonIsAlwaysReturned() throws Exception {
 
     String[] fileNames = new String[]{"inputs/validJsonButNotAnAlert1.json", "inputs/validJsonButNotAnAlert2.json"};
-    Map<String, String> queryParams = helper.getQueryParams(false,
-        false,
-        false,
-        true,
-        true);
+    Map<String, String> queryParams = helper.getQueryParams(true);
     for (String fileName : fileNames) {
       String response = helper.executeRunApi(helper.getFileContent(fileName), queryParams);
       JSONObject jsonObject = new JSONObject(response);
@@ -172,11 +171,7 @@ public class ApiTest {
 
   @Test
   void ensureValidAlertGetsProcessed() throws IOException {
-    Map<String, String> queryParams = helper.getQueryParams(false,
-        false,
-        false,
-        true,
-        true);
+    Map<String, String> queryParams = helper.getQueryParams(true);
 
     String response = helper.executeRunApi(helper.getFileContent("inputs/validSecurityHubAlert.json"),
         queryParams);
@@ -186,7 +181,7 @@ public class ApiTest {
     JSONObject generalContext = dassana.getJSONObject(GENERAL_CONTEXT);
     JSONObject policyContext = dassana.getJSONObject(POLICY_CONTEXT);
 
-    Assertions.assertTrue(normalize.getString("workflowId").contentEquals("aws-config"));
+    Assertions.assertTrue(normalize.getString("workflowId").contentEquals("aws-config-via-security-hub"));
     Assertions.assertTrue(generalContext.getString("workflowId").contentEquals("general-context-aws"));
     Assertions.assertTrue(generalContext.getJSONObject("risk").getString("riskValue").contentEquals("low"));
 
@@ -194,7 +189,6 @@ public class ApiTest {
 
     String response2 = helper.executeRunApi(helper.getFileContent("inputs/validAlertWithNoGeneralContext.json"),
         queryParams);
-    System.out.println(response2);
 
 
   }

@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: ebs-volume-is-not-encrypted
@@ -22,8 +22,8 @@ filters:
       - "encrypted-volumes"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("ec2-ebs-encryption-by-default"))
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("encrypted-volumes"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("ec2-ebs-encryption-by-default"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("encrypted-volumes"))
   - vendor: prisma-cloud
     policies:
       - "7c714cb4-3d47-4c32-98d4-c13f92ce4ec5"

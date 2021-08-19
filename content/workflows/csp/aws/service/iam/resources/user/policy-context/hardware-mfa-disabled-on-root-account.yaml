@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: hardware-mfa-disabled-on-root-account
@@ -21,7 +21,7 @@ filters:
       - "root-account-hardware-mfa-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("root-account-hardware-mfa-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("root-account-hardware-mfa-enabled"))
   - vendor: prisma-cloud
     policies:
       - "2c0a0859-928e-46e7-a3b0-bf5af467b444"

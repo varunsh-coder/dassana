@@ -109,26 +109,24 @@ public class RequestProcessor {
     if (normalizationResult.isPresent()) {
       WorkflowOutputWithRisk normalizedWorkflowOutput = normalizationResult.get();
 
-      normalizedWorkflowOutput.getSimpleOutput().put("normalizerId", normalizedWorkflowOutput.getWorkflowId());
-
       if (!request.isSkipGeneralContext()) {
         futureList.add(executorCompletionService
             .submit(() ->
                 workflowRunner
-                    .runWorkFlow(GeneralContext.class, request, normalizedWorkflowOutput.getSimpleOutput())));
+                    .runWorkFlow(GeneralContext.class, request, normalizedWorkflowOutput.getOutput())));
       }
       if (!request.isSkipResourceContext()) {
         futureList.add(executorCompletionService
             .submit(() ->
                 workflowRunner
-                    .runWorkFlow(ResourceContext.class, request, normalizedWorkflowOutput.getSimpleOutput())));
+                    .runWorkFlow(ResourceContext.class, request, normalizedWorkflowOutput.getOutput())));
       }
 
       if (!request.isSkipPolicyContext()) {
         futureList.add(executorCompletionService
             .submit(() ->
                 workflowRunner
-                    .runWorkFlow(PolicyContext.class, request, normalizedWorkflowOutput.getSimpleOutput())));
+                    .runWorkFlow(PolicyContext.class, request, normalizedWorkflowOutput.getOutput())));
       }
 
       for (Future<Optional<WorkflowOutputWithRisk>> ignored : futureList) {
@@ -182,7 +180,7 @@ public class RequestProcessor {
                 .runStep(normalizerWorkflow,
                     step,
                     finalJson,
-                    normalizationResult.get().getSimpleOutput())
+                    normalizationResult.get().getOutput())
                 .getResponse();
             //we expect the post processor to provide either a json obj or an array, failing which we simply consider
             // it as a string
@@ -270,13 +268,13 @@ public class RequestProcessor {
       WorkflowOutputWithRisk workflowOutputWithRisk = normalizationResult.get();
 
       path = alertsPrefix.concat(
-          "/csp=").concat((String) workflowOutputWithRisk.getSimpleOutput().get("csp")).concat(
+          "/csp=").concat((String) workflowOutputWithRisk.getOutput().get("csp")).concat(
           "/resource_container=")
-          .concat((String) workflowOutputWithRisk.getSimpleOutput().get("resourceContainer")).concat(
-              "/region=").concat((String) workflowOutputWithRisk.getSimpleOutput().get("region")).concat(
-              "/service=").concat((String) workflowOutputWithRisk.getSimpleOutput().get("service")).concat(
+          .concat((String) workflowOutputWithRisk.getOutput().get("resourceContainer")).concat(
+              "/region=").concat((String) workflowOutputWithRisk.getOutput().get("region")).concat(
+              "/service=").concat((String) workflowOutputWithRisk.getOutput().get("service")).concat(
               "/normalizer_workflow=").concat(workflowOutputWithRisk.getWorkflowId()).concat(
-              "/alertid=").concat((String) workflowOutputWithRisk.getSimpleOutput().get("alertId"));
+              "/alertid=").concat((String) workflowOutputWithRisk.getOutput().get("alertId"));
 
 
     }
@@ -306,13 +304,16 @@ public class RequestProcessor {
     Map<String, Object> dassanaMap = new HashMap<>();
     //handle normalization decoration
     JSONObject jsonObjectForNormalization = new JSONObject();
-    jsonObjectForNormalization.put("output", normalizationOutput.getSimpleOutput());
+    if (request.isIncludeStepOutput()) {
+      jsonObjectForNormalization.put("step-output", normalizationOutput.getStepOutput());
+    }
+    jsonObjectForNormalization.put("output", normalizationOutput.getOutput());
     jsonObjectForNormalization.put("workflowId", normalizationOutput.getWorkflowId());
     dassanaMap.put("normalize", jsonObjectForNormalization);
     if (generalContextWorkflowOutput.isPresent()) {
       JSONObject generalContextJsonObj = new JSONObject();
       generalContextJsonObj.put("workflowId", generalContextWorkflowOutput.get().getWorkflowId());
-      generalContextJsonObj.put("output", generalContextWorkflowOutput.get().getSimpleOutput());
+      generalContextJsonObj.put("output", generalContextWorkflowOutput.get().getOutput());
       Map<String, Object> riskObj = new HashMap<>();
       riskObj.put("riskValue", generalContextWorkflowOutput.get().getRisk().getRiskValue());
       riskObj.put("condition", generalContextWorkflowOutput.get().getRisk().getCondition());
@@ -330,7 +331,10 @@ public class RequestProcessor {
       jsonObject.put("workflowId", policyContext.getId());
       jsonObject.put(POLICY_CONTEXT_CAT, policyContext.getCategory());
       jsonObject.put(POLICY_CONTEXT_SUB_CAT, policyContext.getSubCategory());
-      jsonObject.put("output", policyContextWorkflowOutput.get().getSimpleOutput());
+      jsonObject.put("output", policyContextWorkflowOutput.get().getOutput());
+      if (request.isIncludeStepOutput()) {
+        jsonObject.put("step-output", normalizationOutput.getStepOutput());
+      }
 
       Map<String, Object> riskObj = new HashMap<>();
       riskObj.put("riskValue", policyContextWorkflowOutput.get().getRisk().getRiskValue());
@@ -348,7 +352,10 @@ public class RequestProcessor {
 
       JSONObject jsonObject = new JSONObject();
       jsonObject.put("workflowId", resourceContext.getId());
-      jsonObject.put("output", resourceContextWorkflowOutput.get().getSimpleOutput());
+      jsonObject.put("output", resourceContextWorkflowOutput.get().getOutput());
+      if (request.isIncludeStepOutput()) {
+        jsonObject.put("step-output", normalizationOutput.getStepOutput());
+      }
 
       Map<String, Object> riskObj = new HashMap<>();
       riskObj.put("riskValue", resourceContextWorkflowOutput.get().getRisk().getRiskValue());

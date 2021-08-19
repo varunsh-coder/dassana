@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: iam-policy-with-admin-access
@@ -21,7 +21,7 @@ filters:
       - "iam-policy-no-statements-with-admin-access"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-policy-no-statements-with-admin-access"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-policy-no-statements-with-admin-access"))
   - vendor: prisma-cloud
     policies:
       - "d9b86448-11a2-f9d4-74a5-f6fc590caeef"

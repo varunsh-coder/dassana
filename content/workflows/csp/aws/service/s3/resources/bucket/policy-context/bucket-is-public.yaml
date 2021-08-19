@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: bucket-is-public
@@ -22,8 +22,8 @@ filters:
       - "s3-bucket-level-public-access-prohibited"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
   - vendor: prisma-cloud
     policies:
       - "34064d53-1fd1-42e6-b075-45dce495caca"

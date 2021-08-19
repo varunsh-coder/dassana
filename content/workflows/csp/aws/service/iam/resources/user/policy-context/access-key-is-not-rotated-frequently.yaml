@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: access-key-is-not-rotated-frequently
@@ -21,7 +21,7 @@ filters:
       - "access-keys-rotated"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("access-keys-rotated"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("access-keys-rotated"))
   - vendor: prisma-cloud
     policies:
       - "6ea06abf-bfd3-49f2-9332-9aee02c31d58"

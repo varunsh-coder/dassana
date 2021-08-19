@@ -1,8 +1,14 @@
 package app.dassana.core.launch.model;
 
+import java.util.List;
+
 public class Request {
 
   private final String inputJson;
+
+
+  boolean includeStepOutput;
+  boolean includeAlertInOutput;
 
   //content management
   private boolean skipGeneralContext;
@@ -10,7 +16,9 @@ public class Request {
   private boolean skipPolicyContext;
   private boolean skipS3Upload;
   private boolean refreshFromS3;
-  private String additionalWorkflowYaml;
+  private List<String> additionalWorkflowYamls;
+
+  private String workflowId; //if specified, only this workflow will run
 
   //engine specific
   private boolean queueProcessing;
@@ -20,18 +28,40 @@ public class Request {
     this.inputJson = inputJson;
   }
 
+  public boolean isIncludeStepOutput() {
+    return includeStepOutput;
+  }
+
+  public boolean isIncludeAlertInOutput() {
+    return includeAlertInOutput;
+  }
+
+  public void setIncludeAlertInOutput(boolean includeAlertInOutput) {
+    this.includeAlertInOutput = includeAlertInOutput;
+  }
+
+  public void setIncludeStepOutput(boolean includeStepOutput) {
+    this.includeStepOutput = includeStepOutput;
+  }
+
+  public String getWorkflowId() {
+    return workflowId;
+  }
+
+  public void setWorkflowId(String workflowId) {
+    this.workflowId = workflowId;
+  }
 
   public boolean isRefreshFromS3() {
     return refreshFromS3;
   }
 
-
-  public String getAdditionalWorkflowYaml() {
-    return additionalWorkflowYaml;
+  public List<String> getAdditionalWorkflowYamls() {
+    return additionalWorkflowYamls;
   }
 
-  public void setAdditionalWorkflowYaml(String additionalWorkflowYaml) {
-    this.additionalWorkflowYaml = additionalWorkflowYaml;
+  public void setAdditionalWorkflowYamls(List<String> additionalWorkflowYamls) {
+    this.additionalWorkflowYamls = additionalWorkflowYamls;
   }
 
   public void setRefreshFromS3(boolean refreshFromS3) {

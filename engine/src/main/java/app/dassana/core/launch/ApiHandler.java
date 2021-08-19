@@ -4,40 +4,53 @@ import static app.dassana.core.contentmanager.ContentManager.GENERAL_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.NORMALIZE;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.RESOURCE_CONTEXT;
+import static app.dassana.core.contentmanager.infra.S3Downloader.WORKFLOW_PATH_IN_S3;
 
+import app.dassana.core.api.DassanaWorkflowValidationException;
 import app.dassana.core.api.PingHandler;
+import app.dassana.core.api.WorkflowValidator;
 import app.dassana.core.contentmanager.ContentManager;
 import app.dassana.core.launch.model.Message;
 import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.Request;
-import app.dassana.core.launch.model.ValidationResult;
-import app.dassana.core.launch.model.ValidationResult.ValidYaml;
-import app.dassana.core.launch.model.ValidationResult.WorkFlowType;
 import app.dassana.core.launch.model.WorkflowNotFundException;
 import app.dassana.core.launch.model.severity;
+import app.dassana.core.normalize.model.NormalizerWorkflow;
+import app.dassana.core.policycontext.model.PolicyContext;
+import app.dassana.core.resource.model.GeneralContext;
+import app.dassana.core.resource.model.ResourceContext;
+import app.dassana.core.risk.model.Risk;
 import app.dassana.core.rule.RuleMatch;
 import app.dassana.core.util.JsonyThings;
 import app.dassana.core.util.StringyThings;
 import app.dassana.core.workflow.RequestProcessor;
-import app.dassana.core.workflow.model.Filter;
+import app.dassana.core.workflow.WorkflowRunner;
 import app.dassana.core.workflow.model.Workflow;
+import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautRequestHandler;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.inject.Inject;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 /**
  * todo: this class has become quite big, needs to be refactored
@@ -60,6 +73,10 @@ public class ApiHandler extends
   @Inject Gson gson;
   @Inject RuleMatch ruleMatch;
   @Inject PingHandler pingHandler;
+  @Inject S3Client s3Client;
+  @Inject WorkflowValidator workflowValidator;
+  @Inject private WorkflowRunner workflowRunner;
+
 
   @Inject ContentManager contentManager; //todo: not a good idea to inject an implementation
 
@@ -69,11 +86,16 @@ public class ApiHandler extends
   public static final String API_PARAM_SKIP_POLICY_CONTEXT = "skipPolicyContext";
   public static final String API_PARAM_SKIP_S3UPLOAD = "skipS3Upload";
   public static final String API_PARAM_SKIP_POST_PROCESSOR = "skipPostProcessor";
-  public static final String API_PARAM_SKIP_REFRESH_FROM_S3 = "refreshWorkflowsFromS3";
-  public static final String API_INCLUDE_INPUT_REQUEST = "includeInputRequest";
+  public static final String API_RUN_WORKFLOW_BY_ID = "workflowId";
+  public static final String API_INCLUDE_ALERT_IN_OUTPUT = "includeAlert";
+  public static final String API_INCLUDE_STEP_OUTPUT = "includeStepOutput";
 
   public static final String MISSING_NORMALIZATION_MSG = "Dassana couldn't normalize the alert you sent, please verify "
       + "normalizers filter config";
+
+  public static final String WORKFLOW_PATH = "/workflows";
+  public static final String VALIDATE_WORKFLOW_PATH = WORKFLOW_PATH.concat("/validate");
+
 
   public ApiHandler() {
   }
@@ -89,65 +111,50 @@ public class ApiHandler extends
 
   }
 
-  String handleRun(Request request, Map<String, String> queryStringParameters) throws Exception {
-    ProcessingResponse processingResponse = requestProcessor.processRequest(request);
-    String decoratedJson = processingResponse.getDecoratedJson();
-    return handleHints(decoratedJson, queryStringParameters);
-  }
+  String handleRun(Request request) throws Exception {
 
+    if (StringUtils.isNotEmpty(request.getWorkflowId())) {
+      Map<String, Workflow> workflowIdToWorkflowMap = contentManager.getWorkflowIdToWorkflowMap(request);
 
-  ValidationResult handleValidate(Request request) {
-
-    ValidationResult validationResult = new ValidationResult();
-    validationResult.setInvalidRules(new LinkedList<>());
-
-    String inputJson = request.getInputJson();
-    JSONObject jsonObject = new JSONObject(inputJson);
-
-    String workflow;
-    try {
-      workflow = StringyThings.getJsonFromYaml(jsonObject.getString("workflow"));
-    } catch (Exception e) {
-      ValidYaml validYaml = new ValidYaml();
-      validYaml.setValidYaml(false);
-      validYaml.setMessage(e.getMessage());
-      validationResult.setValidYaml(validYaml);
-      return validationResult;
-    }
-
-    Workflow workFlowFromContentManager;
-    try {
-      workFlowFromContentManager = contentManager.getWorkflow(new JSONObject(workflow));
-    } catch (Exception e) {
-      WorkFlowType workFlowType = new WorkFlowType();
-      workFlowType.setValidType(false);
-      workFlowType.setMessage(String.format("Valid workflow types are %s, %s and %s", GENERAL_CONTEXT, POLICY_CONTEXT,
-          RESOURCE_CONTEXT));
-      validationResult.setValidWorkflowType(workFlowType);
-      return validationResult;
-    }
-
-    for (Filter filter : workFlowFromContentManager.getFilters()) {
-      List<String> rules = filter.getRules();
-      for (String s : rules) {
-        if (!ruleMatch.isValidRule(s)) {
-          validationResult.getInvalidRules().add(s);
+      if (workflowIdToWorkflowMap.containsKey(request.getWorkflowId())) {
+        Workflow workflow = workflowIdToWorkflowMap.get(request.getWorkflowId());
+        Optional<WorkflowOutputWithRisk> workflowOutputWithRisk = Optional.empty();
+        //todo: generify this
+        if (workflow.getClass().getName().contentEquals(NormalizerWorkflow.class.getName())) {
+          workflowOutputWithRisk = workflowRunner
+              .runWorkFlow(NormalizerWorkflow.class, request, new JSONObject(request.getInputJson()).toMap());
+        } else if (workflow.getClass().getName().contentEquals(GeneralContext.class.getName())) {
+          workflowOutputWithRisk = workflowRunner.runWorkFlow(GeneralContext.class, request,
+              new JSONObject(request.getInputJson()).toMap());
+        } else if (workflow.getClass().getName().contentEquals(ResourceContext.class.getName())) {
+          workflowOutputWithRisk = workflowRunner.runWorkFlow(ResourceContext.class, request,
+              new JSONObject(request.getInputJson()).toMap());
+        } else if (workflow.getClass().getName().contentEquals(PolicyContext.class.getName())) {
+          workflowOutputWithRisk = workflowRunner.runWorkFlow(PolicyContext.class, request,
+              new JSONObject(request.getInputJson()).toMap());
         }
+
+        if (workflowOutputWithRisk.isPresent()) {
+          WorkflowOutputWithRisk outputWithRisk = workflowOutputWithRisk.get();
+          outputWithRisk.setStepOutput(null);
+          outputWithRisk.setWorkflowId(null);
+          return gson.toJson(outputWithRisk);
+        } else {//this shouldn't happen but still to be safe..
+          return "{}";
+        }
+
+      } else {
+        throw new WorkflowNotFundException(String.format("Sorry, the workflow %s was not found",
+            request.getWorkflowId()));
       }
 
-
     }
 
-    WorkFlowType workFlowType = new WorkFlowType();
-    workFlowType.setValidType(true);
-    validationResult.setValidWorkflowType(workFlowType);
-
-    ValidYaml validYaml = new ValidYaml();
-    validYaml.setValidYaml(true);
-    validationResult.setValidYaml(validYaml);
-    return validationResult;
-
+    ProcessingResponse processingResponse = requestProcessor.processRequest(request);
+    String decoratedJson = processingResponse.getDecoratedJson();
+    return handleHints(decoratedJson, request);
   }
+
 
   @Override
   public APIGatewayProxyResponseEvent execute(APIGatewayProxyRequestEvent input) {
@@ -155,23 +162,27 @@ public class ApiHandler extends
     gatewayProxyResponseEvent.setHeaders(getHeaders());
 
     try {
-      String inputJson;
+      String inputBody;
       if (input.getIsBase64Encoded()) {
-        inputJson = new String(Base64.getDecoder().decode(input.getBody()));
+        inputBody = new String(Base64.getDecoder().decode(input.getBody()));
       } else {
-        inputJson = input.getBody();
-      }
-      if (input.getHttpMethod().toLowerCase().contentEquals("post")) {
-        JsonyThings.throwExceptionIfNotValidJsonObj(inputJson);
+        inputBody = input.getBody();
       }
 
       if (input.getPath().startsWith("/run") && input.getHttpMethod().toLowerCase().contentEquals("post")) {
-        String handleRun = handleRun(getRequestFromQueryParam(input.getQueryStringParameters(), inputJson),
-            input.getQueryStringParameters());
+        JsonyThings.throwExceptionIfNotValidJsonObj(inputBody);
+        String handleRun = handleRun(
+            getRequestFromQueryParam(input.getQueryStringParameters(), inputBody, input.getHeaders()));
         gatewayProxyResponseEvent.setBody(handleRun);
-      } else if (input.getPath().startsWith("/run") && input.getHttpMethod().toLowerCase().contentEquals("get")) {
+      } else if (input.getPath().contentEquals(WORKFLOW_PATH) && input.getHttpMethod().toLowerCase()
+          .contentEquals("post")) {
+        handleSaveToS3(input.getBody());
+
+      } else if (input.getPath().contentEquals(WORKFLOW_PATH) && input.getHttpMethod().toLowerCase().contentEquals(
+          "get")) {
         try {
-          String response = handleGet(getRequestFromQueryParam(input.getQueryStringParameters(), inputJson),
+          String response = handleGet(
+              getRequestFromQueryParam(input.getQueryStringParameters(), inputBody, input.getHeaders()),
               input.getQueryStringParameters().get("workflowId"));
           gatewayProxyResponseEvent.setBody(response);
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
@@ -182,13 +193,24 @@ public class ApiHandler extends
           gatewayProxyResponseEvent.setStatusCode(404);
           return gatewayProxyResponseEvent;
         }
-      } else if (input.getPath().startsWith("/ping")) {
+      } else if (input.getPath().contentEquals("/ping")) {
         gatewayProxyResponseEvent.setBody(gson.toJson(pingHandler.getPingResponse()));
 
-      } else if (input.getPath().startsWith("/validate")) {
-        ValidationResult validationResult = handleValidate(
-            getRequestFromQueryParam(input.getQueryStringParameters(), inputJson));
-        gatewayProxyResponseEvent.setBody(gson.toJson(validationResult));
+      } else if (input.getPath().contentEquals(VALIDATE_WORKFLOW_PATH) && input.getHttpMethod().toLowerCase()
+          .contentEquals("post")) {
+        try {
+          workflowValidator.handleValidate(StringyThings.getJsonFromYaml(inputBody));
+        } catch (Exception e) {
+          if (e instanceof DassanaWorkflowValidationException) {
+            List<String> issues = ((DassanaWorkflowValidationException) e).getIssues();
+            gatewayProxyResponseEvent.setBody(gson.toJson(issues));
+          } else {
+            gatewayProxyResponseEvent.setBody(e.getMessage());
+          }
+
+          gatewayProxyResponseEvent.setStatusCode(400);
+          return gatewayProxyResponseEvent;
+        }
       } else {
         throw new RuntimeException("Sorry, I can't handle path ".concat(input.getPath()));
       }
@@ -203,6 +225,15 @@ public class ApiHandler extends
     return gatewayProxyResponseEvent;
   }
 
+  private void handleSaveToS3(String body) throws JsonProcessingException {
+    String dassanaBucket = System.getenv().get("dassanaBucket");
+    Workflow workflow = contentManager.getWorkflow(new JSONObject(StringyThings.getJsonFromYaml(body)));
+    String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
+    PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
+    s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
+
+  }
+
   private Map<String, String> getHeaders() {
     Map<String, String> headers = new HashMap<>();
     headers.put("Access-Control-Allow-Headers", "x-api-key , Content-Type");
@@ -213,7 +244,7 @@ public class ApiHandler extends
 
   }
 
-  private String handleHints(String json, Map<String, String> parameters) {
+  private String handleHints(String json, Request request) {
 
     JSONObject jsonObject = new JSONObject(json);
     JSONObject dassana = jsonObject.optJSONObject("dassana");
@@ -241,8 +272,7 @@ public class ApiHandler extends
     }
 
     //we return the dassana only ONLY when we are asked to not include the original alert
-    if (parameters != null && parameters.size() > 0
-        && parameters.getOrDefault(API_INCLUDE_INPUT_REQUEST, "false").contentEquals("false")) {
+    if (!request.isIncludeAlertInOutput()) {
       if (jsonObject.optJSONObject("dassana") != null) {
         return jsonObject.getJSONObject("dassana").toString();
       }
@@ -260,10 +290,14 @@ public class ApiHandler extends
    * @param inputJsonStr input to process
    * @return request obj which the engine will run
    */
-  public Request getRequestFromQueryParam(Map<String, String> parameters, String inputJsonStr) {
+  public Request getRequestFromQueryParam(Map<String, String> parameters, String inputJsonStr,
+      Map<String, String> headers) {
 
     if (parameters == null) {
       parameters = new HashMap<>();
+    }
+    if (headers == null) {
+      headers = new HashMap<>();
     }
 
     boolean skipGeneralContext = parameters
@@ -278,14 +312,29 @@ public class ApiHandler extends
     boolean skipS3Upload = parameters
         .getOrDefault(API_PARAM_SKIP_S3UPLOAD, "false").contentEquals("true");
 
-    boolean refreshFromS3 = Boolean.parseBoolean(parameters.getOrDefault(API_PARAM_SKIP_REFRESH_FROM_S3, "false"));
+    String cache = headers.getOrDefault("x-dassana-cache", "false");
+
+    String workflowId = parameters.getOrDefault(API_RUN_WORKFLOW_BY_ID, "");
+
+    boolean refreshFromS3 = Boolean.parseBoolean(cache);
     Request request = new Request(inputJsonStr);
+
+    request.setWorkflowId(workflowId);
+
+    request
+        .setIncludeAlertInOutput(Boolean.parseBoolean(parameters.getOrDefault(API_INCLUDE_ALERT_IN_OUTPUT, "false")));
+
+    request.setIncludeStepOutput(Boolean.parseBoolean(parameters.getOrDefault(API_INCLUDE_STEP_OUTPUT, "false")));
 
     if (StringUtils.isNotEmpty(inputJsonStr)) {
       JSONObject inputJsonObj = new JSONObject(inputJsonStr);
-      String workflow = inputJsonObj.optString("workflow");
-      if (StringUtils.isNotEmpty(workflow)) {
-        request.setAdditionalWorkflowYaml(workflow);
+      JSONArray workflows = inputJsonObj.optJSONArray("workflows");
+      if (workflows != null && workflows.length() > 0) {
+        List<String> workflowStr = new LinkedList<>();
+        for (int i = 0; i < workflows.length(); i++) {
+          workflowStr.add(workflows.getString(i));
+        }
+        request.setAdditionalWorkflowYamls(workflowStr);
       }
 
     }

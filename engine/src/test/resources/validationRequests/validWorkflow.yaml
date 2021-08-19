@@ -1,0 +1,38 @@
+schema: 1.0
+type: normalize
+vendor-id: prisma-cloud
+id: prisma-cloud
+
+filters:
+  - match-type: all
+    rules:
+      - .policy and .policy.policyId
+      - .policy.policyType| contains ("config")
+      - .resource.rrn| contains ("rrn")
+
+steps:
+  - id: resource-info
+    uses: PrismaCloudExtractor
+
+output:
+  - name: alertId
+    value: ."resource-info".alertId
+  - name: canonicalId
+    value: ."resource-info".canonicalId
+  - name: vendorPolicy
+    value: ."resource-info".vendorPolicy
+  - name: csp
+    value: ."resource-info".csp
+  - name: resourceContainer
+    value: ."resource-info".resourceContainer
+  - name: region
+    value: ."resource-info".region
+  - name: service
+    value: ."resource-info".service
+  - name: resourceType
+    value: ."resource-info".resourceType
+  - name: resourceId
+    value: ."resource-info".resourceId
+
+output-queue:
+  enabled: true

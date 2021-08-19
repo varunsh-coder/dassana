@@ -1,0 +1,235 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "dassana/base",
+  "type": "object",
+  "description": "This schema describes the base model of any workflow",
+  "default": {},
+  "required": ["schema", "id", "filters", "type"],
+  "properties": {
+    "schema": {
+      "$id": "#/properties/schema",
+      "type": "integer",
+      "description": "Schema version. Currently only version 1 is supported",
+      "default": 1,
+      "minimum": 1,
+      "maximum": 1,
+      "examples": [1]
+    },
+    "id": {
+      "$id": "#/properties/id",
+      "type": "string",
+      "description": "This id uniquely identifis the workflow. If you want to customize any public (open source) workflows, you can use the same id in your customized workflow and put the workflow in the s3 bucket.",
+      "default": "",
+      "pattern": "^[a-zA-Z0-9-_]+$",
+      "examples": ["foo-cloud-normalize"]
+    },
+    "filters": {
+      "$id": "#/properties/filters",
+      "type": "array",
+      "description": "An array of filters which will be used to figure out if engine should run this workflow or not",
+      "default": [],
+      "examples": [
+        [
+          {
+            "rules": [
+              ".badThingJustHappened and .badThingJustHappened.description",
+              ".badThingJustHappened.description | contains (\"fubar\")"
+            ],
+            "match-type": "all"
+          }
+        ]
+      ],
+      "additionalItems": false,
+      "items": {
+        "$id": "#/properties/filters/items",
+        "allOf": [
+          {
+            "$id": "#/properties/filters/items/allOf/0",
+            "type": "object",
+            "description": "This object represents the filter which will be evaluated by Dassana Engine",
+            "default": {},
+            "examples": [
+              {
+                "rules": [
+                  ".badThingJustHappened and .badThingJustHappened.description",
+                  ".badThingJustHappened.description | contains (\"fubar\")"
+                ],
+                "match-type": "all"
+              }
+            ],
+            "required": ["rules", "match-type"],
+            "properties": {
+              "rules": {
+                "$id": "#/properties/filters/items/allOf/0/properties/rules",
+                "type": "array",
+                "description": "An array of rules",
+                "default": [],
+                "examples": [
+                  [
+                    ".badThingJustHappened and .badThingJustHappened.description",
+                    ".badThingJustHappened.description | contains (\"fubar\")"
+                  ]
+                ],
+                "additionalItems": false,
+                "items": {
+                  "$id": "#/properties/filters/items/allOf/0/properties/rules/items",
+                  "allOf": [
+                    {
+                      "$id": "#/properties/filters/items/allOf/0/properties/rules/items/allOf/0",
+                      "type": "string",
+                      "default": "",
+                      "examples": [
+                        ".badThingJustHappened and .badThingJustHappened.description",
+                        ".badThingJustHappened.description | contains (\"fubar\")"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "match-type": {
+                "$id": "#/properties/filters/items/allOf/0/properties/match-type",
+                "type": "string",
+                "enum": ["any", "all"],
+                "description": "any or all",
+                "default": "",
+                "examples": ["all"]
+              }
+            },
+            "additionalProperties": true
+          }
+        ]
+      }
+    },
+    "type": {
+      "$id": "#/properties/type",
+      "type": "string",
+      "default": "",
+      "enum": [
+        "normalize",
+        "general-context",
+        "policy-context",
+        "resource-context"
+      ],
+      "examples": ["normalize"]
+    },
+    "steps": {
+      "$id": "#/properties/steps",
+      "type": "array",
+      "description": "These steps are executed by Dassana Engine in the order they are specified",
+      "default": [],
+      "examples": [
+        [
+          {
+            "uses": "DemoCloudNormalizer",
+            "id": "resource-info"
+          }
+        ]
+      ],
+      "additionalItems": false,
+      "items": {
+        "$id": "#/properties/steps/items",
+        "allOf": [
+          {
+            "$id": "#/properties/steps/items/allOf/0",
+            "type": "object",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+              {
+                "uses": "DemoCloudNormalizer",
+                "id": "resource-info"
+              }
+            ],
+            "required": ["uses", "id"],
+            "properties": {
+              "uses": {
+                "$id": "#/properties/steps/items/allOf/0/properties/uses",
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9-_]+$",
+                "description": "The name of the Dassana Action (aka serverless function) defined in template.yaml which will be invoked by the engine ",
+                "default": "",
+                "examples": ["DemoCloudNormalizer"]
+              },
+              "with": {
+                "type": "array",
+                "items": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9-_]+$"
+                        },
+                        "value": {
+                          "type": "string"
+                        },
+                        "value-type": {
+                          "type": "string",
+                          "enum": ["JQ", "STRING"]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "id": {
+                "$id": "#/properties/steps/items/allOf/0/properties/id",
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9-_]+$",
+                "description": "This id is used to refer to the output of the step",
+                "default": "",
+                "examples": ["resource-info"]
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "output": {
+    "$id": "#/properties/output",
+    "type": "array",
+    "title": "The output schema",
+    "additionalItems": false,
+    "items": {
+      "$id": "#/properties/output/items",
+      "allOf": [
+        {
+          "type": "object",
+          "required": ["name", "value"],
+          "properties": {
+            "name": {
+              "id": "alertIdName",
+              "type": "string",
+              "title": "the name will become the key",
+              "enum": [
+                "vendorId",
+                "alertId",
+                "canonicalId",
+                "vendorPolicy",
+                "csp",
+                "resourceContainer",
+                "region",
+                "service",
+                "resourceType",
+                "resourceId"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "title": "The value schema"
+            },
+            "value-type": {
+              "type": "string",
+              "enum": ["JQ", "STRING"]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "additionalProperties": true
+}

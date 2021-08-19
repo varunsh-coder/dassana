@@ -14,8 +14,12 @@ public class StringyThings {
   }
 
   public static String getJsonFromYaml(String yaml) throws JsonProcessingException {
-    ObjectMapper jsonWriter = new ObjectMapper();
-    return jsonWriter.writeValueAsString(yamlReader.readValue(yaml, Object.class));
+    try {
+      ObjectMapper jsonWriter = new ObjectMapper();
+      return jsonWriter.writeValueAsString(yamlReader.readValue(yaml, Object.class));
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException("Unable to parse YAML");
+    }
 
   }
 

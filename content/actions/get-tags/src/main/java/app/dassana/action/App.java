@@ -5,12 +5,14 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import software.amazon.awssdk.arns.Arn;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.resourcegroupstaggingapi.ResourceGroupsTaggingApiClient;
 import software.amazon.awssdk.services.resourcegroupstaggingapi.model.GetResourcesRequest;
 import software.amazon.awssdk.services.resourcegroupstaggingapi.model.ResourceTagMapping;
 import software.amazon.awssdk.services.resourcegroupstaggingapi.model.Tag;
+import software.amazon.awssdk.utils.StringUtils;
 
 /**
  * Lambda function entry point. You can change to use other pojo type or implement a different RequestHandler.
@@ -22,7 +24,7 @@ public class App implements RequestHandler<Map<String, String>, Object> {
 
   private boolean credsAvailableViaContext(Context context) {
 
-    if (context.getClientContext() != null && context.getClientContext().getCustom() != null) {
+    if (context != null && context.getClientContext() != null && context.getClientContext().getCustom() != null) {
       String aws_access_key_id = context.getClientContext().getCustom().get("AWS_ACCESS_KEY_ID");
       String aws_secret_access_key = context.getClientContext().getCustom()
           .get("AWS_SECRET_ACCESS_KEY");
@@ -69,22 +71,36 @@ public class App implements RequestHandler<Map<String, String>, Object> {
 
     String arn = input.get("arn");
 
-    List<ResourceTagMapping> resourceTagMappings = client
-        .getResources(GetResourcesRequest.builder().resourceARNList(arn).build())
-        .resourceTagMappingList();
+    Arn awsArn = Arn.fromString(arn);
 
-    List<app.dassana.action.Tag> tagList = new LinkedList<>();
-    for (ResourceTagMapping resourceTagMapping : resourceTagMappings) {
-      List<Tag> tags = resourceTagMapping.tags();
-      for (Tag tag : tags) {
-        app.dassana.action.Tag tag1 = new app.dassana.action.Tag();
-        tag1.setKey(tag.key());
-        tag1.setValue(tag.value());
-        tagList.add(tag1);
+    boolean validArn = true;
+    if (awsArn.region().isPresent()) {
+      if (awsArn.resource().resource().contentEquals("root") && StringUtils.isBlank(awsArn.region().get())) {
+        validArn = false;
       }
 
     }
 
-    return tagList;
+    if (validArn) {
+      List<ResourceTagMapping> resourceTagMappings = client
+          .getResources(GetResourcesRequest.builder().resourceARNList(arn).build())
+          .resourceTagMappingList();
+
+      List<app.dassana.action.Tag> tagList = new LinkedList<>();
+      for (ResourceTagMapping resourceTagMapping : resourceTagMappings) {
+        List<Tag> tags = resourceTagMapping.tags();
+        for (Tag tag : tags) {
+          app.dassana.action.Tag tag1 = new app.dassana.action.Tag();
+          tag1.setKey(tag.key());
+          tag1.setValue(tag.value());
+          tagList.add(tag1);
+        }
+
+      }
+      return tagList;
+    } else {
+      return new LinkedList<>();
+    }
+
   }
 }

@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: redshift-cluster-is-public
@@ -21,7 +21,7 @@ filters:
       - "redshift-cluster-public-access-check"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
   - vendor: prisma-cloud
     policies:
       - "d65fd313-1c5c-42a1-98b2-a73bdeda19a6"

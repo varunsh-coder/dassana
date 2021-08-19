@@ -2,8 +2,8 @@ set -eu
 sam build --cached --parallel --region $2
 cd ../../engine
 mvn process-resources -DkskipTests
-cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngine/
-cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngineApi/
+cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngine/content/
+cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngineApi/content/
 
 cd ../content/pkg
 sam package -t .aws-sam/build/template.yaml --s3-bucket $1 --region $2 --output-template-file uploaded-template.yaml

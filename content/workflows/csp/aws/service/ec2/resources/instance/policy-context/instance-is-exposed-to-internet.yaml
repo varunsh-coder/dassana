@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: instance-is-exposed-to-internet
@@ -21,7 +21,7 @@ filters:
       - "ec2-instance-no-public-ip"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("ec2-instance-no-public-ip"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("ec2-instance-no-public-ip"))
   - vendor: prisma-cloud
     policies:
       - "0e44dabe-a8b9-401b-936b-bb8a0a80279a"

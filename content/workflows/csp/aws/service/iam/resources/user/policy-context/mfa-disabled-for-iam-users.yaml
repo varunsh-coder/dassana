@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: mfa-disabled-for-iam-users
@@ -22,8 +22,8 @@ filters:
       - "mfa-enabled-for-iam-console-access"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
   - vendor: prisma-cloud
     policies:
       - "50af1c0a-ab70-44dd-b6f6-3529e795131f"

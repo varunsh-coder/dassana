@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: cmk-rotation-not-enabled
@@ -21,7 +21,7 @@ filters:
       - "cmk-backing-key-rotation-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cmk-backing-key-rotation-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cmk-backing-key-rotation-enabled"))
   - vendor: prisma-cloud
     policies:
       - "497f7e2c-b702-47c7-9a07-f0f6404ac896"

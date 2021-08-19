@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: mfa-disabled-on-root-account
@@ -21,7 +21,7 @@ filters:
       - "root-account-mfa-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("root-account-mfa-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("root-account-mfa-enabled"))
   - vendor: prisma-cloud
     policies:
       - "478434a1-ff6c-492e-b411-c427c06291d9"

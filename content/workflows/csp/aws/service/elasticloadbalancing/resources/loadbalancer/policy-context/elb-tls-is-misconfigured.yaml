@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: elb-tls-is-misconfigured
@@ -21,7 +21,7 @@ filters:
       - "elb-tls-https-listeners-only"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("elb-tls-https-listeners-only"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("elb-tls-https-listeners-only"))
   - vendor: prisma-cloud
     policies:
       - "836a7c8c-34c2-4861-be1e-df2f8cd27aab"

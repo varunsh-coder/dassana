@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: cloudtrail-encryption-not-enabled
@@ -21,7 +21,7 @@ filters:
       - "cloud-trail-encryption-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("cloud-trail-encryption-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cloud-trail-encryption-enabled"))
   - vendor: prisma-cloud
     policies:
       - "c2b84f89-7ec8-473e-a6af-404feeeb96c5"

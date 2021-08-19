@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: bucket-logging-not-enabled
@@ -21,7 +21,7 @@ filters:
       - "s3-bucket-logging-enabled"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-logging-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-logging-enabled"))
   - vendor: prisma-cloud
     policies:
       - "3f141560-9cfc-412a-96cc-2768edfd23ad"

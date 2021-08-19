@@ -23,6 +23,7 @@ public class S3Downloader implements RemoteContentDownloadApi {
 
   private final S3Client s3Client;
   private String s3Bucket;
+  public static final String WORKFLOW_PATH_IN_S3="workflows/";
 
   public S3Downloader(S3Client s3Client) {
     this.s3Client = s3Client;
@@ -44,7 +45,7 @@ public class S3Downloader implements RemoteContentDownloadApi {
     //this is the local temp dir where we download content
     String tempDir = System.getProperty("java.io.tmpdir").concat(File.separator);
     AtomicBoolean fileDownloaded = new AtomicBoolean(false);
-    ListObjectsV2Request request = ListObjectsV2Request.builder().bucket(s3Bucket).prefix("workflows/").build();
+    ListObjectsV2Request request = ListObjectsV2Request.builder().bucket(s3Bucket).prefix(WORKFLOW_PATH_IN_S3).build();
     ListObjectsV2Iterable response = s3Client.listObjectsV2Paginator(request);
     for (ListObjectsV2Response page : response) {
       for (S3Object object : page.contents()) {

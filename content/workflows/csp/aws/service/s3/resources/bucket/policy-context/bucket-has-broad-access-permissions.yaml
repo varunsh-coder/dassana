@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: bucket-has-broad-access-permissions
@@ -23,9 +23,9 @@ filters:
       - "s3-bucket-public-write-prohibited"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-blacklisted-actions-prohibited"))
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-public-read-prohibited"))
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-public-write-prohibited"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-blacklisted-actions-prohibited"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-public-read-prohibited"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-public-write-prohibited"))
   - vendor: prisma-cloud
     policies:
       - "085de1e7-7eb5-4fde-9a14-56f563c54ed3"

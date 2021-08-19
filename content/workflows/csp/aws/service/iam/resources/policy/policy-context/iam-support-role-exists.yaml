@@ -1,4 +1,4 @@
-schema: 1.0
+schema: 1
 type: policy-context
 
 id: iam-support-role-exists
@@ -21,7 +21,7 @@ filters:
       - "iam-policy-in-use"
     match-type: any
     rules:
-      - .normalizerId == "aws-config" and (.vendorPolicy |contains ("iam-policy-in-use"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-policy-in-use"))
   - vendor: prisma-cloud
     policies:
       - "0425bd06-9799-4d6b-8887-7f7304820424"

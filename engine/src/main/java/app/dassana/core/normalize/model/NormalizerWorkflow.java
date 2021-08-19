@@ -7,7 +7,7 @@ import java.util.List;
 
 public class NormalizerWorkflow extends Workflow {
 
-  private String vendorName;
+  private String vendorId;
   List<Step> postProcessorSteps;
   private boolean outputQueueEnabled;
 
@@ -30,12 +30,12 @@ public class NormalizerWorkflow extends Workflow {
     this.outputQueueEnabled = outputQueueEnabled;
   }
 
-  public String getVendorName() {
-    return vendorName;
+  public String getVendorId() {
+    return vendorId;
   }
 
-  public void setVendorName(String vendorName) {
-    this.vendorName = vendorName;
+  public void setVendorId(String vendorId) {
+    this.vendorId = vendorId;
   }
 
 }

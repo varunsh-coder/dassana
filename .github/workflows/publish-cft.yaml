@@ -33,8 +33,8 @@ jobs:
           sam build --cached --parallel --use-container
           cd ../../engine
           mvn  -ntp -B clean compile -DkskipTest
-          cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngine/
-          cp -R ./target/classes/workflows ../content/pkg/.aws-sam/build/DassanaEngineApi/
+          cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngine/content/
+          cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngineApi/content/
           cd ../content/pkg
           tag=`git describe --tags`
           sam package -t .aws-sam/build/template.yaml --s3-bucket ${{ secrets.SAM_ARTIFACTS_BUCKET }}  --s3-prefix $tag --region ${{ secrets.AWS_REGION }} --output-template-file uploaded-template.yaml
