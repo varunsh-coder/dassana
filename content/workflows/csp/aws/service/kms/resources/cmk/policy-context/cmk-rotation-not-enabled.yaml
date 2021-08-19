@@ -6,14 +6,15 @@ name: CMK rotation not enabled
 labels:
   - contextualization
 
+
 csp: aws
 service: kms
 resource-type: cmk
 
 class: risk
 subclass: config
-category: cryptography
-subcategory: authentication
+category: credential-management
+subcategory: secrets
 
 filters:
   - vendor: aws-config

@@ -1,6 +1,11 @@
 package app.dassana.core.api;
 
+import app.dassana.core.util.PolicyValidator;
+
 import javax.inject.Singleton;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 /**
  * This validator checks if the content in the "content" dir is kosher or not
@@ -9,14 +14,11 @@ import javax.inject.Singleton;
 public class DeepValidator {
 
 
-  public void validate() {
-
+  public void validate() throws IOException {
     String content = Thread.currentThread().getContextClassLoader().getResource("content").getFile();
-
-    System.out.println("Going to validate directory".concat(content));
-    //do validation here and if validation fails, throw exception like this
-    throw new ValidationException("this ain't right");
-
+    PolicyValidator validator = new PolicyValidator();
+    validator.loadYaml(content + "/schemas/policy-classification/policy-classification.yaml");
+    validator.processFiles(content + "/workflows");
   }
 
 
