@@ -1,0 +1,45 @@
+schema: 1
+labels:
+  - contextualization
+type: policy-context
+category: access-sharing
+subcategory: public-access
+id: "bucket-has-broad-access-permissions"
+name: "S3 bucket is configured with an overly broad ACL"
+
+risk-config:
+  default-risk: critical
+  rules:
+    - name: bucket-has-associated-website-and-name-contains-public
+      condition: $.website-info.result
+      risk: low
+filters:
+  vendors:
+    - name: security-hub
+      policies:
+        - "s3-bucket-blacklisted-actions-prohibited"
+        - "s3-bucket-public-read-prohibited"
+        - "s3-bucket-public-write-prohibited"
+      match-type: any
+      rules:
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-blacklisted-actions-prohibited"))
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-public-read-prohibited"))
+        - .workflowId == "security-hub" and (.vendorPolicy |contains ("s3-bucket-public-write-prohibited"))
+    - name: prisma-cloud
+      policies:
+        - "085de1e7-7eb5-4fde-9a14-56f563c54ed3"
+        - "98340798-8e9f-4b4e-8c34-b001307fda3a"
+        - "f0235acc-737d-4a54-8d2c-a05da32663bd"
+      match-type: any
+      rules:
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "085de1e7-7eb5-4fde-9a14-56f563c54ed3"
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "98340798-8e9f-4b4e-8c34-b001307fda3a"
+        - .workflowId == "prisma-cloud" and .vendorPolicy == "f0235acc-737d-4a54-8d2c-a05da32663bd"
+
+
+steps:
+  - id: website-info
+    uses: WebsiteContext
+    with:
+      - name: bucket
+        value: .resourceId
