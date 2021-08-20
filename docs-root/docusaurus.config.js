@@ -40,6 +40,7 @@ module.exports = {
 					position: 'left',
 					label: 'Docs'
 				},
+				{ to: '/blog', label: 'Blog', position: 'left' },
 				{
 					className: 'header-github-link',
 					href: 'https://github.com/dassana-io/dassana',
@@ -113,6 +114,11 @@ module.exports = {
 					sidebarPath: require.resolve('./sidebars.js'),
 					editUrl:
 						'https://github.com/dassana-io/dassana/edit/main/docs-root/'
+				},
+				blog: {
+					showReadingTime: true,
+					editUrl:
+						'https://github.com/dassana-io/dassana/edit/main/docs-root/blog/'
 				},
 				theme: {
 					customCss: require.resolve('./src/css/custom.css')
