@@ -47,10 +47,14 @@ public class Normalize {
 
       String[] arnElements = resourceArn.split(":");
       String resourceInfo = arnElements[5];
+
+
       if (resourceInfo.contains("/")) {
         String[] resourceSplit = resourceInfo.split("/");
         resourceType = resourceSplit[1];
         resourceId = resourceSplit[2];
+      } else {
+        resourceId = resourceInfo;
       }
 
     }

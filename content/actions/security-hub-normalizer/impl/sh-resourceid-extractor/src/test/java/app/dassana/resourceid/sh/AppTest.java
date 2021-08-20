@@ -8,6 +8,20 @@ import software.amazon.awssdk.utils.IoUtils;
 
 class AppTest {
 
+
+  @Test
+  void testS3Alert() throws Exception {
+    App app = new App();
+    String alertJson = IoUtils
+        .toUtf8String(Thread.currentThread().getContextClassLoader().getResourceAsStream("example3"
+            + ".json"));
+    JSONObject jsonObject = new JSONObject(alertJson);
+    NormalizationResult normalizationResult = app.handleRequest(jsonObject.toMap(), null);
+    String resourceId = normalizationResult.getResourceId();
+    Assertions.assertTrue(resourceId.contentEquals("dassana-public-content"));
+  }
+
+
   @Test
   void testRestApiAlert() throws IOException {
 

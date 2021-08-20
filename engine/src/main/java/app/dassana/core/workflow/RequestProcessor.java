@@ -333,7 +333,7 @@ public class RequestProcessor {
       jsonObject.put(POLICY_CONTEXT_SUB_CAT, policyContext.getSubCategory());
       jsonObject.put("output", policyContextWorkflowOutput.get().getOutput());
       if (request.isIncludeStepOutput()) {
-        jsonObject.put("step-output", normalizationOutput.getStepOutput());
+        jsonObject.put("step-output", policyContextWorkflowOutput.get().getStepOutput());
       }
 
       Map<String, Object> riskObj = new HashMap<>();
@@ -354,7 +354,7 @@ public class RequestProcessor {
       jsonObject.put("workflowId", resourceContext.getId());
       jsonObject.put("output", resourceContextWorkflowOutput.get().getOutput());
       if (request.isIncludeStepOutput()) {
-        jsonObject.put("step-output", normalizationOutput.getStepOutput());
+        jsonObject.put("step-output", resourceContextWorkflowOutput.get().getStepOutput());
       }
 
       Map<String, Object> riskObj = new HashMap<>();
