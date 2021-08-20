@@ -3,15 +3,11 @@
   "title": "DoesNaclAllowTrafficFromInternet",
   "type": "object",
   "properties": {
-    "networkAclId": {
+    "networkAclArn": {
       "type": "string"
-    },
-    "awsRegion": {
-      "type": "string",
-      "default": "us-east-1"
     }
   },
   "required": [
-    "networkAclId"
+    "networkAclArn"
   ]
 }

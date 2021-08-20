@@ -27,6 +27,6 @@ def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
     try:
         bucket_website = client.get_bucket_website(Bucket=arn_resource)
 
-        return {"bucketUrl": "%s.s3-website-%s.amazonaws.com" % (arn_resource, region)}
+        return {"bucketWebsiteUrl": "%s.s3-website-%s.amazonaws.com" % (arn_resource, region)}
     except ClientError as e:
         logger.exception(e)

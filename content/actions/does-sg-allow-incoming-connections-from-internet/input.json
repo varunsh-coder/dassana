@@ -3,15 +3,11 @@
   "title": "DoesSgAllowIncomingConnectionsFromInternet",
   "type": "object",
   "properties": {
-    "groupId": {
+    "securityGroupArn": {
       "type": "string"
-    },
-    "awsRegion": {
-      "type": "string",
-      "default": "us-east-1"
     }
   },
   "required": [
-    "groupId"
+    "securityGroupArn"
   ]
 }

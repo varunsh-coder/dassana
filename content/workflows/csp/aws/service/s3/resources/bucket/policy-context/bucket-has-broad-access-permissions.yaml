@@ -42,11 +42,15 @@ filters:
 steps:
   - id: website-info
     uses: WebsiteContext
-    # TODO: add with clause here with appropriate params
+    with:
+      - name: bucketArn
+        value: .canonicalId
+      - name: awsRegion
+        value: .region
 
 risk-config:
   default-risk: critical
   rules:
     - name: bucket-has-associated-website-and-name-contains-public
-      condition: $.resourceId contains public
+      condition: (.resourceId | contains ("public")) and ."website-info"?
       risk: low

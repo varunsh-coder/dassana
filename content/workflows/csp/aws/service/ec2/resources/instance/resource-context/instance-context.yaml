@@ -14,17 +14,15 @@ filters:
       - .resourceType == "instance" and .csp =="aws"
 
 steps:
-  - id: isInstanceBehindAlb
-    uses: IsTheInstanceBehindLoadBalancer
+  - id: ec2Exposure
+    uses: WhatIsEc2Exposure
     with:
-      - name: instanceId
-        value: .resourceId
-      - name: awsRegion
-        value: .region
+      - name: instanceArn
+        value: .canonicalId
 
 risk-config:
   default-risk: ""
   rules:
-    - name: isInstanceBehindAlb
-      condition: .isInstanceBehindAlb == true
+    - name: Can EC2 receive unauthenticated traffic
+      condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == true
       risk: high
