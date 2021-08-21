@@ -4,12 +4,12 @@ aws:
   cloudtrail:
     - trail
   ec2:
-    - flow-log
     - instance
     - route-table
     - security-group
     - snapshot
     - volume
+    - vpc-flow-log
   elasticloadbalancing:
     - loadbalancer
   iam:
