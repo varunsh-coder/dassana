@@ -292,7 +292,7 @@ Resources:
     Metadata:
       BuildMethod: makefile
     Properties:
-      Handler: app.dassana.core.launch.Handler
+      Handler: app.dassana.core.launch.SqsHandler
       Layers:
         - !Ref DassanaEngineJavaLayer
       Runtime: java11

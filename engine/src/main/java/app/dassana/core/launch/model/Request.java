@@ -14,7 +14,6 @@ public class Request {
   private boolean skipGeneralContext;
   private boolean skipResourceContext;
   private boolean skipPolicyContext;
-  private boolean skipS3Upload;
   private boolean refreshFromS3;
   private List<String> additionalWorkflowYamls;
 
@@ -68,13 +67,6 @@ public class Request {
     this.refreshFromS3 = refreshFromS3;
   }
 
-  public boolean isSkipS3Upload() {
-    return skipS3Upload;
-  }
-
-  public void setSkipS3Upload(boolean skipS3Upload) {
-    this.skipS3Upload = skipS3Upload;
-  }
 
   public boolean isSkipPolicyContext() {
     return skipPolicyContext;

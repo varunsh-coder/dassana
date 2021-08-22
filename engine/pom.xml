@@ -273,8 +273,7 @@
             <exclude>app/dassana/core/api/PingHandler.class</exclude>
             <exclude>app/dassana/core/client/infra/**</exclude>
             <exclude>app/dassana/core/contentmanager/infra/**</exclude>
-            <exclude>app/dassana/core/launch/App.class</exclude>
-            <exclude>app/dassana/core/launch/Handler.class</exclude>
+            <exclude>app.dassana.core.workflow.processor.S3Manager.class</exclude>
           </excludes>
         </configuration>
       </plugin>

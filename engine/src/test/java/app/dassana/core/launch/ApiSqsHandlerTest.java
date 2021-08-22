@@ -14,6 +14,8 @@ import app.dassana.core.workflow.infra.LambdaStepRunner;
 import app.dassana.core.workflow.model.Step;
 import app.dassana.core.workflow.model.StepRunResponse;
 import app.dassana.core.workflow.model.Workflow;
+import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
+import app.dassana.core.workflow.processor.S3Manager;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -33,7 +35,7 @@ import org.junit.platform.commons.util.StringUtils;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @MicronautTest
-public class ApiHandlerTest {
+public class ApiSqsHandlerTest {
 
   @Inject Helper helper;
 
@@ -191,6 +193,16 @@ public class ApiHandlerTest {
         queryParams);
 
 
+  }
+
+  @Singleton
+  @Replaces(S3Manager.class)
+  public static class FakeS3Manager extends S3Manager {
+
+    @Override
+    public String uploadedToS3(Optional<WorkflowOutputWithRisk> normalizationResult, String jsonToUpload) {
+      return jsonToUpload;
+    }
   }
 
 

@@ -1,8 +1,10 @@
 package app.dassana.core.launch;
 
 import app.dassana.core.contentmanager.ContentManagerApi;
+import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.Request;
-import app.dassana.core.workflow.RequestProcessor;
+import app.dassana.core.normalize.model.NormalizerWorkflow;
+import app.dassana.core.workflow.processor.RequestProcessor;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent.SQSMessage;
 import io.micronaut.core.annotation.Introspected;
@@ -16,11 +18,13 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
 @Introspected
-public class Handler extends MicronautRequestHandler<SQSEvent, Void> {
+public class SqsHandler extends MicronautRequestHandler<SQSEvent, Void> {
 
-  private static final Logger logger = LoggerFactory.getLogger(Handler.class);
+  private static final Logger logger = LoggerFactory.getLogger(SqsHandler.class);
 
   private final String dassanaDeadLetterQueue = System.getenv("dassanaDeadLetterQueue");
+  private final String dassanaOutboundQueue = System.getenv("dassanaOutboundQueue");
+
 
   @Inject private ContentManagerApi contentManager;
   @Inject private RequestProcessor requestProcessor;
@@ -40,11 +44,18 @@ public class Handler extends MicronautRequestHandler<SQSEvent, Void> {
         request.setSkipGeneralContext(false);
         request.setSkipPolicyContext(false);
         request.setSkipPostProcessor(false);
-        request.setSkipS3Upload(false);
         request.setIncludeAlertInOutput(true);
         request.setIncludeStepOutput(true);
 
-        requestProcessor.processRequest(request);
+        ProcessingResponse processingResponse = requestProcessor.processRequest(request);
+        NormalizerWorkflow normalizerWorkflow = processingResponse.getNormalizerWorkflow();
+
+        if (normalizerWorkflow != null && normalizerWorkflow.isOutputQueueEnabled() && request.isQueueProcessing()) {
+          sqsClient.sendMessage(SendMessageRequest.builder().
+              queueUrl(dassanaOutboundQueue).
+              messageBody(processingResponse.getDecoratedJson()).build());
+        }
+
 
       } catch (Exception e) {
         handleException(e, message.getBody());

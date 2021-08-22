@@ -22,7 +22,7 @@ import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.rule.RuleMatch;
 import app.dassana.core.util.JsonyThings;
 import app.dassana.core.util.StringyThings;
-import app.dassana.core.workflow.RequestProcessor;
+import app.dassana.core.workflow.processor.RequestProcessor;
 import app.dassana.core.workflow.WorkflowRunner;
 import app.dassana.core.workflow.model.Workflow;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
@@ -260,7 +260,7 @@ public class ApiHandler extends
         JSONObject genContext = dassana.optJSONObject(workflow);
         if (genContext == null) {
           Message message = new Message();
-          message.setSeverity(severity.WARN);
+          message.setSeverity(severity.INFO);
           message.setMsg(String.format("Sorry, but no %s workflow ran for the given alert. Please check filter config",
               workflow));
           jsonObject.getJSONObject("dassana").put(workflow, new JSONObject(gson.toJson(message)));
@@ -344,7 +344,6 @@ public class ApiHandler extends
     request.setSkipPostProcessor(skipPostProcessor);
     request.setSkipGeneralContext(skipGeneralContext);
     request.setSkipPolicyContext(skipPolicyContext);
-    request.setSkipS3Upload(skipS3Upload);
     return request;
   }
 

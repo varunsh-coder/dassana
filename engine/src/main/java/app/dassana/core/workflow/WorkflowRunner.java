@@ -189,7 +189,7 @@ public class WorkflowRunner {
         var resPriWorkflow = (GeneralContext) workflow;
         riskConfig = resPriWorkflow.getRiskConfig();
         workflowOutputWithRisk
-            .setRisk(getRisk(workflow, riskConfig, workflowOutputWithRisk, simpleOutput));
+            .setRisk(getRisk(riskConfig, workflowOutputWithRisk, simpleOutput));
       }
 
       workflowOutputWithRisk.setOutput(getSimpleOutput(workflowOutPut, workflow));
@@ -222,8 +222,8 @@ public class WorkflowRunner {
 
   }
 
-  private Risk getRisk(Workflow workflow, RiskConfig riskConfig, WorkflowOutput workflowOutput,
-      Map<String, Object> simpleOutput) throws Exception {
+  private Risk getRisk(RiskConfig riskConfig, WorkflowOutput workflowOutput,
+      Map<String, Object> simpleOutput) {
     String normalizedJson = gson.toJson(simpleOutput);
     JSONObject requestJsonObjForRiskCalc = new JSONObject();
 
