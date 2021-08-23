@@ -1,4 +1,4 @@
 - aws-config
 - foo-cloud
 - guardduty
-- prisma-cloud
+#- prisma-cloud
