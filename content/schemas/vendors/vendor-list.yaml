@@ -1,4 +1,8 @@
-- aws-config
-- foo-cloud
-- guardduty
-#- prisma-cloud
+- id: aws-config
+  name: AWS Config
+- id: foo-cloud
+  name: Foo Cloud
+- id: guardduty
+  name: GuardDuty
+# - id: prisma-cloud
+#   name: Prisma Cloud

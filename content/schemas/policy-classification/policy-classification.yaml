@@ -1,54 +1,84 @@
-risk:
-  config:
-      access-sharing:
-          - public-access
-      cryptography:
-          - encryption
-          - ssl
-      networking:
-          - firewall
-      visibility:
-          - logging
-          - alerting
-          - monitoring
-      iam:
-          - authentication
-          - authorization
-      credential-management:
-          - secrets
-incident:
-  reconnaissance:
-      active-scanning:
-  initial-access:
-      drive-by-compromise:
-      phishing:
-      exploit-public-facing-application:
-      valid-accounts:
-  persistence:
-      account-manipulation:
-  privelege-escalation:
-      valid-accounts:
-  defense-evasion:
-      impair-defenses:
-  credential-access:
-      brute-force:
-      unsecured-credentials:
-  discovery:
-      network-service-scanning:
-      cloud-infrastructure-discovery:
-      cloud-service-discovery:
-  collection:
-      data-from-cloud-storage-object:
-  command-and-control:
-      application-layer-protocol:
-      non-standard-port:
-      dynamic-resolution:
-      proxy:
-  exfiltration:
-      automated-exfiltration:
-      exfiltration-over-alternative-protocol:
-      exfiltration-over-web-service:
-  impact:
-      network-denial-of-service:
-      resource-hijacking:
-      data-destruction:
+classes:
+  - id: risk
+    subclasses:
+      - id: config
+        categories:
+          - id: access-sharing
+            subcategories:
+              - id: public-access
+          - id: cryptography
+            subcategories:
+              - id: encryption
+              - id: ssl
+          - id: networking
+            subcategories:
+              - id: firewall
+          - id: visibility
+            subcategories:
+              - id: logging
+              - id: alerting
+              - id: monitoring
+          - id: iam
+            subcategories:
+              - id: authentication
+              - id: authorization
+          - id: credential-management
+            subcategories:
+              - id: secrets
+  - id: incident
+    subclasses:
+      - id: reconnaissance
+        categories:
+          - id: active-scanning
+      - id: initial-access
+        categories:
+          - id: drive-by-compromise
+          - id: phishing
+          - id: exploit-public-facing-application
+          - id: valid-accounts
+      - id: initial-access
+        categories:
+          - id: drive-by-compromise
+          - id: phishing
+          - id: exploit-public-facing-application
+          - id: valid-accounts
+      - id: persistence
+        categories:
+          - id: account-manipulation
+      - id: privelege-escalation
+        categories:
+          - id: valid-accounts
+      - id: defense-evasion
+        categories:
+          - id: impair-defenses
+      - id: credential-access
+        categories:
+          - id: brute-force
+          - id: unsecured-credentials
+      - id: discovery
+        categories:
+          - id: network-service-scanning
+          - id: cloud-infrastructure-discovery
+          - id: cloud-service-discovery
+      - id: collection
+        categories:
+          - id: data-from-cloud-storage-object
+      - id: collection
+        categories:
+          - id: data-from-cloud-storage-object
+      - id: command-and-control
+        categories:
+          - id: application-layer-protocol
+          - id: non-standard-port
+          - id: dynamic-resolution
+          - id: proxy
+      - id: exfiltration
+        categories:
+          - id: automated-exfiltration
+          - id: exfiltration-over-alternative-protocol
+          - id: exfiltration-over-web-service
+      - id: impact
+        categories:
+          - id: network-denial-of-service
+          - id: resource-hijacking
+          - id: data-destruction

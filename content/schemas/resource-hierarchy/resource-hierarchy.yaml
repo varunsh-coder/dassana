@@ -1,26 +1,38 @@
-aws:
-  cloudfront:
-    - distribution
-  cloudtrail:
-    - trail
-  ec2:
-    - instance
-    - route-table
-    - security-group
-    - snapshot
-    - volume
-    - vpc-flow-log
-  elasticloadbalancing:
-    - loadbalancer
-  iam:
-    - policy
-    - user
-  kms:
-    - cmk
-  rds:
-    - instance
-    - snapshot
-  redshift:
-    - cluster
-  s3:
-    - bucket
+csp:
+  - id: aws
+    name: Amazon Web Services
+    services:
+      - id: cloudfront
+        resource-types:
+          - id: distribution
+      - id: cloudtrail
+        resource-types:
+          - id: trail
+      - id: ec2
+        resource-types:
+          - id: instance
+          - id: route-table
+          - id: security-group
+          - id: snapshot
+          - id: volume
+          - id: vpc-flow-log
+      - id: elasticloadbalancing
+        resource-types:
+          - id: loadbalancer
+      - id: iam
+        resource-types:
+          - id: policy
+          - id: user
+      - id: kms
+        resource-types:
+          - id: cmk
+      - id: rds
+        resource-types:
+          - id: instance
+          - id: snapshot
+      - id: redshift
+        resource-types:
+          - id: cluster
+      - id: s3
+        resource-types:
+          - id: bucket
