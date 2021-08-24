@@ -1,4 +1,4 @@
-## Exposure of an EC2 instance
+## Is S3 bucket hosting a static website
 
 Identifies if a S3 Bucket is associated with a website.
 

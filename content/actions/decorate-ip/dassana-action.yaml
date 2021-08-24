@@ -1,6 +1,6 @@
 schema: 1.0
 id: DecorateIp
-name: Returns geo location data related to IP
+name: Decorate IP with geolocation data
 
 cloud-type: aws
 

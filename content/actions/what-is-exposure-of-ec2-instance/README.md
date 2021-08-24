@@ -1,4 +1,4 @@
-## Exposure of an EC2 instance
+## Exposure of an EC2 instance to the internet
 
 This action returns the exposure of an EC2 instance to the internet.
 
@@ -28,7 +28,7 @@ On a high level, the action identifies the following questions for an instance:
 }
 ```
 
-###`appLayer` field contains information about LoadBalancers.
+### `appLayer` field contains information about LoadBalancers.
 `type`: `str` 
 
 The only permissible type right now is `internet-facing`, meaning internet-facing LoadBalancers.

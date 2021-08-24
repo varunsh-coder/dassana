@@ -1,6 +1,6 @@
 schema: 1.0
 id: WhatIsEc2Exposure
-name: EC2 instance exposure to the internet
+name: Exposure of an EC2 instance to the internet
 
 cloud-type: aws
 service: ec2
