@@ -441,40 +441,6 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/SecurityAudit
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-
-  DoesNaclAllowTrafficFromInternet:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handler.handle
-      Runtime: python3.7
-      CodeUri: ../actions/does-nacl-allow-traffic-from-internet
-      Layers:
-        - !Ref DassanaActionsPythonLayer
-      Role:
-        Fn::GetAtt: [DassanaActionsRole, Arn]
-      Timeout: 60
-  DoesSgAllowIncomingConnectionsFromInternet:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handler.handle
-      Runtime: python3.7
-      CodeUri: ../actions/does-sg-allow-incoming-connections-from-internet
-      Layers:
-        - !Ref DassanaActionsPythonLayer
-      Role:
-        Fn::GetAtt: [DassanaActionsRole, Arn]
-      Timeout: 60
-  WhichSubnetsAreAssociatedWithLoadBalancer:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handler.handle
-      Runtime: python3.7
-      CodeUri: ../actions/which-subnets-are-associated-with-loadbalancer
-      Layers:
-        - !Ref DassanaActionsPythonLayer
-      Role:
-        Fn::GetAtt: [DassanaActionsRole, Arn]
-      Timeout: 60
   GetTags:
     Type: AWS::Serverless::Function
     Properties:
