@@ -1,6 +1,6 @@
 schema: 1.0
 id: GetTags
-name: GetTags
+name: Get tags
 
 cloud-type: aws
 

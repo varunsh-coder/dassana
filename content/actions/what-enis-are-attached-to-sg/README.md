@@ -1,8 +1,8 @@
-## What ENIs are attached to SecurityGroup
+## What ENIs are attached to Security Group
 
 Identifies and returns ENIs attached to a security group.
 
-Sample Input:
+### Sample Input:
 ```json
 {
   "groupId": "",
@@ -10,7 +10,7 @@ Sample Input:
 }
 ```
 
-Sample Output:
+### Sample Output:
 ```json
 {
   "result": [

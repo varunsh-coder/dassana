@@ -1,6 +1,6 @@
 schema: 1.0
 id: WebsiteContext
-name: AWS Website Context Action
+name: Is S3 bucket hosting a static website?
 
 cloud-type: aws
 service: s3

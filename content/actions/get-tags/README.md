@@ -1,5 +1,4 @@
-## Get Tags Action
-
+## Get Tags
 
 This action expects following two inputs-
 

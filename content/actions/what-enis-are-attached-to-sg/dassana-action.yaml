@@ -1,6 +1,6 @@
 schema: 1.0
 id: WhatEnisAreAttachedToSg
-name: What Elastic Network Interfaces Are Attached to SG
+name: What ENIs are attached to Security Group
 
 cloud-type: aws
 service: ec2

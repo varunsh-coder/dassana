@@ -1,6 +1,6 @@
-## Decorate Ip Action
+## Decorate IP with geolocation data
 
-This action returns geo location data from an IP address.
+This action returns geo location data of an IP address.
 
 The action expects one input:
 
@@ -42,7 +42,5 @@ returned as null:
   }
 }
 ```
-
-
 
 Data curated from [db-ip](https://db-ip.com/db/download).

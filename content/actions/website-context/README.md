@@ -1,6 +1,8 @@
+## Exposure of an EC2 instance
+
 Identifies if a S3 Bucket is associated with a website.
 
-Sample Input:
+### Sample Input:
 ```json
 {
   "bucketArn": "arn:aws:s3:::foobar",
@@ -8,7 +10,7 @@ Sample Input:
 }
 ```
 
-Sample Output:
+### Sample Output:
 ```json
 {
   "bucketWebsiteUrl": "foobar-content.s3-website-us-east-1.amazonaws.com"

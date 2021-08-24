@@ -1,4 +1,4 @@
-## What ENIs are attached to SecurityGroup
+## Exposure of an EC2 instance
 
 This action returns the exposure of an EC2 instance to the internet.
 
