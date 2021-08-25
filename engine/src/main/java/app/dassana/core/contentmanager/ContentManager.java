@@ -279,7 +279,7 @@ public class ContentManager implements ContentManagerApi {
   }
 
 
-  private List<String> updateWorkflowSet(List<String> workflowYamlStr) throws IOException {
+  private synchronized List<String> updateWorkflowSet(List<String> workflowYamlStr) throws IOException {
 
     if (workflowYamlStr == null || workflowYamlStr.isEmpty()) {
       return new LinkedList<>();
@@ -380,10 +380,6 @@ public class ContentManager implements ContentManagerApi {
     //sync every SYNC_INTERVAL_IN_MINS
     if ((request != null && request.isRefreshFromS3()) || stale) {
       syncResult.setCacheHit(false);
-
-      workflowSet.clear();
-      processEmbeddedContent();
-
       Optional<File> optionalFile;
       optionalFile = contentDownloader.downloadContent(lastSuccessfulSync);
       optionalFile.ifPresent(dir -> {

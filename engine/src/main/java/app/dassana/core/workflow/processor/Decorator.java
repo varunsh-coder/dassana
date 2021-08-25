@@ -54,6 +54,9 @@ public class Decorator {
       generalContextJsonObj.put(WORKFLOW_ID, generalContextWorkflowOutput.get().getWorkflowId());
       generalContextJsonObj.put("workflowType",GENERAL_CONTEXT);
       generalContextJsonObj.put("output", generalContextWorkflowOutput.get().getOutput());
+      if (request.isIncludeStepOutput()) {
+        generalContextJsonObj.put("step-output", generalContextWorkflowOutput.get().getStepOutput());
+      }
       Map<String, Object> riskObj = new HashMap<>();
       riskObj.put("riskValue", generalContextWorkflowOutput.get().getRisk().getRiskValue());
       riskObj.put("condition", generalContextWorkflowOutput.get().getRisk().getCondition());
