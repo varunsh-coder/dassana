@@ -183,7 +183,11 @@ public class RequestProcessor {
         NormalizerException normalizerException = new NormalizerException(
             String.format("%s is expected to be not empty", key));
         normalizerException.setWorkflowId(normalizerOutput.getWorkflowId());
-        throw normalizerException;
+
+        //relax the requirements for resource-type for now
+        if (!key.contentEquals("resourceType")) {
+          throw normalizerException;
+        }
       }
     } catch (NullPointerException exception) {
       NormalizerException normalizerException = new NormalizerException(
