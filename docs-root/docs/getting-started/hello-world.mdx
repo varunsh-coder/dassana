@@ -45,7 +45,7 @@ This time around you should more in the output panel.
 
 ### Normalization
 
-We see much better result this time! What just happened? Take a look at the workflow file code on the left-hand side panel. You will note the following:
+We see a much better result this time! What just happened? Take a look at the workflow file code on the left-hand side panel. You will note the following:
 
 ```yaml
 filters:
@@ -55,7 +55,7 @@ filters:
           - .badThingJustHappened.description | contains ("fubar")
 ```
 
-Here, we just told Dassana, that when JSON path `$.badThingJustHappened.description` `contains` `fubar` (we will get to this in a moment), we want the workflow to run. This workflow performs [normalization](../guides/workflow-authoring/normalize) using the `steps`. We have this step -
+Here, we just told Dassana that when JSON path `$.badThingJustHappened.description` `contains` `fubar` (we will get to this in a moment), we want the workflow to run. This workflow performs [normalization](../guides/workflow-authoring/normalize) using the `steps`. We have this step -
 
 ```yaml
 steps:
@@ -85,7 +85,7 @@ In the workflows of type `general-context`, the `risk-config` tells Dassana the 
 
 :::
 
-Again, the condition here uses JSON rule (yes,yes, we are going to get to it, beer🍺 with for us for a moment please). The condition here is basically telling Dassana that when the `resourceContainer` contains the word `some`, we want the resource risk to be low.
+Again, the condition here uses JSON rule (yes, yes, we are going to get to it, beer🍺  with for us for a moment please). The condition here is basically telling Dassana that when the `resourceContainer` contains the word `some`, we want the resource risk to be low.
 
 ### Resource and Policy Context
 
@@ -109,4 +109,4 @@ We recommend you checkout [examples](https://github.com/dassana-io/rule-engine/b
 
 ## What's next?
 
-Checkout some of the [vendor integrations](../guides/vendor-setup/aws-config/setup.md) to process some real alerts this time. Or, if you hungry, order a pizza 🍕 with pineapple 🍍
+Checkout some of the [vendor integrations](../guides/vendor-setup/aws-config/setup.md) to process some real alerts this time. Or, if you're hungry, order a pizza 🍕 with pineapple 🍍
