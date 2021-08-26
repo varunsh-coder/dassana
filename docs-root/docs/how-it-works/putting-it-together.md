@@ -4,7 +4,7 @@ Now that you understand how the magic happens. Let's review the terminology and 
 
 ## Terminology
 
-| Syntax   | Description                                                                                                                                                                                                                                                                                                  |
+| Term   | Description                                                                                                                                                                                                                                                                                                  |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Engine   | Responsible for running workflows against an alert (json object). It can take alerts from a SQS queue or you can interact with it using [Dassana Editor](https://editor.dassana.io/) to author workflows                                                                                                     |
 | Workflow | A YAML file which describes what to do with an alert. It has filters on top which tells if the workflow should run or not, it has steps in the middle which run actions (serverless functions) whose output is used in the risk-config section to determine the risk. The workflows can also emit an output. |
