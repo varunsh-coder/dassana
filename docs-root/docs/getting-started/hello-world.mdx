@@ -41,7 +41,7 @@ Let's send something interesting this time. Click `Edit Alert JSON` and enter th
 }
 ```
 
-This time around you should more in the output panel.
+This time around you should see more in the output panel.
 
 ### Normalization
 
@@ -78,6 +78,7 @@ the general context can provide context about the account in question, the AWS o
 
 In the workflows of type `general-context`, `resource-context` and `policy-context`, the `risk-config` section is used to represent the risk associated with
 the respective workflow type. The `normalize` workflow type does not have any risk config.
+
 :::
 
 Again, the condition here uses JQ rules (yes, yes, we are going to get to it, beer🍺 with for us for a moment please).
@@ -104,7 +105,7 @@ curl --location --request POST 'https://<rest-api-id>.execute-api.us-east-1.amaz
 
 ```
 
-Here, we are bypassing normalizatio, general context etc and running a workflow directly.
+Here, we are bypassing normalization, general context, etc and running a workflow directly.
 This makes it super easy to get context directly of a resource
 
 :::
