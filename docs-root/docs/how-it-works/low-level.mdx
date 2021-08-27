@@ -1,0 +1,42 @@
+# Low level Dirty Details
+
+Let's talk about workflows and actions in detail. We will not talk about how to author them, but rather what do they do
+
+## Workflows
+
+As we know by now, these are YAML files which tells the engine how to process the alert.
+As soon as an alert is received by Dassana, the very first workflow that gets run is of type `normalize`
+
+import Normalization from '../getting-started/concepts/normalization.md'
+import GeneralContext from '../getting-started/concepts/general-context.md'
+import ResourceContext from '../getting-started/concepts/resource-context.md'
+import PolicyContext from '../getting-started/concepts/policy-context.md'
+
+### Normalize workflow
+
+<Normalization />
+
+Visit [content authoring](./guides/workflow-authoring/normalize.mdx) section to learn how to author your own normalizer or make edit to existing one.
+
+## Context workflows
+
+There are three types of context workflows and their job is add context to the alert and use the context to evaluate the risk as defined in their
+respective `risk-config` field
+
+### general-context
+
+<GeneralContext />
+
+### resource-context
+
+<ResourceContext />
+
+### policy-context
+
+<PolicyContext />
+
+## Actions
+
+import Action from '../common-fields/actions/about.md'
+
+<Action />
