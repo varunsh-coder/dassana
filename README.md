@@ -18,7 +18,7 @@
 
 
 <p align="center">
-Dassana can ingest any cloud security alert, enrich it with context, and prioritize it with contextual risk.
+Dassana helps you beat alert fatigure by enriching alerts with context and prioritizing them with contextual risk.
 </p>
 
 
