@@ -2,10 +2,6 @@
 
 # Introduction
 
-> ‘Why does the world need another shoe?’ — sometimes innovation can be about taking things away. It can be whispering when everyone else is screaming.”
->
-> Tim Brown, Founder, Allbirds
-
 
 <p align="center">
   You get an alert 🛎️<br>
