@@ -62,6 +62,8 @@ filters:
 Here, we just told Dassana that when JQ expressions `.badThingJustHappened and .badThingJustHappened.description` and `.badThingJustHappened.description | contains ("fubar")` evaluate to true
 (we will get to this in a moment), we want the workflow to run.
 
+Learn more about [Normalization](../guides/workflow-authoring/normalize).
+
 ### General Context
 
 Next take a look at the output (on the right-hand side) under General Context. You will note a risk of low. On the left-hand panel, click on the General Context tab. You will note the following yaml in the workflow file code:
@@ -77,6 +79,8 @@ risk-config:
 
 In general (no pun intended), the general context is intended to provide context on a highest level. For example, for alerts generated against AWS resources,
 the general context can provide context about the account in question, the AWS org, tags etc.
+
+Learn more about [General Context](../guides/workflow-authoring/general-context).
 
 :::info
 
@@ -114,11 +118,15 @@ This makes it super easy to get context directly of a resource
 
 :::
 
+Learn more about [Resource Context](../guides/workflow-authoring/resource-context).
+
 ### Policy Context
 
-The workflows of `policy-context` are intended to provide context around the alert. These workflows should care about the alert actually (as opposed to resource-context workflows which should care about the resource in question)
+The workflows of `policy-context` type are intended to provide context around the alert. These workflows should care about the alert actually (as opposed to resource-context workflows which should care about the resource in question)
 For example, refer to [bucket-has-broad-access-permissions](https://github.com/dassana-io/dassana/blob/main/content/workflows/csp/aws/service/s3/resources/bucket/policy-context/bucket-has-broad-access-permissions.yaml) workflow.
 That workflow calls an action [WebsiteContext](https://github.com/dassana-io/dassana/tree/main/content/actions/website-context) in the steps to find out if bucket in question has an associated website with it or not.
+
+Learn more about [Policy Context](../guides/workflow-authoring/policy-context).
 
 ### JQ rules
 
@@ -128,4 +136,5 @@ You can also test JQ expressions [here](https://jqplay.org/).
 
 ## What's next?
 
-Checkout some of the [vendor integrations](../guides/vendor-setup/aws-config/setup.md) to process some real alerts this time. Or, if you're hungry, order a pizza 🍕 with pineapple 🍍
+Checkout some of the [vendor integrations](../guides/vendor-setup/aws-config/setup.md) to process some real alerts this time.
+Read [this](https://docs.dassana.io/blog/static-s3-bucket) blog, or, if you're hungry, order a pizza 🍕 with pineapple 🍍

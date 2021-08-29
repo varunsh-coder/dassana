@@ -12,6 +12,10 @@ Current approaches to alert fatigue problems involve prioritizing alerts based o
 
 Furthermore, Dassana normalizes all alerts it receives. This means that all contextualization happens on a normalized alert which means that you gain vendor independence and you can use any cloud security tools and the contextualization will continue to work in a vendor-agnostic manner.
 
+:::info
+Much like snort was created to declaratively inspect network traffic, ModSecurity was created to inspect HTTP traffic, we created Dassana to declaratively process security alerts.
+:::
+
 **Can I contextualize any alert?**
 
 Yes. Out of the box, we are supporting Guard Duty and AWS Config alerts ingested by the Security hub. We also provide a free and open-source [editor](https://editor.dassana.io/) that you can use to contextualize any alert.

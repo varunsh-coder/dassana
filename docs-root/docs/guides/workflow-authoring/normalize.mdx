@@ -1,8 +1,12 @@
 # Normalize
 
-This is the first workflow which gets run and its output is sent to all of the workflows which have type `general-context`, `resource-context` and `policy-context` (don't worry, not all of then will run, only the ones which match the filters defined in those workflows will run).
+:::info
+It is assumed that you have read the [workflow execution](./execution) page before you start reading this page
+:::
 
 ## Example
+
+This workflow type is responsible for normalizing alerts received by the engine. As such, the most important part to familiarize yourself is the output section
 
 Here is an example of how AWS Config alerts (via Security Hub) are normalized.
 

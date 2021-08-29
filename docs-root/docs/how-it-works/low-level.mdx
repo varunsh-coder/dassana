@@ -1,6 +1,10 @@
 # Low level Dirty Details
 
-Let's talk about workflows and actions in detail. We will not talk about how to author them, but rather what do they do
+This section is intended for those who want to understand how the engine processes alerts end to end.
+
+## Workflow Execution
+
+To learn _how_ workflows are executed, please read [this](../guides/workflow-authoring/execution.mdx) document. The rest of the document describes _what_ do they do.
 
 ## Workflows
 
@@ -16,22 +20,22 @@ import PolicyContext from '../getting-started/concepts/policy-context.md'
 
 <Normalization />
 
-Visit [content authoring](./guides/workflow-authoring/normalize.mdx) section to learn how to author your own normalizer or make edit to existing one.
+Visit [content authoring](./guides/workflow-authoring/normalize.mdx) section to learn how to author your own normalizer or edit existing one.
 
 ## Context workflows
 
 There are three types of context workflows and their job is add context to the alert and use the context to evaluate the risk as defined in their
 respective `risk-config` field
 
-### general-context
+### `general-context`
 
 <GeneralContext />
 
-### resource-context
+### `resource-context`
 
 <ResourceContext />
 
-### policy-context
+### `policy-context`
 
 <PolicyContext />
 

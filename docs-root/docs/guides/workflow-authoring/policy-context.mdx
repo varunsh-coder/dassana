@@ -1,5 +1,9 @@
 # Policy Context
 
+:::info
+It is assumed that you have read the [workflow execution](./execution) page before you start reading this page
+:::
+
 Security policies are written using `policy-context` workflows. A single Dassana policy can be mapped to multiple vendor policies.
 
 ## Example
@@ -53,6 +57,8 @@ risk-config:
           condition: ."list-of-attached-eni".result| length > 0
           risk: high
 ```
+
+---
 
 ## Reference
 

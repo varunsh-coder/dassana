@@ -12,16 +12,15 @@ Please note that currently we can process AWS Config alerts managed by SecurityH
 
 Here is an example SecurityHub alert (snipped for readability)-
 
-```JSON
+```json
 {
-  "SchemaVersion": "2018-10-08",
-  "Id": "arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/4991510f-77f2-4c48-bbb9-f51697bffa3d",
-  "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
-  "ProductName": "Security Hub",
-  "CompanyName": "AWS",
-  "Region": "us-east-1",
-  "GeneratorId": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0/rule/4.1",
-
+	"SchemaVersion": "2018-10-08",
+	"Id": "arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/4991510f-77f2-4c48-bbb9-f51697bffa3d",
+	"ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+	"ProductName": "Security Hub",
+	"CompanyName": "AWS",
+	"Region": "us-east-1",
+	"GeneratorId": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0/rule/4.1"
 }
 ```
 

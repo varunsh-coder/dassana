@@ -21,7 +21,6 @@ module.exports = {
 			label: 'Getting Started',
 			items: [
 				'getting-started/installation',
-				'getting-started/aws-cross-account-role',
 				'getting-started/hello-world'
 			]
 		},
@@ -47,6 +46,7 @@ module.exports = {
 							type: 'category',
 							label: 'Workflows',
 							items: [
+								'guides/workflow-authoring/execution',
 								'guides/workflow-authoring/editor',
 								'guides/workflow-authoring/normalize',
 								'guides/workflow-authoring/general-context',
