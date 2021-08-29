@@ -23,8 +23,6 @@ function BlogPostPage(props) {
 	const { hide_table_of_contents: hideTableOfContents, no_comments } =
 		frontMatter
 
-	console.log(slug)
-
 	return (
 		<Layout
 			description={description}

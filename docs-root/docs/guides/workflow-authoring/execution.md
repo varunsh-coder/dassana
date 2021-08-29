@@ -1,16 +1,16 @@
 # Workflow Execution
 
-Please familiarize with the following diagram first and then read rest of the document
+Please familiarize yourself with the following diagram first and then read the rest of the document.
 
 ![foo](/img/guides/authoring/engine-execution.svg)
 
 :::info
-Following concepts apply to **ALL** types of workflows. Each workflow type can have its specific fields and processing logic. You can read workflow type specific information based on the
+The following concepts apply to **ALL** types of workflows. Each workflow type can have its specific fields and processing logic. You can read workflow type-specific information based on the
 workflow type here:
-[`normalize`](./normalize.md)
-[`general-context`](./general-context.md)
-[`resource-context`](./resource-context.md)
-[`policy-context`](./policy-context.md)
+[`normalize`](./normalize)
+[`general-context`](./general-context)
+[`resource-context`](./resource-context)
+[`policy-context`](./policy-context)
 
 :::
 
@@ -19,7 +19,7 @@ workflow type here:
 In the above flow chart, refer to the boxes which read _Find applicable workflows (workflow-type), if any_.
 The "Finding" part is achieved by filtering.
 
-Let's say you have following JSON
+Let's say you have the following JSON:
 
 ```json
 {
@@ -50,16 +50,16 @@ filters:
           - .foo | contains ("baz")
 ```
 
-Which workflow will get run? Clearly the `3.yaml` won't. But what about 1 and 2? There is no priority order, so the either one will match.
+Which workflow will get run? Clearly, the `3.yaml` won't. But what about 1 and 2? There is no priority order, so either one will match.
 
 :::caution
-Workflows don't have priority order so make sure to write filters as constrained as possible
+Workflows don't have priority order, so make sure to write filters as constrained as possible.
 :::
 
 ## Step Execution
 
 :::note
-Steps are optional. It is completely okay for workflows to not have steps.
+Steps are optional. It is entirely okay for workflows not to have steps.
 :::
 
 Let's have a look at how steps are defined-
@@ -75,7 +75,7 @@ steps:
             value: .region
 ```
 
-The above example is from a policy context workflow. If you recall, the output of normalizer is sent to all workflows. As such, let's assume the normalizer generated the following output and this output was received by `bucket-has-broad-access-permissions.yaml` workflow:
+The above example is from a policy context workflow. If you recall, the output of the normalizer is sent to all workflows. As such, let's assume the normalizer generated the following output, and this output was received by `bucket-has-broad-access-permissions.yaml` workflow:
 
 ```json
 {
@@ -86,15 +86,15 @@ The above example is from a policy context workflow. If you recall, the output o
 }
 ```
 
-Let's talk about each of the fields defined under `steps`
+Let's talk about each of the fields defined under `steps`.
 
-`Steps` is simply an array of objects and each object has following fields
+`Steps` is simply an array of objects, and each object has the following fields:
 
-`id` : This uniquely identifies the step within a workflow
+`id`: This uniquely identifies the step within a workflow.
 
-`uses` : This refers to the the serverless function that is defined in `content/pkg/template.yaml` file. Henceforth, we will call it Dassana Action
+`uses`: This refers to the serverless function defined in the `content/pkg/template.yaml` file. Henceforth, we will call it Dassana Action.
 
-`with` : This is an optional field. If you do not define it, the entire input received by the workflow is sent to the action. As such, if we did **not** define it, the action will be called with this input-
+`with`: This is an optional field. If you do not define it, the entire input received by the workflow is sent to the action. As such, if we did **not** define it, the action will be called with this input-
 
 ```json
 {
@@ -105,8 +105,8 @@ Let's talk about each of the fields defined under `steps`
 }
 ```
 
-If you do define it (like in this example), you provide an array of objects which is converted to a JSON object. Each object must have a key named `name` which becomes the JSON object key.
-The `value` is simply a string whose value depends upon the `value-type`. The `value-type` field is optional with the default `JQ`. The possible values of `value-types` are `JQ` and `STRING`
+If you define it (like in this example), you provide an array of objects converted to a JSON object. Each object must have a key named `name`, which becomes the JSON object key.
+The `value` is simply a string whose value depends upon the `value-type`. The `value-type` field is optional with the default `JQ`. The possible values of `value-types` are `JQ` and `STRING`.
 
 In the above example, the JSON object will is sent to the action will be-
 
@@ -117,11 +117,11 @@ In the above example, the JSON object will is sent to the action will be-
 }
 ```
 
-Notice that we did not define `value-type` so the Engine defaulted it to `JQ` which means that the Engine will evaluate the JQ expression and construct the value accordingly.
+Notice that we did not define `value-type`, so the engine defaulted it to `JQ`, which means the engine will evaluate the JQ expression and construct the value accordingly.
 In this case, the JQ expression `.canonicalId` when applied to the input json will evaluate to `arn:aws:s3:::bucket_name`
-Let's say you want to send a static value to an action, you can do that by defining the `value-type` as `STRING`.
+Let's say you want to send a static value to an action; you can do that by defining the `value-type` as `STRING`.
 
-For example, consider this step definition
+For example, consider this step definition:
 
 ```yaml
 steps:
@@ -141,7 +141,7 @@ Dassana Engine will call the `AweSomeAction` serverless function with the follow
 }
 ```
 
-Since steps are executed in sequence, the output of previous step is available to the current steps. The current step can refer to the previous output by using JQ expression `.steps.<id>.key`. For example, consider these steps:
+Since steps are executed in sequence, the output of the previous step is available to the current steps. The current step can refer to the previous output using the JQ expression `.steps.<id>.key`. For example, consider these steps:
 
 ```yaml
 steps:
@@ -161,7 +161,7 @@ steps:
             value-type: STRING
 ```
 
-The engine will invoke `AweSomeAction` serverless function with input
+The engine will invoke `AweSomeAction` serverless function with the input:
 
 ```json
 {
@@ -169,7 +169,7 @@ The engine will invoke `AweSomeAction` serverless function with input
 }
 ```
 
-and wait for the function to finish and then invoke `AweLotAction` with input
+and wait for the function to finish and then invoke `AweLotAction` with the input:
 
 ```json
 {
@@ -180,10 +180,10 @@ and wait for the function to finish and then invoke `AweLotAction` with input
 
 ## Workflow output
 
-Each workflow can output a JSON object using the same convention we just learn in the `steps` above.
+Each workflow can output a JSON object using the same convention we learned in the `steps` above.
 
 :::caution
-Although output is optional for `general-context`, `resource-context` and `policy-context` workflows, for the `normlize` workflow to succeed, it must provide output
+Although output is optional for `general-context`, `resource-context`, and `policy-context` workflows, it must provide output for the `normalize` workflow to succeed.
 :::
 
 Let's review a sample workout output definition:
@@ -233,7 +233,7 @@ Here is a sample output generated by this definition :
 ## Risk Config
 
 Except `normlize` workflow, context workflows (`general-context`, `resource-context` and `policy-context`) can define `risk-config`.
-Let's take an example from a real life [policy context](https://github.com/dassana-io/dassana/blob/main/content/workflows/csp/aws/service/s3/resources/bucket/policy-context/bucket-has-broad-access-permissions.yaml):
+Let's take an example from real life [policy context](https://github.com/dassana-io/dassana/blob/main/content/workflows/csp/aws/service/s3/resources/bucket/policy-context/bucket-has-broad-access-permissions.yaml):
 
 ```yaml title="content/workflows/csp/aws/service/s3/resources/bucket/policy-context/bucket-has-broad-access-permissions.yaml"
 risk-config:
@@ -244,11 +244,11 @@ risk-config:
           risk: low
 ```
 
-`default-risk` : this key tells what should be risk associated with the workflow if none of the rules match. Possible values are `''` , `critical` , `high`, `medium` and `low`
+`default-risk`: this key tells what should be the risk associated with the workflow if none of the rules match. Possible values are `''` , `critical` , `high`, `medium` and `low`
 
-`rules`: an array of objects with following keys-
+`rules`: an array of objects with the following keys-
 
-`name` : a friendly name
+`name`: a friendly name
 
 `condition`: JQ expression which must evaluate to `true` or `false`. Note that `website-info` refers to the step id already defined in the workflow.
 
@@ -262,7 +262,7 @@ The empty string `''` is meant to describe 'undefined' or 'unknown' risk value.
 
 When writing rules, there are some best practices to keep in mind.
 
-Let's say for example that we want to write a rule for security groups to ensure that they are not left open to the internet. Well one of the conditions we could write would be to check and see if there are any attached ENIs to the security group in question.
+For example, let's say that we want to write a rule for security groups to ensure that they are not left open to the internet. One of the conditions we could write would be to check and see if there are any attached ENIs to the security group in question.
 
 We could go about doing this one of two ways:
 
@@ -282,8 +282,8 @@ condition: ."list-of-attached-eni".result| length > 0
 risk: high
 ```
 
-While both conditions are very similar there are some major gotchas with the first approach (making it a bad choice). What if our security group is attached to a lambda function?
-When we do a point-in-time check for attached ENIs using our `list-of-attached-eni` action, there is a probability that the lambda function could be not in running state hence there being `0` attached ENIs. This would result in an alert which is low but should have actually been high if the security group is indeed open to the internet.
+While both conditions are very similar, there are some major gotchas with the first approach (making it a bad choice). What if our security group is attached to a lambda function?
+When we do a point-in-time check for attached ENIs using our `list-of-attached-eni` action, there is a probability that the lambda function could not be in running state hence there being `0` attached ENIs. This would result in a low alert but should have actually been high if the security group is indeed open to the internet.
 
 So whenever you are writing conditions, ensure that you are doing higher confidence checks.
 

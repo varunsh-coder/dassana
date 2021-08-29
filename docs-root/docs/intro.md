@@ -2,18 +2,18 @@
 
 **How can Dassana help me?**
 
-Dassana is on a mission to solve the alert fatigue problem. It is easier than ever before to "scan" your environment for security issues and deploy threat detection tools. But as soon as you deploy them, you will find that they start generating a lot of alerts. Although most of the alerts are accurate, they still lack the context to be of great help. For example, if you get an alert that an s3 bucket has been found public in your environment, you might drop everything and start investigating it. And what if you find that there is a website associated with the bucket? What if the bucket has a word public or static in it? Wouldn't it be great if the alert had this context, to begin with? That's what Dassana does. Dassana adds alerts to security alerts.
+Dassana is on a mission to solve the alert fatigue problem. Now, more than ever before, it is easy to "scan" your environment for security issues and deploy threat detection tools. But as soon as you deploy them, you will find that they start generating too many alerts. Although most of the alerts are accurate, they still lack the necessary context to be of great help. For example, if you get an alert that an s3 bucket has been found public in your environment, you might drop everything and start investigating it. And what if you find that there is a website associated with the bucket? What if the bucket has a word public or static in it? Wouldn't it be great if the alert had this context to begin with? That's what Dassana does. Dassana adds context to security alerts.
 
-PS: Checkout [this](https://docs.dassana.io/blog/static-s3-bucket) blog to get a flavor of what we are talking about.
+PS: Check out [this](https://docs.dassana.io/blog/static-s3-bucket) blog to get a flavor of what we are talking about.
 
 **How is it different?**
 
-Current approaches to alert fatigue problems involve prioritizing alerts based on the severity of the alert generated. The original severity used provided by the vendor does not consider your runtime context. This means that a low or medium severity alert could actually be more important than a high severity alert. Dassana takes a different approach- Dassana believes in contextual risk. This means that risk values provided by Dassana are specific to your environment.
+Current approaches to alert fatigue problems involve prioritizing alerts based on the severity of the alert generated. The original severity used provided by the vendor does not consider your runtime context. This means that a low or medium severity alert could be more important than a high severity alert. Dassana takes a different approach. Dassana believes in contextual risk; this means that the risk values provided by Dassana are specific to your environment.
 
-Furthermore, Dassana normalizes all alerts it receives. This means that all contextualization happens on a normalized alert which means that you gain vendor independence and you can use any cloud security tools and the contextualization will continue to work in a vendor-agnostic manner.
+Furthermore, Dassana normalizes all alerts it receives, which means all contextualization happens on a normalized alert. This means that you gain vendor independence, you can use any cloud security tools, and the contextualization will continue to work in a vendor-agnostic manner.
 
 :::info
-Much like snort was created to declaratively inspect network traffic, ModSecurity was created to inspect HTTP traffic, we created Dassana to declaratively process security alerts.
+Much like snort was created to inspect network traffic declaratively, and ModSecurity was designed to inspect HTTP traffic, Dassana was created to process security alerts declaratively.
 :::
 
 **Can I contextualize any alert?**
@@ -26,12 +26,12 @@ Yes. And the core product will always remain open source available under Apache 
 
 **How do I deploy it?**
 
-CloudFormation template. Dassana only uses only serverless components so you don't have to manage anything! It is the best of both worlds- you get a SaaS-like experience and all the data resides in your environment.
+CloudFormation template. Dassana only uses only serverless components, so you don't have to manage anything! It is the best of both worlds- you get a SaaS-like experience, and all the data resides in your environment.
 
 **How does it work?**
 
-Dassana Engine processes alert by running them through a set of workflows. These workflows are responsible for the normalization and contextualization of alerts. You can edit an existing workflow or author a new one using [Dassana Editor](https://editor.dassana.io/). For more information, checkout [this](http://localhost:3000/docs/how-it-works/under-the-hood) documentation
+Dassana Engine processes alerts by running them through a set of workflows. These workflows are responsible for the normalization and contextualization of alerts. You can edit an existing workflow or author a new one using [Dassana Editor](https://editor.dassana.io/). For more information, check out [this](http://localhost:3000/docs/how-it-works/under-the-hood) documentation
 
 **What's next?**
 
-Give it a try and let us know what you think. We would love to support any use case related to solving alert fatigue problem so please give us feedback.
+Give it a try and let us know what you think. We would love to support any use case solving the alert fatigue problem, so please give us feedback.

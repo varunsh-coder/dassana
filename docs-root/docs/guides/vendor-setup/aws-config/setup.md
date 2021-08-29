@@ -2,13 +2,13 @@
 
 :::info
 
-AWS Config (via Security Hub) is natively integrated in Dassana! You don't have to do anything.
+AWS Config (via Security Hub) is natively integrated into Dassana! You don't have to do anything.
 
 :::
 
 The native integration is achieved by listening on EventBridge.
 
-Please note that currently we can process AWS Config alerts managed by SecurityHub only. This means that you must have SecurityHub enabled.
+Please note that currently, we can process AWS Config alerts managed by SecurityHub only. This means that you must have SecurityHub enabled.
 
 Here is an example SecurityHub alert (snipped for readability)-
 
@@ -24,7 +24,7 @@ Here is an example SecurityHub alert (snipped for readability)-
 }
 ```
 
-When this alert (event) is processed by EventBridge, following metadata is added :
+When EventBridge processes this alert (event), the following metadata is added:
 
 ```json
 {
@@ -34,7 +34,7 @@ When this alert (event) is processed by EventBridge, following metadata is added
 }
 ```
 
-As such, the event which is emitted by EventBridge becomes-
+As such, the event which EventBridge emits becomes:
 
 ```json
 {
@@ -56,7 +56,7 @@ As such, the event which is emitted by EventBridge becomes-
 }
 ```
 
-Now, if you look at [AWS Config normalizer](https://github.com/dassana-io/dassana/blob/main/content/workflows/vendors/security-hub/aws-config.yaml) you will find that we have this filter config:
+Now, if you look at [AWS Config normalizer](https://github.com/dassana-io/dassana/blob/main/content/workflows/vendors/security-hub/aws-config.yaml), you will find that we have this filter config:
 
 ```
 .detail and .detail.findings and (.detail.findings[].ProductFields.StandardsGuideArn or .detail.findings[].ProductFields.StandardsArn )

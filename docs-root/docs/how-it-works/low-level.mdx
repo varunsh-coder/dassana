@@ -1,15 +1,15 @@
-# Low level Dirty Details
+# Low Level Dirty Details
 
 This section is intended for those who want to understand how the engine processes alerts end to end.
 
 ## Workflow Execution
 
-To learn _how_ workflows are executed, please read [this](../guides/workflow-authoring/execution.mdx) document. The rest of the document describes _what_ do they do.
+To learn _how_ workflows are executed, please read [this](../guides/workflow-authoring/execution) document. The rest of the document describes _what_ do they do.
 
 ## Workflows
 
-As we know by now, these are YAML files which tells the engine how to process the alert.
-As soon as an alert is received by Dassana, the very first workflow that gets run is of type `normalize`
+As we know by now, these are YAML files that tell the engine how to process the alert.
+As soon as Dassana receives an alert, the very first workflow that gets run is of type `normalize`
 
 import Normalization from '../getting-started/concepts/normalization.md'
 import GeneralContext from '../getting-started/concepts/general-context.md'
@@ -24,8 +24,7 @@ Visit [content authoring](./guides/workflow-authoring/normalize.mdx) section to 
 
 ## Context workflows
 
-There are three types of context workflows and their job is add context to the alert and use the context to evaluate the risk as defined in their
-respective `risk-config` field
+There are three types of context workflows, and their job is to add context to the alert and use the context to evaluate the risk as defined in their respective `risk-config` field
 
 ### `general-context`
 
