@@ -10,7 +10,7 @@ The native integration is achieved by listening on EventBridge.
 
 Please note that currently, we can process AWS Config alerts managed by SecurityHub only. This means that you must have SecurityHub enabled.
 
-Here is an example SecurityHub alert (snipped for readability)-
+Here is an example SecurityHub alert (snipped for readability):
 
 ```json
 {

@@ -3,11 +3,11 @@
 Let's see what is inside the magic box
 ![Engine & Content](/img/how-it-works/engine-content.png)
 
-We see that there are two boxes- Engine and Content.
+We see that there are two boxes - Engine and Content.
 
 ## Engine
 
-Dassana Engine is responsible for running workflows against an alert. It can take alerts from an SQS queue, or you can interact with it using [Dassana Editor](https://editor.dassana.io/) to author content. We will not open this box; it isn't as interesting as the other box- content.
+The Dassana Engine is responsible for running workflows against an alert. It can take alerts from an SQS queue, or you can interact with it using [Dassana Editor](https://editor.dassana.io/) to author content. We will not open this box; it isn't as interesting as the other box - content.
 
 ## Content
 

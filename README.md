@@ -26,7 +26,7 @@ Dassana helps you beat alert fatigure by enriching alerts with context and prior
 
 **No-code/Low-code** 
 
-Alerts are processed using declarative, YAML based [workflows](https://docs.dassana.io/docs/getting-started/concepts#workflows)
+Alerts are processed using declarative, YAML based [workflows](https://docs.dassana.io/docs/how-it-works/low-level#workflows)
 The workflows use tiny serverless functions (a.k.a [Dassana Actions](https://contexthub.dassana.io/?explore=actions#explore)) to decorate alerts with context. You can use dozens of open source actions or write your own serverless functions for limitless customization.
 
 **Open Source**
@@ -35,9 +35,9 @@ Everything in Dassana is open source. Hack away!
 
 **Cloud Native**
 
-Single click [cloudformation deployment](https://docs.dassana.io/docs/getting-started/installation)
+Single click [cloudformation deployment](https://docs.dassana.io/docs/getting-started/installation).
 
 ---
 
-Curious? Head over to [docs](https://docs.dassana.io/) 📓
+Curious? Head over to the [docs](https://docs.dassana.io/) 📓
 

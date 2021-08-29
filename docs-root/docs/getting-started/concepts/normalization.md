@@ -27,5 +27,5 @@ Here is an example output of a normalizer workflow-
 All of the fields `csp`, `resourceId`, `canonicalId` etc are available to the downstream (general/resource/policy) workflows and they can refer to the field using JQ expressions.
 
 :::caution
-If this workflow doesn't run, none of the downstream workflows will run. So please make sure to review the `filters` section of the workflow
+If the `normalize` workflow doesn't run, none of the other downstream workflows will run. So please make sure to review the `filters` section of the `normalize` workflow.
 :::
