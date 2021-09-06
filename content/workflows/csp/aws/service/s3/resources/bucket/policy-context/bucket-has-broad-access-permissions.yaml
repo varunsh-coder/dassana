@@ -39,7 +39,6 @@ filters:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "f0235acc-737d-4a54-8d2c-a05da32663bd"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "e0b4379d-6692-41ab-bd33-10cbac836b1e"
 
-
 steps:
   - id: website-info
     uses: WebsiteContext

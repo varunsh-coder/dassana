@@ -6,7 +6,6 @@ name: CMK rotation not enabled
 labels:
   - contextualization
 
-
 csp: aws
 service: kms
 resource-type: cmk

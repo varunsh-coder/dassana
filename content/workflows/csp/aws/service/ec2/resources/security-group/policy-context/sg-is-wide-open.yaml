@@ -48,7 +48,7 @@ steps:
         value: .region
 
 risk-config:
-  default-risk: ''
+  default-risk: ""
   rules:
     - name: are-enis-attached-to-sg
       #in the below condition, we are checking if the step with id "list-of-attached-eni" has a key with nameed 'result' and its value (array size) has length > 0
