@@ -2,40 +2,1816 @@ csp:
   - id: aws
     name: Amazon Web Services
     services:
+      - id: amg
+        name: AMG
+        resource-types:
+          - id: workspace
+      - id: amp
+        name: AMP
+        resource-types:
+          - id: workspace
+      - id: apiGateway
+        name: API Gateway
+        resource-types:
+          - id: Account
+          - id: ApiKey
+          - id: ApiKeys
+          - id: Authorizer
+          - id: Authorizers
+          - id: BasePathMapping
+          - id: BasePathMappings
+          - id: ClientCertificate
+          - id: ClientCertificates
+          - id: Deployment
+          - id: Deployments
+          - id: DocumentationPart
+          - id: DocumentationParts
+          - id: DocumentationVersion
+          - id: DocumentationVersions
+          - id: DomainName
+          - id: DomainNames
+          - id: GatewayResponse
+          - id: GatewayResponses
+          - id: Integration
+          - id: IntegrationResponse
+          - id: Method
+          - id: MethodResponse
+          - id: Model
+          - id: Models
+          - id: RequestValidator
+          - id: RequestValidators
+          - id: Resource
+          - id: Resources
+          - id: RestApi
+          - id: RestApis
+          - id: Sdk
+          - id: Stage
+          - id: Stages
+          - id: Template
+          - id: UsagePlan
+          - id: UsagePlanKey
+          - id: UsagePlanKeys
+          - id: UsagePlans
+          - id: VpcLink
+          - id: VpcLinks
+      - id: apiGatewayV2
+        name: API Gateway V2
+        resource-types:
+          - id: AccessLogSettings
+          - id: Api
+          - id: ApiMapping
+          - id: ApiMappings
+          - id: Apis
+          - id: Authorizer
+          - id: Authorizers
+          - id: AuthorizersCache
+          - id: Cors
+          - id: Deployment
+          - id: Deployments
+          - id: ExportedAPI
+          - id: Integration
+          - id: IntegrationResponse
+          - id: IntegrationResponses
+          - id: Integrations
+          - id: Model
+          - id: ModelTemplate
+          - id: Models
+          - id: Route
+          - id: RouteRequestParameter
+          - id: RouteResponse
+          - id: RouteResponses
+          - id: RouteSettings
+          - id: Routes
+          - id: Stage
+          - id: Stages
+      - id: accessAnalyzer
+        name: Access Analyzer
+        resource-types:
+          - id: Analyzer
+          - id: ArchiveRule
+      - id: account
+        name: Account
+      - id: activate
+        name: Activate
+      - id: alexaForBusiness
+        name: Alexa for Business
+        resource-types:
+          - id: addressbook
+          - id: conferenceprovider
+          - id: contact
+          - id: device
+          - id: gateway
+          - id: gatewaygroup
+          - id: networkprofile
+          - id: profile
+          - id: room
+          - id: schedule
+          - id: skillgroup
+          - id: user
+      - id: amplify
+        name: Amplify
+        resource-types:
+          - id: apps
+          - id: branches
+          - id: domains
+          - id: jobs
+      - id: amplifyAdmin
+        name: Amplify Admin
+        resource-types:
+          - id: api
+          - id: auth
+          - id: backend
+          - id: environment
+          - id: job
+      - id: apacheKafkaApisForMsk
+        name: Apache Kafka APIs for MSK
+        resource-types:
+          - id: cluster
+          - id: group
+          - id: topic
+          - id: transactional-id
+      - id: appMesh
+        name: App Mesh
+        resource-types:
+          - id: gatewayRoute
+          - id: mesh
+          - id: route
+          - id: virtualGateway
+          - id: virtualNode
+          - id: virtualRouter
+          - id: virtualService
+      - id: appMeshPreview
+        name: App Mesh Preview
+        resource-types:
+          - id: gatewayRoute
+          - id: mesh
+          - id: route
+          - id: virtualGateway
+          - id: virtualNode
+          - id: virtualRouter
+          - id: virtualService
+      - id: appconfig
+        name: AppConfig
+        resource-types:
+          - id: application
+          - id: configurationprofile
+          - id: deployment
+          - id: deploymentstrategy
+          - id: environment
+          - id: hostedconfigurationversion
+      - id: appflow
+        name: AppFlow
+        resource-types:
+          - id: connectorprofile
+          - id: flow
+      - id: appintegrations
+        name: AppIntegrations
+        resource-types:
+          - id: event-integration
+          - id: event-integration-association
+      - id: appstream 2.0
+        name: AppStream 2.0
+        resource-types:
+          - id: fleet
+          - id: image
+          - id: image-builder
+          - id: stack
+      - id: appsync
+        name: AppSync
+        resource-types:
+          - id: field
+          - id: graphqlapi
+      - id: applicationAutoScaling
+        name: Application Auto Scaling
+      - id: applicationDiscovery
+        name: Application Discovery
+      - id: applicationDiscoveryArsenal
+        name: Application Discovery Arsenal
+      - id: artifact
+        name: Artifact
+        resource-types:
+          - id: agreement
+          - id: customer-agreement
+          - id: report-package
+      - id: athena
+        name: Athena
+        resource-types:
+          - id: datacatalog
+          - id: workgroup
+      - id: auditManager
+        name: Audit Manager
+        resource-types:
+          - id: assessment
+          - id: assessmentControlSet
+          - id: assessmentFramework
+          - id: control
+      - id: autoScaling
+        name: Auto Scaling
+      - id: backup
+        name: Backup
+        resource-types:
+          - id: backupPlan
+          - id: backupVault
+          - id: recoveryPoint
+      - id: backupStorage
+        name: Backup Storage
+      - id: batch
+        name: Batch
+        resource-types:
+          - id: compute-environment
+          - id: job
+          - id: job-definition
+          - id: job-queue
+      - id: billing
+        name: Billing
+      - id: braket
+        name: Braket
+        resource-types:
+          - id: quantum-task
+      - id: budget
+        name: Budget
+        resource-types:
+          - id: budget
+          - id: budgetAction
+      - id: cas
+        name: CAS
+      - id: certificateManager
+        name: Certificate Manager
+        resource-types:
+          - id: certificate
+      - id: certificateManagerPrivateCertificateAuthority
+        name: Certificate Manager Private Certificate Authority
+        resource-types:
+          - id: certificate-authority
+      - id: chatbot
+        name: Chatbot
+      - id: chime
+        name: Chime
+        resource-types:
+          - id: app-instance
+          - id: app-instance-user
+          - id: channel
+          - id: meeting
+      - id: cloudDirectory
+        name: Cloud Directory
+        resource-types:
+          - id: appliedSchema
+          - id: developmentSchema
+          - id: directory
+          - id: publishedSchema
+      - id: cloudMap
+        name: Cloud Map
+        resource-types:
+          - id: namespace
+          - id: service
+      - id: cloud9
+        name: Cloud9
+        resource-types:
+          - id: environment
+      - id: cloudformation
+        name: CloudFormation
+        resource-types:
+          - id: stack
+          - id: stackset
+          - id: stackset-target
+          - id: type
       - id: cloudfront
+        name: CloudFront
         resource-types:
           - id: distribution
+          - id: origin-access-identity
+          - id: streaming-distribution
+      - id: cloudhsm
+        name: CloudHSM
+        resource-types:
+          - id: backup
+          - id: cluster
+      - id: cloudsearch
+        name: CloudSearch
+        resource-types:
+          - id: domain
+      - id: cloudshell
+        name: CloudShell
+        resource-types:
+          - id: Environment
       - id: cloudtrail
+        name: CloudTrail
         resource-types:
           - id: trail
-      - id: config
+      - id: cloudwatch
+        name: CloudWatch
         resource-types:
-          - id: config-recorder
-      - id: ec2
+          - id: alarm
+          - id: dashboard
+          - id: insight-rule
+          - id: metric-stream
+      - id: cloudwatchApplicationInsights
+        name: CloudWatch Application Insights
+      - id: cloudwatchLogs
+        name: CloudWatch Logs
         resource-types:
+          - id: log-group
+          - id: log-stream
+      - id: cloudwatchSynthetics
+        name: CloudWatch Synthetics
+        resource-types:
+          - id: canary
+      - id: codeartifact
+        name: CodeArtifact
+        resource-types:
+          - id: domain
+          - id: package
+          - id: repository
+      - id: codebuild
+        name: CodeBuild
+        resource-types:
+          - id: project
+          - id: report-group
+      - id: codecommit
+        name: CodeCommit
+        resource-types:
+          - id: repository
+      - id: codedeploy
+        name: CodeDeploy
+        resource-types:
+          - id: application
+          - id: deploymentconfig
+          - id: deploymentgroup
           - id: instance
+      - id: codeguru
+        name: CodeGuru
+      - id: codeguruProfiler
+        name: CodeGuru Profiler
+        resource-types:
+          - id: ProfilingGroup
+      - id: codeguruReviewer
+        name: CodeGuru Reviewer
+        resource-types:
+          - id: association
+          - id: connection
+          - id: repository
+      - id: codepipeline
+        name: CodePipeline
+        resource-types:
+          - id: action
+          - id: actiontype
+          - id: pipeline
+          - id: stage
+          - id: webhook
+      - id: codestar
+        name: CodeStar
+        resource-types:
+          - id: project
+          - id: user
+      - id: codestarConnections
+        name: CodeStar Connections
+        resource-types:
+          - id: Connection
+          - id: Host
+      - id: codestarNotifications
+        name: CodeStar Notifications
+        resource-types:
+          - id: notificationrule
+      - id: cognitoIdentity
+        name: Cognito Identity
+        resource-types:
+          - id: identitypool
+      - id: cognitoSync
+        name: Cognito Sync
+        resource-types:
+          - id: dataset
+          - id: identity
+          - id: identitypool
+      - id: cognitoUserPools
+        name: Cognito User Pools
+        resource-types:
+          - id: userpool
+      - id: comprehend
+        name: Comprehend
+        resource-types:
+          - id: document-classifier
+          - id: document-classifier-endpoint
+          - id: entity-recognizer
+          - id: entity-recognizer-endpoint
+      - id: comprehendmedical
+        name: ComprehendMedical
+      - id: computeOptimizer
+        name: Compute Optimizer
+      - id: config
+        name: Config
+        resource-types:
+          - id: AggregationAuthorization
+          - id: ConfigRule
+          - id: ConfigurationAggregator
+          - id: ConformancePack
+          - id: RemediationConfiguration
+          - id: StoredQuery
+      - id: connect
+        name: Connect
+        resource-types:
+          - id: contact
+          - id: contact-flow
+          - id: hierarchy-group
+          - id: hours-of-operation
+          - id: instance
+          - id: integration-association
+          - id: phone-number
+          - id: queue
+          - id: quick-connect
+          - id: routing-profile
+          - id: security-profile
+          - id: use-case
+          - id: user
+      - id: connectorService
+        name: Connector Service
+      - id: controlTower
+        name: Control Tower
+      - id: costExplorerService
+        name: Cost Explorer Service
+      - id: costAndUsageReport
+        name: Cost and Usage Report
+        resource-types:
+          - id: cur
+      - id: dbqms
+        name: DBQMS
+      - id: dms
+        name: DMS
+        resource-types:
+          - id: Certificate
+          - id: Endpoint
+          - id: EventSubscription
+          - id: ReplicationInstance
+          - id: ReplicationSubnetGroup
+          - id: ReplicationTask
+          - id: ReplicationTaskAssessmentRun
+      - id: dataExchange
+        name: Data Exchange
+        resource-types:
+          - id: assets
+          - id: data-sets
+          - id: jobs
+          - id: revisions
+      - id: dataLifecycleManager
+        name: Data Lifecycle Manager
+        resource-types:
+          - id: policy
+      - id: dataPipeline
+        name: Data Pipeline
+      - id: databrew
+        name: DataBrew
+        resource-types:
+          - id: Dataset
+          - id: Job
+          - id: Project
+          - id: Recipe
+          - id: Schedule
+      - id: datasync
+        name: DataSync
+        resource-types:
+          - id: agent
+          - id: location
+          - id: task
+          - id: taskexecution
+      - id: deepcomposer
+        name: DeepComposer
+        resource-types:
+          - id: audio
+          - id: composition
+          - id: model
+      - id: deeplens
+        name: DeepLens
+        resource-types:
+          - id: device
+          - id: model
+          - id: project
+      - id: deepracer
+        name: DeepRacer
+        resource-types:
+          - id: evaluation_job
+          - id: leaderboard
+          - id: reinforcement_learning_model
+          - id: track
+          - id: training_job
+      - id: detective
+        name: Detective
+        resource-types:
+          - id: Graph
+      - id: devopsGuru
+        name: DevOps Guru
+        resource-types:
+          - id: topic
+      - id: deviceFarm
+        name: Device Farm
+        resource-types:
+          - id: device
+          - id: deviceinstance
+          - id: devicepool
+          - id: instanceprofile
+          - id: job
+          - id: networkprofile
+          - id: project
+          - id: run
+          - id: session
+          - id: suite
+          - id: test
+          - id: testgrid-project
+          - id: testgrid-session
+          - id: upload
+          - id: vpceconfiguration
+      - id: directConnect
+        name: Direct Connect
+        resource-types:
+          - id: dx-gateway
+          - id: dxcon
+          - id: dxlag
+          - id: dxvif
+      - id: directoryService
+        name: Directory Service
+        resource-types:
+          - id: directory
+      - id: dynamodb
+        name: DynamoDB
+        resource-types:
+          - id: backup
+          - id: export
+          - id: global-table
+          - id: index
+          - id: stream
+          - id: table
+      - id: dynamodbaccelerator
+        name: DynamoDBAccelerator
+        resource-types:
+          - id: application
+      - id: ec2
+        name: EC2
+        resource-types:
+          - id: capacity-reservation
+          - id: carrier-gateway
+          - id: certificate
+          - id: client-vpn-endpoint
+          - id: customer-gateway
+          - id: dedicated-host
+          - id: dhcp-options
+          - id: egress-only-internet-gateway
+          - id: elastic-gpu
+          - id: elastic-inference
+          - id: elastic-ip
+          - id: export-image-task
+          - id: export-instance-task
+          - id: fleet
+          - id: fpga-image
+          - id: host-reservation
+          - id: image
+          - id: import-image-task
+          - id: import-snapshot-task
+          - id: instance
+          - id: internet-gateway
+          - id: ipv4pool-ec2
+          - id: ipv6pool-ec2
+          - id: key-pair
+          - id: launch-template
+          - id: local-gateway
+          - id: local-gateway-route-table
+          - id: local-gateway-route-table-virtual-interface-group-association
+          - id: local-gateway-route-table-vpc-association
+          - id: local-gateway-virtual-interface
+          - id: local-gateway-virtual-interface-group
+          - id: natgateway
+          - id: network-acl
+          - id: network-insights-analysis
+          - id: network-insights-path
+          - id: network-interface
+          - id: placement-group
+          - id: prefix-list
+          - id: reserved-instances
+          - id: role
           - id: route-table
           - id: security-group
           - id: snapshot
+          - id: spot-fleet-request
+          - id: spot-instances-request
+          - id: subnet
+          - id: traffic-mirror-filter
+          - id: traffic-mirror-filter-rule
+          - id: traffic-mirror-session
+          - id: traffic-mirror-target
+          - id: transit-gateway
+          - id: transit-gateway-attachment
+          - id: transit-gateway-connect-peer
+          - id: transit-gateway-multicast-domain
+          - id: transit-gateway-route-table
           - id: volume
+          - id: vpc
+          - id: vpc-endpoint
+          - id: vpc-endpoint-service
           - id: vpc-flow-log
-      - id: elasticloadbalancing
+          - id: vpc-peering-connection
+          - id: vpn-connection
+          - id: vpn-gateway
+      - id: ec2AutoScaling
+        name: EC2 Auto Scaling
         resource-types:
-          - id: loadbalancer
-      - id: iam
+          - id: autoScalingGroup
+          - id: launchConfiguration
+      - id: ec2ImageBuilder
+        name: EC2 Image Builder
         resource-types:
-          - id: policy
-          - id: user
-      - id: kms
-        resource-types:
-          - id: cmk
-      - id: rds
+          - id: component
+          - id: componentVersion
+          - id: containerRecipe
+          - id: distributionConfiguration
+          - id: image
+          - id: imagePipeline
+          - id: imageRecipe
+          - id: imageVersion
+          - id: infrastructureConfiguration
+          - id: kmsKey
+      - id: ec2InstanceConnect
+        name: EC2 Instance Connect
         resource-types:
           - id: instance
-          - id: snapshot
-      - id: redshift
+      - id: ec2Messages
+        name: EC2 Messages
+      - id: efs
+        name: EFS
+        resource-types:
+          - id: access-point
+          - id: file-system
+      - id: ei
+        name: EI
+        resource-types:
+          - id: accelerator
+      - id: eks
+        name: EKS
+        resource-types:
+          - id: addon
+          - id: cluster
+          - id: fargateprofile
+          - id: identityproviderconfig
+          - id: nodegroup
+      - id: elb
+        name: ELB
+        resource-types:
+          - id: loadbalancer
+      - id: elbV2
+        name: ELB v2
+        resource-types:
+          - id: listener-rule-app
+          - id: listener-rule-net
+          - id: listener-app
+          - id: listener-net
+          - id: loadbalancer-app-
+          - id: loadbalancer-net-
+          - id: targetgroup
+      - id: emr
+        name: EMR
         resource-types:
           - id: cluster
-      - id: s3
+          - id: editor
+          - id: notebook-execution
+          - id: studio
+      - id: emrContainers
+        name: EMR Containers
         resource-types:
+          - id: jobRun
+          - id: managedEndpoint
+          - id: virtualCluster
+      - id: elasticache
+        name: ElastiCache
+        resource-types:
+          - id: cluster
+          - id: globalreplicationgroup
+          - id: parametergroup
+          - id: replicationgroup
+          - id: reserved-instance
+          - id: securitygroup
+          - id: snapshot
+          - id: subnetgroup
+          - id: user
+          - id: usergroup
+      - id: elasticBeanstalk
+        name: Elastic Beanstalk
+        resource-types:
+          - id: application
+          - id: applicationversion
+          - id: configurationtemplate
+          - id: environment
+          - id: platform
+          - id: solutionstack
+      - id: elasticBlockStore
+        name: Elastic Block Store
+        resource-types:
+          - id: snapshot
+      - id: elasticContainerRegistry
+        name: Elastic Container Registry
+        resource-types:
+          - id: repository
+      - id: elasticContainerRegistryPublic
+        name: Elastic Container Registry Public
+        resource-types:
+          - id: registry
+          - id: repository
+      - id: elasticContainerService
+        name: Elastic Container Service
+        resource-types:
+          - id: capacity-provider
+          - id: cluster
+          - id: container-instance
+          - id: service
+          - id: task
+          - id: task-definition
+          - id: task-set
+      - id: elasticTranscoder
+        name: Elastic Transcoder
+        resource-types:
+          - id: job
+          - id: pipeline
+          - id: preset
+      - id: elasticsearchService
+        name: Elasticsearch Service
+        resource-types:
+          - id: domain
+      - id: elementalActivations
+        name: Elemental Activations
+        resource-types:
+          - id: activation
+      - id: elementalAppliancesAndSoftware
+        name: Elemental Appliances and Software
+        resource-types:
+          - id: quote
+      - id: elementalSupportCases
+        name: Elemental Support Cases
+      - id: elementalSupportContent
+        name: Elemental Support Content
+      - id: eventbridge
+        name: EventBridge
+        resource-types:
+          - id: api-destination
+          - id: archive
+          - id: connection
+          - id: event-bus
+          - id: event-source
+          - id: replay
+          - id: rule
+      - id: eventbridgeschemas
+        name: EventBridgeSchemas
+        resource-types:
+          - id: discoverer
+          - id: registry
+          - id: schema
+      - id: executeapi
+        name: ExecuteAPI
+        resource-types:
+          - id: execute-api-general
+      - id: fis
+        name: FIS
+        resource-types:
+          - id: action
+          - id: experiment
+          - id: experiment-template
+      - id: fsx
+        name: FSx
+        resource-types:
+          - id: backup
+          - id: file-system
+          - id: task
+      - id: firehose
+        name: Firehose
+        resource-types:
+          - id: deliverystream
+      - id: firewallManager
+        name: Firewall Manager
+        resource-types:
+          - id: applications-list
+          - id: policy
+          - id: protocols-list
+      - id: forecast
+        name: Forecast
+        resource-types:
+          - id: dataset
+          - id: datasetGroup
+          - id: datasetImportJob
+          - id: forecast
+          - id: forecastExport
+          - id: predictor
+          - id: predictorBacktestExportJob
+      - id: fraudDetector
+        name: Fraud Detector
+        resource-types:
+          - id: batch-prediction
+          - id: detector
+          - id: detector-version
+          - id: entity-type
+          - id: event-type
+          - id: external-model
+          - id: label
+          - id: model
+          - id: model-version
+          - id: outcome
+          - id: rule
+          - id: variable
+      - id: freertos
+        name: FreeRTOS
+        resource-types:
+          - id: configuration
+      - id: gamelift
+        name: GameLift
+        resource-types:
+          - id: alias
+          - id: build
+          - id: fleet
+          - id: gameServerGroup
+          - id: gameSessionQueue
+          - id: matchmakingConfiguration
+          - id: matchmakingRuleSet
+          - id: script
+      - id: glacier
+        name: Glacier
+        resource-types:
+          - id: vault
+      - id: globalaccelerator
+        name: GlobalAccelerator
+        resource-types:
+          - id: accelerator
+          - id: endpointgroup
+          - id: listener
+      - id: glue
+        name: Glue
+        resource-types:
+          - id: catalog
+          - id: connection
+          - id: crawler
+          - id: database
+          - id: devendpoint
+          - id: job
+          - id: mlTransform
+          - id: registry
+          - id: schema
+          - id: table
+          - id: tableversion
+          - id: trigger
+          - id: userdefinedfunction
+          - id: workflow
+      - id: groundStation
+        name: Ground Station
+        resource-types:
+          - id: Config
+          - id: Contact
+          - id: DataflowEndpointGroup
+          - id: MissionProfile
+          - id: Satellite
+      - id: groundtruthLabeling
+        name: GroundTruth Labeling
+      - id: guardduty
+        name: GuardDuty
+        resource-types:
+          - id: detector
+          - id: filter
+          - id: ipset
+          - id: publishingDestination
+          - id: threatintelset
+      - id: health
+        name: Health
+        resource-types:
+          - id: event
+      - id: healthlake
+        name: HealthLake
+        resource-types:
+          - id: datastore
+      - id: honeycode
+        name: Honeycode
+        resource-types:
+          - id: screen
+          - id: screen-automation
+          - id: table
+          - id: workbook
+      - id: iam
+        name: IAM
+        resource-types:
+          - id: access-report
+          - id: group
+          - id: instance-profile
+          - id: mfa
+          - id: oidc-provider
+          - id: policy
+          - id: role
+          - id: saml-provider
+          - id: server-certificate
+          - id: sms-mfa
+          - id: user
+      - id: iq
+        name: IQ
+      - id: iqPermission
+        name: IQ Permission
+      - id: identityStore
+        name: Identity Store
+      - id: importExport
+        name: Import-Export
+      - id: incidentManager
+        name: Incident Manager
+        resource-types:
+          - id: incident-record
+          - id: replication-set
+          - id: response-plan
+      - id: incidentManagerContacts
+        name: Incident Manager Contacts
+        resource-types:
+          - id: contact
+          - id: contactchannel
+          - id: engagement
+          - id: page
+      - id: inspector
+        name: Inspector
+      - id: interactiveVideoService
+        name: Interactive Video Service
+        resource-types:
+          - id: Channel
+          - id: Playback-Key-Pair
+          - id: Recording-Configuration
+          - id: Stream-Key
+      - id: iot
+        name: IoT
+        resource-types:
+          - id: authorizer
+          - id: billinggroup
+          - id: cacert
+          - id: cert
+          - id: client
+          - id: custommetric
+          - id: destination
+          - id: dimension
+          - id: domainconfiguration
+          - id: dynamicthinggroup
+          - id: fleetmetric
+          - id: index
+          - id: job
+          - id: mitigationaction
+          - id: otaupdate
+          - id: policy
+          - id: provisioningtemplate
+          - id: rolealias
+          - id: rule
+          - id: scheduledaudit
+          - id: securityprofile
+          - id: stream
+          - id: thing
+          - id: thinggroup
+          - id: thingtype
+          - id: topic
+          - id: topicfilter
+          - id: tunnel
+      - id: iot 1Click
+        name: IoT 1-Click
+        resource-types:
+          - id: device
+          - id: project
+      - id: iotAnalytics
+        name: IoT Analytics
+        resource-types:
+          - id: channel
+          - id: dataset
+          - id: datastore
+          - id: pipeline
+      - id: iotDeviceAdvisor
+        name: IoT Device Advisor
+        resource-types:
+          - id: suitedefinition
+          - id: suiterun
+      - id: iotDeviceTester
+        name: IoT Device Tester
+      - id: iotEvents
+        name: IoT Events
+        resource-types:
+          - id: alarmModel
+          - id: detectorModel
+          - id: input
+      - id: iotFleetHub
+        name: IoT Fleet Hub
+        resource-types:
+          - id: application
+      - id: iotGreengrass
+        name: IoT Greengrass
+        resource-types:
+          - id: bulkDeployment
+          - id: certificateAuthority
+          - id: connectivityInfo
+          - id: connectorDefinition
+          - id: connectorDefinitionVersion
+          - id: coreDefinition
+          - id: coreDefinitionVersion
+          - id: deployment
+          - id: deviceDefinition
+          - id: deviceDefinitionVersion
+          - id: functionDefinition
+          - id: functionDefinitionVersion
+          - id: group
+          - id: groupVersion
+          - id: loggerDefinition
+          - id: loggerDefinitionVersion
+          - id: resourceDefinition
+          - id: resourceDefinitionVersion
+          - id: subscriptionDefinition
+          - id: subscriptionDefinitionVersion
+          - id: thing
+          - id: thingRuntimeConfig
+      - id: iotGreengrassV2
+        name: IoT Greengrass V2
+        resource-types:
+          - id: component
+          - id: componentVersion
+          - id: coreDevice
+          - id: deployment
+      - id: iotSitewise
+        name: IoT SiteWise
+        resource-types:
+          - id: access-policy
+          - id: asset
+          - id: asset-model
+          - id: dashboard
+          - id: gateway
+          - id: portal
+          - id: project
+      - id: iotThingsGraph
+        name: IoT Things Graph
+        resource-types:
+          - id: System
+          - id: SystemInstance
+          - id: Workflow
+      - id: iotWireless
+        name: IoT Wireless
+        resource-types:
+          - id: Destination
+          - id: DeviceProfile
+          - id: ServiceProfile
+          - id: SidewalkAccount
+          - id: WirelessDevice
+          - id: WirelessGateway
+          - id: WirelessGatewayTaskDefinition
+          - id: cert
+          - id: thing
+      - id: kms
+        name: KMS
+        resource-types:
+          - id: alias
+          - id: key
+      - id: kendra
+        name: Kendra
+        resource-types:
+          - id: data-source
+          - id: faq
+          - id: index
+          - id: thesaurus
+      - id: keyspaces
+        name: Keyspaces
+        resource-types:
+          - id: keyspace
+          - id: table
+      - id: kinesis
+        name: Kinesis
+        resource-types:
+          - id: consumer
+          - id: kmsKey
+          - id: stream
+      - id: kinesisAnalytics
+        name: Kinesis Analytics
+        resource-types:
+          - id: application
+      - id: kinesisAnalyticsV2
+        name: Kinesis Analytics V2
+        resource-types:
+          - id: application
+      - id: kinesisVideoStreams
+        name: Kinesis Video Streams
+        resource-types:
+          - id: channel
+          - id: stream
+      - id: lakeFormation
+        name: Lake Formation
+      - id: lambda
+        name: Lambda
+        resource-types:
+          - id: code-signing-config
+          - id: eventSourceMapping
+          - id: function
+          - id: function-alias
+          - id: function-version
+          - id: layer
+          - id: layerVersion
+      - id: launchWizard
+        name: Launch Wizard
+      - id: lex
+        name: Lex
+        resource-types:
+          - id: bot
+          - id: bot-alias
+          - id: bot-version
+          - id: channel
+          - id: intent-version
+          - id: slottype-version
+      - id: lexV2
+        name: Lex V2
+        resource-types:
+          - id: bot
+          - id: bot-alias
+      - id: licenseManager
+        name: License Manager
+        resource-types:
+          - id: grant
+          - id: license
+          - id: license-configuration
+      - id: lightsail
+        name: Lightsail
+        resource-types:
+          - id: Alarm
+          - id: Certificate
+          - id: CloudFormationStackRecord
+          - id: ContactMethod
+          - id: ContainerService
+          - id: Disk
+          - id: DiskSnapshot
+          - id: Distribution
+          - id: Domain
+          - id: ExportSnapshotRecord
+          - id: Instance
+          - id: InstanceSnapshot
+          - id: KeyPair
+          - id: LoadBalancer
+          - id: RelationalDatabase
+          - id: RelationalDatabaseSnapshot
+          - id: StaticIp
+      - id: location
+        name: Location
+        resource-types:
+          - id: geofence-collection
+          - id: map
+          - id: place-index
+          - id: tracker
+      - id: lookoutMetrics
+        name: Lookout Metrics
+        resource-types:
+          - id: Alert
+          - id: AnomalyDetector
+          - id: MetricSet
+      - id: lookoutVision
+        name: Lookout Vision
+        resource-types:
+          - id: model
+          - id: project
+      - id: lookoutForEquipment
+        name: Lookout for Equipment
+        resource-types:
+          - id: dataset
+          - id: inference-scheduler
+          - id: model
+      - id: mgn
+        name: MGN
+        resource-types:
+          - id: JobResource
+          - id: ReplicationConfigurationTemplateResource
+          - id: SourceServerResource
+      - id: mq
+        name: MQ
+        resource-types:
+          - id: brokers
+          - id: configurations
+      - id: msk
+        name: MSK
+        resource-types:
+          - id: cluster
+      - id: mwaa
+        name: MWAA
+        resource-types:
+          - id: environment
+          - id: rbac-role
+      - id: machineLearning
+        name: Machine Learning
+        resource-types:
+          - id: batchprediction
+          - id: datasource
+          - id: evaluation
+          - id: mlmodel
+      - id: macie
+        name: Macie
+        resource-types:
+          - id: ClassificationJob
+          - id: CustomDataIdentifier
+          - id: FindingsFilter
+          - id: Member
+      - id: macieClassic
+        name: Macie Classic
+      - id: managedBlockchain
+        name: Managed Blockchain
+        resource-types:
+          - id: invitation
+          - id: member
+          - id: network
+          - id: node
+          - id: proposal
+      - id: marketplace
+        name: Marketplace
+      - id: marketplaceCatalog
+        name: Marketplace Catalog
+      - id: marketplaceEntitlement
+        name: Marketplace Entitlement
+      - id: marketplaceImageBuild
+        name: Marketplace Image Build
+      - id: marketplaceMetering
+        name: Marketplace Metering
+      - id: marketplacePortal
+        name: Marketplace Portal
+      - id: marketplaceProcurementIntegration
+        name: Marketplace Procurement Integration
+      - id: mechanicalturk
+        name: MechanicalTurk
+      - id: mediaconnect
+        name: MediaConnect
+      - id: mediaconvert
+        name: MediaConvert
+        resource-types:
+          - id: Job
+          - id: JobTemplate
+          - id: Preset
+          - id: Queue
+      - id: medialive
+        name: MediaLive
+        resource-types:
+          - id: channel
+          - id: input
+          - id: input-device
+          - id: input-security-group
+          - id: multiplex
+          - id: offering
+          - id: reservation
+      - id: mediapackage
+        name: MediaPackage
+        resource-types:
+          - id: channels
+          - id: harvest_jobs
+          - id: origin_endpoints
+      - id: mediapackageVod
+        name: MediaPackage VOD
+        resource-types:
+          - id: assets
+          - id: packaging-configurations
+          - id: packaging-groups
+      - id: mediastore
+        name: MediaStore
+      - id: mediatailor
+        name: MediaTailor
+        resource-types:
+          - id: playbackConfiguration
+      - id: migrationHub
+        name: Migration Hub
+        resource-types:
+          - id: migrationTask
+          - id: progressUpdateStream
+      - id: mobileAnalytics
+        name: Mobile Analytics
+      - id: mobileHub
+        name: Mobile Hub
+        resource-types:
+          - id: project
+      - id: monitron
+        name: Monitron
+        resource-types:
+          - id: project
+      - id: neptune
+        name: Neptune
+        resource-types:
+          - id: database
+      - id: networkFirewall
+        name: Network Firewall
+        resource-types:
+          - id: Firewall
+          - id: FirewallPolicy
+          - id: StatefulRuleGroup
+          - id: StatelessRuleGroup
+      - id: networkManager
+        name: Network Manager
+        resource-types:
+          - id: connection
+          - id: device
+          - id: global-network
+          - id: link
+          - id: site
+      - id: nimbleStudio
+        name: Nimble Studio
+        resource-types:
+          - id: eula
+          - id: eula-acceptance
+          - id: launch-profile
+          - id: streaming-image
+          - id: streaming-session
+          - id: studio
+          - id: studio-component
+      - id: opsworks
+        name: OpsWorks
+        resource-types:
+          - id: stack
+      - id: opsworkscm
+        name: OpsworksCM
+      - id: organizations
+        name: Organizations
+        resource-types:
+          - id: account
+          - id: handshake
+          - id: organizationalunit
+          - id: policy
+          - id: root
+      - id: outposts
+        name: Outposts
+      - id: panorama
+        name: Panorama
+        resource-types:
+          - id: app
+          - id: appVersion
+          - id: dataSource
+          - id: device
+          - id: model
+      - id: performanceInsights
+        name: Performance Insights
+        resource-types:
+          - id: metric-resource
+      - id: personalize
+        name: Personalize
+        resource-types:
+          - id: algorithm
+          - id: batchInferenceJob
+          - id: campaign
+          - id: dataset
+          - id: datasetGroup
+          - id: datasetImportJob
+          - id: eventTracker
+          - id: featureTransformation
+          - id: filter
+          - id: recipe
+          - id: schema
+          - id: solution
+      - id: pinpoint
+        name: Pinpoint
+        resource-types:
+          - id: apps
+          - id: campaigns
+          - id: journeys
+          - id: phone-number-validate
+          - id: recommenders
+          - id: segments
+          - id: templates
+      - id: pinpointEmail
+        name: Pinpoint Email
+        resource-types:
+          - id: configuration-set
+          - id: dedicated-ip-pool
+          - id: deliverability-test-report
+          - id: identity
+      - id: pinpointSmsVoice
+        name: Pinpoint SMS Voice
+      - id: polly
+        name: Polly
+        resource-types:
+          - id: lexicon
+      - id: priceList
+        name: Price List
+      - id: privateMarketplace
+        name: Private Marketplace
+      - id: profile
+        name: Profile
+        resource-types:
+          - id: domains
+          - id: integrations
+          - id: object-types
+      - id: proton
+        name: Proton
+        resource-types:
+          - id: environment
+          - id: environment-template
+          - id: environment-template-major-version
+          - id: environment-template-minor-version
+          - id: service
+          - id: service-instance
+          - id: service-template
+          - id: service-template-major-version
+          - id: service-template-minor-version
+      - id: purchaseOrders
+        name: Purchase Orders
+      - id: qldb
+        name: QLDB
+        resource-types:
+          - id: ledger
+          - id: stream
+      - id: quicksight
+        name: QuickSight
+        resource-types:
+          - id: analysis
+          - id: assignment
+          - id: customization
+          - id: dashboard
+          - id: dataset
+          - id: datasource
+          - id: group
+          - id: ingestion
+          - id: namespace
+          - id: template
+          - id: theme
+          - id: user
+      - id: rds
+        name: RDS
+        resource-types:
+          - id: cluster
+          - id: cluster-endpoint
+          - id: cluster-pg
+          - id: cluster-snapshot
+          - id: db
+          - id: es
+          - id: global-cluster
+          - id: og
+          - id: pg
+          - id: proxy
+          - id: proxy-endpoint
+          - id: ri
+          - id: secgrp
+          - id: snapshot
+          - id: subgrp
+          - id: target-group
+      - id: rdsDataApi
+        name: RDS Data API
+        resource-types:
+          - id: cluster
+      - id: rdsIamAuthentication
+        name: RDS IAM Authentication
+        resource-types:
+          - id: db-user
+      - id: redshift
+        name: Redshift
+        resource-types:
+          - id: cluster
+          - id: dbgroup
+          - id: dbname
+          - id: dbuser
+          - id: eventsubscription
+          - id: hsmclientcertificate
+          - id: hsmconfiguration
+          - id: parametergroup
+          - id: securitygroup
+          - id: securitygroupingress-cidr
+          - id: securitygroupingress-ec2securitygroup
+          - id: snapshot
+          - id: snapshotcopygrant
+          - id: snapshotschedule
+          - id: subnetgroup
+          - id: usagelimit
+      - id: redshiftDataApi
+        name: Redshift Data API
+      - id: rekognition
+        name: Rekognition
+        resource-types:
+          - id: collection
+          - id: project
+          - id: projectversion
+          - id: streamprocessor
+      - id: resourceAccessManager
+        name: Resource Access Manager
+        resource-types:
+          - id: permission
+          - id: resource-share
+          - id: resource-share-invitation
+      - id: resourceGroupTagging
+        name: Resource Group Tagging
+      - id: resourceGroups
+        name: Resource Groups
+        resource-types:
+          - id: group
+      - id: robomaker
+        name: RoboMaker
+        resource-types:
+          - id: deploymentFleet
+          - id: deploymentJob
+          - id: robot
+          - id: robotApplication
+          - id: simulationApplication
+          - id: simulationJob
+          - id: simulationJobBatch
+          - id: world
+          - id: worldExportJob
+          - id: worldGenerationJob
+          - id: worldTemplate
+      - id: route 53
+        name: Route 53
+        resource-types:
+          - id: change
+          - id: delegationset
+          - id: healthcheck
+          - id: hostedzone
+          - id: queryloggingconfig
+          - id: trafficpolicy
+          - id: trafficpolicyinstance
+          - id: vpc
+      - id: route 53Domains
+        name: Route 53 Domains
+      - id: route 53Resolver
+        name: Route 53 Resolver
+        resource-types:
+          - id: firewall-config
+          - id: firewall-domain-list
+          - id: firewall-rule-group
+          - id: firewall-rule-group-association
+          - id: resolver-dnssec-config
+          - id: resolver-endpoint
+          - id: resolver-query-log-config
+          - id: resolver-rule
+      - id: s3
+        name: S3
+        resource-types:
+          - id: accesspoint
           - id: bucket
+          - id: job
+          - id: object
+          - id: objectlambdaaccesspoint
+          - id: storagelensconfiguration
+      - id: s3ObjectLambda
+        name: S3 Object Lambda
+        resource-types:
+          - id: objectlambdaaccesspoint
+      - id: s3Outposts
+        name: S3 Outposts
+        resource-types:
+          - id: accesspoint
+          - id: bucket
+          - id: endpoint
+          - id: object
+      - id: ses
+        name: SES
+        resource-types:
+          - id: identity
+      - id: sesV2
+        name: SES v2
+        resource-types:
+          - id: configuration-set
+          - id: contact-list
+          - id: custom-verification-email-template
+          - id: dedicated-ip-pool
+          - id: deliverability-test-report
+          - id: identity
+          - id: import-job
+          - id: template
+      - id: sns
+        name: SNS
+        resource-types:
+          - id: topic
+      - id: sqs
+        name: SQS
+        resource-types:
+          - id: queue
+      - id: ssmMessages
+        name: SSM Messages
+      - id: sso
+        name: SSO
+        resource-types:
+          - id: Account
+          - id: Instance
+          - id: PermissionSet
+      - id: ssoDirectory
+        name: SSO Directory
+      - id: sts
+        name: STS
+        resource-types:
+          - id: role
+          - id: user
+      - id: swf
+        name: SWF
+        resource-types:
+          - id: domain
+      - id: sagemaker
+        name: SageMaker
+        resource-types:
+          - id: action
+          - id: algorithm
+          - id: app
+          - id: app-image-config
+          - id: artifact
+          - id: automl-job
+          - id: code-repository
+          - id: compilation-job
+          - id: context
+          - id: data-quality-job-definition
+          - id: device
+          - id: device-fleet
+          - id: domain
+          - id: edge-packaging-job
+          - id: endpoint
+          - id: endpoint-config
+          - id: experiment
+          - id: experiment-trial
+          - id: experiment-trial-component
+          - id: feature-group
+          - id: flow-definition
+          - id: human-loop
+          - id: human-task-ui
+          - id: hyper-parameter-tuning-job
+          - id: image
+          - id: image-version
+          - id: labeling-job
+          - id: model
+          - id: model-bias-job-definition
+          - id: model-explainability-job-definition
+          - id: model-package
+          - id: model-package-group
+          - id: model-quality-job-definition
+          - id: monitoring-schedule
+          - id: notebook-instance
+          - id: notebook-instance-lifecycle-config
+          - id: pipeline
+          - id: pipeline-execution
+          - id: processing-job
+          - id: project
+          - id: training-job
+          - id: transform-job
+          - id: user-profile
+          - id: workforce
+          - id: workteam
+      - id: savingsPlans
+        name: Savings Plans
+        resource-types:
+          - id: savingsplan
+      - id: secretsManager
+        name: Secrets Manager
+        resource-types:
+          - id: Secret
+      - id: securityhub
+        name: SecurityHub
+        resource-types:
+          - id: hub
+          - id: product
+      - id: servermigrationservice
+        name: ServerMigrationService
+      - id: serverlessApplicationRepository
+        name: Serverless Application Repository
+        resource-types:
+          - id: applications
+      - id: serviceCatalog
+        name: Service Catalog
+        resource-types:
+          - id: Application
+          - id: AttributeGroup
+          - id: Portfolio
+          - id: Product
+      - id: serviceQuotas
+        name: Service Quotas
+        resource-types:
+          - id: quota
+      - id: shield
+        name: Shield
+        resource-types:
+          - id: attack
+          - id: protection
+          - id: protection-group
+      - id: signer
+        name: Signer
+        resource-types:
+          - id: signing-job
+          - id: signing-profile
+      - id: simpledb
+        name: SimpleDB
+        resource-types:
+          - id: domain
+      - id: snowball
+        name: Snowball
+      - id: stepFunctions
+        name: Step Functions
+        resource-types:
+          - id: activity
+          - id: execution
+          - id: statemachine
+      - id: storageGateway
+        name: Storage Gateway
+        resource-types:
+          - id: device
+          - id: fs-association
+          - id: gateway
+          - id: share
+          - id: tape
+          - id: tapepool
+          - id: target
+          - id: volume
+      - id: sumerian
+        name: Sumerian
+        resource-types:
+          - id: project
+      - id: support
+        name: Support
+      - id: systemsManager
+        name: Systems Manager
+        resource-types:
+          - id: association
+          - id: automation-definition
+          - id: bucket
+          - id: document
+          - id: instance
+          - id: maintenancewindow
+          - id: managed-instance
+          - id: opsmetadata
+          - id: parameter
+          - id: patchbaseline
+          - id: resourcedatasync
+          - id: servicesetting
+          - id: session
+          - id: task
+      - id: tagEditor
+        name: Tag Editor
+      - id: textract
+        name: Textract
+      - id: timestream
+        name: Timestream
+        resource-types:
+          - id: database
+          - id: table
+      - id: tiros
+        name: Tiros
+      - id: transcribe
+        name: Transcribe
+      - id: transfer
+        name: Transfer
+        resource-types:
+          - id: server
+          - id: user
+      - id: translate
+        name: Translate
+      - id: trustedAdvisor
+        name: Trusted Advisor
+        resource-types:
+          - id: checks
+      - id: waf
+        name: WAF
+        resource-types:
+          - id: bytematchset
+          - id: geomatchset
+          - id: ipset
+          - id: ratebasedrule
+          - id: regexmatchset
+          - id: regexpatternset
+          - id: rule
+          - id: rulegroup
+          - id: sizeconstraintset
+          - id: sqlinjectionmatchset
+          - id: webacl
+          - id: xssmatchset
+      - id: wafRegional
+        name: WAF Regional
+        resource-types:
+          - id: bytematchset
+          - id: geomatchset
+          - id: ipset
+          - id: loadbalancer-app-
+          - id: ratebasedrule
+          - id: regexmatchset
+          - id: regexpatternset
+          - id: rule
+          - id: rulegroup
+          - id: sizeconstraintset
+          - id: sqlinjectionmatchset
+          - id: webacl
+          - id: xssmatchset
+      - id: wafV2
+        name: WAF V2
+        resource-types:
+          - id: apigateway
+          - id: appsync
+          - id: ipset
+          - id: loadbalancer-app-
+          - id: regexpatternset
+          - id: rulegroup
+          - id: webacl
+      - id: wam
+        name: WAM
+      - id: wellArchitectedTool
+        name: Well-Architected Tool
+        resource-types:
+          - id: workload
+      - id: workdocs
+        name: WorkDocs
+      - id: worklink
+        name: WorkLink
+        resource-types:
+          - id: fleet
+      - id: workmail
+        name: WorkMail
+        resource-types:
+          - id: organization
+      - id: workmailMessageFlow
+        name: WorkMail Message Flow
+        resource-types:
+          - id: RawMessage
+      - id: workspaces
+        name: WorkSpaces
+        resource-types:
+          - id: connectionalias
+          - id: directoryid
+          - id: workspacebundle
+          - id: workspaceid
+          - id: workspaceimage
+          - id: workspaceipgroup
+      - id: xRay
+        name: X-Ray
+        resource-types:
+          - id: group
+          - id: sampling-rule
