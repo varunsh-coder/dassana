@@ -5,11 +5,11 @@ from pydantic import Field
 from pydantic.main import BaseModel
 
 
-class ResourceHierarchy(BaseModel):
-    classRh: str = Field(None, alias='class')
-    subclass: str = None
-    category: str = None
-    subcategory: str = None
+class AlertClassification(BaseModel):
+    classRh: str = Field("", alias='class')
+    subclass: str = ""
+    category: str = ""
+    subcategory: str = ""
 
 
 class NormalizedOutput(BaseModel):
@@ -21,7 +21,7 @@ class NormalizedOutput(BaseModel):
     resourceContainer: str
     region: str
     service: str = None
-    resourceHierarchy: ResourceHierarchy = None
+    alertClassification: AlertClassification = AlertClassification()
     resourceType: str = None
     resourceId: str = None
     tags: List[Dict[str, str]] = []

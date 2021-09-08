@@ -43,6 +43,8 @@ output:
     value: ."lookup".resourceId
   - name: tags
     value: ."lookup".tags
+  - name: alertClassification
+    value: ."lookup".alertClassification
 
 output-queue:
   enabled: true
