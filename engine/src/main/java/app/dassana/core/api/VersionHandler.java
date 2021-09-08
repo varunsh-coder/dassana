@@ -1,5 +1,7 @@
 package app.dassana.core.api;
 
+import app.dassana.core.util.StringyThings;
+import com.jayway.jsonpath.JsonPath;
 import com.vdurmont.semver4j.Semver;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,18 +11,16 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONObject;
 
 @Singleton
 public class VersionHandler {
 
   CloseableHttpClient httpClient = HttpClients.createDefault();
 
-
   public VersionResponse getVersionResponse() throws IOException {
+    String json = StringyThings.getJsonFromYaml(getLatestVersion());
 
-    String latestVersionJsonResponse = getLatestVersion();
-    String latestVersion = new JSONObject(latestVersionJsonResponse).getString("tag_name");
+    String latestVersion = JsonPath.read(json, "$.Resources.DassanaEngineApi.Properties.Environment.Variables.version");
     String currentVersion = System.getenv().get("version");
 
     VersionResponse versionResponse = new VersionResponse();
@@ -43,7 +43,7 @@ public class VersionHandler {
 
 
   private String getLatestVersion() throws IOException {
-    HttpGet request = new HttpGet("https://api.github.com/repos/dassana-io/dassana/releases/latest");
+    HttpGet request = new HttpGet("https://s3.amazonaws.com/dassana-prod-oss-public.dassana.io/latest/cft.yaml");
     try (CloseableHttpResponse response = httpClient.execute(request)) {
       if (response.getStatusLine().getStatusCode() == 200) {
         return IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());

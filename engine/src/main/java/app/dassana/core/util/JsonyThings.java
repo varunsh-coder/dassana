@@ -6,6 +6,7 @@ import io.micronaut.context.annotation.Factory;
 import javax.inject.Singleton;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.yaml.snakeyaml.Yaml;
 
 @Factory
 public class JsonyThings {
@@ -18,6 +19,11 @@ public class JsonyThings {
   @Singleton
   public Gson getGson() {
     return new Gson();
+  }
+
+  @Singleton
+  public Yaml getYaml() {
+    return new Yaml();
   }
 
   public static void throwExceptionIfNotValidJsonObj(String strToValidate) {
