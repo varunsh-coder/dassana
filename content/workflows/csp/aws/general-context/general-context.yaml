@@ -16,13 +16,13 @@ risk-config:
   default-risk: ""
   rules:
     - name: dev environment risk is low
-      condition: .tags | any( select(.key | test("env" ; "ix")) | select(.value | test("dev" ; "ix")))
+      condition: .tags | any( select(.name | test("env" ; "ix")) | select(.value | test("dev" ; "ix")))
       risk: low
 
     - name: prod environment risk is high
-      condition: .tags | any( select(.key | test("env" ; "ix")) | select(.value | test("prod" ; "ix")))
+      condition: .tags | any( select(.name | test("env" ; "ix")) | select(.value | test("prod" ; "ix")))
       risk: high
 
 output:
   - name: environment
-    value: first(.tags[] | select(.key == "env") .value)
+    value: first(.tags[] | select(.name == "env") .value)
