@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: ec2-instance-ssh-brute-force
+name: EC2 instance SSH bruteforce
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: credential-access
+category: brute-force
+
+filters:
+  - vendor: guardduty
+    policies:
+      - "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+    match-type: any
+    rules:
+      - .vendorId == "guardduty" and (.vendorPolicy |contains ("TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"))
+
+risk-config:
+  default-risk: ""

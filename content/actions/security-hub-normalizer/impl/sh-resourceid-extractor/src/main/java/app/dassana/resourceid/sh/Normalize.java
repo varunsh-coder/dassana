@@ -27,7 +27,12 @@ public class Normalize {
     policyId = split[5];
 
     if (StringUtils.isNotBlank(possiblePolicyId)) {
-      policyId = possiblePolicyId;
+
+      //security hub managed rules are in the format  securityhub-config-rule-1234
+      //and we want config-rule from it
+      int firstIndexOf = possiblePolicyId.indexOf("-");
+      int lastIndexOf = possiblePolicyId.lastIndexOf('-');
+      policyId = possiblePolicyId.substring(firstIndexOf + 1, lastIndexOf);
     }
 
     String resourceArn = finding.getJSONObject("ProductFields").getString("Resources:0/Id");
@@ -38,20 +43,16 @@ public class Normalize {
 
     ArnResource resource = arn.resource();
 
-    String resourceType = "";
     String resourceId = "";
     if (resource.resourceType().isPresent() && StringUtils.isNotBlank(resource.resourceType().get())) {
-      resourceType = resource.resourceType().get();
       resourceId = resource.resource();
     } else {
 
       String[] arnElements = resourceArn.split(":");
       String resourceInfo = arnElements[5];
 
-
       if (resourceInfo.contains("/")) {
         String[] resourceSplit = resourceInfo.split("/");
-        resourceType = resourceSplit[1];
         resourceId = resourceSplit[2];
       } else {
         resourceId = resourceInfo;
@@ -59,10 +60,10 @@ public class Normalize {
 
     }
 
-    NormalizationResult normalizationResult = new NormalizationResult("aws", resourceType, resourceId, findingId);
+    NormalizationResult normalizationResult = new NormalizationResult("aws", resourceId, findingId);
     normalizationResult.setArn(resourceArn);
 
-    normalizationResult.setPolicyId(policyId);
+    normalizationResult.setVendorPolicy(policyId);
 
     if (arn.region().isPresent() && StringUtils.isNotBlank(arn.region().get())) {
       normalizationResult.setRegion(arn.region().get());
@@ -76,8 +77,6 @@ public class Normalize {
 
     }
 
-    normalizationResult.setService(arn.service());
-
     if (arn.accountId().isPresent() && StringUtils.isNotBlank(arn.accountId().get())) {
       normalizationResult.setResourceContainer(arn.accountId().get());
     } else {
@@ -87,6 +86,7 @@ public class Normalize {
         normalizationResult.setResourceContainer(awsAccountId);
       }
     }
+    normalizationResult.setVendorId("aws-config");
 
     normalizationResult.setArn(resourceArn);
     return normalizationResult;

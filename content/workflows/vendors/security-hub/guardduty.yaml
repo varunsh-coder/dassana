@@ -14,6 +14,12 @@ steps:
   - id: resource-info
     uses: GuardDutyExtractor
 
+  - id: lookup
+    uses: NormalizerLookup
+    with:
+      - name: input
+        value: .steps."resource-info"
+
   - id: getTags
     uses: GetTags
     with:
@@ -31,7 +37,7 @@ output:
   - name: canonicalId
     value: ."resource-info".arn
   - name: vendorPolicy
-    value: ."resource-info".policyId
+    value: ."resource-info".vendorPolicy
   - name: csp
     value: ."resource-info".csp
   - name: resourceContainer
@@ -39,9 +45,9 @@ output:
   - name: region
     value: ."resource-info".region
   - name: service
-    value: ."resource-info".service
+    value: ."lookup".service
   - name: resourceType
-    value: ."resource-info".resourceType
+    value: ."lookup".resourceType
   - name: resourceId
     value: ."resource-info".resourceId
   - name: tags

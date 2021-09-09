@@ -1,7 +1,7 @@
 {
   "what's wrong here?": "missing csp",
   "vendorId": "aws-config",
-  "policyId": "restricted-ssh",
+  "vendorPolicy": "restricted-ssh",
   "resourceContainer": "363265257036",
   "region": "us-east-1",
   "service": "ec2",

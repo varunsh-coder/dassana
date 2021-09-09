@@ -29,7 +29,7 @@ def find_policy_match(file_path, vendor, csp, policyId):
                     classRh=yml.get('class'),
                     subclass=yml.get('subclass'),
                     category=yml.get('category'),
-                    subcategory=yml.get('subcategory')
+                    subcategory=yml.get('subcategory', '')
                 ), yml.get('class')
 
 

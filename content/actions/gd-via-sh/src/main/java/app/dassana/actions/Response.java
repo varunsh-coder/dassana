@@ -2,15 +2,14 @@ package app.dassana.actions;
 
 public class Response {
 
-  String alertId;
-  String arn;
-  String policyId;
-  String csp;
-  String resourceContainer;
-  String region;
-  String service;
-  String resourceType;
-  String resourceId;
+  private String csp;
+  private String resourceContainer;
+  private String region;
+  private String resourceId;
+  private String alertId;
+  private String arn;
+  private String vendorPolicy;
+  private String vendorId;
 
   public String getAlertId() {
     return alertId;
@@ -28,13 +27,7 @@ public class Response {
     this.arn = arn;
   }
 
-  public String getPolicyId() {
-    return policyId;
-  }
 
-  public void setPolicyId(String policyId) {
-    this.policyId = policyId;
-  }
 
   public String getCsp() {
     return csp;
@@ -60,20 +53,20 @@ public class Response {
     this.region = region;
   }
 
-  public String getService() {
-    return service;
+  public String getVendorPolicy() {
+    return vendorPolicy;
   }
 
-  public void setService(String service) {
-    this.service = service;
+  public void setVendorPolicy(String vendorPolicy) {
+    this.vendorPolicy = vendorPolicy;
   }
 
-  public String getResourceType() {
-    return resourceType;
+  public String getVendorId() {
+    return vendorId;
   }
 
-  public void setResourceType(String resourceType) {
-    this.resourceType = resourceType;
+  public void setVendorId(String vendorId) {
+    this.vendorId = vendorId;
   }
 
   public String getResourceId() {

@@ -8,7 +8,7 @@ labels:
 
 csp: aws
 service: ec2
-resource-type: vpc-flow-log
+resource-type: instance
 
 class: risk
 subclass: config

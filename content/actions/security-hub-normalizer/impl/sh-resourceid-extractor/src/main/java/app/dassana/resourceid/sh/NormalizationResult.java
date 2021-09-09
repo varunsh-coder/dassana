@@ -1,32 +1,36 @@
 package app.dassana.resourceid.sh;
 
-import java.util.List;
-
 public class NormalizationResult {
 
   private String csp;
   private String resourceContainer;
   private String region;
-  private String service;
-  private String resourceType;
   private String resourceId;
   private String alertId;
   private String arn;
-  private String policyId;
+  private String vendorPolicy;
+  private String vendorId;
 
-  public NormalizationResult(String csp, String resourceType, String resourceId, String alertId) {
+  public NormalizationResult(String csp, String resourceId, String alertId) {
     this.csp = csp;
-    this.resourceType = resourceType;
     this.resourceId = resourceId;
     this.alertId = alertId;
   }
 
-  public String getPolicyId() {
-    return policyId;
+  public String getVendorId() {
+    return vendorId;
   }
 
-  public void setPolicyId(String policyId) {
-    this.policyId = policyId;
+  public void setVendorId(String vendorId) {
+    this.vendorId = vendorId;
+  }
+
+  public String getVendorPolicy() {
+    return vendorPolicy;
+  }
+
+  public void setVendorPolicy(String vendorPolicy) {
+    this.vendorPolicy = vendorPolicy;
   }
 
   public String getArn() {
@@ -43,20 +47,11 @@ public class NormalizationResult {
         "csp='" + csp + '\'' +
         ", resourceContainer='" + resourceContainer + '\'' +
         ", region='" + region + '\'' +
-        ", service='" + service + '\'' +
-        ", resourceType='" + resourceType + '\'' +
         ", resourceId='" + resourceId + '\'' +
         ", alertId='" + alertId + '\'' +
         '}';
   }
 
-  public String getService() {
-    return service;
-  }
-
-  public void setService(String service) {
-    this.service = service;
-  }
 
   public String getAlertId() {
     return alertId;
@@ -82,13 +77,6 @@ public class NormalizationResult {
     this.csp = csp;
   }
 
-  public String getResourceType() {
-    return resourceType;
-  }
-
-  public void setResourceType(String resourceType) {
-    this.resourceType = resourceType;
-  }
 
   public String getRegion() {
     return region;

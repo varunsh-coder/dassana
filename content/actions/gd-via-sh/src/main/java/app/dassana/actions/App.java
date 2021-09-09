@@ -23,18 +23,15 @@ public class App implements RequestHandler<Map<String, Object>, Response> {
     JSONObject finding = inputJson.getJSONObject("detail").getJSONArray("findings").getJSONObject(0);
     response.setAlertId(finding.getString("Id"));
     response.setArn(finding.getJSONArray("Resources").getJSONObject(0).getString("Id"));
-    response.setPolicyId(finding.getJSONObject("FindingProviderFields").getJSONArray("Types").getString(0));
+    response.setVendorPolicy(finding.getJSONObject("FindingProviderFields").getJSONArray("Types").getString(0));
     response.setCsp("aws");
     response.setResourceContainer(finding.getString("AwsAccountId"));
     response.setRegion(finding.getJSONArray("Resources").getJSONObject(0).getString("Region"));
-    response.setService(Arn.fromString(response.getArn()).service());
     Arn arn = Arn.fromString(response.getArn());
     ArnResource resource = arn.resource();
 
-    String resourceType = "";
     String resourceId = "";
     if (resource.resourceType().isPresent() && StringUtils.isNotBlank(resource.resourceType().get())) {
-      resourceType = resource.resourceType().get();
       resourceId = resource.resource();
     } else {
 
@@ -42,12 +39,11 @@ public class App implements RequestHandler<Map<String, Object>, Response> {
       String resourceInfo = arnElements[5];
       if (resourceInfo.contains("/")) {
         String[] resourceSplit = resourceInfo.split("/");
-        resourceType = resourceSplit[1];
         resourceId = resourceSplit[2];
       }
 
     }
-    response.setResourceType(resourceType);
+    response.setVendorId("guardduty");
     response.setResourceId(resourceId);
 
     return response;

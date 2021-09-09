@@ -17,13 +17,12 @@ public class AppTest {
         .toUtf8String(Thread.currentThread().getContextClassLoader().getResourceAsStream("sample-gd.json"));
     Response result = function.handleRequest(new JSONObject(inputJson).toMap(), null);
 
-    Assertions.assertTrue(result.getResourceType().contentEquals("instance"));
-    Assertions.assertTrue(result.getService().contentEquals("ec2"));
+
     Assertions.assertTrue(result.getRegion().contentEquals("us-east-1"));
     Assertions.assertTrue(result.getResourceContainer().contentEquals("363265257036"));
     Assertions.assertTrue(result.getCsp().contentEquals("aws"));
     Assertions
-        .assertTrue(result.getPolicyId().contentEquals("TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"));
+        .assertTrue(result.getVendorPolicy().contentEquals("TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"));
     Assertions
         .assertTrue(result.getArn().contentEquals("arn:aws:ec2:us-east-1:363265257036:instance/i-054474987a390f341"));
     Assertions.assertTrue(result.getAlertId().contentEquals(

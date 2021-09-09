@@ -35,10 +35,8 @@ class AppTest {
 
     Assertions.assertEquals("aws", normalizationResult.getCsp());
     Assertions.assertEquals("363265257036", normalizationResult.getResourceContainer());
-    Assertions.assertEquals("securityhub-api-gw-associated-with-waf-a3d255be",
-        normalizationResult.getPolicyId());
-    Assertions.assertEquals("apigateway", normalizationResult.getService());
-    Assertions.assertEquals("restapis", normalizationResult.getResourceType());
+    Assertions.assertEquals("api-gw-associated-with-waf",
+        normalizationResult.getVendorPolicy());
     Assertions.assertEquals("6u20vtvjpk", normalizationResult.getResourceId());
     Assertions
         .assertEquals("arn:aws:apigateway:us-east-1::/restapis/6u20vtvjpk/stages/v1", normalizationResult.getArn());
@@ -59,10 +57,8 @@ class AppTest {
 
     Assertions.assertEquals("aws", normalizationResult.getCsp());
     Assertions.assertEquals("363265257036", normalizationResult.getResourceContainer());
-    Assertions.assertEquals("securityhub-vpc-sg-restricted-common-ports-a954d0db",
-        normalizationResult.getPolicyId());
-    Assertions.assertEquals("ec2", normalizationResult.getService());
-    Assertions.assertEquals("security-group", normalizationResult.getResourceType());
+    Assertions.assertEquals("vpc-sg-restricted-common-ports",
+        normalizationResult.getVendorPolicy());
     Assertions.assertEquals("sg-061d7bbf4c68da2c7", normalizationResult.getResourceId());
     Assertions
         .assertEquals("arn:aws:ec2:us-east-1:363265257036:security-group/sg-061d7bbf4c68da2c7",

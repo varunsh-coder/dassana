@@ -12,6 +12,12 @@ steps:
   - id: resource-info
     uses: SecurityHubResExtractor
 
+  - id: lookup
+    uses: NormalizerLookup
+    with:
+      - name: input
+        value: .steps."resource-info"
+
   - id: getTags # SecurityHub findings for aws config rules doesn't not contain tags many a times so we have an action which takes care of that
     uses: GetTags
     with:
@@ -27,7 +33,7 @@ output:
   - name: alertId
     value: ."resource-info".alertId
   - name: vendorPolicy
-    value: ."resource-info".policyId
+    value: ."resource-info".vendorPolicy
   - name: csp
     value: ."resource-info".csp
   - name: resourceContainer
@@ -35,9 +41,9 @@ output:
   - name: region
     value: ."resource-info".region
   - name: service
-    value: ."resource-info".service
+    value: ."lookup".service
   - name: resourceType
-    value: ."resource-info".resourceType
+    value: ."lookup".resourceType
   - name: resourceId
     value: ."resource-info".resourceId
   - name: tags
