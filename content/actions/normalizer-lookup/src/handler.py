@@ -45,7 +45,6 @@ def handle(event: Input, context: LambdaContext):
                                                    (None, None, None, None, None))
     event.input.service = service if service is not None else event.input.service
     event.input.resourceType = resource_type if service is not None else event.input.service
-    event.input.csp = csp if service is not None else event.input.service
 
     if rh:
         event.input.alertClassification = rh if rh is not None else event.input.alertClassification
