@@ -507,10 +507,12 @@ Resources:
   GetTags:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.dassana.action.App
-      Runtime: java11
+      Handler: src/handler.handle
+      Runtime: python3.8
       MemorySize: 256
       CodeUri: ../actions/get-tags
+      Layers:
+        - !Ref DassanaActionsPythonLayer
       Role:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60

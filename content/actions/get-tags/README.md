@@ -4,8 +4,9 @@ This action expects following two inputs-
 
 ```json
 {
+  "arn": "",
   "region": "",
-  "arn": ""
+  "service": ""
 }
 ```
 
