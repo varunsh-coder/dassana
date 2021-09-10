@@ -8,7 +8,7 @@ labels:
 
 csp: aws
 service: kms
-resource-type: cmk
+resource-type: key
 
 class: risk
 subclass: config

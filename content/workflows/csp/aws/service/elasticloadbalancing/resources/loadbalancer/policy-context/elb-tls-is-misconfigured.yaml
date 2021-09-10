@@ -7,7 +7,7 @@ labels:
   - contextualization
 
 csp: aws
-service: elasticloadbalancing
+service: elb
 resource-type: loadbalancer
 
 class: risk

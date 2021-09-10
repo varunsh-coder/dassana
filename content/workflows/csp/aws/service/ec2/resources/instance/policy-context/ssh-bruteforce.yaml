@@ -15,12 +15,12 @@ subclass: credential-access
 category: brute-force
 
 filters:
-  - vendor: guardduty
+  - vendor: aws-guardduty
     policies:
       - "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
     match-type: any
     rules:
-      - .vendorId == "guardduty" and (.vendorPolicy |contains ("TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"))
+      - .vendorId == "aws-guardduty" and (.vendorPolicy |contains ("TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"))
 
 risk-config:
   default-risk: ""

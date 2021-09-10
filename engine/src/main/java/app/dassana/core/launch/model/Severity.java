@@ -1,5 +1,5 @@
 package app.dassana.core.launch.model;
 
-public enum severity {
+public enum Severity {
   INFO,WARN,ERROR
 }

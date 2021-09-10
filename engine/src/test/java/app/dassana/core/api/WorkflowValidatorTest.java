@@ -1,6 +1,8 @@
 package app.dassana.core.api;
 
 import app.dassana.core.contentmanager.ContentManager;
+import app.dassana.core.contentmanager.model.WorkflowProcessingResult;
+import app.dassana.core.launch.model.Message;
 import app.dassana.core.util.StringyThings;
 import com.google.gson.Gson;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import javax.inject.Inject;
 import org.apache.commons.io.FileUtils;
@@ -26,7 +29,13 @@ class WorkflowValidatorTest {
   void handleValidate() throws Exception {
 
     String content = Thread.currentThread().getContextClassLoader().getResource("content/workflows").getFile();
-    contentManager.getWorkflowsFromEmbeddedContentDir(new File(content));
+    WorkflowProcessingResult workflowProcessingResult = contentManager.processDir(new File(content));
+
+    if (workflowProcessingResult.getWorkflowFileToExceptionMap().size() > 0) {
+      List<String> workflows = new LinkedList<>();
+      workflowProcessingResult.getWorkflowFileToExceptionMap().forEach((s, e) -> workflows.add(s));
+      throw new DassanaWorkflowValidationException(String.format("Workflows %s aren't valid", workflows));
+    }
 
     Files.walk(Paths.get(content))
         .filter(Files::isRegularFile)
@@ -39,9 +48,9 @@ class WorkflowValidatorTest {
             } catch (Exception e) {
               if (e instanceof DassanaWorkflowValidationException) {
                 DassanaWorkflowValidationException dassanaWorkflowValidationException = (DassanaWorkflowValidationException) e;
-                List<String> issues = dassanaWorkflowValidationException.getIssues();
-                for (String s : issues) {
-                  Assertions.fail(s);
+                List<Message> messages = dassanaWorkflowValidationException.getMessages();
+                for (Message message : messages) {
+                  Assertions.fail(message.getMsg());
                 }
               } else {
                 Assertions.fail(e.getMessage());

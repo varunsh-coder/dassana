@@ -1,12 +1,10 @@
 package app.dassana.core.launch;
 
-import static app.dassana.core.contentmanager.ContentManager.DASSANA_MANAGEMENT_BUCKET;
 import static app.dassana.core.contentmanager.ContentManager.GENERAL_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.NORMALIZE;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.RESOURCE_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.WORKFLOW_ID;
-import static app.dassana.core.contentmanager.infra.S3Downloader.CONTENT_LAST_UPDATED_CACHE_KEY;
 import static app.dassana.core.contentmanager.infra.S3Downloader.WORKFLOW_PATH_IN_S3;
 import static app.dassana.core.workflow.processor.Decorator.DASSANA_KEY;
 
@@ -15,12 +13,11 @@ import app.dassana.core.api.PingHandler;
 import app.dassana.core.api.VersionHandler;
 import app.dassana.core.api.WorkflowValidator;
 import app.dassana.core.contentmanager.ContentManager;
-import app.dassana.core.contentmanager.ContentReader;
 import app.dassana.core.launch.model.Message;
 import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.Request;
 import app.dassana.core.launch.model.WorkflowNotFundException;
-import app.dassana.core.launch.model.severity;
+import app.dassana.core.launch.model.Severity;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
@@ -40,8 +37,7 @@ import com.google.gson.Gson;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.function.aws.MicronautRequestHandler;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+
 import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.HashMap;
@@ -50,6 +46,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.inject.Inject;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -83,7 +81,6 @@ public class ApiHandler extends
   @Inject private WorkflowValidator workflowValidator;
   @Inject private WorkflowRunner workflowRunner;
   @Inject private VersionHandler versionHandler;
-  @Inject ContentReader contentReader;
 
 
   @Inject ContentManager contentManager; //todo: not a good idea to inject an implementation
@@ -108,11 +105,13 @@ public class ApiHandler extends
   }
 
   String handleGet(Request request, String workFlowId) throws Exception {
-    String workflowYamlById = contentManager.getWorkflowYamlById(workFlowId, request);
-    if (StringUtils.isEmpty(workflowYamlById)) {
-      throw new WorkflowNotFundException(String.format("Workflow %s not found", workFlowId));
+
+    for (Workflow workflow : contentManager.getWorkflowSet(request)) {
+      if (workflow.getId().contentEquals(workFlowId)) {
+        return contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+      }
     }
-    return workflowYamlById;
+    throw new WorkflowNotFundException("That workflow id wasn't found :(");
 
   }
 
@@ -193,8 +192,8 @@ public class ApiHandler extends
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
 
         } catch (WorkflowNotFundException e) {
-          gatewayProxyResponseEvent
-              .setBody(String.format("Workflow %s not found", input.getQueryStringParameters().get(WORKFLOW_ID)));
+          Message message = new Message(String.format("Workflow %s not found", input.getQueryStringParameters().get(WORKFLOW_ID)));
+          gatewayProxyResponseEvent.setBody(gson.toJson(message));
           gatewayProxyResponseEvent.setStatusCode(404);
           return gatewayProxyResponseEvent;
         }
@@ -208,10 +207,10 @@ public class ApiHandler extends
           workflowValidator.handleValidate(StringyThings.getJsonFromYaml(inputBody));
         } catch (Exception e) {
           if (e instanceof DassanaWorkflowValidationException) {
-            List<String> issues = ((DassanaWorkflowValidationException) e).getIssues();
-            gatewayProxyResponseEvent.setBody(gson.toJson(issues));
+            List<Message> messages = ((DassanaWorkflowValidationException) e).getMessages();
+            gatewayProxyResponseEvent.setBody(gson.toJson(messages));
           } else {
-            gatewayProxyResponseEvent.setBody(e.getMessage());
+            gatewayProxyResponseEvent.setBody(gson.toJson(new Message(e.getMessage())));
           }
 
           gatewayProxyResponseEvent.setStatusCode(400);
@@ -223,29 +222,25 @@ public class ApiHandler extends
 
       gatewayProxyResponseEvent.setStatusCode(200);
     } catch (NormalizerException exception) {
-
+      Throwable rootCause = ExceptionUtils.getRootCause(exception);
       String message = String.format("Sorry but the normalizer %s threw error %s",
-          exception.getWorkflowId(), exception.getMessage());
-      gatewayProxyResponseEvent.setBody(gson.toJson(message));
+          exception.getWorkflowId(), rootCause.getMessage());
+      gatewayProxyResponseEvent.setBody(gson.toJson(new Message(message)));
       gatewayProxyResponseEvent.setStatusCode(400);
     } catch (Exception e) {
-      StringWriter sw = new StringWriter();
-      e.printStackTrace(new PrintWriter(sw));
-      gatewayProxyResponseEvent.setBody(sw.toString());
+      Throwable rootCause = ExceptionUtils.getRootCause(e);
+      gatewayProxyResponseEvent.setBody(gson.toJson(new Message(rootCause.getMessage())));
       gatewayProxyResponseEvent.setStatusCode(500);
     }
     return gatewayProxyResponseEvent;
   }
 
   private void handleSaveToS3(String body) throws JsonProcessingException {
-    String dassanaBucket = System.getenv().get(DASSANA_MANAGEMENT_BUCKET);
-    Workflow workflow = contentReader.getWorkflow(new JSONObject(StringyThings.getJsonFromYaml(body)));
+    String dassanaBucket = System.getenv().get("dassanaBucket");
+    Workflow workflow = contentManager.getWorkflow(new JSONObject(StringyThings.getJsonFromYaml(body)));
     String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
     PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
     s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
-    s3Client.putObject(
-        PutObjectRequest.builder().bucket(dassanaBucket).key(CONTENT_LAST_UPDATED_CACHE_KEY)
-            .build(), RequestBody.empty());
 
   }
 
@@ -266,7 +261,7 @@ public class ApiHandler extends
 
     if (dassana == null || !dassana.has(NORMALIZE)) {
       Message message = new Message();
-      message.setSeverity(severity.WARN);
+      message.setSeverity(Severity.WARN);
       message.setMsg(MISSING_NORMALIZATION_MSG);
       jsonObject.put(DASSANA_KEY, new JSONObject(gson.toJson(message)));
     } else {//this means that normalization did occur
@@ -277,7 +272,7 @@ public class ApiHandler extends
         JSONObject workflowResponse = dassana.optJSONObject(workflowKey);
         if (workflowResponse == null) {
           Message message = new Message();
-          message.setSeverity(severity.INFO);
+          message.setSeverity(Severity.INFO);
           message.setMsg(String.format("Sorry, but no %s workflow ran for the given alert. Please check filter config",
               workflowKey));
           jsonObject.getJSONObject(DASSANA_KEY).put(workflowKey, new JSONObject(gson.toJson(message)));
@@ -287,7 +282,7 @@ public class ApiHandler extends
 
             for (String workflowYamlStr : request.getAdditionalWorkflowYamls()) {
               String workflowJson = StringyThings.getJsonFromYaml(workflowYamlStr);
-              Workflow workflow = contentReader.getWorkflow(new JSONObject(workflowJson));
+              Workflow workflow = contentManager.getWorkflow(new JSONObject(workflowJson));
               String workflowType = workflowResponse.getString("workflowType");
               if (workflowType.contentEquals(workflow.getType())) {
                 if (!workflow.getId().contentEquals(workflowResponse.getString(WORKFLOW_ID))) {

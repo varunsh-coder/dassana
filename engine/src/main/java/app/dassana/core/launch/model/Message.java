@@ -2,14 +2,25 @@ package app.dassana.core.launch.model;
 
 public class Message {
 
-  private app.dassana.core.launch.model.severity severity;
+  private Severity severity = Severity.ERROR;
   private String msg;
 
-  public severity getSeverity() {
+  public Message() { }
+
+  public Message(String message) {
+    this.msg = message;
+  }
+
+  public Message(String message, Severity severity) {
+    this.msg = message;
+    this.severity = severity;
+  }
+
+  public Severity getSeverity() {
     return severity;
   }
 
-  public void setSeverity(severity severity) {
+  public void setSeverity(Severity severity) {
     this.severity = severity;
   }
 
@@ -21,4 +32,11 @@ public class Message {
     this.msg = msg;
   }
 
+  @Override
+  public String toString() {
+    return "Message{" +
+            "severity=" + severity +
+            ", msg='" + msg + '\'' +
+            '}';
+  }
 }

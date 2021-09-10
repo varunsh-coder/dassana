@@ -46,7 +46,6 @@ module.exports = {
 							type: 'category',
 							label: 'Workflows',
 							items: [
-								'guides/workflow-authoring/execution',
 								'guides/workflow-authoring/editor',
 								'guides/workflow-authoring/normalize',
 								'guides/workflow-authoring/general-context',
@@ -54,7 +53,15 @@ module.exports = {
 								'guides/workflow-authoring/policy-context'
 							]
 						},
-						'guides/action-authoring/action'
+                        {
+                            type: 'category',
+                            label: 'Valid Structure',
+                            items: [
+								'guides/valid-structure/resource-fields',
+								'guides/valid-structure/policy-fields',
+                            ]
+                        },
+						'guides/action-authoring/action',
 					]
 				},
 				{

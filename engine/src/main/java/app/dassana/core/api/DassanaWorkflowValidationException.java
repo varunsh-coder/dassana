@@ -1,21 +1,23 @@
 package app.dassana.core.api;
 
+import app.dassana.core.launch.model.Message;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class DassanaWorkflowValidationException extends RuntimeException {
 
-  List<String> issues;
+  List<Message> messages;
 
-  public List<String> getIssues() {
-    if (issues == null) {
-      issues = new LinkedList<>();
+  public List<Message> getMessages() {
+    if (messages == null) {
+      messages = new LinkedList<>();
     }
-    return issues;
+    return messages;
   }
 
-  public void setIssues(List<String> issues) {
-    this.issues = issues;
+  public void setMessages(List<Message> messages) {
+    this.messages = messages;
   }
 
   public DassanaWorkflowValidationException() {

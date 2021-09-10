@@ -8,7 +8,7 @@ labels:
 
 csp: aws
 service: config
-resource-type: config-recorder
+resource-type: ConfigRule
 
 class: risk
 subclass: config

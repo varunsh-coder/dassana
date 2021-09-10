@@ -1,4 +1,9 @@
 csp:
+  - id: demo-cloud
+    services:
+      - id: demo-service
+        resource-types:
+          - id: demo-resourceType
   - id: aws
     name: Amazon Web Services
     services:
