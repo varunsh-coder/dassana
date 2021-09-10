@@ -4,17 +4,10 @@
   "type": "object",
   "properties": {
     "arn": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "region": {
-      "type": "string",
-      "default": "us-east-1"
+      "type": "string"
     }
   },
   "required": [
-    "arn","region"
+    "arn"
   ]
 }

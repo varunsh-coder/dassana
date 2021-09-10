@@ -28,10 +28,10 @@ class NormalizedOutput(BaseModel):
 
 
 class ArnComponent(BaseModel):
-    arn: str
-    partition: str
-    service: str
-    region: str
-    account: str
-    resource: str
-    resource_type: str
+    arn: str = None
+    partition: str = 'aws'
+    service: str = None
+    region: str = None
+    account: str = None
+    resource: str = None
+    resource_type: str = None
