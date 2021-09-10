@@ -562,6 +562,18 @@ Resources:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
+  GetEc2InstanceIAMrole:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/what-is-ec2-role
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [DassanaActionsRole, Arn]
+      Timeout: 60
+
   PrismaCloudExtractor:
     Type: AWS::Serverless::Function
     Properties:

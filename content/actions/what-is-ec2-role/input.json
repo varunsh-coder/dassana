@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WhatIsEC2Role",
+  "type": "object",
+  "properties": {
+    "instanceId": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "instanceId",
+    "region"
+  ]
+}
