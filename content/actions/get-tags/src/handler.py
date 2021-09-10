@@ -14,8 +14,6 @@ with open('input.json', 'r') as schema:
 
 logger = Logger(service='dassana-actions')
 
-s3_bucket_default_region = 'us-east-1'
-
 
 def tag_mapping(tags):
     return [{'name': tag['Key'], 'value': tag['Value']} for tag in tags]
@@ -28,6 +26,12 @@ def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
     arn_component = parse_arn(arn)
     service = arn_component.service
     region = arn_component.region
+    if region is None and event.get('region') is None:
+        raise Exception(
+            'Arn: %s is missing region and the region is missing from the input. Please supply a region for the '
+            'resource')
+    else:
+        region = event.get('region')
 
     if service == 'iam':
         client = dassana_aws.create_aws_client(context, 'iam', region)
@@ -48,18 +52,6 @@ def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
             return tag_mapping(tag_set)
         except ClientError as e:
             if e.response.get('Error').get('Code') in ['NoSuchEntity']:
-                return []
-            else:
-                raise e
-    elif service == 's3':
-        client = dassana_aws.create_aws_client(context, 's3', s3_bucket_default_region)
-        try:
-            resp = client.get_bucket_tagging(Bucket=arn_component.resource)
-            tag_set = resp.get('TagSet')
-            return tag_mapping(tag_set)
-        except ClientError as e:
-            logger.error(e.response)
-            if e.response.get('Error').get('Code') in ['NoSuchBucket']:
                 return []
             else:
                 raise e
