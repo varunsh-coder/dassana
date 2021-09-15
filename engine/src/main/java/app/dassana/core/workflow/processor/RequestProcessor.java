@@ -173,8 +173,6 @@ public class RequestProcessor {
     checkArgsToBeTrue("csp", normalizerOutput);
     checkArgsToBeTrue("resourceContainer", normalizerOutput);
     checkArgsToBeTrue("region", normalizerOutput);
-    checkArgsToBeTrue("service", normalizerOutput);
-    checkArgsToBeTrue("resourceType", normalizerOutput);
     checkArgsToBeTrue("resourceId", normalizerOutput);
   }
 
