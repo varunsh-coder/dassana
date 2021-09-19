@@ -5,7 +5,7 @@ import static app.dassana.core.contentmanager.ContentManager.NORMALIZE;
 import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.RESOURCE_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.WORKFLOW_ID;
-import static app.dassana.core.contentmanager.infra.S3Downloader.WORKFLOW_PATH_IN_S3;
+import static app.dassana.core.contentmanager.infra.S3Workflow.WORKFLOW_PATH_IN_S3;
 import static app.dassana.core.workflow.processor.Decorator.DASSANA_KEY;
 
 import app.dassana.core.api.DassanaWorkflowValidationException;
@@ -87,6 +87,7 @@ public class ApiHandler extends
 
   private static final Logger logger = LoggerFactory.getLogger(ApiHandler.class);
 
+  public static final String API_PARAM_DEFAULT = "default";
   public static final String API_PARAM_SKIP_GENERAL_CONTEXT = "skipGeneralContext";
   public static final String API_PARAM_SKIP_POLICY_CONTEXT = "skipPolicyContext";
   public static final String API_PARAM_SKIP_S3UPLOAD = "skipS3Upload";
@@ -104,15 +105,49 @@ public class ApiHandler extends
   public ApiHandler() {
   }
 
+
+  String workflowToJson(String context, boolean isDefault){
+    Map<String, Object> map = new HashMap<>();
+    map.put("workflow", context);
+    map.put("default", isDefault);
+    return gson.toJson(map);
+  }
+
+  String retrieveWorkflow(String workFlowId, boolean isDefaultParam){
+    Map<String, String> customIdToOriginalContext = contentManager.getCustomIdToOriginalContext();
+    boolean isDefault = false;
+    String context = null;
+
+    if(isDefaultParam){
+      if(!customIdToOriginalContext.containsKey(workFlowId)){ //if custom workflow is missing get OG
+        context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+      }else{
+        context = customIdToOriginalContext.get(workFlowId);
+      }
+      isDefault = true;
+    }else{ //if default=false check for custom workflow and retrieve either OG/custom workflow
+      isDefault = customIdToOriginalContext.containsKey(workFlowId) ? false : true;
+      context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+    }
+
+    return workflowToJson(context, isDefault);
+  }
+
   String handleGet(Request request, String workFlowId) throws Exception {
 
     for (Workflow workflow : contentManager.getWorkflowSet(request)) {
       if (workflow.getId().contentEquals(workFlowId)) {
-        return contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+        return retrieveWorkflow(workFlowId, request.isDefault());
       }
     }
     throw new WorkflowNotFundException("That workflow id wasn't found :(");
 
+  }
+
+  String handleDelete(String workFlowId){
+    contentManager.deleteWorkflow(workFlowId);
+    String context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+    return workflowToJson(context, true);
   }
 
   String handleRun(Request request) throws Exception {
@@ -180,7 +215,9 @@ public class ApiHandler extends
         gatewayProxyResponseEvent.setBody(handleRun);
       } else if (input.getPath().contentEquals(WORKFLOW_PATH) && input.getHttpMethod().toLowerCase()
           .contentEquals("post")) {
-        handleSaveToS3(input.getBody());
+        String response = handleSaveToS3(input.getBody());
+        gatewayProxyResponseEvent.setBody(response);
+        gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
 
       } else if (input.getPath().contentEquals(WORKFLOW_PATH) && input.getHttpMethod().toLowerCase().contentEquals(
           "get")) {
@@ -188,11 +225,24 @@ public class ApiHandler extends
           String response = handleGet(
               getRequestFromQueryParam(input.getQueryStringParameters(), inputBody, input.getHeaders()),
               input.getQueryStringParameters().get(WORKFLOW_ID));
+
           gatewayProxyResponseEvent.setBody(response);
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
 
         } catch (WorkflowNotFundException e) {
           Message message = new Message(String.format("Workflow %s not found", input.getQueryStringParameters().get(WORKFLOW_ID)));
+          gatewayProxyResponseEvent.setBody(gson.toJson(message));
+          gatewayProxyResponseEvent.setStatusCode(404);
+          return gatewayProxyResponseEvent;
+        }
+      }else if (input.getPath().contentEquals(WORKFLOW_PATH) && input.getHttpMethod().toLowerCase().contentEquals(
+              "delete")) {
+        try {
+          String response = handleDelete(input.getQueryStringParameters().get(WORKFLOW_ID));
+          gatewayProxyResponseEvent.setBody(response);
+          gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
+        }catch (Exception e){
+          Message message = new Message(String.format("Workflow could not be deleted", input.getQueryStringParameters().get(WORKFLOW_ID)));
           gatewayProxyResponseEvent.setBody(gson.toJson(message));
           gatewayProxyResponseEvent.setStatusCode(404);
           return gatewayProxyResponseEvent;
@@ -235,13 +285,13 @@ public class ApiHandler extends
     return gatewayProxyResponseEvent;
   }
 
-  private void handleSaveToS3(String body) throws JsonProcessingException {
+  private String handleSaveToS3(String body) throws JsonProcessingException {
     String dassanaBucket = System.getenv().get("dassanaBucket");
     Workflow workflow = contentManager.getWorkflow(new JSONObject(StringyThings.getJsonFromYaml(body)));
     String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
     PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
     s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
-
+    return workflowToJson(body, true);
   }
 
   private Map<String, String> getHeaders() {
@@ -342,6 +392,8 @@ public class ApiHandler extends
     boolean skipPostProcessor = parameters
         .getOrDefault(API_PARAM_SKIP_POST_PROCESSOR, "false").contentEquals("true");
 
+    boolean isDefault = parameters.getOrDefault(API_PARAM_DEFAULT, "false").contentEquals("true");
+
     String cache = headers.getOrDefault("x-dassana-cache", "false");
 
     String workflowId = parameters.getOrDefault(WORKFLOW_ID, "");
@@ -375,6 +427,8 @@ public class ApiHandler extends
     request.setSkipPostProcessor(skipPostProcessor);
     request.setSkipGeneralContext(skipGeneralContext);
     request.setSkipPolicyContext(skipPolicyContext);
+    request.setDefault(isDefault);
+
     return request;
   }
 

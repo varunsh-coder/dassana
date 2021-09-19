@@ -1,5 +1,7 @@
 package app.dassana.core.launch.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class Request {
@@ -9,6 +11,7 @@ public class Request {
 
   boolean includeStepOutput;
   boolean includeAlertInOutput;
+  boolean isDefault;
 
   //content management
   private boolean skipGeneralContext;
@@ -111,5 +114,13 @@ public class Request {
 
   public void setSkipResourceContext(boolean skipResourceContext) {
     this.skipResourceContext = skipResourceContext;
+  }
+
+  public boolean isDefault() {
+    return isDefault;
+  }
+
+  public void setDefault(boolean isDefault) {
+    this.isDefault = isDefault;
   }
 }

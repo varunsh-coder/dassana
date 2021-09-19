@@ -10,8 +10,8 @@ import static app.dassana.core.util.JsonyThings.MESSAGE;
 import static app.dassana.core.workflow.processor.Decorator.DASSANA_KEY;
 
 import app.dassana.core.api.DassanaWorkflowValidationException;
-import app.dassana.core.contentmanager.RemoteContentDownloadApi;
-import app.dassana.core.contentmanager.infra.S3Downloader;
+import app.dassana.core.contentmanager.WorkflowApi;
+import app.dassana.core.contentmanager.infra.S3Workflow;
 import app.dassana.core.workflow.StepRunnerApi;
 import app.dassana.core.workflow.infra.LambdaStepRunner;
 import app.dassana.core.workflow.model.Step;
@@ -207,11 +207,11 @@ public class ApiSqsHandlerTest {
 
 
   @Singleton
-  @Replaces(RemoteContentDownloadApi.class)
-  public static class FakeS3Downloader extends S3Downloader {
+  @Replaces(WorkflowApi.class)
+  public static class FakeS3Workflow extends S3Workflow {
 
 
-    public FakeS3Downloader(S3Client s3Client) {
+    public FakeS3Workflow(S3Client s3Client) {
       super(s3Client);
     }
 

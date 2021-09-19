@@ -1,6 +1,6 @@
 package app.dassana.core.contentmanager.infra;
 
-import app.dassana.core.contentmanager.RemoteContentDownloadApi;
+import app.dassana.core.contentmanager.WorkflowApi;
 import java.io.File;
 import java.time.Instant;
 import java.util.Objects;
@@ -11,27 +11,23 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
-import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 
 @Singleton
-public class S3Downloader implements RemoteContentDownloadApi {
+public class S3Workflow implements WorkflowApi {
 
   private final S3Client s3Client;
   private String s3Bucket;
   public static final String WORKFLOW_PATH_IN_S3="workflows/";
 
-  public S3Downloader(S3Client s3Client) {
+  public S3Workflow(S3Client s3Client) {
     this.s3Client = s3Client;
 
   }
 
 
-  private static final Logger logger = LoggerFactory.getLogger(S3Downloader.class);
+  private static final Logger logger = LoggerFactory.getLogger(S3Workflow.class);
 
 
   @Override
@@ -80,5 +76,18 @@ public class S3Downloader implements RemoteContentDownloadApi {
     } else {
       return Optional.empty();
     }
+  }
+
+  @Override
+  public void deleteContent(String workflowId) {
+    s3Bucket = System.getenv("dassanaBucket");
+    Objects.requireNonNull(s3Bucket, "dassanaBucket must be specified as env var");
+
+    String formattedWorkflowId = WORKFLOW_PATH_IN_S3.concat("workflowId");
+
+    DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
+            .bucket(s3Bucket).key(formattedWorkflowId).build();
+
+    s3Client.deleteObject(deleteRequest);
   }
 }
