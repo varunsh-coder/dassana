@@ -26,15 +26,17 @@ public class VersionHandler {
     VersionResponse versionResponse = new VersionResponse();
     versionResponse.setInstalledVersion(currentVersion);
 
-    Semver installed = new Semver(currentVersion);
-    Semver latest = new Semver(latestVersion);
+    if(!"__version-to-be-replaced-by-cicd__".equals(currentVersion)){
+      Semver installed = new Semver(currentVersion);
+      Semver latest = new Semver(latestVersion);
 
-    if (latest.isGreaterThan(installed)) {
-      versionResponse.setUpgradeAvailable(true);
-      versionResponse.setMessage("Hey there! An upgrade to Dassana is available. Please visit https://docs.dassana"
-          + ".io/docs/guides/ops/updating-dassana for instructions");
-    } else {
-      versionResponse.setUpgradeAvailable(false);
+      if (latest.isGreaterThan(installed)) {
+        versionResponse.setUpgradeAvailable(true);
+        versionResponse.setMessage("Hey there! An upgrade to Dassana is available. Please visit https://docs.dassana"
+                + ".io/docs/guides/ops/updating-dassana for instructions");
+      } else {
+        versionResponse.setUpgradeAvailable(false);
+      }
     }
     return versionResponse;
 
