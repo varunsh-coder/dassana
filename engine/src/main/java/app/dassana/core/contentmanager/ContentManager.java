@@ -5,6 +5,7 @@ import app.dassana.core.contentmanager.model.SyncResult;
 import app.dassana.core.contentmanager.model.WorkflowProcessingResult;
 import app.dassana.core.launch.model.Message;
 import app.dassana.core.launch.model.Request;
+import app.dassana.core.launch.model.WorkflowNotFoundException;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.GeneralContext;
@@ -47,7 +48,7 @@ public class ContentManager implements ContentManagerApi {
   private final WorkflowApi contentManager;
   private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
   Map<String, String> workflowIdToYamlContext = new HashMap<>();
-  Map<String, String> customIdToOriginalContext = new HashMap<>();
+  Map<String, String> workflowIdToDefaultContext = new HashMap<>();
   private long lastUpdated = 0;
 
   public static final String VENDOR_ID = "vendor-id";
@@ -97,12 +98,12 @@ public class ContentManager implements ContentManagerApi {
     }
   }
 
-  public Map<String, String> getCustomIdToOriginalContext() {
-    return customIdToOriginalContext;
+  public Map<String, String> getWorkflowIdToDefaultContext() {
+    return workflowIdToDefaultContext;
   }
 
-  public void setCustomIdToOriginalContext(Map<String, String> customIdToOriginalContext) {
-    this.customIdToOriginalContext = customIdToOriginalContext;
+  public void setWorkflowIdToDefaultContext(Map<String, String> workflowIdToDefaultContext) {
+    this.workflowIdToDefaultContext = workflowIdToDefaultContext;
   }
 
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
@@ -131,7 +132,12 @@ public class ContentManager implements ContentManagerApi {
   }
 
   public void deleteWorkflow(String workflowId){
+    if(!workflowIdToDefaultContext.containsKey(workflowId)){
+      throw new WorkflowNotFoundException(String.format("There is no custom workflow for id: %s", workflowId));
+    }
+
     contentManager.deleteContent(workflowId);
+    workflowIdToDefaultContext.remove(workflowId);
   }
 
   RiskConfig getRiskConfig(JSONObject workFlowJson) {
@@ -430,7 +436,7 @@ public class ContentManager implements ContentManagerApi {
 
     for(File file : files){
       String id = file.getName();
-      customIdToOriginalContext.put(id, workflowIdToYamlContext.get(id));
+      workflowIdToDefaultContext.put(id, workflowIdToYamlContext.get(id));
     }
   }
 

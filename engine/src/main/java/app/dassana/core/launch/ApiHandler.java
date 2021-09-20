@@ -16,7 +16,7 @@ import app.dassana.core.contentmanager.ContentManager;
 import app.dassana.core.launch.model.Message;
 import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.Request;
-import app.dassana.core.launch.model.WorkflowNotFundException;
+import app.dassana.core.launch.model.WorkflowNotFoundException;
 import app.dassana.core.launch.model.Severity;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
@@ -114,17 +114,36 @@ public class ApiHandler extends
   }
 
   String retrieveWorkflow(String workFlowId, boolean isDefaultParam){
-    Map<String, String> customIdToOriginalContext = contentManager.getCustomIdToOriginalContext();
+    Map<String, String> customIdToOriginalContext = contentManager.getWorkflowIdToDefaultContext();
+    boolean isCustomWorkflow = customIdToOriginalContext.containsKey(workFlowId);
+    boolean isDefault = isCustomWorkflow ? false : true;
+    String context = null;
+
+    if(isDefaultParam && isCustomWorkflow){
+      context = customIdToOriginalContext.get(workFlowId);
+      isDefault = true;
+    }else{
+      context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+    }
+
+    //String context = (isDefaultParam && isCustomWorkflow) ? customIdToOriginalContext.get(workFlowId) :
+      //      contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+
+    return workflowToJson(context, isDefault);
+  }
+
+  String retrieveWorkflow1(String workFlowId, boolean isDefaultParam){
+    Map<String, String> customIdToOriginalContext = contentManager.getWorkflowIdToDefaultContext();
     boolean isDefault = false;
     String context = null;
 
     if(isDefaultParam){
       if(!customIdToOriginalContext.containsKey(workFlowId)){ //if custom workflow is missing get OG
         context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+        isDefault = true;
       }else{
         context = customIdToOriginalContext.get(workFlowId);
       }
-      isDefault = true;
     }else{ //if default=false check for custom workflow and retrieve either OG/custom workflow
       isDefault = customIdToOriginalContext.containsKey(workFlowId) ? false : true;
       context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
@@ -140,7 +159,7 @@ public class ApiHandler extends
         return retrieveWorkflow(workFlowId, request.isDefault());
       }
     }
-    throw new WorkflowNotFundException("That workflow id wasn't found :(");
+    throw new WorkflowNotFoundException("That workflow id wasn't found :(");
 
   }
 
@@ -183,7 +202,7 @@ public class ApiHandler extends
         }
 
       } else {
-        throw new WorkflowNotFundException(String.format("Sorry, the workflow %s was not found",
+        throw new WorkflowNotFoundException(String.format("Sorry, the workflow %s was not found",
             request.getWorkflowId()));
       }
 
@@ -229,7 +248,7 @@ public class ApiHandler extends
           gatewayProxyResponseEvent.setBody(response);
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
 
-        } catch (WorkflowNotFundException e) {
+        } catch (WorkflowNotFoundException e) {
           Message message = new Message(String.format("Workflow %s not found", input.getQueryStringParameters().get(WORKFLOW_ID)));
           gatewayProxyResponseEvent.setBody(gson.toJson(message));
           gatewayProxyResponseEvent.setStatusCode(404);
@@ -242,7 +261,7 @@ public class ApiHandler extends
           gatewayProxyResponseEvent.setBody(response);
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
         }catch (Exception e){
-          Message message = new Message(String.format("Workflow could not be deleted", input.getQueryStringParameters().get(WORKFLOW_ID)));
+          Message message = new Message(String.format("Workflow could not be deleted", e.getMessage()));
           gatewayProxyResponseEvent.setBody(gson.toJson(message));
           gatewayProxyResponseEvent.setStatusCode(404);
           return gatewayProxyResponseEvent;
