@@ -11,6 +11,8 @@ no_comments: false
 
 ![Dassana 💙 Prisma Cloud](/img/blog/prisma-cloud/dassanaLovesPrismaCloud.jpg)
 
+<!--truncate-->
+
 We are excited to announce Prisma Cloud support! Prisma Cloud is one of the undisputed juggernauts in the cloud security space. Prisma Cloud is amongst the most comprehensive cloud security platforms encompassing cloud security posture management, workload protection, network security, and data security.
 
 Prisma Cloud has always held a special place in my heart. Both Gaurav (my co-founder and CEO) and I were part of the RedLock founding team (which was acquired by Palo Alto Networks and incorporated into Prisma Cloud). As a startup, set out to solve the visibility problem in the Cloud Security Posture Management (CSPM) space. We wanted to ensure that there was a simple way for customers to discover hygiene issues in the cloud. To accomplish that, we built a flexible query language to ask any question about an environment. Furthermore, we wanted this to be easily translated across a multitude of compliance standards across any public cloud. While we solved that problem, we ended up creating another one: alert fatigue.
