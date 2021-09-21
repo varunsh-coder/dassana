@@ -83,7 +83,7 @@ public class S3Workflow implements WorkflowApi {
     s3Bucket = System.getenv("dassanaBucket");
     Objects.requireNonNull(s3Bucket, "dassanaBucket must be specified as env var");
 
-    String formattedWorkflowId = WORKFLOW_PATH_IN_S3.concat("workflowId");
+    String formattedWorkflowId = WORKFLOW_PATH_IN_S3.concat(workflowId);
 
     DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
             .bucket(s3Bucket).key(formattedWorkflowId).build();

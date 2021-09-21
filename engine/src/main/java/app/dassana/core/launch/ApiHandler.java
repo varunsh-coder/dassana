@@ -119,7 +119,7 @@ public class ApiHandler extends
     boolean isDefault = isCustomWorkflow ? false : true;
     String context = null;
 
-    if(isDefaultParam && isCustomWorkflow){
+    if(isDefaultParam && isCustomWorkflow){ //if default=true and default template is stored go fetch it
       context = customIdToOriginalContext.get(workFlowId);
       isDefault = true;
     }else{
@@ -141,9 +141,8 @@ public class ApiHandler extends
   }
 
   String handleDelete(String workFlowId){
-    contentManager.deleteWorkflow(workFlowId);
-    String context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
-    return workflowToJson(context, true);
+    String defaultContext = contentManager.deleteWorkflow(workFlowId);
+    return workflowToJson(defaultContext, true);
   }
 
   String handleRun(Request request) throws Exception {
@@ -238,7 +237,7 @@ public class ApiHandler extends
           gatewayProxyResponseEvent.setBody(response);
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
         }catch (Exception e){
-          Message message = new Message(String.format("Workflow could not be deleted", e.getMessage()));
+          Message message = new Message(String.format("Error during workflow deletion: %s", e.getMessage()));
           gatewayProxyResponseEvent.setBody(gson.toJson(message));
           gatewayProxyResponseEvent.setStatusCode(404);
           return gatewayProxyResponseEvent;

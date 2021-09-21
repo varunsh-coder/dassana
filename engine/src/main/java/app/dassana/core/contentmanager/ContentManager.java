@@ -131,13 +131,13 @@ public class ContentManager implements ContentManagerApi {
     return workflowIdToYamlContext;
   }
 
-  public void deleteWorkflow(String workflowId){
+  public String deleteWorkflow(String workflowId){
     if(!workflowIdToDefaultContext.containsKey(workflowId)){
       throw new WorkflowNotFoundException(String.format("There is no custom workflow for id: %s", workflowId));
     }
 
     contentManager.deleteContent(workflowId);
-    workflowIdToDefaultContext.remove(workflowId);
+    return workflowIdToDefaultContext.get(workflowId);
   }
 
   RiskConfig getRiskConfig(JSONObject workFlowJson) {
