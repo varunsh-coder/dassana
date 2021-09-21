@@ -436,7 +436,9 @@ public class ContentManager implements ContentManagerApi {
 
     for(File file : files){
       String id = file.getName();
-      workflowIdToDefaultContext.put(id, workflowIdToYamlContext.get(id));
+      if(!workflowIdToDefaultContext.containsKey(id)) {
+        workflowIdToDefaultContext.put(id, workflowIdToYamlContext.get(id));
+      }
     }
   }
 
