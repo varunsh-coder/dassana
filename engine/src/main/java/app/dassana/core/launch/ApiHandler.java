@@ -126,29 +126,6 @@ public class ApiHandler extends
       context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
     }
 
-    //String context = (isDefaultParam && isCustomWorkflow) ? customIdToOriginalContext.get(workFlowId) :
-      //      contentManager.getWorkflowIdToYamlContext().get(workFlowId);
-
-    return workflowToJson(context, isDefault);
-  }
-
-  String retrieveWorkflow1(String workFlowId, boolean isDefaultParam){
-    Map<String, String> customIdToOriginalContext = contentManager.getWorkflowIdToDefaultContext();
-    boolean isDefault = false;
-    String context = null;
-
-    if(isDefaultParam){
-      if(!customIdToOriginalContext.containsKey(workFlowId)){ //if custom workflow is missing get OG
-        context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
-        isDefault = true;
-      }else{
-        context = customIdToOriginalContext.get(workFlowId);
-      }
-    }else{ //if default=false check for custom workflow and retrieve either OG/custom workflow
-      isDefault = customIdToOriginalContext.containsKey(workFlowId) ? false : true;
-      context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
-    }
-
     return workflowToJson(context, isDefault);
   }
 
