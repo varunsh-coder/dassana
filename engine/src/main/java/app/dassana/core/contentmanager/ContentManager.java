@@ -431,7 +431,7 @@ public class ContentManager implements ContentManagerApi {
     return workflowProcessingResult;
   }
 
-  private void loadCustomIds(File dir){
+  private void loadOriginalContexts(File dir){
     File[] files = dir.listFiles(); //TODO: will this ever be null, G is doing a check for it
 
     for(File file : files){
@@ -453,7 +453,7 @@ public class ContentManager implements ContentManagerApi {
       Optional<File> optionalFile;
       optionalFile = contentManager.downloadContent(lastSuccessfulSync);
       optionalFile.ifPresent(dir -> {
-        loadCustomIds(dir);
+        loadOriginalContexts(dir);
         WorkflowProcessingResult workflowProcessingResult = processDir(dir);
         syncResult.setSuccessful(workflowProcessingResult.getWorkflowFileToExceptionMap().size() <= 0);
       });

@@ -29,10 +29,12 @@ import app.dassana.core.workflow.WorkflowRunner;
 import app.dassana.core.workflow.model.NormalizerException;
 import app.dassana.core.workflow.model.Workflow;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
+import app.dassana.core.workflow.model.WorkflowResponse;
 import app.dassana.core.workflow.processor.RequestProcessor;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.util.StringUtils;
@@ -81,6 +83,7 @@ public class ApiHandler extends
   @Inject private WorkflowValidator workflowValidator;
   @Inject private WorkflowRunner workflowRunner;
   @Inject private VersionHandler versionHandler;
+  @Inject private ObjectMapper objectMapper;
 
 
   @Inject ContentManager contentManager; //todo: not a good idea to inject an implementation
@@ -105,28 +108,26 @@ public class ApiHandler extends
   public ApiHandler() {
   }
 
-
-  String workflowToJson(String context, boolean isDefault){
-    Map<String, Object> map = new HashMap<>();
-    map.put("workflow", context);
-    map.put("default", isDefault);
-    return gson.toJson(map);
+  String workflowToJson(WorkflowResponse response) throws JsonProcessingException {
+    return objectMapper.writeValueAsString(response);
   }
 
-  String retrieveWorkflow(String workFlowId, boolean isDefaultParam){
-    Map<String, String> customIdToOriginalContext = contentManager.getWorkflowIdToDefaultContext();
-    boolean isCustomWorkflow = customIdToOriginalContext.containsKey(workFlowId);
-    boolean isDefault = isCustomWorkflow ? false : true;
+  String retrieveWorkflow(String workFlowId, boolean isDefaultParam) throws JsonProcessingException {
+    Map<String, String> workflowIdToDefaultContext = contentManager.getWorkflowIdToDefaultContext();
+    boolean hasCustomWorkflow = workflowIdToDefaultContext.containsKey(workFlowId);
+    boolean isDefault = !hasCustomWorkflow;
     String context = null;
 
-    if(isDefaultParam && isCustomWorkflow){ //if default=true and default template is stored go fetch it
-      context = customIdToOriginalContext.get(workFlowId);
+    if(isDefaultParam && hasCustomWorkflow){ //if default=true and default template is stored go fetch it
+      context = workflowIdToDefaultContext.get(workFlowId);
       isDefault = true;
     }else{
       context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
     }
 
-    return workflowToJson(context, isDefault);
+    WorkflowResponse response = new WorkflowResponse(context, isDefault);
+
+    return workflowToJson(response);
   }
 
   String handleGet(Request request, String workFlowId) throws Exception {
@@ -136,13 +137,14 @@ public class ApiHandler extends
         return retrieveWorkflow(workFlowId, request.isDefault());
       }
     }
-    throw new WorkflowNotFoundException("That workflow id wasn't found :(");
+    throw new WorkflowNotFoundException(String.format("Workflow %s not found", workFlowId));
 
   }
 
-  String handleDelete(String workFlowId){
+  String handleDelete(String workFlowId) throws JsonProcessingException {
     String defaultContext = contentManager.deleteWorkflow(workFlowId);
-    return workflowToJson(defaultContext, true);
+    WorkflowResponse response = new WorkflowResponse(defaultContext);
+    return workflowToJson(response);
   }
 
   String handleRun(Request request) throws Exception {
@@ -225,7 +227,7 @@ public class ApiHandler extends
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
 
         } catch (WorkflowNotFoundException e) {
-          Message message = new Message(String.format("Workflow %s not found", input.getQueryStringParameters().get(WORKFLOW_ID)));
+          Message message = new Message(e.getMessage());
           gatewayProxyResponseEvent.setBody(gson.toJson(message));
           gatewayProxyResponseEvent.setStatusCode(404);
           return gatewayProxyResponseEvent;
@@ -286,7 +288,9 @@ public class ApiHandler extends
     String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
     PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
     s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
-    return workflowToJson(body, true);
+
+    WorkflowResponse response = new WorkflowResponse(body);
+    return workflowToJson(response);
   }
 
   private Map<String, String> getHeaders() {
