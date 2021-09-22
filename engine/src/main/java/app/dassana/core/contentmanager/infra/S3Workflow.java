@@ -2,12 +2,15 @@ package app.dassana.core.contentmanager.infra;
 
 import app.dassana.core.contentmanager.WorkflowApi;
 import java.io.File;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Singleton;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -74,6 +77,25 @@ public class S3Workflow implements WorkflowApi {
       File workflows = new File(tempDir.concat("workflows"));
       return Optional.of(workflows);
     } else {
+      return Optional.empty();
+    }
+  }
+
+  @Override
+  public Optional<String> isCustomWorkflow(String workflowId) {
+    s3Bucket = System.getenv("dassanaBucket");
+    Objects.requireNonNull(s3Bucket, "dassanaBucket must be specified as env var");
+
+    String formattedWorkflowId = WORKFLOW_PATH_IN_S3.concat(workflowId);
+
+    GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(s3Bucket).key(formattedWorkflowId).build();
+
+    try {
+      InputStream in = s3Client.getObject(getObjectRequest);
+      String yaml = IOUtils.toString(in, Charset.defaultCharset());
+      in.close();
+      return Optional.of(yaml);
+    }catch (Exception e){
       return Optional.empty();
     }
   }

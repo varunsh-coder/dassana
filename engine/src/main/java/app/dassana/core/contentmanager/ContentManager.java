@@ -14,12 +14,7 @@ import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.risk.model.Rule;
 import app.dassana.core.rule.MatchType;
 import app.dassana.core.util.StringyThings;
-import app.dassana.core.workflow.model.Filter;
-import app.dassana.core.workflow.model.Output;
-import app.dassana.core.workflow.model.Step;
-import app.dassana.core.workflow.model.ValueType;
-import app.dassana.core.workflow.model.VendorFilter;
-import app.dassana.core.workflow.model.Workflow;
+import app.dassana.core.workflow.model.*;
 import io.micronaut.core.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +43,7 @@ public class ContentManager implements ContentManagerApi {
   private final WorkflowApi contentManager;
   private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
   Map<String, String> workflowIdToYamlContext = new HashMap<>();
-  Map<String, String> workflowIdToDefaultContext = new HashMap<>();
+  Map<String, String> workflowIdToCustomWorkflow = new HashMap<>();
   private long lastUpdated = 0;
 
   public static final String VENDOR_ID = "vendor-id";
@@ -98,12 +93,12 @@ public class ContentManager implements ContentManagerApi {
     }
   }
 
-  public Map<String, String> getWorkflowIdToDefaultContext() {
-    return workflowIdToDefaultContext;
+  public Map<String, String> getWorkflowIdToCustomWorkflow() {
+    return workflowIdToCustomWorkflow;
   }
 
-  public void setWorkflowIdToDefaultContext(Map<String, String> workflowIdToDefaultContext) {
-    this.workflowIdToDefaultContext = workflowIdToDefaultContext;
+  public void setWorkflowIdToCustomWorkflow(Map<String, String> workflowIdToCustomWorkflow) {
+    this.workflowIdToCustomWorkflow = workflowIdToCustomWorkflow;
   }
 
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
@@ -131,13 +126,19 @@ public class ContentManager implements ContentManagerApi {
     return workflowIdToYamlContext;
   }
 
+  public Optional<String> isWorkflowCustom(String workflowId){
+    return contentManager.isCustomWorkflow(workflowId);
+  }
+
   public String deleteWorkflow(String workflowId){
-    if(!workflowIdToDefaultContext.containsKey(workflowId)){
+    /*
+    if(!workflowIdToCustomWorkflow.containsKey(workflowId)){
       throw new WorkflowNotFoundException(String.format("There is no custom workflow for id: %s", workflowId));
     }
+    */
 
     contentManager.deleteContent(workflowId);
-    return workflowIdToDefaultContext.get(workflowId);
+    return workflowIdToCustomWorkflow.get(workflowId);
   }
 
   RiskConfig getRiskConfig(JSONObject workFlowJson) {
@@ -431,18 +432,24 @@ public class ContentManager implements ContentManagerApi {
     return workflowProcessingResult;
   }
 
-  private void loadOriginalContexts(File dir){
+  private void loadCustomWorkflows(File dir){
+    workflowIdToCustomWorkflow.clear();
     File[] files = dir.listFiles(); //TODO: will this ever be null, G is doing a check for it
 
     for(File file : files){
       String id = file.getName();
-      if(!workflowIdToDefaultContext.containsKey(id)) {
-        workflowIdToDefaultContext.put(id, workflowIdToYamlContext.get(id));
+      try {
+        String readFileToString = FileUtils.readFileToString(file, Charset.defaultCharset());
+        workflowIdToCustomWorkflow.put(id, readFileToString);
+      }catch (IOException e){
+        throw new WorkflowException(String.format("Failed to read file: %s", file.getName()));
       }
     }
   }
 
   public SyncResult syncContent(Long lastSuccessfulSync, Request request) {
+
+    //logger.info("inside syncContent function");
 
     SyncResult syncResult = new SyncResult();
     syncResult.setCacheHit(true);
@@ -451,11 +458,18 @@ public class ContentManager implements ContentManagerApi {
 
     //sync every SYNC_INTERVAL_IN_MINS
     if ((request != null && request.isRefreshFromS3()) || stale) {
+
       syncResult.setCacheHit(false);
       Optional<File> optionalFile;
+      //logger.info("about to download content");
+
       optionalFile = contentManager.downloadContent(lastSuccessfulSync);
+
+      logger.info("downloaded content");
+
       optionalFile.ifPresent(dir -> {
-        loadOriginalContexts(dir);
+        logger.info("custom workflows were found");
+        //loadCustomWorkflows(dir);
         WorkflowProcessingResult workflowProcessingResult = processDir(dir);
         syncResult.setSuccessful(workflowProcessingResult.getWorkflowFileToExceptionMap().size() <= 0);
       });
@@ -467,6 +481,7 @@ public class ContentManager implements ContentManagerApi {
 
   @Override
   public Set<Workflow> getWorkflowSet(Request request) throws Exception {
+    //logger.info("inside getWorkflowSet function");
     syncContent(lastUpdated, request);
 
     //if the additional workflows are provided,we use them. This is for the editor.dassana.io use case where we are

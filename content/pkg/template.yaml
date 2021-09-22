@@ -39,7 +39,7 @@ Resources:
           - StatusCode: 200
             ResponseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,x-api-key,x-dassana-cache'"
-              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS,GET'"
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS,GET,DELETE'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
             ResponseTemplates:
               application/json: ""

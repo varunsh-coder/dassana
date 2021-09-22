@@ -47,6 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -113,24 +114,28 @@ public class ApiHandler extends
   }
 
   String retrieveWorkflow(String workFlowId, boolean isDefaultParam) throws JsonProcessingException {
-    Map<String, String> workflowIdToDefaultContext = contentManager.getWorkflowIdToDefaultContext();
-    boolean hasCustomWorkflow = workflowIdToDefaultContext.containsKey(workFlowId);
-    boolean isDefault = !hasCustomWorkflow;
+    Optional<String> optional = contentManager.isWorkflowCustom(workFlowId);
+    boolean isDefault = true;
     String context = null;
 
-    if(isDefaultParam && hasCustomWorkflow){ //if default=true and default template is stored go fetch it
-      context = workflowIdToDefaultContext.get(workFlowId);
-      isDefault = true;
-    }else{
+    ///*
+    if(isDefaultParam || optional.isEmpty()){
       context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+    }else if(optional.isPresent()){
+      context = optional.get();
+      isDefault = false;
     }
+    //*/
+
+   // context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
 
     WorkflowResponse response = new WorkflowResponse(context, isDefault);
-
     return workflowToJson(response);
   }
 
   String handleGet(Request request, String workFlowId) throws Exception {
+
+    logger.info("Performing get on workflowId: " + workFlowId);
 
     for (Workflow workflow : contentManager.getWorkflowSet(request)) {
       if (workflow.getId().contentEquals(workFlowId)) {
@@ -143,6 +148,7 @@ public class ApiHandler extends
 
   String handleDelete(String workFlowId) throws JsonProcessingException {
     String defaultContext = contentManager.deleteWorkflow(workFlowId);
+    //contentManager.getWorkflowIdToCustomWorkflow().remove(workFlowId); //todo: remove this?
     WorkflowResponse response = new WorkflowResponse(defaultContext);
     return workflowToJson(response);
   }
@@ -288,7 +294,7 @@ public class ApiHandler extends
     String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
     PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
     s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
-
+    //contentManager.getWorkflowIdToCustomWorkflow().put(workflow.getId(), body); //todo: remove this
     WorkflowResponse response = new WorkflowResponse(body);
     return workflowToJson(response);
   }
@@ -297,7 +303,7 @@ public class ApiHandler extends
     Map<String, String> headers = new HashMap<>();
     headers.put("Access-Control-Allow-Headers", "x-api-key , Content-Type, x-dassana-cache");
     headers.put("Access-Control-Allow-Origin", "*");
-    headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET");
+    headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET,DELETE");
     headers.put("content-type", "application/json");
     return headers;
 
