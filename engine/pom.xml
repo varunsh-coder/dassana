@@ -122,6 +122,12 @@
 
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
+      <artifactId>eventbridge</artifactId>
+      <version>${aws-sdk-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
       <artifactId>cloudformation</artifactId>
       <version>${aws-sdk-version}</version>
     </dependency>

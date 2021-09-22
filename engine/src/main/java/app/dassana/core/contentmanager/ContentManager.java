@@ -200,10 +200,13 @@ public class ContentManager implements ContentManagerApi {
       boolean skipGeneralContext = jsonObject.optBoolean("skip-general-context", false);
       boolean skipResourceContext = jsonObject.optBoolean("skip-resource-context", false);
       boolean skipPolicyContext = jsonObject.optBoolean("skip-policy-context", false);
+      boolean publishToEventBridge = jsonObject.optBoolean("publish-to-eventbridge", false);
+
 
       ((NormalizerWorkflow) workflow).setSkipGeneralContext(skipGeneralContext);
       ((NormalizerWorkflow) workflow).setSkipResourceContext(skipResourceContext);
       ((NormalizerWorkflow) workflow).setSkipPolicyContext(skipPolicyContext);
+      ((NormalizerWorkflow) workflow).setPublishToEventBridge(publishToEventBridge);
 
       if (outputQueue != null) {
         boolean outputQueueEnabled = outputQueue.getBoolean("enabled");

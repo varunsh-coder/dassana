@@ -13,7 +13,15 @@ public class NormalizerWorkflow extends Workflow {
   protected boolean skipGeneralContext=false;
   private boolean skipResourceContext = false;
   private boolean skipPolicyContext = false;
+  private boolean publishToEventBridge=false;
 
+  public boolean isPublishToEventBridge() {
+    return publishToEventBridge;
+  }
+
+  public void setPublishToEventBridge(boolean publishToEventBridge) {
+    this.publishToEventBridge = publishToEventBridge;
+  }
 
   public boolean isSkipGeneralContext() {
     return skipGeneralContext;

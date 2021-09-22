@@ -5,6 +5,7 @@ import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Replaces;
 import javax.inject.Singleton;
 import software.amazon.awssdk.services.cloudformation.CloudFormationClient;
+import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.sqs.SqsClient;
@@ -81,6 +82,21 @@ public class MockClients {
   @Singleton
   LambdaClient lambdaClient() {
     return new LambdaClient() {
+      @Override
+      public String serviceName() {
+        return null;
+      }
+
+      @Override
+      public void close() {
+
+      }
+    };
+  }
+
+  @Singleton
+  EventBridgeClient eventBridgeClient() {
+    return new EventBridgeClient() {
       @Override
       public String serviceName() {
         return null;

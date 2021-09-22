@@ -5,6 +5,7 @@ import io.micronaut.context.annotation.Factory;
 import javax.inject.Singleton;
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
 import software.amazon.awssdk.services.cloudformation.CloudFormationClient;
+import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.sqs.SqsClient;
@@ -47,6 +48,11 @@ public class Factories {
   @Singleton
   LambdaClient lambdaClient() {
     return LambdaClient.builder().httpClient(UrlConnectionHttpClient.builder().build()).build();
+  }
+
+  @Singleton
+  EventBridgeClient eventBridgeClient() {
+    return EventBridgeClient.builder().httpClient(UrlConnectionHttpClient.builder().build()).build();
   }
 
 

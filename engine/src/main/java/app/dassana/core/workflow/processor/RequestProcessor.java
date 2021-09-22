@@ -31,7 +31,10 @@ import javax.inject.Singleton;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
+import software.amazon.awssdk.services.eventbridge.model.PutEventsRequest;
+import software.amazon.awssdk.services.eventbridge.model.PutEventsRequestEntry;
+import software.amazon.awssdk.services.eventbridge.model.PutEventsResponse;
 import software.amazon.awssdk.utils.StringUtils;
 
 
@@ -41,12 +44,13 @@ import software.amazon.awssdk.utils.StringUtils;
 @Singleton
 public class RequestProcessor {
 
-  @Inject private SqsClient sqsClient;
   @Inject private WorkflowRunner workflowRunner;
   @Inject private ContentManagerApi contentManagerApi;
   @Inject private Decorator decorator;
   @Inject private PostProcessor postProcessor;
   @Inject private S3Manager s3Manager;
+  @Inject private EventBridgeClient eventBridgeClient;
+
 
   int cores = Runtime.getRuntime().availableProcessors();
   ExecutorService executorService = Executors.newFixedThreadPool(cores);
@@ -155,6 +159,27 @@ public class RequestProcessor {
           .handlePostProcessor(request, normalizationResult.get(), decoratedJsonWithS3key);
 
       processingResponse.setDecoratedJson(finalJson);
+      String dassanaEventBridgeBusName = System.getenv().get("dassanaEventBridgeBusName");
+      if (normalizerWorkflow.isPublishToEventBridge() && org.apache.commons.lang3.StringUtils.isNotEmpty(
+          dassanaEventBridgeBusName)) {
+
+        PutEventsRequestEntry putEventsRequestEntry = PutEventsRequestEntry.builder()
+            .eventBusName(dassanaEventBridgeBusName)
+            .detail(finalJson)
+            .source("dassana")
+            .detailType(normalizerId)
+            .build();
+
+        PutEventsResponse putEventsResponse = eventBridgeClient.putEvents(
+            PutEventsRequest.builder().entries(putEventsRequestEntry).build());
+
+        if (putEventsResponse.failedEntryCount() > 0) {
+          throw new RuntimeException(
+              "Unable to send events to eventbridge due to error: ".concat(putEventsResponse.toString()));
+
+        }
+      }
+
 
     } else {//normalization did not happen
       processingResponse.setNormalizerWorkflow(null);

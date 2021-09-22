@@ -172,6 +172,7 @@ Resources:
           dassanaDeadLetterQueue: !Ref DassanaDeadLetterQueue
           dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
           dassanaBucket: !Ref DassanaBucket
+          dassanaEventBridgeBusName: !Ref DassanaEventBus
           version: __version-to-be-replaced-by-cicd__
 
   DassanaBucket:
@@ -223,6 +224,12 @@ Resources:
                   - lambda:InvokeFunction #todo: restrict lambda invocation permission to only Dasssana functions
                   - lambda:GetFunction
                 Resource: "*"
+              - Effect: Allow
+                Action:
+                  - events:PutEvents
+                Resource:
+                  - "*" #todo restrict it to the custom bus we create
+
               - Effect: Allow
                 Action:
                   - sqs:SendMessage
@@ -291,6 +298,51 @@ Resources:
       QueueName:
         !Join ["", [{ "Ref": "AWS::StackName" }, "-DassanaDeadLetterQueue"]]
 
+  DassanaEventBus:
+    Type: AWS::Events::EventBus
+    Properties:
+      Name: !Join ["", [{ "Ref": "AWS::StackName" }, "-EventBus"]]
+
+  LogGroupForDassana:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      RetentionInDays: 365
+      LogGroupName:
+        !Join ["", [/dassana/processed-alerts-, { "Ref": "AWS::StackName" }]]
+
+  DassanaEventBridgeToCwLogGroupRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventBusName: !Ref DassanaEventBus
+      EventPattern:
+        source:
+          - "dassana"
+      Targets:
+        - Arn: !GetAtt LogGroupForDassana.Arn
+          Id: LogTarget
+
+  EventBridgeToCw:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "events.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: AllowAllEventsToBeLogged
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              Effect: Allow
+              Action:
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: "*"
+
   DassanaEngineJavaLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
@@ -321,6 +373,7 @@ Resources:
           dassanaOutboundQueue: !Ref DassanaOutboundQueue
           dassanaDeadLetterQueue: !Ref DassanaDeadLetterQueue
           dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
+          dassanaEventBridgeBusName: !Ref DassanaEventBus
           dassanaBucket: !Ref DassanaBucket
 
   DassanaEngineToQueueMapping:
