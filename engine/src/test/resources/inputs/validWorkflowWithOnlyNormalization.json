@@ -1,0 +1,11 @@
+{
+  "badThingJustHappened": {
+    "description": "fubar"
+  },
+  "test-hint": {
+    "resource-info": "responses/just-normalization.json"
+  },
+  "workflows": [
+    "schema: 1 # currently only version 1 is supported. All schema versions are going to be backward compatible unless otherwise noted. We plan to support decrepated versions for atleast six months\ntype: normalize # valid types are normalize,general-context,policy-context and resource-context\n\nvendor-id: foo-cloud-cspm-vendor # this identifies the vendor that generated the alert\nid: foo-cloud-normalize # this is the id of this workflow. If you change the id, the new id will represent a new workflow\n\nfilters: # before this workflow can run, Dassana engine will match the input to see if it passes the filters.\n  - match-type: all # valid values are all or any\n    rules: # these are JQ expressions which must return either true or false\n      - .badThingJustHappened and .badThingJustHappened.description\n      - .badThingJustHappened.description | contains (\"fubar\")\n\noutput:\n  - name: vendorId\n    value: foo-cloud-cspm-vendor\n    value-type: STRING # the field value-type is optional with the default value of JQ. This is a demo workflow so we are not extracting anyting from steps using jq, so we are using STRING which simply puts the value in the JSON key\n  - name: alertId\n    value: demo-alert-id\n    value-type: STRING\n  - name: canonicalId\n    value: demo-canonicalId\n    value-type: STRING\n  - name: vendorPolicy\n    value: demo-vendorPolicy\n    value-type: STRING\n  - name: csp\n    value: demo-csp\n    value-type: STRING\n  - name: resourceContainer\n    value: demo-resourceContainer\n    value-type: STRING\n  - name: region\n    value: demo-region\n    value-type: STRING\n  - name: service\n    value: demo-service\n    value-type: STRING\n  - name: resourceType\n    value: demo-resourceType\n    value-type: STRING\n  - name: resourceId\n    value: demo-resoureceId\n    value-type: STRING\n\nskip-general-context: true\nskip-resource-context: true\nskip-policy-context: true\n\noutput-queue:\n  enabled: true\n"
+  ]
+}

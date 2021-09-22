@@ -96,20 +96,24 @@ public class RequestProcessor {
 
       String normalizedWorkflowJsonStr = new JSONObject(normalizedWorkflowOutput.getOutput()).toString();
 
-      if (!request.isSkipGeneralContext()) {
+      String normalizerId = normalizedWorkflowOutput.getWorkflowId();
+      NormalizerWorkflow normalizerWorkflow = (NormalizerWorkflow) contentManagerApi.getWorkflowIdToWorkflowMap(request)
+          .get(normalizerId);
+
+      if (!skipGeneralContext(request, normalizerWorkflow)) {
         futureList.add(executorCompletionService
             .submit(() ->
                 workflowRunner
                     .runWorkFlow(GeneralContext.class, request, normalizedWorkflowJsonStr)));
       }
-      if (!request.isSkipResourceContext()) {
+      if (!skipResourceContext(request, normalizerWorkflow)) {
         futureList.add(executorCompletionService
             .submit(() ->
                 workflowRunner
                     .runWorkFlow(ResourceContext.class, request, normalizedWorkflowJsonStr)));
       }
 
-      if (!request.isSkipPolicyContext()) {
+      if (!skipPolicyContext(request, normalizerWorkflow)) {
         futureList.add(executorCompletionService
             .submit(() ->
                 workflowRunner
@@ -197,6 +201,30 @@ public class RequestProcessor {
       throw normalizerException;
     }
 
+  }
+
+  private boolean skipGeneralContext(Request request, NormalizerWorkflow normalizerWorkflow) {
+
+    if (request.isSkipGeneralContext()) {
+      return true;
+    }
+    return normalizerWorkflow.isSkipGeneralContext();
+  }
+
+  private boolean skipResourceContext(Request request, NormalizerWorkflow normalizerWorkflow) {
+
+    if (request.isSkipResourceContext()) {
+      return true;
+    }
+    return normalizerWorkflow.isSkipResourceContext();
+  }
+
+  private boolean skipPolicyContext(Request request, NormalizerWorkflow normalizerWorkflow) {
+
+    if (request.isSkipPolicyContext()) {
+      return true;
+    }
+    return normalizerWorkflow.isSkipPolicyContext();
   }
 
 }

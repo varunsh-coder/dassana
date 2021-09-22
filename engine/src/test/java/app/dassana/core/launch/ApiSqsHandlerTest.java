@@ -51,7 +51,8 @@ public class ApiSqsHandlerTest {
     Map<String, String> queryParams = new HashMap<>();
     queryParams = helper.getQueryParams(false);
     String executeRunApi = helper.executeRunApi(helper.getFileContent(file), queryParams);
-    Assertions.assertTrue(executeRunApi.contains("Sorry but the normalizer aws-config-via-security-hub threw error csp is expected to be not empty"));
+    Assertions.assertTrue(executeRunApi.contains(
+        "Sorry but the normalizer aws-config-via-security-hub threw error csp is expected to be not empty"));
 
 
   }
@@ -195,6 +196,27 @@ public class ApiSqsHandlerTest {
 
   }
 
+  @Test
+  void testSkipWorkflow() throws IOException {
+
+    Map<String, String> queryParams = helper.getQueryParams(false);
+    String response = helper
+        .executeRunApi(helper.getFileContent("inputs/validWorkflowWithOnlyNormalization.json"), queryParams);
+    JSONObject jsonObject = new JSONObject(response);
+
+    Assertions.assertTrue(jsonObject.getJSONObject("general-context").getString("msg")
+        .contentEquals("Sorry, but no general-context workflow ran for the given alert. Please check filter config"));
+
+    Assertions.assertTrue(jsonObject.getJSONObject("resource-context").getString("msg")
+        .contentEquals("Sorry, but no resource-context workflow ran for the given alert. Please check filter config"));
+
+    Assertions.assertTrue(jsonObject.getJSONObject("policy-context").getString("msg")
+        .contentEquals("Sorry, but no policy-context workflow ran for the given alert. Please check filter config"));
+
+
+  }
+
+
   @Singleton
   @Replaces(S3Manager.class)
   public static class FakeS3Manager extends S3Manager {
@@ -265,7 +287,7 @@ public class ApiSqsHandlerTest {
             Charset.defaultCharset()));
       }
 
-      if(step.getId().contentEquals("lookup")){
+      if (step.getId().contentEquals("lookup")) {
         stepRunResponse.setResponse(IOUtils.toString(
             Thread.currentThread().getContextClassLoader().getResourceAsStream("responses/lookup.json"),
             Charset.defaultCharset()));

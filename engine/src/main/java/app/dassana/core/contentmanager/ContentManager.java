@@ -196,6 +196,15 @@ public class ContentManager implements ContentManagerApi {
       }
       ((NormalizerWorkflow) workflow).setPostProcessorSteps(postProcessorSteps);
       var outputQueue = jsonObject.optJSONObject("output-queue");
+
+      boolean skipGeneralContext = jsonObject.optBoolean("skip-general-context", false);
+      boolean skipResourceContext = jsonObject.optBoolean("skip-resource-context", false);
+      boolean skipPolicyContext = jsonObject.optBoolean("skip-policy-context", false);
+
+      ((NormalizerWorkflow) workflow).setSkipGeneralContext(skipGeneralContext);
+      ((NormalizerWorkflow) workflow).setSkipResourceContext(skipResourceContext);
+      ((NormalizerWorkflow) workflow).setSkipPolicyContext(skipPolicyContext);
+
       if (outputQueue != null) {
         boolean outputQueueEnabled = outputQueue.getBoolean("enabled");
         ((NormalizerWorkflow) workflow).setOutputQueueEnabled(outputQueueEnabled);
