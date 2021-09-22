@@ -46,6 +46,7 @@ module.exports = {
 							type: 'category',
 							label: 'Workflows',
 							items: [
+								'guides/workflow-authoring/execution',
 								'guides/workflow-authoring/editor',
 								'guides/workflow-authoring/normalize',
 								'guides/workflow-authoring/general-context',
