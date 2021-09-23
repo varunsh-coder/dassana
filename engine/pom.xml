@@ -19,7 +19,7 @@
     <jdk.version>11</jdk.version>
     <release.version>11</release.version>
     <micronaut.version>2.5.11</micronaut.version>
-    <aws-sdk-version>2.17.30</aws-sdk-version>
+    <aws-sdk-version>2.17.31</aws-sdk-version>
   </properties>
 
   <repositories>
