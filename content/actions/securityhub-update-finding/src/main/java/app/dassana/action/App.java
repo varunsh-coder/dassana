@@ -2,9 +2,11 @@ package app.dassana.action;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONObject;
 import software.amazon.awssdk.services.securityhub.SecurityHubAsyncClient;
 import software.amazon.awssdk.services.securityhub.model.AwsSecurityFindingIdentifier;
@@ -24,11 +26,17 @@ public class App implements RequestHandler<Map<String, Object>, List<AwsSecurity
 
     JSONObject jsonObject = new JSONObject(input);
     JSONObject dassanaObject = jsonObject.getJSONObject("dassana");
+    String productArn;
 
     String findingId = dassanaObject.getJSONObject("normalize").getJSONObject("output").getString("alertId");
 
-    String productArn = jsonObject.getJSONObject("detail").getJSONArray("findings").getJSONObject(0)
-        .getString("ProductArn");
+    // only the EventBridge alert has detail and findings fields
+    if (jsonObject.has("detail")) {
+      productArn = jsonObject.getJSONObject("detail").getJSONArray("findings").getJSONObject(0)
+          .getString("ProductArn");
+    } else {
+      productArn = jsonObject.getString("ProductArn");
+    }
 
     AwsSecurityFindingIdentifier awsSecurityFindingIdentifier =
         AwsSecurityFindingIdentifier.builder().id(findingId).productArn(productArn)

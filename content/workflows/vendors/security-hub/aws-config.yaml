@@ -4,9 +4,10 @@ vendor-id: aws-config
 id: aws-config-via-security-hub
 
 filters:
-  - match-type: all
+  - match-type: any
     rules:
       - .detail and .detail.findings and (.detail.findings[].ProductFields.StandardsGuideArn or .detail.findings[].ProductFields.StandardsArn )
+      - .ProductFields and (.ProductFields.StandardsGuideArn or .ProductFields.StandardsArn)
 
 steps:
   - id: resource-info

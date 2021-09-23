@@ -17,9 +17,16 @@ public class Normalize {
   public NormalizationResult normalize() {
 
     JSONObject jsonObject = new JSONObject(jsonAlertData);
-    JSONObject detailJsonObject = jsonObject.getJSONObject("detail");
-    JSONArray findingsJsonArray = detailJsonObject.getJSONArray("findings");
-    JSONObject finding = findingsJsonArray.getJSONObject(0);
+    // dafault to raw alerts. changes to eventBridge if there is detail tag
+    JSONObject finding = jsonObject;
+
+    // only the EventBridge alert has detail and findings fields
+    if (jsonObject.has("detail")) {
+      JSONObject detailJsonObject = jsonObject.getJSONObject("detail");
+
+      JSONArray findingsJsonArray = detailJsonObject.getJSONArray("findings");
+      finding = findingsJsonArray.getJSONObject(0);
+    }
 
     String possiblePolicyId = finding.getJSONObject("ProductFields").optString("RelatedAWSResources:0/name");
     String policyId = finding.getJSONObject("ProductFields").getString("StandardsControlArn");
@@ -69,7 +76,7 @@ public class Normalize {
       normalizationResult.setRegion(arn.region().get());
     } else {//many a times ARNs do haven't have region e.g. s3 bucket, resources etc so we rely on what the finding
       // value is
-      JSONArray resources = findingsJsonArray.getJSONObject(0).optJSONArray("Resources");
+      JSONArray resources = finding.optJSONArray("Resources");
       if (resources != null) {
         String region = resources.getJSONObject(0).getString("Region");
         normalizationResult.setRegion(region);
@@ -80,9 +87,9 @@ public class Normalize {
     if (arn.accountId().isPresent() && StringUtils.isNotBlank(arn.accountId().get())) {
       normalizationResult.setResourceContainer(arn.accountId().get());
     } else {
-      JSONArray resources = findingsJsonArray.getJSONObject(0).optJSONArray("Resources");
+      JSONArray resources = finding.optJSONArray("Resources");
       if (resources != null) {
-        String awsAccountId = findingsJsonArray.getJSONObject(0).optString("AwsAccountId");
+        String awsAccountId = finding.optString("AwsAccountId");
         normalizationResult.setResourceContainer(awsAccountId);
       }
     }
