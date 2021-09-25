@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: network-acl-is-overly-permissive-outbound
+name: Network ACL is overly permissive outbound
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: network-acl
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 996989c1-144f-44ca-b1ba-e25de2a81ae3
+      - e1db5e99-1c12-4834-995c-bec49960e9d7
+      - 706b69c8-48ee-4159-8b05-9c21e37a2070
+      - f3542ecc-6d34-4797-9b0f-d773d46b50a7
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "996989c1-144f-44ca-b1ba-e25de2a81ae3"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "e1db5e99-1c12-4834-995c-bec49960e9d7"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "706b69c8-48ee-4159-8b05-9c21e37a2070"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "f3542ecc-6d34-4797-9b0f-d773d46b50a7"
+
+risk-config:
+  default-risk: medium

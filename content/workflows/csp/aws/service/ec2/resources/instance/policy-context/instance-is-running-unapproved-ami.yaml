@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: instance-is-using-unapproved-ami
+name: Instance is using an unapproved AMI
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: risk
+subclass: config
+category: uncategorized
+subcategory: best-practice
+
+filters:
+  - vendor: aws-config
+    policies:
+      - approved-amis-by-id
+      - approved-amis-by-tag
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("approved-amis-by-id"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("approved-amis-by-tag"))
+
+risk-config:
+  default-risk: ""

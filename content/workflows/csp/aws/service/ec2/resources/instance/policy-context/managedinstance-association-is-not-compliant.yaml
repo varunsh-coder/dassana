@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: managedinstance-association-is-not-compliant
+name: Checks compliance status of the AWS Systems Manager association after the association execution on the instance.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: risk
+subclass: config
+category: uncategorized
+subcategory: best-practice
+
+filters:
+  - vendor: aws-config
+    policies:
+      - ec2-managedinstance-association-compliance-status-check
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("ec2-managedinstance-association-compliance-status-check"))
+
+risk-config:
+  default-risk: low

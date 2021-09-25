@@ -188,7 +188,7 @@ public class ApiSqsHandlerTest {
     Assertions.assertTrue(generalContext.getString(WORKFLOW_ID).contentEquals("general-context-aws"));
     Assertions.assertTrue(generalContext.getJSONObject("risk").getString("riskValue").contentEquals("low"));
 
-    Assertions.assertTrue(policyContext.getString(WORKFLOW_ID).contentEquals("security-group-wide-open"));
+    Assertions.assertTrue(policyContext.getString(WORKFLOW_ID).contentEquals("security-group-is-overly-permissive"));
 
     String response2 = helper.executeRunApi(helper.getFileContent("inputs/validAlertWithNoGeneralContext.json"),
         queryParams);

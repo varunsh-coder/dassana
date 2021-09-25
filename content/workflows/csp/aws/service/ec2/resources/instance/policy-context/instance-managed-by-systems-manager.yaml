@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: instance-is-not-managed-by-systems-manager
+name: EC2 instance is not managed by AWS Systems Manager
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: risk
+subclass: config
+category: uncategorized
+subcategory: best-practice
+
+filters:
+  - vendor: aws-config
+    policies:
+      - ec2-instance-managed-by-systems-manager
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("ec2-instance-managed-by-systems-manager"))
+
+risk-config:
+  default-risk: medium

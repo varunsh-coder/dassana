@@ -32,14 +32,14 @@ For more information on how to write actions, please see the [authoring actions]
 
 The final step in adding a new vendor is mapping its policies to the policies in Dassana. You can do this by writing rules that can help Dassana identify a specific policy. Here is an example of how rule matching is done for the `restricted-ssh` AWS security hub policy (see highlighted section).
 
-```yaml title="content/workflows/csp/aws/service/ec2/resources/security-group/policy-context/sg-is-wide-open.yaml"
+```yaml title="content/workflows/csp/aws/service/ec2/resources/security-group/policy-context/security-group-is-overly-permissive.yaml"
 schema: 1
 type: policy-context
 
-id: security-group-wide-open
-name: Security group is wide open
+id: security-group-is-overly-permissive
+name: Security group is overly permissive
 labels:
-    - contextualization
+  - contextualization
 
 csp: aws
 service: ec2
@@ -50,19 +50,23 @@ subclass: config
 category: networking
 subcategory: firewall
 
+# TODO: transform this into a resource-context policy
+
 filters:
 // highlight-start
-    - vendor: aws-config
-      policies:
-          - restricted-ssh
-          - restricted-common-ports
-          - vpc-default-security-group-closed
-      match-type: any
-      rules:
-          # here normalizerId refers to the normalizer normalizerId which normalized the alert
-          - .vendorId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
-          - .vendorId == "aws-config" and (.vendorPolicy |contains ("restricted-common-ports"))
-          - .vendorId == "aws-config" and (.vendorPolicy |contains ("vpc-default-security-group-closed"))
+  - vendor: aws-config
+    policies:
+      - "restricted-ssh"
+      - "restricted-common-ports"
+      - "vpc-default-security-group-closed"
+      - "vpc-sg-open-only-to-authorized-ports"
+    match-type: any
+    rules:
+      # here normalizerId refers to the normalizer normalizerId which normalized the alert
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("restricted-ssh") )
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("restricted-common-ports"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("vpc-default-security-group-closed"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("vpc-sg-open-only-to-authorized-ports"))
 // highlight-end
 ```
 

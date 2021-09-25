@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: subnet-auto-assigns-public-ip
+name: VPC subnet allows automatic public IP assignment
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: subnet
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: aws-config
+    policies:
+      - subnet-auto-assign-public-ip-disabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("subnet-auto-assign-public-ip-disabled"))
+  - vendor: prisma-cloud
+    policies:
+      - 11743cd3-35e4-4639-91e1-bc87b52d4cf5
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "11743cd3-35e4-4639-91e1-bc87b52d4cf5"
+
+risk-config:
+  default-risk: medium

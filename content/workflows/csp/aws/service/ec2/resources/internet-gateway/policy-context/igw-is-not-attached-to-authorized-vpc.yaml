@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: igw-is-not-attached-to-authorized-vpc
+name: Internet gateway is not attached to an authorized VPC
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: internet-gateway
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: aws-config
+    policies:
+      - internet-gateway-authorized-vpc-only
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("internet-gateway-authorized-vpc-only"))
+
+risk-config:
+  default-risk: ""
