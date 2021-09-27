@@ -34,7 +34,7 @@ public class S3Workflow implements WorkflowApi {
 
 
   @Override
-  public Optional<File> downloadContent(Long lastDownloaded) {
+  public Optional<File> downloadContent() {
 
     s3Bucket = System.getenv("dassanaBucket");
     Objects.requireNonNull(s3Bucket, "dassanaBucket must be specified as env var");
@@ -51,18 +51,17 @@ public class S3Workflow implements WorkflowApi {
         if (object.size() > 0) {
           try {
             s3Client
-                .getObject(GetObjectRequest.builder().
-                    bucket(s3Bucket).key(object.key()).
-                    ifModifiedSince(Instant.ofEpochMilli(lastDownloaded))
-                    .build(), (getObjectResponse, abortableInputStream) -> {//handle the file
-                  fileDownloaded.set(true);
-                  File file = new File(tempDir.concat(object.key()));
-                  file.deleteOnExit();//we do not want the downloaded files to be lying around, it causes debugging
-                  // issues when running locally as when you make change to the workflows you want the freshest content
-                  // possible and some stale file
-                  FileUtils.copyInputStreamToFile(abortableInputStream, file);
-                  return null;
-                });
+                    .getObject(GetObjectRequest.builder().
+                            bucket(s3Bucket).key(object.key())
+                            .build(), (getObjectResponse, abortableInputStream) -> {//handle the file
+                      fileDownloaded.set(true);
+                      File file = new File(tempDir.concat(object.key()));
+                      file.deleteOnExit();//we do not want the downloaded files to be lying around, it causes debugging
+                      // issues when running locally as when you make change to the workflows you want the freshest content
+                      // possible and some stale file
+                      FileUtils.copyInputStreamToFile(abortableInputStream, file);
+                      return null;
+                    });
           } catch (S3Exception exception) {//see https://github.com/aws/aws-sdk-java-v2/issues/428
             if (exception.toBuilder().statusCode() != 304) {
               throw new RuntimeException(exception);

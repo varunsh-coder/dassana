@@ -114,28 +114,24 @@ public class ApiHandler extends
   }
 
   String retrieveWorkflow(String workFlowId, boolean isDefaultParam) throws JsonProcessingException {
-    Optional<String> optional = contentManager.isWorkflowCustom(workFlowId);
+    Map<String,String> workflowIdToCustomWorkflow = contentManager.getWorkflowIdToCustomWorkflow();
+    boolean isCustomWorkflow = workflowIdToCustomWorkflow.containsKey(workFlowId);
     boolean isDefault = true;
     String context = null;
 
-    ///*
-    if(isDefaultParam || optional.isEmpty()){
+    if(isDefaultParam || !isCustomWorkflow){
       context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
-    }else if(optional.isPresent()){
-      context = optional.get();
+    }else if(isCustomWorkflow){
+      context = workflowIdToCustomWorkflow.get(workFlowId);
       isDefault = false;
     }
-    //*/
-
-   // context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
 
     WorkflowResponse response = new WorkflowResponse(context, isDefault);
     return workflowToJson(response);
   }
 
-  String handleGet(Request request, String workFlowId) throws Exception {
 
-    logger.info("Performing get on workflowId: " + workFlowId);
+  String handleGet(Request request, String workFlowId) throws Exception {
 
     for (Workflow workflow : contentManager.getWorkflowSet(request)) {
       if (workflow.getId().contentEquals(workFlowId)) {
@@ -148,7 +144,6 @@ public class ApiHandler extends
 
   String handleDelete(String workFlowId) throws JsonProcessingException {
     String defaultContext = contentManager.deleteWorkflow(workFlowId);
-    //contentManager.getWorkflowIdToCustomWorkflow().remove(workFlowId); //todo: remove this?
     WorkflowResponse response = new WorkflowResponse(defaultContext);
     return workflowToJson(response);
   }
@@ -294,7 +289,6 @@ public class ApiHandler extends
     String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
     PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
     s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
-    //contentManager.getWorkflowIdToCustomWorkflow().put(workflow.getId(), body); //todo: remove this
     WorkflowResponse response = new WorkflowResponse(body);
     return workflowToJson(response);
   }

@@ -97,10 +97,6 @@ public class ContentManager implements ContentManagerApi {
     return workflowIdToCustomWorkflow;
   }
 
-  public void setWorkflowIdToCustomWorkflow(Map<String, String> workflowIdToCustomWorkflow) {
-    this.workflowIdToCustomWorkflow = workflowIdToCustomWorkflow;
-  }
-
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
 
 
@@ -131,11 +127,9 @@ public class ContentManager implements ContentManagerApi {
   }
 
   public String deleteWorkflow(String workflowId){
-    /*
     if(!workflowIdToCustomWorkflow.containsKey(workflowId)){
       throw new WorkflowNotFoundException(String.format("There is no custom workflow for id: %s", workflowId));
     }
-    */
 
     contentManager.deleteContent(workflowId);
     return workflowIdToCustomWorkflow.get(workflowId);
@@ -433,7 +427,6 @@ public class ContentManager implements ContentManagerApi {
   }
 
   private void loadCustomWorkflows(File dir){
-    workflowIdToCustomWorkflow.clear();
     File[] files = dir.listFiles(); //TODO: will this ever be null, G is doing a check for it
 
     for(File file : files){
@@ -449,8 +442,6 @@ public class ContentManager implements ContentManagerApi {
 
   public SyncResult syncContent(Long lastSuccessfulSync, Request request) {
 
-    //logger.info("inside syncContent function");
-
     SyncResult syncResult = new SyncResult();
     syncResult.setCacheHit(true);
 
@@ -460,19 +451,13 @@ public class ContentManager implements ContentManagerApi {
     if ((request != null && request.isRefreshFromS3()) || stale) {
 
       syncResult.setCacheHit(false);
-      Optional<File> optionalFile;
-      //logger.info("about to download content");
+      Optional<File> optionalFile = contentManager.downloadContent();
 
-      optionalFile = contentManager.downloadContent(lastSuccessfulSync);
-
-      logger.info("downloaded content");
+      workflowIdToCustomWorkflow.clear();
 
       optionalFile.ifPresent(dir -> {
-        logger.info("custom workflows were found");
-        //loadCustomWorkflows(dir);
+        loadCustomWorkflows(dir);
         syncResult.setSuccessful(true);
-        //WorkflowProcessingResult workflowProcessingResult = processDir(dir);
-        //syncResult.setSuccessful(workflowProcessingResult.getWorkflowFileToExceptionMap().size() <= 0);
       });
       lastUpdated = System.currentTimeMillis();
     }
@@ -482,7 +467,6 @@ public class ContentManager implements ContentManagerApi {
 
   @Override
   public Set<Workflow> getWorkflowSet(Request request) throws Exception {
-    //logger.info("inside getWorkflowSet function");
     syncContent(lastUpdated, request);
 
     //if the additional workflows are provided,we use them. This is for the editor.dassana.io use case where we are
