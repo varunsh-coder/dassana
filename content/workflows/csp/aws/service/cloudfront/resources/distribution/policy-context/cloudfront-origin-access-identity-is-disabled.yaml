@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: cloudfront-origin-access-identity-is-disabled
+name: CloudFront Origin Access Identity (OAI) is disabled
+labels:
+  - contextualization
+
+csp: aws
+service: cloudfront
+resource-type: distribution
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: aws-config
+    policies:
+      - cloudfront-origin-access-identity-enabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cloudfront-origin-access-identity-enabled"))
+
+risk-config:
+  default-risk: medium

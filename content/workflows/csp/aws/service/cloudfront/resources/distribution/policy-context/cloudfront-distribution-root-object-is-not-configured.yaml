@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: cloudfront-distribution-default-root-object-is-not-configured
+name: CloudFront distribution default root object is not configured
+labels:
+  - contextualization
+
+csp: aws
+service: cloudfront
+resource-type: distribution
+
+class: risk
+subclass: config
+category: iam
+subcategory: public-access
+
+filters:
+  - vendor: aws-config
+    policies:
+      - "cloudfront-default-root-object-configured"
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cloudfront-default-root-object-configured") )
+
+risk-config:
+  default-risk: critical

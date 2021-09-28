@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: cloudwatch-log-group-retention-period-issue
+name: CloudWatch log group retention period issue
+labels:
+  - contextualization
+
+csp: aws
+service: cloudwatchLogs
+resource-type: log-group
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: aws-config
+    policies:
+      - cw-loggroup-retention-period-check
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cw-loggroup-retention-period-check"))
+  - vendor: prisma-cloud
+    policies:
+      - ebb95367-d356-4be9-a7d1-19e78f29cf18
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "ebb95367-d356-4be9-a7d1-19e78f29cf18"
+
+risk-config:
+  default-risk: ""

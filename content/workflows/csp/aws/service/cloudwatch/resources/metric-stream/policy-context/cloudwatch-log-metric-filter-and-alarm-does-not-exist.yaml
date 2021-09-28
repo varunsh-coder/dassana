@@ -1,0 +1,47 @@
+schema: 1
+type: policy-context
+
+id: cloudwatch-log-metric-filter-and-alarm-does-not-exist
+name: CloudWatch log metric filter and alarm does not exist
+labels:
+  - contextualization
+
+csp: aws
+service: cloudwatch
+resource-type: metric-stream
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - dfd6e8a5-83a5-403a-bd4a-3592b910b32b # AWS Config configuration changes
+      - 2568d866-2a59-4246-83fd-3c2ab3e1cf92 # AWS management console authentication failures
+      - 528da278-3505-405c-8548-0555dafec3b3 # CloudTrail configuration changes
+      - 6b36bc00-40f4-4b33-b602-d6b4bad628c9 # Disabling or scheduled deletion of customer created CMKs
+      - 84ff41af-e3f2-406e-8282-962d6413fd28 # IAM policy changes
+      - 0313adb1-fad6-4cfd-b873-e6ede8b88bd6 # Network Access Control Lists (NACL) changes
+      - cb805020-1c1e-461f-aafc-4d0e49ca5592 # Network gateways changes
+      - 56bda49c-2091-43f0-a2b4-aa9cf4833d7c # Route table changes
+      - bdf08087-35f0-4f32-8b16-357facc87fbb # S3 bucket policy changes
+      - 9603b1b9-89a7-406a-8e7a-7bd870145136 # Unauthorized API calls
+      - f65a0c46-8119-4585-bb28-fd3d5c80cef5 # VPC Changes
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "dfd6e8a5-83a5-403a-bd4a-3592b910b32b"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "2568d866-2a59-4246-83fd-3c2ab3e1cf92"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "528da278-3505-405c-8548-0555dafec3b3"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "6b36bc00-40f4-4b33-b602-d6b4bad628c9"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "84ff41af-e3f2-406e-8282-962d6413fd28"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "0313adb1-fad6-4cfd-b873-e6ede8b88bd6"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "cb805020-1c1e-461f-aafc-4d0e49ca5592"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "56bda49c-2091-43f0-a2b4-aa9cf4833d7c"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "bdf08087-35f0-4f32-8b16-357facc87fbb"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "9603b1b9-89a7-406a-8e7a-7bd870145136"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "f65a0c46-8119-4585-bb28-fd3d5c80cef5"
+
+risk-config:
+  default-risk: low
