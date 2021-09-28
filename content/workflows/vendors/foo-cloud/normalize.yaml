@@ -1,3 +1,5 @@
+# This is just a SAMPLE file
+
 schema: 1 # currently only version 1 is supported. All schema versions are going to be backward compatible unless otherwise noted. We plan to support decrepated versions for atleast six months
 type: normalize # valid types are normalize,general-context,policy-context and resource-context
 

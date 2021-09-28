@@ -1,3 +1,5 @@
+# This is just a SAMPLE file
+
 # general context workflows such as this one are executed only after normalization has been done
 # all of the fields such as csp,service etc emitted by normalization workflow are available.
 
