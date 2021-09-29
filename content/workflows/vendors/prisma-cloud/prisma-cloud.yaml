@@ -5,9 +5,11 @@ vendor-id: prisma-cloud
 id: prisma-cloud
 
 filters:
-  - match-type: all
+  - match-type: any
     rules:
-      - .source == "Prisma Cloud"
+      - .source == "Prisma Cloud" # SQS as source input
+      - .resource.rrn | contains("rrn") # PC API as source input
+      - .message.resource.rrn | contains("rrn") # Splunk as source input
 
 # notice that we are using a look-up step here. This step looks up vendorPolicy in the policy context workflow files and returns service and resource type information
 

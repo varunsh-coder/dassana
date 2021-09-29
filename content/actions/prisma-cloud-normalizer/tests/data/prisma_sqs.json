@@ -1,0 +1,60 @@
+{
+  "alertStatus": "open",
+  "reason": "SCHEDULED",
+  "resourceId": "foobar",
+  "alertRuleName": "PC to Dassana to Splunk",
+  "alertRemediationImpact": null,
+  "accountName": "foobar",
+  "hasFinding": false,
+  "resourceRegionId": "us-east-1",
+  "alertRemediationCli": null,
+  "source": "Prisma Cloud",
+  "cloudType": "aws",
+  "alertId": "P-2388888",
+  "policyLabels": [],
+  "alertAttribution": {},
+  "severity": "high",
+  "policyName": "AWS S3 Bucket has Global GET Permissions enabled via bucket policy",
+  "resource": {
+    "data": {
+      "bucketName": "foobar"
+    },
+    "url": "https://",
+    "rrn": "rrn::**",
+    "cloudAccountGroups": [
+      "Test"
+    ],
+    "accountId": "123456789123",
+    "resourceTags": {
+      "env": "dev"
+    },
+    "regionId": "ap-northeast-1",
+    "cloudType": "aws",
+    "resourceApiName": "aws-s3api-get-bucket-acl",
+    "name": "foobar",
+    "additionalInfo": {},
+    "id": "foobar",
+    "region": "AWS Virginia",
+    "account": "foobar",
+    "resourceType": "STORAGE_BUCKET"
+  },
+  "firstSeen": 1629947769576,
+  "alertRemediationCliDescription": null,
+  "resourceName": "foobar",
+  "alertDismissalNote": null,
+  "resourceRegion": "AWS Virginia",
+  "tags": [
+    {
+      "value": "prod",
+      "key": "env"
+    }
+  ],
+  "accountId": "123456789123",
+  "lastSeen": 1631764964198,
+  "policyId": "34064d53-1fd1-42e6-b075-45dce495caca",
+  "resourceCloudService": "Amazon S3",
+  "policyType": "config",
+  "findingSummary": {},
+  "resourceType": "Managed Storage Bucket",
+  "alertRuleId": "bd4c60d0-ed86-4b3f-9074-a98d62a9e740"
+}

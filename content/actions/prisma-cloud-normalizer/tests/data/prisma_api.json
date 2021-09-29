@@ -1,0 +1,38 @@
+{
+  "id": "P-2388888",
+  "status": "open",
+  "reason": "POLICY_UPDATED",
+  "firstSeen": 1615010072772,
+  "lastSeen": 1620708662956,
+  "alertTime": 1615010072772,
+  "saveSearchId": "34064d53-1fd1-42e6-b075-45dce495caca",
+  "metadata": {
+    "saveSearchId": "34064d53-1fd1-42e6-b075-45dce495caca"
+  },
+  "policy": {
+    "policyId": "34064d53-1fd1-42e6-b075-45dce495caca",
+    "policyType": "config",
+    "systemDefault": true,
+    "remediable": false
+  },
+  "history": [
+  ],
+  "resource": {
+    "rrn": "rrn::**",
+    "id": "foobar",
+    "name": "foobar",
+    "account": "12345678",
+    "accountId": "123456789123",
+    "region": "AWS Ohio",
+    "regionId": "ap-northeast-1",
+    "resourceType": "STORAGE_BUCKET",
+    "resourceApiName": "aws-s3api-get-bucket-acl",
+    "url": "https://",
+    "data": {
+      "fooAcl": "bar"
+    },
+    "additionalInfo": {},
+    "cloudType": "aws"
+  },
+  "networkAnomaly": false
+}
