@@ -1,5 +1,120 @@
 {
-  "badThingJustHappened": {
-    "description": "fubar"
+  "detail-type": "Security Hub Findings - Imported",
+  "source": "aws.securityhub",
+  "time": "2021-07-14T03:54:44Z",
+  "resources": [
+    "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/2.9/finding/877dd463-88ee-4750-a192-2ffdaba013da"
+  ],
+  "detail": {
+    "findings": [
+      {
+        "SchemaVersion": "2018-10-08",
+        "Id": "arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/3841b20b-14b2-4285-8608-3a3db82ec482",
+        "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+        "ProductName": "Security Hub",
+        "CompanyName": "AWS",
+        "Region": "us-east-1",
+        "GeneratorId": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0/rule/4.1",
+        "AwsAccountId": "363265257036",
+        "Types": [
+          "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+        ],
+        "FirstObservedAt": "2021-08-08T18:31:23.089Z",
+        "LastObservedAt": "2021-08-13T09:54:36.217Z",
+        "CreatedAt": "2021-08-08T18:31:23.089Z",
+        "UpdatedAt": "2021-08-13T09:54:33.313Z",
+        "Severity": {
+          "Product": 70,
+          "Label": "HIGH",
+          "Normalized": 70,
+          "Original": "HIGH"
+        },
+        "Title": "4.1 Ensure no security groups allow ingress from 0.0.0.0/0 to port 22",
+        "Description": "Security groups provide stateful filtering of ingress/egress network traffic to AWS resources. It is recommended that no security group allows unrestricted ingress access to port 22.",
+        "Remediation": {
+          "Recommendation": {
+            "Text": "For directions on how to fix this issue, please consult the AWS Security Hub CIS documentation.",
+            "Url": "https://docs.aws.amazon.com/console/securityhub/standards-cis-4.1/remediation"
+          }
+        },
+        "ProductFields": {
+          "StandardsGuideArn": "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0",
+          "StandardsGuideSubscriptionArn": "arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0",
+          "RuleId": "4.1",
+          "RecommendationUrl": "https://docs.aws.amazon.com/console/securityhub/standards-cis-4.1/remediation",
+          "RelatedAWSResources:0/name": "securityhub-restricted-ssh-a560bf4c",
+          "RelatedAWSResources:0/type": "AWS::Config::ConfigRule",
+          "StandardsControlArn": "arn:aws:securityhub:us-east-1:363265257036:control/cis-aws-foundations-benchmark/v/1.2.0/4.1",
+          "aws/securityhub/ProductName": "Security Hub",
+          "aws/securityhub/CompanyName": "AWS",
+          "Resources:0/Id": "arn:aws:ec2:us-east-1:363265257036:security-group/sg-061d7bbf4c68da2c7",
+          "aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/3841b20b-14b2-4285-8608-3a3db82ec482"
+        },
+        "UserDefinedFields": {
+          "DASSANA_POLICY_CONTEXT_CATEGORY": "networking",
+          "DASSANA_ALERT_PATH": "s3://dassanatest3-dassanabucket-h9omgtbkgxx7/alerts/year=2021/month=8/day=8/hour=18/min=32/csp=aws/resource_container=363265257036/region=us-east-1/service=ec2/normalizer_workflow=aws-config/alertid=arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/3841b20b-14b2-4285-8608-3a3db82ec482",
+          "DASSANA_POLICY_CONTEXT_RISK": "low",
+          "DASSANA_GENERAL_CONTEXT_RISK": "",
+          "DASSANA_GENERAL_CONTEXT_RISK_CONDITION_NAME": "default",
+          "DASSANA_POLICY_CONTEXT_RISK_CONDITION_NAME": "are-enis-attached-to-sg",
+          "DASSANA_POLICY_CONTEXT_SUB_CATEGORY": "firewall"
+        },
+        "Resources": [
+          {
+            "Type": "AwsEc2SecurityGroup",
+            "Id": "arn:aws:ec2:us-east-1:363265257036:security-group/sg-061d7bbf4c68da2c7",
+            "Partition": "aws",
+            "Region": "us-east-1",
+            "Details": {
+              "AwsEc2SecurityGroup": {
+                "GroupName": "bar",
+                "GroupId": "sg-061d7bbf4c68da2c7",
+                "OwnerId": "363265257036",
+                "VpcId": "vpc-02400cbe81d28eadc",
+                "IpPermissions": [
+                  {
+                    "IpProtocol": "tcp",
+                    "FromPort": 22,
+                    "ToPort": 22,
+                    "IpRanges": [
+                      {
+                        "CidrIp": "0.0.0.0/0"
+                      }
+                    ]
+                  }
+                ],
+                "IpPermissionsEgress": [
+                  {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                      {
+                        "CidrIp": "0.0.0.0/0"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "Compliance": {
+          "Status": "FAILED"
+        },
+        "WorkflowState": "NEW",
+        "Workflow": {
+          "Status": "NEW"
+        },
+        "RecordState": "ACTIVE",
+        "FindingProviderFields": {
+          "Severity": {
+            "Label": "HIGH",
+            "Original": "HIGH"
+          },
+          "Types": [
+            "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
+          ]
+        }
+      }
+    ]
   }
 }
