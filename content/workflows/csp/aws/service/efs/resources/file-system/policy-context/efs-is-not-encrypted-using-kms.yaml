@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: efs-encrypted-check
-name: EFS-ENCRYPTED-CHECK
+
+id: efs-is-not-encrypted-using-kms
+name: Elastic File System (EFS) is not encrypted using KMS
 labels:
   - contextualization
- 
+
 csp: aws
 service: efs
 resource-type: file-system
- 
+
 class: risk
 subclass: config
 category: storage
 subcategory: encryption
- 
+
 filters:
   - vendor: aws-config
     policies:
@@ -28,6 +28,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "f7757a77-2c4f-4644-a890-d23122b31175"
- 
+
 risk-config:
   default-risk: medium

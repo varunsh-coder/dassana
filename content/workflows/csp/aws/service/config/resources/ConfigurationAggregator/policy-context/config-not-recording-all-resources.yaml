@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: aws-config-must-record-all-possible-resources
-name: AWS Config must record all possible resources
+
+id: config-not-recording-all-resources
+name: Config not recording all resources
 labels:
   - contextualization
- 
+
 csp: aws
 service: config
 resource-type: ConfigurationAggregator
- 
+
 class: risk
 subclass: config
 category: visibility
 subcategory: hygiene
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "4c64a4d6-1b96-4004-8a11-f215aa8ee3ce"
- 
+
 risk-config:
   default-risk: medium

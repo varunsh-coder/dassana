@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: aws-elastic-file-system-(efs)-with-encryption-for-data-at-rest-is-disabled
-name: AWS Elastic File System (EFS) with encryption for data at rest is disabled
+
+id: efs-encryption-is-disabled
+name: Elastic File System (EFS) encryption is disabled
 labels:
   - contextualization
- 
+
 csp: aws
 service: efs
 resource-type: file-system
- 
+
 class: risk
 subclass: config
 category: storage
 subcategory: encryption
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "a7451ade-75eb-4e3e-b996-c2b0d5fdd329"
- 
+
 risk-config:
   default-risk: medium

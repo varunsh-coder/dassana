@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: aws-database-migration-service-(dms)-has-expired-certificates
-name: AWS Database Migration Service (DMS) has expired certificates
+id: dms-has-expired-certificates
+name: DMS has expired certificates
 labels:
   - contextualization
 

@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: dynamodb-pitr-enabled
-name: DYNAMODB-PITR-ENABLED
+
+id: dynamodb-pitr-is-not-enabled
+name: DynamoDB point in time recovery (PITR) is not enabled
 labels:
   - contextualization
- 
+
 csp: aws
 service: dynamodb
 resource-type: table
- 
+
 class: risk
 subclass: config
 category: storage
 subcategory: availability
- 
+
 filters:
   - vendor: aws-config
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("dynamodb-pitr-enabled"))
- 
+
 risk-config:
   default-risk: medium

@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: dynamodb-in-backup-plan
-name: DYNAMODB-IN-BACKUP-PLAN
+
+id: dynamodb-table-is-not-in-backup-plan
+name: DynamoDB table is not in backup plan
 labels:
   - contextualization
- 
+
 csp: aws
 service: dynamodb
 resource-type: table
- 
+
 class: risk
 subclass: config
 category: storage
 subcategory: availability
- 
+
 filters:
   - vendor: aws-config
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("dynamodb-in-backup-plan"))
- 
+
 risk-config:
   default-risk: ""

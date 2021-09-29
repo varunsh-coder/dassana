@@ -1,27 +1,27 @@
 schema: 1
 type: policy-context
- 
-id: dynamodb-autoscaling-enabled
-name: DYNAMODB-AUTOSCALING-ENABLED
+
+id: efs-is-not-in-backup-plan
+name: Elastic File System (EFS) is not backup plan
 labels:
   - contextualization
- 
+
 csp: aws
-service: dynamodb
-resource-type: table
- 
+service: efs
+resource-type: file-system
+
 class: risk
 subclass: config
 category: storage
 subcategory: availability
- 
+
 filters:
   - vendor: aws-config
     policies:
-      - dynamodb-autoscaling-enabled
+      - efs-in-backup-plan
     match-type: any
     rules:
-      - .vendorId == "aws-config" and (.vendorPolicy |contains ("dynamodb-autoscaling-enabled"))
- 
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("efs-in-backup-plan"))
+
 risk-config:
   default-risk: medium
