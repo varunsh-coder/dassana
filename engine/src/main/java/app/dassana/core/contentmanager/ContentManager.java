@@ -19,13 +19,7 @@ import io.micronaut.core.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
@@ -43,7 +37,8 @@ public class ContentManager implements ContentManagerApi {
   private final WorkflowApi contentManager;
   private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
   Map<String, String> workflowIdToYamlContext = new HashMap<>();
-  Map<String, String> workflowIdToCustomWorkflow = new HashMap<>();
+  Map<String, String> workflowIdToDefaultContext = new HashMap<>();
+  Set<String> modifiedWorkflowIds = new HashSet<>();
   private long lastUpdated = 0;
 
   public static final String VENDOR_ID = "vendor-id";
@@ -93,8 +88,12 @@ public class ContentManager implements ContentManagerApi {
     }
   }
 
-  public Map<String, String> getWorkflowIdToCustomWorkflow() {
-    return workflowIdToCustomWorkflow;
+  public Map<String, String> getWorkflowIdToDefaultContext() {
+    return workflowIdToDefaultContext;
+  }
+
+  public boolean isModifiedWorkflow(String workflowId){
+    return modifiedWorkflowIds.contains(workflowId);
   }
 
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
@@ -103,6 +102,7 @@ public class ContentManager implements ContentManagerApi {
   public ContentManager(WorkflowApi contentDownloader) {
     this.contentManager = contentDownloader;
     processEmbeddedContent();
+    loadDefaultWorkflows();
     syncContent(0L, null);//because we are in init/constructor, we fetch all workflows from s3
   }
 
@@ -118,21 +118,32 @@ public class ContentManager implements ContentManagerApi {
 
   }
 
+  private void loadDefaultWorkflows(){
+    for(String id : workflowIdToYamlContext.keySet()){
+      workflowIdToDefaultContext.put(id, String.valueOf(workflowIdToYamlContext.get(id)));
+    }
+  }
+
   public Map<String, String> getWorkflowIdToYamlContext() {
     return workflowIdToYamlContext;
   }
 
-  public Optional<String> isWorkflowCustom(String workflowId){
-    return contentManager.isCustomWorkflow(workflowId);
-  }
-
   public String deleteWorkflow(String workflowId){
-    if(!workflowIdToCustomWorkflow.containsKey(workflowId)){
-      throw new WorkflowNotFoundException(String.format("There is no custom workflow for id: %s", workflowId));
+
+    if(workflowIdToYamlContext.containsKey(workflowId) && modifiedWorkflowIds.contains(workflowId)){
+      try {
+        String jsonFromYaml = StringyThings.getJsonFromYaml(workflowIdToYamlContext.get(workflowId));
+        Workflow workflow = getWorkflow(new JSONObject(jsonFromYaml));
+        workflowIdToYamlContext.remove(workflowId);
+        workflowSet.remove(workflow);
+        modifiedWorkflowIds.remove(workflowId);
+      }catch (Exception e){
+        throw new RuntimeException("Failed to parse workflow");
+      }
     }
 
     contentManager.deleteContent(workflowId);
-    return workflowIdToCustomWorkflow.get(workflowId);
+    return String.format("Deleting workflow with id: %s", workflowId);
   }
 
   RiskConfig getRiskConfig(JSONObject workFlowJson) {
@@ -398,7 +409,11 @@ public class ContentManager implements ContentManagerApi {
 
   }
 
-    public WorkflowProcessingResult processDir(File dir) {
+  public WorkflowProcessingResult processDir(File dir) {
+    return processDir(dir, false);
+  }
+
+  public WorkflowProcessingResult processDir(File dir, boolean isModified) {
     WorkflowProcessingResult workflowProcessingResult = new WorkflowProcessingResult();
     Map<String, Exception> fileToExceptionMap = new HashMap<>();
 
@@ -413,7 +428,11 @@ public class ContentManager implements ContentManagerApi {
             List<String> workflowYamlList = new LinkedList<>();
             workflowYamlList.add(readFileToString);
             List<String> workflowIdsProcessed = updateWorkflowSet(workflowYamlList);
-            workflowIdToYamlContext.put(workflowIdsProcessed.get(0), readFileToString);
+            String workflowId = workflowIdsProcessed.get(0);
+            workflowIdToYamlContext.put(workflowId, readFileToString);
+            if(isModified){
+              modifiedWorkflowIds.add(workflowId);
+            }
           } catch (Exception e) {
             fileToExceptionMap.put(file.getName(), e);
             logger.warn("{} will be skipped due to error ", file, e);
@@ -426,19 +445,25 @@ public class ContentManager implements ContentManagerApi {
     return workflowProcessingResult;
   }
 
-  private void loadCustomWorkflows(File dir){
-    File[] files = dir.listFiles(); //TODO: will this ever be null, G is doing a check for it
+  private void resetWorkflows(){
+    if(modifiedWorkflowIds.isEmpty()) return;
 
-    for(File file : files){
-      String id = file.getName();
-      try {
-        String readFileToString = FileUtils.readFileToString(file, Charset.defaultCharset());
-        workflowIdToCustomWorkflow.put(id, readFileToString);
-      }catch (IOException e){
-        throw new WorkflowException(String.format("Failed to read file: %s", file.getName()));
+    try {
+      List<String> workflowYaml = new ArrayList<>();
+      for (String id : modifiedWorkflowIds) {
+        if(workflowIdToDefaultContext.containsKey(id)) {
+          String yaml = workflowIdToDefaultContext.get(id);
+          workflowIdToYamlContext.put(id, yaml);
+          workflowYaml.add(yaml);
+        }
       }
+      updateWorkflowSet(workflowYaml);
+    }catch (Exception e){
+      throw new RuntimeException("Failed to reset workflows");
     }
   }
+
+
 
   public SyncResult syncContent(Long lastSuccessfulSync, Request request) {
 
@@ -453,12 +478,13 @@ public class ContentManager implements ContentManagerApi {
       syncResult.setCacheHit(false);
       Optional<File> optionalFile = contentManager.downloadContent();
 
-      workflowIdToCustomWorkflow.clear();
+      if(optionalFile.isPresent()){
+        WorkflowProcessingResult workflowProcessingResult = processDir(optionalFile.get(), true);
+        syncResult.setSuccessful(workflowProcessingResult.getWorkflowFileToExceptionMap().size() <= 0);
+      }else{
+        resetWorkflows();
+      }
 
-      optionalFile.ifPresent(dir -> {
-        loadCustomWorkflows(dir);
-        syncResult.setSuccessful(true);
-      });
       lastUpdated = System.currentTimeMillis();
     }
     syncResult.setContentLastSyncTimeMs(lastUpdated);

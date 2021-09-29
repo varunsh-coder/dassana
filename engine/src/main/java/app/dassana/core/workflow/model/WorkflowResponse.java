@@ -6,7 +6,7 @@ public class WorkflowResponse {
 
 	@JsonProperty("default")
 	private boolean isDefault = true;
-	@JsonProperty("workflow") //set name so default always appears first during json transformation
+	@JsonProperty("workflow")
 	private String workflow;
 
 	public WorkflowResponse(String workflow) {
@@ -16,5 +16,13 @@ public class WorkflowResponse {
 	public WorkflowResponse(String workflow, boolean isDefault) {
 		this.workflow = workflow;
 		this.isDefault = isDefault;
+	}
+
+	public boolean isDefault() {
+		return isDefault;
+	}
+
+	public String getWorkflow() {
+		return workflow;
 	}
 }

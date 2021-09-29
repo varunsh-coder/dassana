@@ -7,7 +7,6 @@ import java.util.Optional;
 public interface WorkflowApi {
 
   Optional<File> downloadContent();
-  Optional<String> isCustomWorkflow(String workflowId);
   void deleteContent(String workflowId);
 
 }

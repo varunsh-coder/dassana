@@ -29,7 +29,6 @@ public class S3Workflow implements WorkflowApi {
 
   }
 
-
   private static final Logger logger = LoggerFactory.getLogger(S3Workflow.class);
 
 
@@ -80,24 +79,7 @@ public class S3Workflow implements WorkflowApi {
     }
   }
 
-  @Override
-  public Optional<String> isCustomWorkflow(String workflowId) {
-    s3Bucket = System.getenv("dassanaBucket");
-    Objects.requireNonNull(s3Bucket, "dassanaBucket must be specified as env var");
 
-    String formattedWorkflowId = WORKFLOW_PATH_IN_S3.concat(workflowId);
-
-    GetObjectRequest getObjectRequest = GetObjectRequest.builder().bucket(s3Bucket).key(formattedWorkflowId).build();
-
-    try {
-      InputStream in = s3Client.getObject(getObjectRequest);
-      String yaml = IOUtils.toString(in, Charset.defaultCharset());
-      in.close();
-      return Optional.of(yaml);
-    }catch (Exception e){
-      return Optional.empty();
-    }
-  }
 
   @Override
   public void deleteContent(String workflowId) {

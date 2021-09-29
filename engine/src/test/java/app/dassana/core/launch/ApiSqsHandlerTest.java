@@ -216,7 +216,7 @@ public class ApiSqsHandlerTest {
     }
 
     @Override
-    public Optional<File> downloadContent(Long lastDownloaded) {
+    public Optional<File> downloadContent() {
       return Optional.empty();
     }
   }

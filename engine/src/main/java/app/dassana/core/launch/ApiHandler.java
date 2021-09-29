@@ -34,7 +34,6 @@ import app.dassana.core.workflow.processor.RequestProcessor;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.util.StringUtils;
@@ -47,7 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CountDownLatch;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -84,7 +82,6 @@ public class ApiHandler extends
   @Inject private WorkflowValidator workflowValidator;
   @Inject private WorkflowRunner workflowRunner;
   @Inject private VersionHandler versionHandler;
-  @Inject private ObjectMapper objectMapper;
 
 
   @Inject ContentManager contentManager; //todo: not a good idea to inject an implementation
@@ -109,27 +106,33 @@ public class ApiHandler extends
   public ApiHandler() {
   }
 
-  String workflowToJson(WorkflowResponse response) throws JsonProcessingException {
-    return objectMapper.writeValueAsString(response);
+  String workflowToJson(WorkflowResponse response){
+    Map<String, Object> map = new HashMap<>();
+    map.put("default", response.isDefault());
+    map.put("workflow", response.getWorkflow());
+    return gson.toJson(map);
   }
 
   String retrieveWorkflow(String workFlowId, boolean isDefaultParam) throws JsonProcessingException {
-    Map<String,String> workflowIdToCustomWorkflow = contentManager.getWorkflowIdToCustomWorkflow();
-    boolean isCustomWorkflow = workflowIdToCustomWorkflow.containsKey(workFlowId);
     boolean isDefault = true;
-    String context = null;
+    boolean isModifiedWorkflow = contentManager.isModifiedWorkflow(workFlowId);
+    String context = "";
 
-    if(isDefaultParam || !isCustomWorkflow){
+    if(isDefaultParam || !isModifiedWorkflow){
+      context = contentManager.getWorkflowIdToDefaultContext().get(workFlowId);
+    }else if(isModifiedWorkflow){
       context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
-    }else if(isCustomWorkflow){
-      context = workflowIdToCustomWorkflow.get(workFlowId);
       isDefault = false;
     }
 
+    if(context == null){
+      context = "";
+    }
+
     WorkflowResponse response = new WorkflowResponse(context, isDefault);
+
     return workflowToJson(response);
   }
-
 
   String handleGet(Request request, String workFlowId) throws Exception {
 
@@ -142,7 +145,7 @@ public class ApiHandler extends
 
   }
 
-  String handleDelete(String workFlowId) throws JsonProcessingException {
+  String handleDelete(String workFlowId){
     String defaultContext = contentManager.deleteWorkflow(workFlowId);
     WorkflowResponse response = new WorkflowResponse(defaultContext);
     return workflowToJson(response);
