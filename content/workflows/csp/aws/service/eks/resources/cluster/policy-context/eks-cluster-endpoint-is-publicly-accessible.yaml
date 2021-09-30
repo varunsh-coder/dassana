@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: eks-endpoint-no-public-access
-name: EKS-ENDPOINT-NO-PUBLIC-ACCESS
+
+id: eks-cluster-endpoint-is-publicly-accessible
+name: EKS cluster endpoint is publicly accessible
 labels:
   - contextualization
- 
+
 csp: aws
 service: eks
 resource-type: cluster
- 
+
 class: risk
 subclass: config
 category: networking
 subcategory: firewall
- 
+
 filters:
   - vendor: aws-config
     policies:
@@ -28,6 +28,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "9cd45e64-7469-4ce6-b5cf-60729a7263bb"
- 
+
 risk-config:
   default-risk: ""

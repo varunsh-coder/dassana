@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: aws-elasticache-cluster-not-associated-with-vpc
-name: AWS ElastiCache cluster not associated with VPC
+
+id: elasticache-redis-cluster-is-not-associated-with-vpc
+name: ElastiCache Redis cluster is not associated with VPC
 labels:
   - contextualization
- 
+
 csp: aws
 service: elasticache
 resource-type: cluster
- 
+
 class: risk
 subclass: config
 category: networking
 subcategory: firewall
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "f5b4b962-e053-4e73-94d2-c21bd2520a0d"
- 
+
 risk-config:
   default-risk: medium

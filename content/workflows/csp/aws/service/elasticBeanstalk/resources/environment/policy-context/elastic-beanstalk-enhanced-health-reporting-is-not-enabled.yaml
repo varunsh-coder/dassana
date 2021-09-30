@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: beanstalk-enhanced-health-reporting-enabled
-name: BEANSTALK-ENHANCED-HEALTH-REPORTING-ENABLED
+
+id: elastic-beanstalk-enhanced-health-reporting-is-not-enabled
+name: Elastic Beanstalk enhanced health reporting is not enabled
 labels:
   - contextualization
- 
+
 csp: aws
 service: elasticBeanstalk
 resource-type: environment
- 
+
 class: risk
 subclass: config
 category: visibility
 subcategory: monitoring
- 
+
 filters:
   - vendor: aws-config
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("beanstalk-enhanced-health-reporting-enabled"))
- 
+
 risk-config:
   default-risk: low

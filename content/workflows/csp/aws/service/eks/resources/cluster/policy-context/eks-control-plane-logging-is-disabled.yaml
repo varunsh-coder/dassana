@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: aws-eks-control-plane-logging-disabled
-name: AWS EKS control plane logging disabled
+
+id: eks-control-plane-logging-is-disabled
+name: EKS control plane logging is disabled
 labels:
   - contextualization
- 
+
 csp: aws
 service: eks
 resource-type: cluster
- 
+
 class: risk
 subclass: config
 category: visibility
 subcategory: logging
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "3fe88e1f-79f9-42a0-9fee-e5ae348b7cb0"
- 
+
 risk-config:
   default-risk: low

@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: aws-elasticache-redis-cluster-with-in-transit-encryption-disabled
-name: AWS ElastiCache Redis cluster with in-transit encryption disabled
+
+id: elasticache-redis-cluster-encryption-for-data-in-transit-is-disabled
+name: ElastiCache Redis cluster encryption for data in-transit is disabled
 labels:
   - contextualization
- 
+
 csp: aws
 service: elasticache
 resource-type: cluster
- 
+
 class: risk
 subclass: config
 category: networking
 subcategory: encryption
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "fd782eca-2dba-47b2-b0f4-f949a7916215"
- 
+
 risk-config:
   default-risk: medium
