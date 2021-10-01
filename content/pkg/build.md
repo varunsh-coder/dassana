@@ -37,7 +37,7 @@ If you are a curious mind, by now you must have opened the `build.sh`. Let's rev
 ```
 sam build --cached --parallel --region $2 --use-container
 ```
-this line is obvious, it builds the sam app. Notice the useage of `--use-container`. This makes sam uses containers to build functions. If you find yourself building containers a lot locally, you will find that it slows down the build time. In local setup, feel free to remove the `--use-container` from the line. As soon as you do that, you will realize why we said that Java and Python3 are recommended.
+this line is obvious, it builds the sam app. Notice the useage of `--use-container`. This makes SAM use containers to build functions. If you find yourself building containers a lot locally, you will find that it slows down the build time. In local setup, feel free to remove the `--use-container` from the line. As soon as you do that, you will realize why we said that Java and Python3 are recommended.
 
 Next, we have `mvn clean process-resources -DkskipTests` which simply copies the `content` directory to `engine/src/main/resources`. This is how the engine gets access to default contnet. 
 
