@@ -58,4 +58,4 @@ sam deploy --template-file uploaded-template.yaml --stack-name $3  --capabilitie
 ```
 these are easy to follow- the package command uploads the artficats to a s3 bucket and deploy command deploys the stack. 
 
-if you want to make change to CFT, just make the change on `uploaded-template.yaml` file and run the sam deploy command again. 
+if you want to make change to CFT, just make the change in `uploaded-template.yaml` file and run the sam deploy command again. 
