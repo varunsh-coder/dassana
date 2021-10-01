@@ -16,7 +16,7 @@ import app.dassana.core.contentmanager.ContentManager;
 import app.dassana.core.launch.model.Message;
 import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.Request;
-import app.dassana.core.launch.model.WorkflowNotFundException;
+import app.dassana.core.launch.model.WorkflowNotFoundException;
 import app.dassana.core.launch.model.Severity;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.policycontext.model.PolicyContext;
@@ -29,6 +29,7 @@ import app.dassana.core.workflow.WorkflowRunner;
 import app.dassana.core.workflow.model.NormalizerException;
 import app.dassana.core.workflow.model.Workflow;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
+import app.dassana.core.workflow.model.WorkflowResponse;
 import app.dassana.core.workflow.processor.RequestProcessor;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
@@ -87,6 +88,7 @@ public class ApiHandler extends
 
   private static final Logger logger = LoggerFactory.getLogger(ApiHandler.class);
 
+  public static final String API_PARAM_DEFAULT = "default";
   public static final String API_PARAM_SKIP_GENERAL_CONTEXT = "skipGeneralContext";
   public static final String API_PARAM_SKIP_POLICY_CONTEXT = "skipPolicyContext";
   public static final String API_PARAM_SKIP_S3UPLOAD = "skipS3Upload";
@@ -104,14 +106,35 @@ public class ApiHandler extends
   public ApiHandler() {
   }
 
+  String retrieveWorkflow(String workFlowId, boolean isDefaultParam) throws JsonProcessingException {
+    boolean isDefault = true;
+    boolean isModifiedWorkflow = contentManager.isModifiedWorkflow(workFlowId);
+    String context = "";
+
+    if(isDefaultParam || !isModifiedWorkflow){
+      context = contentManager.getWorkflowIdToDefaultContext().get(workFlowId);
+    }else if(isModifiedWorkflow){
+      context = contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+      isDefault = false;
+    }
+
+    if(context == null){
+      context = "";
+    }
+
+    WorkflowResponse response = new WorkflowResponse(context, isDefault);
+
+    return response.toJson();
+  }
+
   String handleGet(Request request, String workFlowId) throws Exception {
 
     for (Workflow workflow : contentManager.getWorkflowSet(request)) {
       if (workflow.getId().contentEquals(workFlowId)) {
-        return contentManager.getWorkflowIdToYamlContext().get(workFlowId);
+        return retrieveWorkflow(workFlowId, request.isDefault());
       }
     }
-    throw new WorkflowNotFundException("That workflow id wasn't found :(");
+    throw new WorkflowNotFoundException(String.format("Workflow %s not found", workFlowId));
 
   }
 
@@ -148,7 +171,7 @@ public class ApiHandler extends
         }
 
       } else {
-        throw new WorkflowNotFundException(String.format("Sorry, the workflow %s was not found",
+        throw new WorkflowNotFoundException(String.format("Sorry, the workflow %s was not found",
             request.getWorkflowId()));
       }
 
@@ -180,7 +203,9 @@ public class ApiHandler extends
         gatewayProxyResponseEvent.setBody(handleRun);
       } else if (input.getPath().contentEquals(WORKFLOW_PATH) && input.getHttpMethod().toLowerCase()
           .contentEquals("post")) {
-        handleSaveToS3(input.getBody());
+        String response = handleSaveToS3(input.getBody());
+        gatewayProxyResponseEvent.setBody(response);
+        gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
 
       } else if (input.getPath().contentEquals(WORKFLOW_PATH) && input.getHttpMethod().toLowerCase().contentEquals(
           "get")) {
@@ -188,11 +213,12 @@ public class ApiHandler extends
           String response = handleGet(
               getRequestFromQueryParam(input.getQueryStringParameters(), inputBody, input.getHeaders()),
               input.getQueryStringParameters().get(WORKFLOW_ID));
+
           gatewayProxyResponseEvent.setBody(response);
           gatewayProxyResponseEvent.getHeaders().put("Content-type", "application/x-yaml");
 
-        } catch (WorkflowNotFundException e) {
-          Message message = new Message(String.format("Workflow %s not found", input.getQueryStringParameters().get(WORKFLOW_ID)));
+        } catch (WorkflowNotFoundException e) {
+          Message message = new Message(e.getMessage());
           gatewayProxyResponseEvent.setBody(gson.toJson(message));
           gatewayProxyResponseEvent.setStatusCode(404);
           return gatewayProxyResponseEvent;
@@ -235,13 +261,14 @@ public class ApiHandler extends
     return gatewayProxyResponseEvent;
   }
 
-  private void handleSaveToS3(String body) throws JsonProcessingException {
+  private String handleSaveToS3(String body) throws JsonProcessingException {
     String dassanaBucket = System.getenv().get("dassanaBucket");
     Workflow workflow = contentManager.getWorkflow(new JSONObject(StringyThings.getJsonFromYaml(body)));
     String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
     PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
     s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
-
+    WorkflowResponse response = new WorkflowResponse(body);
+    return response.toJson();
   }
 
   private Map<String, String> getHeaders() {
@@ -342,6 +369,8 @@ public class ApiHandler extends
     boolean skipPostProcessor = parameters
         .getOrDefault(API_PARAM_SKIP_POST_PROCESSOR, "false").contentEquals("true");
 
+    boolean isDefault = parameters.getOrDefault(API_PARAM_DEFAULT, "false").contentEquals("true");
+
     String cache = headers.getOrDefault("x-dassana-cache", "false");
 
     String workflowId = parameters.getOrDefault(WORKFLOW_ID, "");
@@ -375,6 +404,8 @@ public class ApiHandler extends
     request.setSkipPostProcessor(skipPostProcessor);
     request.setSkipGeneralContext(skipGeneralContext);
     request.setSkipPolicyContext(skipPolicyContext);
+    request.setDefault(isDefault);
+
     return request;
   }
 

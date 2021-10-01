@@ -23,12 +23,11 @@ import io.micronaut.core.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -49,6 +48,8 @@ public class ContentManager implements ContentManagerApi {
   private final RemoteContentDownloadApi contentDownloader;
   private final Set<Workflow> workflowSet = ConcurrentHashMap.newKeySet();
   Map<String, String> workflowIdToYamlContext = new HashMap<>();
+  Map<String, String> workflowIdToDefaultContext = new HashMap<>();
+  Set<String> modifiedWorkflowIds = new HashSet<>();
   private long lastUpdated = 0;
 
   public static final String VENDOR_ID = "vendor-id";
@@ -98,12 +99,21 @@ public class ContentManager implements ContentManagerApi {
     }
   }
 
+  public Map<String, String> getWorkflowIdToDefaultContext() {
+    return workflowIdToDefaultContext;
+  }
+
+  public boolean isModifiedWorkflow(String workflowId){
+    return modifiedWorkflowIds.contains(workflowId);
+  }
+
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
 
 
   public ContentManager(RemoteContentDownloadApi contentDownloader) {
     this.contentDownloader = contentDownloader;
     processEmbeddedContent();
+    loadDefaultWorkflows();
     syncContent(0L, null);//because we are in init/constructor, we fetch all workflows from s3
   }
 
@@ -117,6 +127,12 @@ public class ContentManager implements ContentManagerApi {
     }
     processDir(new File(embeddedContentPath));
 
+  }
+
+  private void loadDefaultWorkflows(){
+    for(String id : workflowIdToYamlContext.keySet()){
+      workflowIdToDefaultContext.put(id, String.valueOf(workflowIdToYamlContext.get(id)));
+    }
   }
 
   public Map<String, String> getWorkflowIdToYamlContext() {
@@ -402,8 +418,11 @@ public class ContentManager implements ContentManagerApi {
 
   }
 
-
   public WorkflowProcessingResult processDir(File dir) {
+    return processDir(dir, false);
+  }
+
+  public WorkflowProcessingResult processDir(File dir, boolean isModified) {
     WorkflowProcessingResult workflowProcessingResult = new WorkflowProcessingResult();
     Map<String, Exception> fileToExceptionMap = new HashMap<>();
 
@@ -414,12 +433,15 @@ public class ContentManager implements ContentManagerApi {
           processDir(file);
         } else {
           try {
-            String yamlWorkflow = new String(Files.readAllBytes(Paths.get(file.getPath())));
-            List<String> workflowYamlList = new LinkedList<>();
-            workflowYamlList.add(yamlWorkflow);
-            List<String> workflowIdsProcessed = updateWorkflowSet(workflowYamlList);
             String readFileToString = FileUtils.readFileToString(file, Charset.defaultCharset());
-            workflowIdToYamlContext.put(workflowIdsProcessed.get(0), readFileToString);
+            List<String> workflowYamlList = new LinkedList<>();
+            workflowYamlList.add(readFileToString);
+            List<String> workflowIdsProcessed = updateWorkflowSet(workflowYamlList);
+            String workflowId = workflowIdsProcessed.get(0);
+            workflowIdToYamlContext.put(workflowId, readFileToString);
+            if(isModified){
+              modifiedWorkflowIds.add(workflowId);
+            }
           } catch (Exception e) {
             fileToExceptionMap.put(file.getName(), e);
             logger.warn("{} will be skipped due to error ", file, e);
@@ -441,13 +463,16 @@ public class ContentManager implements ContentManagerApi {
 
     //sync every SYNC_INTERVAL_IN_MINS
     if ((request != null && request.isRefreshFromS3()) || stale) {
+
       syncResult.setCacheHit(false);
-      Optional<File> optionalFile;
-      optionalFile = contentDownloader.downloadContent(lastSuccessfulSync);
+      Optional<File> optionalFile = contentDownloader.downloadContent(lastSuccessfulSync);
+
       optionalFile.ifPresent(dir -> {
-        WorkflowProcessingResult workflowProcessingResult = processDir(dir);
+        modifiedWorkflowIds.clear();
+        WorkflowProcessingResult workflowProcessingResult = processDir(dir, true);
         syncResult.setSuccessful(workflowProcessingResult.getWorkflowFileToExceptionMap().size() <= 0);
       });
+
       lastUpdated = System.currentTimeMillis();
     }
     syncResult.setContentLastSyncTimeMs(lastUpdated);
@@ -459,7 +484,7 @@ public class ContentManager implements ContentManagerApi {
     syncContent(lastUpdated, request);
 
     //if the additional workflows are provided,we use them. This is for the editor.dassana.io use case where we are
-    // editing workflows
+    // editing workflows - this occurs when workflow is in draft mode, i.e. modified but not saved
     if (request.getAdditionalWorkflowYamls() != null
         && request.getAdditionalWorkflowYamls().size() > 0) {
       List<String> additionalWorkflowYamls = request.getAdditionalWorkflowYamls();
