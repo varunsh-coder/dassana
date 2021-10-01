@@ -151,11 +151,11 @@ from typing import Dict, Any, Optional
 
 from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_lambda_powertools.utilities.validation import validator
-from boto3 import resource
 from botocore.exceptions import ClientError
 from aws_lambda_powertools import Logger
 
-from dassana.common.aws_client import DassanaAwsObject, parse_arn
+from dassana.common.aws_client import DassanaAwsObject
+from dassana.common.cache import configure_ttl_cache
 
 with open('input.json', 'r') as schema:
     schema = load(schema)
@@ -163,21 +163,27 @@ with open('input.json', 'r') as schema:
 
 logger = Logger(service='dassana-actions')
 
+get_cached_client = configure_ttl_cache(1024, 60)
+
 
 @logger.inject_lambda_context
 @validator(inbound_schema=schema)
 def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
-    arn = parse_arn(event.get('bucketArn'))
-    region = event.get('awsRegion')
-    arn_resource = arn.get('resource')
-    client = dassana_aws.create_aws_client(context, 's3', event.get('awsRegion'))
+    bucket_name = event.get('bucketName')
+    region = event.get('region')
+
+    client = get_cached_client(dassana_aws.create_aws_client, context=context, service='s3', region=region)
 
     try:
-        bucket_website = client.get_bucket_website(Bucket=arn_resource)
-
-        return {"bucketWebsiteUrl": "%s.s3-website-%s.amazonaws.com" % (arn_resource, region)}
+        bucket_website = client.get_bucket_website(Bucket=bucket_name)
+        return {"bucketWebsiteUrl": "%s.s3-website-%s.amazonaws.com" % (bucket_name, region)}
     except ClientError as e:
-        logger.exception(e)
+        logger.error(e.response)
+        if e.response.get('Error').get('Code') in ['NoSuchBucket', 'NoSuchWebsiteConfiguration']:
+            return {"bucketWebsiteUrl": ""}
+        else:
+            raise Exception(e)
+
 
 ```
 
@@ -195,22 +201,77 @@ The above example uses **dassana.common**, which is shared across actions as an 
 
 Should contain a description of what the action does.
 
-## Programming language-specific requirements
-
-### Python
+## `Python`
 
 When using python, a `requirements.txt` file is required in the specific action folder. This file must always exist for the action to work with AWS Lambda. Feel free to leave it empty if you don't need any external dependencies.
+
+Common features shared across Actions:
+
+1) Caching
+
+The most common use case is caching AWS service clients. We initialize the Cache with `configure_ttl_cache`
+before the handler (i.e entrypoint for AWS Lambda). This returns a function that is essentially a wrapper around
+service calls.
+
+```py title="Caching S3 client"
+from dassana.common.cache import configure_ttl_cache
+get_cached_client = configure_ttl_cache(1024, 60)
+def handler(event, context : LambdaContext):
+    client = get_cached_client(dassana_aws.create_aws_client, context=context, service='s3', region=region)
+    ### business logic
+    ### more business logic...
+```
+
+Keyword arguments used after the call (i.e **context**, **service**, and **region**) are used as part of the hashing
+key in the cache.
+
+2) Cross account STS
+
+Dassana Engine injects STS credentials as part of `env` in LambdaContext, and we retrieve Service clients by searching
+via
+
+```py title="Cross account"
+access_key = context.client_context.custom.get('AWS_ACCESS_KEY_ID')
+secret_key = context.client_context.custom.get('AWS_SECRET_ACCESS_KEY')
+session_token = context.client_context.custom.get('AWS_SESSION_TOKEN')
+return self._session.client(service_name=service, region_name=region, aws_access_key_id=access_key,
+                            aws_secret_access_key=secret_key,
+                            aws_session_token=session_token)
+```
+
+
+### `More detailed example of same account flow for caching`
+
+```
+get_cached_client = configure_ttl_cache(1024, 60); Max size = 1024, TTL of 60s
+-> Cache initialized 0 hit, 0 miss
+get_cached_client(dassana_aws.create_aws_client, context=context, service='s3', region=region)
+-> Cache miss 0 hit, 1 miss; Cache miss with hashkey('s3', region) : S3 Client('s3', region) populating cache
+get_cached_client(dassana_aws.create_aws_client, context=context, service='s3', region=region)
+-> Cache hit 1 hit, 1 miss; Cache hit, retrieving client without TCP handshake
+```
+
+### `More detailed example of cross account flow for caching`
+
+Dassana Engine injects STS credentials as part of `env` in LambdaContext.
+
+```
+Initial Time = 0s
+get_cached_client = configure_ttl_cache(1024, 60); Max size = 1024, TTL of 60s
+-> Cache initialized 0 hit, 0 miss
+get_cached_client(dassana_aws.create_aws_client, context=context(Account1), service='s3', region=region)
+-> Cache miss 0 hit, 1 miss; Cache miss with hashkey('s3', region, Account1) : S3 Client('s3', region, Account1) populating cache (size = 1)
+t1 = 5s
+get_cached_client(dassana_aws.create_aws_client, context=context(Account2), service='s3', region=region)
+-> Cache hit 0 hit, 2 miss; Cache miss with hashkey('s3', region, Account2) : S3 Client('s3', region, Account2) populating cache (size = 2)
+get_cached_client(dassana_aws.create_aws_client, context=context(Account2), service='s3', region=region)
+-> Cache hit 1 hit, 2 miss; Cache hit, retrieving client of Account2 without TCP handshake
+t2 = 65s
+... both cached clients expire and cache is empty (size = 0)
+```
 
 :::info
 
 Since many Dassana actions are written using Python and because most of them have the same external dependencies, we have defined the dependencies in a more central location [here](https://github.com/dassana-io/dassana/blob/main/content/pkg/deps/python/requirements.txt) as opposed to within each action folder's `requirements.txt`.
 
 :::
-
-### Node.js
-
-When using node.js, a `package.json` file is required in the specific action folder. This file must always exist for the action to work with AWS lambda. Feel free to leave it empty if you don't need any external dependencies.
-
-### Java
-
-Coming Soon

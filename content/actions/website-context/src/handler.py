@@ -6,7 +6,8 @@ from aws_lambda_powertools.utilities.validation import validator
 from botocore.exceptions import ClientError
 from aws_lambda_powertools import Logger
 
-from dassana.common.aws_client import DassanaAwsObject, parse_arn
+from dassana.common.aws_client import DassanaAwsObject
+from dassana.common.cache import configure_ttl_cache
 
 with open('input.json', 'r') as schema:
     schema = load(schema)
@@ -14,13 +15,16 @@ with open('input.json', 'r') as schema:
 
 logger = Logger(service='dassana-actions')
 
+get_cached_client = configure_ttl_cache(1024, 60)
+
 
 @logger.inject_lambda_context
 @validator(inbound_schema=schema)
 def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
     bucket_name = event.get('bucketName')
     region = event.get('region')
-    client = dassana_aws.create_aws_client(context, 's3', region)
+
+    client = get_cached_client(dassana_aws.create_aws_client, context=context, service='s3', region=region)
 
     try:
         bucket_website = client.get_bucket_website(Bucket=bucket_name)

@@ -1,0 +1,25 @@
+name: Dassana Python Action Unit Tests
+on:
+  pull_request:
+    paths:
+      - "content/actions/**"
+      - "content/pkg/deps/python"
+    branches:
+      - main
+jobs:
+  test-python-layer-common:
+    permissions:
+      contents: read
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8.0
+      - name: Install dependencies
+        run: pip install -r requirements_dev.txt
+        working-directory: content/pkg/deps/python
+      - name: Run tests for common Python
+        run: |
+          python -m pytest --hypothesis-show-statistics
+        working-directory: content/pkg/deps/python

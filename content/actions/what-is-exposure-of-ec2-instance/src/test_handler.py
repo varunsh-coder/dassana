@@ -1,12 +1,6 @@
-import unittest
-from json import load
-from typing import Dict, Any
 from unittest import TestCase
 
-from aws_lambda_powertools.utilities.typing import LambdaContext
-from aws_lambda_powertools.utilities.validation import validator
-
-from dassana.common.aws_client import DassanaAwsObject, LambdaTestContext
+from dassana.common.aws_client import LambdaTestContext
 from handler import handle, Exposure
 
 

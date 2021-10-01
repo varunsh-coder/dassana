@@ -10,11 +10,12 @@ from dassana.common.models import ArnComponent
 
 class LambdaTestContext(LambdaContext):
     class LambdaTestClientContext(LambdaClientContext):
-        def __init__(self):
-            self._custom = {}
-            self._env = {}
+        def __init__(self, custom, env):
+            self._custom = custom
+            self._env = env
 
-    def __init__(self, name: str, version: int = 1, region: str = "us-east-1", account_id: str = "111122223333"):
+    def __init__(self, name: str, version: int = 1, region: str = "us-east-1", account_id: str = "111122223333",
+                 env=None, custom=None):
         self._function_name = name
         self._function_version = str(version)
         self._memory_limit_in_mb = 128
@@ -22,7 +23,7 @@ class LambdaTestContext(LambdaContext):
         self._aws_request_id = str(uuid.uuid4())
         self._log_group_name = f"/aws/lambda/{name}"
         self._log_stream_name = str(uuid.uuid4())
-        self._client_context = self.LambdaTestClientContext()
+        self._client_context = self.LambdaTestClientContext(custom, env)
 
 
 class DassanaAwsObject(object):

@@ -11,3 +11,5 @@ engine/src/main/resources/content/**
 .idea
 **/target/**
 .aws-sam/**
+**/.hypothesis/**
+**/__pycache__/**
