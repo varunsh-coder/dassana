@@ -18,33 +18,23 @@ public class App implements RequestHandler<Map<String, Object>, Response> {
   @Override
   public Response handleRequest(final Map<String, Object> input, final Context context) {
     JSONObject inputJson = new JSONObject(input);
-    Response response = new Response();
 
-    JSONObject finding = inputJson.getJSONObject("detail").getJSONArray("findings").getJSONObject(0);
-    response.setAlertId(finding.getString("Id"));
-    response.setArn(finding.getJSONArray("Resources").getJSONObject(0).getString("Id"));
-    response.setVendorPolicy(finding.getJSONObject("FindingProviderFields").getJSONArray("Types").getString(0));
-    response.setCsp("aws");
-    response.setResourceContainer(finding.getString("AwsAccountId"));
-    response.setRegion(finding.getJSONArray("Resources").getJSONObject(0).getString("Region"));
-    Arn arn = Arn.fromString(response.getArn());
-    ArnResource resource = arn.resource();
+    // default to raw alert. will change if there is detail and findings tags
+    JSONObject finding = inputJson;
 
-    String resourceId = "";
-    if (resource.resourceType().isPresent() && StringUtils.isNotBlank(resource.resourceType().get())) {
-      resourceId = resource.resource();
-    } else {
-
-      String[] arnElements = response.getArn().split(":");
-      String resourceInfo = arnElements[5];
-      if (resourceInfo.contains("/")) {
-        String[] resourceSplit = resourceInfo.split("/");
-        resourceId = resourceSplit[2];
-      }
-
+    // only the eventBridge alert has detail and findings∂ tags
+    if (finding.has("detail")) {
+      finding = inputJson.getJSONObject("detail")
+          .getJSONArray("findings").getJSONObject(0);
     }
-    response.setVendorId("guardduty");
-    response.setResourceId(resourceId);
+
+    // type will determine which resource to process
+    // what if there is more than one resource in the type array??
+    String policyId = finding.getJSONArray("Types").getString(0);
+
+    Normalize normalize = new Normalize(finding, policyId);
+    // normalize will handle all 3 different resource type [IAM, EC2, S3]
+    Response response = normalize.normalize();
 
     return response;
   }

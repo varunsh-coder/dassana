@@ -27,8 +27,6 @@ public class Response {
     this.arn = arn;
   }
 
-
-
   public String getCsp() {
     return csp;
   }

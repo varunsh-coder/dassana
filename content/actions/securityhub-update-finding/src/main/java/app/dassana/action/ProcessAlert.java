@@ -39,9 +39,20 @@ public class ProcessAlert {
         JSONObject policyContextRiskJsonObj = policyContextJsonObj.optJSONObject("risk");
         dassana.setPolicyContextRiskValue(policyContextRiskJsonObj.optString("riskValue"));
         dassana.setPolicyContextRiskConditionName(policyContextRiskJsonObj.optString("name"));
+      }
 
-        dassana.setPolicyContextCat(policyContextJsonObj.optString("category"));
-        dassana.setPolicyContextSubCat(policyContextJsonObj.optString("subcategory"));
+      // picking up values from dassana.normalize.output.alertClassification instead of dassana.policy-context
+      JSONObject dassanaNormalizeJsonObj = dassanaJsonObj.optJSONObject("normalize");
+      if (dassanaNormalizeJsonObj != null) {
+        JSONObject dassanaNormalizeOutputJsonObj = dassanaNormalizeJsonObj.optJSONObject("output");
+        JSONObject outputAlertClassificationJsonObj = dassanaNormalizeOutputJsonObj.optJSONObject(("alertClassification"));
+
+        if (outputAlertClassificationJsonObj != null) {
+          dassana.setAlertClass(outputAlertClassificationJsonObj.optString("class"));
+          dassana.setAlertSubClass(outputAlertClassificationJsonObj.optString("subclass"));
+          dassana.setAlertCategory(outputAlertClassificationJsonObj.optString("category"));
+          dassana.setAlertSubCategory(outputAlertClassificationJsonObj.optString("subcategory"));
+        }
       }
 
 

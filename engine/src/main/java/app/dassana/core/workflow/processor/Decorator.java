@@ -73,8 +73,6 @@ public class Decorator {
       JSONObject jsonObject = new JSONObject();
       jsonObject.put(WORKFLOW_ID, policyContext.getId());
       jsonObject.put("workflowType",POLICY_CONTEXT);
-      jsonObject.put(POLICY_CONTEXT_CAT, policyContext.getCategory());
-      jsonObject.put(POLICY_CONTEXT_SUB_CAT, policyContext.getSubCategory());
       jsonObject.put("output", policyContextWorkflowOutput.get().getOutput());
       if (request.isIncludeStepOutput()) {
         jsonObject.put("step-output", policyContextWorkflowOutput.get().getStepOutput());

@@ -11,24 +11,32 @@ public class Dassana {
   private String resourceContextRiskConditionName;
   private String policyContextRiskValue;
   private String policyContextRiskConditionName;
-  private String policyContextCat;
-  private String policyContextSubCat;
+  private String alertCategory;
+  private String alertSubCategory;
+  private String alertClass;
+  private String alertSubClass;
 
-  public String getPolicyContextCat() {
-    return policyContextCat;
+  public String getAlertCategory() {
+    return alertCategory;
   }
 
-  public void setPolicyContextCat(String policyContextCat) {
-    this.policyContextCat = policyContextCat;
+  public void setAlertCategory(String alertCategory) {
+    this.alertCategory = alertCategory;
   }
 
-  public String getPolicyContextSubCat() {
-    return policyContextSubCat;
+  public String getAlertSubCategory() { return alertSubCategory; }
+
+  public void setAlertSubCategory(String alertSubCategory) {
+    this.alertSubCategory = alertSubCategory;
   }
 
-  public void setPolicyContextSubCat(String policyContextSubCat) {
-    this.policyContextSubCat = policyContextSubCat;
-  }
+  public String getAlertClass() { return alertClass; }
+
+  public void setAlertClass(String alertClass) { this.alertClass = alertClass; }
+
+  public String getAlertSubClass() { return alertSubClass; }
+
+  public void setAlertSubClass(String alertSubClass) { this.alertSubClass = alertSubClass; }
 
   public boolean isHasErrors() {
     return hasErrors;

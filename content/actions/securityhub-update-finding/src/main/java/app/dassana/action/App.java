@@ -55,8 +55,12 @@ public class App implements RequestHandler<Map<String, Object>, List<AwsSecurity
         .put("DASSANA_RESOURCE_CONTEXT_RISK_CONDITION_NAME", dassana.getResourceContextRiskConditionName());
     userDefinedFields.put("DASSANA_POLICY_CONTEXT_RISK", dassana.getPolicyContextRiskValue());
     userDefinedFields.put("DASSANA_POLICY_CONTEXT_RISK_CONDITION_NAME", dassana.getPolicyContextRiskConditionName());
-    userDefinedFields.put("DASSANA_POLICY_CONTEXT_CATEGORY", dassana.getPolicyContextCat());
-    userDefinedFields.put("DASSANA_POLICY_CONTEXT_SUB_CATEGORY", dassana.getPolicyContextSubCat());
+
+    userDefinedFields.put("DASSANA_ALERT_CLASS", dassana.getAlertClass());
+    userDefinedFields.put("DASSANA_ALERT_SUBCLASS", dassana.getAlertSubClass());
+
+    userDefinedFields.put("DASSANA_ALERT_CATEGORY", dassana.getAlertCategory());
+    userDefinedFields.put("DASSANA_ALERT_SUBCATEGORY", dassana.getAlertSubCategory());
 
     try {
       BatchUpdateFindingsResponse batchUpdateFindingsResponse = securityHubClient

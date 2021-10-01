@@ -158,6 +158,8 @@ public class ContentManager implements ContentManagerApi {
   PolicyContext getPolicyContext(JSONObject jsonObject) {
 
     PolicyContext policyContext = new PolicyContext();
+    policyContext.setAlertClass(jsonObject.optString("class"));
+    policyContext.setSubClass(jsonObject.optString("subclass"));
     policyContext.setCategory(jsonObject.optString("category"));
     policyContext.setSubCategory(jsonObject.optString("subcategory"));
 
@@ -216,6 +218,8 @@ public class ContentManager implements ContentManagerApi {
       }
     } else if (type.contentEquals(POLICY_CONTEXT)) {
       workflow = getPolicyContext(jsonObject);
+      ((PolicyContext) workflow).setAlertClass(jsonObject.optString(POLICY_CONTEXT_CLASS));
+      ((PolicyContext) workflow).setSubClass(jsonObject.optString(POLICY_CONTEXT_SUBCLASS));
       ((PolicyContext) workflow).setCategory(jsonObject.optString(POLICY_CONTEXT_CAT));
       ((PolicyContext) workflow).setSubCategory(jsonObject.optString(POLICY_CONTEXT_SUB_CAT));
       ((PolicyContext) workflow).setRiskConfig(getRiskConfig(jsonObject));
