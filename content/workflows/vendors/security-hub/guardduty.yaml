@@ -2,7 +2,7 @@ schema: 1
 type: normalize
 
 vendor-id: aws-guardduty
-id: aws-gd-via-security-hub
+id: aws-gd-via-security-hub # if you change this, do ensure to update /content/pkg/template.yaml resource DassanaEventBridgeToGuardDutySqsQueue
 
 filters:
   - match-type: any

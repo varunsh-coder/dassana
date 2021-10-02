@@ -1,19 +1,23 @@
 package app.dassana.core.workflow;
 
 import app.dassana.core.contentmanager.ContentManagerApi;
+import app.dassana.core.launch.model.Message;
 import app.dassana.core.launch.model.Request;
+import app.dassana.core.launch.model.Severity;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
 import app.dassana.core.resource.model.GeneralContext;
+import app.dassana.core.risk.eval.RiskEvalException;
 import app.dassana.core.risk.eval.RiskEvalRequest;
 import app.dassana.core.risk.eval.RiskEvaluator;
 import app.dassana.core.risk.model.Risk;
 import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.util.JsonyThings;
+import app.dassana.core.workflow.model.Component;
+import app.dassana.core.workflow.model.Error;
 import app.dassana.core.workflow.model.Output;
 import app.dassana.core.workflow.model.Step;
 import app.dassana.core.workflow.model.ValueType;
 import app.dassana.core.workflow.model.Workflow;
-import app.dassana.core.workflow.model.WorkflowException;
 import app.dassana.core.workflow.model.WorkflowOutput;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -75,6 +79,8 @@ public class WorkflowRunner {
     }
 
     WorkflowOutputWithRisk workflowOutputWithRisk = new WorkflowOutputWithRisk();
+    List<Error> errorList = new LinkedList<>();
+    workflowOutputWithRisk.setErrorList(errorList);
 
     Set<Workflow> workflowSet;
     if (StringUtils.isNotEmpty(request.getWorkflowId())) {
@@ -113,38 +119,54 @@ public class WorkflowRunner {
           stepPayload = jsonToUse;
         }
         String stepOutputJson;
-        stepOutputJson = runStep(workflow, step, stepPayload, simpleOutputJson);
+        try {
+          stepOutputJson = runStep(workflow, step, stepPayload, simpleOutputJson);
+          Object fromJson = gson.fromJson(stepOutputJson, Object.class);
+          logger.info("Output from step {} in workflow {} is {}", step.getId(), workflow.getId(), stepOutputJson);
+          stepToOutPutMap.put(step.getId(), fromJson);
 
-        Object fromJson = gson.fromJson(stepOutputJson, Object.class);
-        logger.info("Output from step {} in workflow {} is {}", step.getId(), workflow.getId(), stepOutputJson);
-        stepToOutPutMap.put(step.getId(), fromJson);
+          //merge the step results into the event
+          for (Entry<String, Object> mapEntry : stepToOutPutMap.entrySet()) {
+            String stepId = mapEntry.getKey();
+            Object stepOutput = mapEntry.getValue();
+            jsonObject.put(stepId, stepOutput);
+          }
 
-        //merge the step results into the event
-        for (Entry<String, Object> mapEntry : stepToOutPutMap.entrySet()) {
-          String stepId = mapEntry.getKey();
-          Object stepOutput = mapEntry.getValue();
-          jsonObject.put(stepId, stepOutput);
+          List<Map<String, Object>> list = new LinkedList<>();
+
+          for (Entry<String, Object> entry : stepToOutPutMap.entrySet()) {
+            String stepId = entry.getKey();
+            Object o = entry.getValue();
+
+            Map<String, Object> map = new HashMap<>();
+            map.put(stepId, o);
+            list.add(map);
+
+          }
+          workflowOutputWithRisk.setStepOutput(list);
+        } catch (Exception e) {
+          Error error = new Error();
+          error.setComponent(Component.STEP);
+          error.setComponentId(step.getId());
+          error.setMessage(new Message(e.getMessage(), Severity.ERROR));
+          error.setWorkflowId(workflow.getId());
+          errorList.add(error);
+
         }
 
-        List<Map<String, Object>> list = new LinkedList<>();
-
-        for (Entry<String, Object> entry : stepToOutPutMap.entrySet()) {
-          String stepId = entry.getKey();
-          Object o = entry.getValue();
-
-          Map<String, Object> map = new HashMap<>();
-          map.put(stepId, o);
-          list.add(map);
-
-        }
-        workflowOutputWithRisk.setStepOutput(list);
       }
 
       String workflowOutput;
       try {
         workflowOutput = getWorkflowOutput(workflow.getOutput(), jsonObject.toString());
+        workflowOutputWithRisk.setOutput(getSimpleOutput(workflowOutput, workflow));
       } catch (Exception e) {
-        throw new WorkflowException(String.format("Unable to get output from workflow %s ", workflow.getId()), e);
+        Error error = new Error();
+        error.setWorkflowId(workflow.getId());
+        error.setMessage(new Message(e.getMessage(), Severity.ERROR));
+        error.setComponent(Component.WORKFLOW_OUTPUT);
+        errorList.add(error);
+
       }
 
       //handle risk
@@ -153,11 +175,21 @@ public class WorkflowRunner {
         RiskConfig riskConfig;
         var resPriWorkflow = (GeneralContext) workflow;
         riskConfig = resPriWorkflow.getRiskConfig();
-        workflowOutputWithRisk
-            .setRisk(getRisk(riskConfig, workflowOutputWithRisk, simpleOutputJson));
+        try {
+          workflowOutputWithRisk
+              .setRisk(getRisk(riskConfig, workflowOutputWithRisk, simpleOutputJson));
+        } catch (RiskEvalException e) {
+          Error error = new Error();
+          error.setComponent(Component.RISK_CALC);
+          error.setComponentId(e.getRuleName());
+          error.setMessage(new Message(e.getMessage(), Severity.ERROR));
+          error.setWorkflowId(error.getWorkflowId());
+          errorList.add(error);
+
+        }
       }
 
-      workflowOutputWithRisk.setOutput(getSimpleOutput(workflowOutput, workflow));
+
       return Optional.of(workflowOutputWithRisk);
 
 
@@ -231,7 +263,7 @@ public class WorkflowRunner {
 
     //the normalized fields should be available for risk rules in addition to the fields returned by steps
     Map<String, Object> normalizedJsonMap = new JSONObject(simpleOutputJson).toMap();
-    normalizedJsonMap.forEach((s, o) -> requestJsonObjForRiskCalc.put(s, o));
+    normalizedJsonMap.forEach(requestJsonObjForRiskCalc::put);
 
     for (Map<String, Object> map : workflowOutput.getStepOutput()) {
       for (String key : map.keySet()) {

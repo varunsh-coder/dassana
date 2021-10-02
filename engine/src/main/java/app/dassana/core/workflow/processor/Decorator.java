@@ -13,8 +13,11 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.model.CombinedRisk;
+import app.dassana.core.workflow.model.Error;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -26,7 +29,7 @@ public class Decorator {
 
   @Inject
   ContentManagerApi contentManagerApi;
-  public static final String DASSANA_KEY="dassana";
+  public static final String DASSANA_KEY = "dassana";
 
   //todo: refactor to make it readable and maintainable
   public String getDassanaDecoratedJson(Request request,
@@ -40,6 +43,8 @@ public class Decorator {
     //put the output back in original data
     var messageBody = new JSONObject(request.getInputJson());
     Map<String, Object> dassanaMap = new HashMap<>();
+    List<Error> allErrors = new LinkedList<>(normalizationOutput.getErrorList());
+
     //handle normalization decoration
     JSONObject jsonObjectForNormalization = new JSONObject();
     if (request.isIncludeStepOutput()) {
@@ -47,12 +52,12 @@ public class Decorator {
     }
     jsonObjectForNormalization.put("output", normalizationOutput.getOutput());
     jsonObjectForNormalization.put(WORKFLOW_ID, normalizationOutput.getWorkflowId());
-    jsonObjectForNormalization.put("workflowType",NORMALIZE);
+    jsonObjectForNormalization.put("workflowType", NORMALIZE);
     dassanaMap.put("normalize", jsonObjectForNormalization);
     if (generalContextWorkflowOutput.isPresent()) {
       JSONObject generalContextJsonObj = new JSONObject();
       generalContextJsonObj.put(WORKFLOW_ID, generalContextWorkflowOutput.get().getWorkflowId());
-      generalContextJsonObj.put("workflowType",GENERAL_CONTEXT);
+      generalContextJsonObj.put("workflowType", GENERAL_CONTEXT);
       generalContextJsonObj.put("output", generalContextWorkflowOutput.get().getOutput());
       if (request.isIncludeStepOutput()) {
         generalContextJsonObj.put("step-output", generalContextWorkflowOutput.get().getStepOutput());
@@ -64,6 +69,9 @@ public class Decorator {
       generalContextJsonObj.put("risk", riskObj);
       dassanaMap.put(GENERAL_CONTEXT, generalContextJsonObj);
       combinedRisk.setGeneralContextRisk(generalContextWorkflowOutput.get().getRisk());
+      allErrors.addAll(generalContextWorkflowOutput.get().getErrorList());
+
+
     }
 
     if (policyContextWorkflowOutput.isPresent()) {
@@ -85,6 +93,8 @@ public class Decorator {
       jsonObject.put("risk", riskObj);
       dassanaMap.put(POLICY_CONTEXT, jsonObject);
       combinedRisk.setGeneralContextRisk(policyContextWorkflowOutput.get().getRisk());
+      allErrors.addAll(policyContextWorkflowOutput.get().getErrorList());
+
 
     }
 
@@ -94,7 +104,7 @@ public class Decorator {
 
       JSONObject jsonObject = new JSONObject();
       jsonObject.put(WORKFLOW_ID, resourceContext.getId());
-      jsonObject.put("workflowType",RESOURCE_CONTEXT);
+      jsonObject.put("workflowType", RESOURCE_CONTEXT);
       jsonObject.put("output", resourceContextWorkflowOutput.get().getOutput());
       if (request.isIncludeStepOutput()) {
         jsonObject.put("step-output", resourceContextWorkflowOutput.get().getStepOutput());
@@ -107,7 +117,12 @@ public class Decorator {
       jsonObject.put("risk", riskObj);
       dassanaMap.put(RESOURCE_CONTEXT, jsonObject);
       combinedRisk.setResourceContextRisk(resourceContextWorkflowOutput.get().getRisk());
+      allErrors.addAll(resourceContextWorkflowOutput.get().getErrorList());
 
+    }
+
+    if (allErrors.size() > 0) {
+      dassanaMap.put("errors", allErrors);
     }
 
     messageBody.put(DASSANA_KEY, dassanaMap);

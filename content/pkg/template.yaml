@@ -168,7 +168,6 @@ Resources:
       Timeout: 300
       Environment:
         Variables:
-          dassanaOutboundQueue: !Ref DassanaOutboundQueue
           dassanaDeadLetterQueue: !Ref DassanaDeadLetterQueue
           dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
           dassanaBucket: !Ref DassanaBucket
@@ -238,40 +237,27 @@ Resources:
                   - sqs:GetQueueAttributes
                 Resource:
                   - !GetAtt DassanaInboundQueue.Arn
-                  - !GetAtt DassanaOutboundQueue.Arn
                   - !GetAtt DassanaDeadLetterQueue.Arn
 
-  DassanaInboundQueuePolicyForEventHub:
+  QueuePolicyForEventHub:
     Type: AWS::SQS::QueuePolicy
     Properties:
       Queues:
-        - !Ref DassanaInboundQueue
+        - Ref: DassanaUnProcessedAlerts
+        - Ref: DassanaInboundQueue
+        - Ref: DassanaProcessedAlertsForAwsConfig
+        - Ref: DassanaProcessedAlertsForGuardDuty
+        - Ref: DassanaProcessedAlertsForPrismaCloud
+
       PolicyDocument:
         Statement:
           - Action:
               - SQS:SendMessage
-            Effect: "Allow"
-            Resource: !GetAtt DassanaInboundQueue.Arn
+            Effect: Allow
+            Resource:
+              - "*"
             Principal:
               Service: events.amazonaws.com
-            Condition:
-              ArnEquals:
-                aws:SourceArn:
-                  Fn::GetAtt:
-                    - "DassanaSecurityHubToSqsRuleForAwsConfig"
-                    - "Arn"
-          - Action:
-              - SQS:SendMessage
-            Effect: "Allow"
-            Resource: !GetAtt DassanaInboundQueue.Arn
-            Principal:
-              Service: events.amazonaws.com
-            Condition:
-              ArnEquals:
-                aws:SourceArn:
-                  Fn::GetAtt:
-                    - "DassanaSecurityHubToSqsRuleForGuardDuty"
-                    - "Arn"
 
   DassanaInboundQueue:
     Type: AWS::SQS::Queue
@@ -286,11 +272,41 @@ Resources:
             - "Arn"
         maxReceiveCount: 2
 
-  DassanaOutboundQueue:
+  DassanaUnProcessedAlerts:
     Type: AWS::SQS::Queue
     Properties:
       QueueName:
-        !Join ["", [{ "Ref": "AWS::StackName" }, "-DassanaOutboundQueue"]]
+        Fn::Join:
+          - ""
+          - - Ref: AWS::StackName
+            - -DassanaUnProcessedAlerts
+
+  DassanaProcessedAlertsForAwsConfig:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+          - ""
+          - - Ref: AWS::StackName
+            - -DassanaProcessedAlertsForAwsConfig
+
+  DassanaProcessedAlertsForGuardDuty:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+          - ""
+          - - Ref: AWS::StackName
+            - -DassanaProcessedAlertsForGuardDuty
+
+  DassanaProcessedAlertsForPrismaCloud:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName:
+        Fn::Join:
+          - ""
+          - - Ref: AWS::StackName
+            - -DassanaProcessedAlertsForPrismaCloud
 
   DassanaDeadLetterQueue:
     Type: AWS::SQS::Queue
@@ -303,45 +319,99 @@ Resources:
     Properties:
       Name: !Join ["", [{ "Ref": "AWS::StackName" }, "-EventBus"]]
 
-  LogGroupForDassana:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      RetentionInDays: 365
-      LogGroupName:
-        !Join ["", [/dassana/processed-alerts-, { "Ref": "AWS::StackName" }]]
-
-  DassanaEventBridgeToCwLogGroupRule:
+  DassanaEventBridgeToUnprocessedAlerts:
     Type: AWS::Events::Rule
     Properties:
-      EventBusName: !Ref DassanaEventBus
+      EventBusName:
+        Ref: DassanaEventBus
       EventPattern:
         source:
-          - "dassana"
+          - dassana
+        detail-type:
+          - normalizer_not_found
       Targets:
-        - Arn: !GetAtt LogGroupForDassana.Arn
-          Id: LogTarget
+        - Arn:
+            Fn::GetAtt:
+              - "DassanaUnProcessedAlerts"
+              - "Arn"
+          Id: dassana-unprocessed-alerts-queue
+          InputPath: $.detail
 
-  EventBridgeToCw:
-    Type: "AWS::IAM::Role"
+  DassanaEventBridgeToPrismaCloudSqsQueue:
+    Type: AWS::Events::Rule
+    Properties:
+      EventBusName:
+        Ref: DassanaEventBus
+      EventPattern:
+        source:
+          - dassana
+        detail-type:
+          - prisma-cloud
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - "DassanaProcessedAlertsForPrismaCloud"
+              - "Arn"
+          Id: dassana-pc-queue
+          InputPath: $.detail
+
+  DassanaEventBridgeToGuardDutySqsQueue:
+    Type: AWS::Events::Rule
+    Properties:
+      EventBusName:
+        Ref: DassanaEventBus
+      EventPattern:
+        source:
+          - dassana
+        detail-type:
+          - aws-gd-via-security-hub
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - "DassanaProcessedAlertsForGuardDuty"
+              - "Arn"
+          Id: dassana-gd-queue
+          InputPath: $.detail
+
+  DassanaEventBridgeToAwsConfigSqsQueue:
+    Type: AWS::Events::Rule
+    Properties:
+      EventBusName:
+        Ref: DassanaEventBus
+      EventPattern:
+        source:
+          - dassana
+        detail-type:
+          - aws-config-via-security-hub
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - "DassanaProcessedAlertsForAwsConfig"
+              - "Arn"
+          Id: dassana-aws-config-queue
+          InputPath: $.detail
+
+  EventBridgeToSqsIamRole:
+    Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Effect: "Allow"
+          - Effect: Allow
             Principal:
-              Service: "events.amazonaws.com"
+              Service: events.amazonaws.com
             Action:
-              - "sts:AssumeRole"
+              - sts:AssumeRole
       Policies:
-        - PolicyName: AllowAllEventsToBeLogged
+        - PolicyName: SendMessagesToSqs
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
               Effect: Allow
               Action:
-                - logs:CreateLogStream
-                - logs:PutLogEvents
-              Resource: "*"
+                - sqs:SendMessage
+              Resource:
+                - "*"
 
   DassanaEngineJavaLayer:
     Type: AWS::Serverless::LayerVersion
@@ -370,7 +440,6 @@ Resources:
       Timeout: 300
       Environment:
         Variables:
-          dassanaOutboundQueue: !Ref DassanaOutboundQueue
           dassanaDeadLetterQueue: !Ref DassanaDeadLetterQueue
           dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
           dassanaEventBridgeBusName: !Ref DassanaEventBus
@@ -390,7 +459,7 @@ Resources:
   DassanaSecurityHubToSqsRuleForAwsConfig:
     Type: "AWS::Events::Rule"
     Properties:
-      Description: Send new alerts generated by aws config via securityhub to Dassana inboud queue
+      Description: Send new alerts generated by aws config via securityhub to Dassana inbound queue
       Name:
         !Join [
           "",

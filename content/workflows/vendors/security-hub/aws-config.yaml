@@ -1,7 +1,7 @@
 schema: 1
 type: normalize
 vendor-id: aws-config
-id: aws-config-via-security-hub
+id: aws-config-via-security-hub # if you change this, do ensure to update /content/pkg/template.yaml resource DassanaEventBridgeToAwsConfigSqsQueue
 
 filters:
   - match-type: any
@@ -24,8 +24,6 @@ steps:
     with:
       - name: arn
         value: .steps."resource-info".arn #notice that when you want to refer to the output of a previous step, you refer to it via JQ expression .step as the previous steps output is available under the `step` JSON key
-      - name: region
-        value: .steps."resource-info".region
 
 output:
   - name: vendorId

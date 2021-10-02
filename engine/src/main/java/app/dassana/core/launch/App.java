@@ -7,6 +7,14 @@ import java.util.HashMap;
 import java.util.Map;
 import software.amazon.awssdk.utils.IoUtils;
 
+/**
+ * This class stimulates running of Dassana API. In theory, you could use AWS SAM debugging capabilities, but AWS SAM
+ * is quite rough, at least on MacOS with apple silicon- it takes a long time to compile and its docker container
+ * seldom die etc.
+ *
+ * When you run this class, you are only running the api part locally, all Dassana Actions (lambda functions) are
+ * invoked on the cloud side. 
+ */
 public class App {
 
   public static void main(String[] args) throws IOException {
@@ -20,9 +28,6 @@ public class App {
     apiGatewayProxyRequestEvent.setIsBase64Encoded(false);
 
     Map<String, String> queryParams = new HashMap<>();
-    queryParams.put("skipGeneralContext", "false");
-    queryParams.put("skipPolicyContext", "false");
-    queryParams.put("skipPostProcessor", "false");
     queryParams.put("skipS3Upload", "false");
 
     apiGatewayProxyRequestEvent.setQueryStringParameters(queryParams);

@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -213,25 +212,9 @@ public class ContentManager implements ContentManagerApi {
         }
       }
       ((NormalizerWorkflow) workflow).setPostProcessorSteps(postProcessorSteps);
-      var outputQueue = jsonObject.optJSONObject("output-queue");
-
-      boolean skipGeneralContext = jsonObject.optBoolean("skip-general-context", false);
-      boolean skipResourceContext = jsonObject.optBoolean("skip-resource-context", false);
-      boolean skipPolicyContext = jsonObject.optBoolean("skip-policy-context", false);
-      boolean publishToEventBridge = jsonObject.optBoolean("publish-to-eventbridge", false);
 
 
-      ((NormalizerWorkflow) workflow).setSkipGeneralContext(skipGeneralContext);
-      ((NormalizerWorkflow) workflow).setSkipResourceContext(skipResourceContext);
-      ((NormalizerWorkflow) workflow).setSkipPolicyContext(skipPolicyContext);
-      ((NormalizerWorkflow) workflow).setPublishToEventBridge(publishToEventBridge);
 
-      if (outputQueue != null) {
-        boolean outputQueueEnabled = outputQueue.getBoolean("enabled");
-        ((NormalizerWorkflow) workflow).setOutputQueueEnabled(outputQueueEnabled);
-      } else {
-        ((NormalizerWorkflow) workflow).setOutputQueueEnabled(false);
-      }
     } else if (type.contentEquals(POLICY_CONTEXT)) {
       workflow = getPolicyContext(jsonObject);
       ((PolicyContext) workflow).setAlertClass(jsonObject.optString(POLICY_CONTEXT_CLASS));

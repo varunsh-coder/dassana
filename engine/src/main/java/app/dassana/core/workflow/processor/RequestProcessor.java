@@ -28,14 +28,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
-import software.amazon.awssdk.services.eventbridge.model.PutEventsRequest;
-import software.amazon.awssdk.services.eventbridge.model.PutEventsRequestEntry;
-import software.amazon.awssdk.services.eventbridge.model.PutEventsResponse;
-import software.amazon.awssdk.utils.StringUtils;
 
 
 /**
@@ -49,7 +45,7 @@ public class RequestProcessor {
   @Inject private Decorator decorator;
   @Inject private PostProcessor postProcessor;
   @Inject private S3Manager s3Manager;
-  @Inject private EventBridgeClient eventBridgeClient;
+  @Inject private EventBridgeHandler eventBridgeHandler;
 
 
   int cores = Runtime.getRuntime().availableProcessors();
@@ -101,28 +97,21 @@ public class RequestProcessor {
       String normalizedWorkflowJsonStr = new JSONObject(normalizedWorkflowOutput.getOutput()).toString();
 
       String normalizerId = normalizedWorkflowOutput.getWorkflowId();
-      NormalizerWorkflow normalizerWorkflow = (NormalizerWorkflow) contentManagerApi.getWorkflowIdToWorkflowMap(request)
-          .get(normalizerId);
 
-      if (!skipGeneralContext(request, normalizerWorkflow)) {
-        futureList.add(executorCompletionService
-            .submit(() ->
-                workflowRunner
-                    .runWorkFlow(GeneralContext.class, request, normalizedWorkflowJsonStr)));
-      }
-      if (!skipResourceContext(request, normalizerWorkflow)) {
-        futureList.add(executorCompletionService
-            .submit(() ->
-                workflowRunner
-                    .runWorkFlow(ResourceContext.class, request, normalizedWorkflowJsonStr)));
-      }
+      futureList.add(executorCompletionService
+          .submit(() ->
+              workflowRunner
+                  .runWorkFlow(GeneralContext.class, request, normalizedWorkflowJsonStr)));
 
-      if (!skipPolicyContext(request, normalizerWorkflow)) {
-        futureList.add(executorCompletionService
-            .submit(() ->
-                workflowRunner
-                    .runWorkFlow(PolicyContext.class, request, normalizedWorkflowJsonStr)));
-      }
+      futureList.add(executorCompletionService
+          .submit(() ->
+              workflowRunner
+                  .runWorkFlow(ResourceContext.class, request, normalizedWorkflowJsonStr)));
+
+      futureList.add(executorCompletionService
+          .submit(() ->
+              workflowRunner
+                  .runWorkFlow(PolicyContext.class, request, normalizedWorkflowJsonStr)));
 
       for (Future<Optional<WorkflowOutputWithRisk>> ignored : futureList) {
 
@@ -154,37 +143,25 @@ public class RequestProcessor {
 
       //after alerts have been processed we upload the alert to a
       // s3 bucket. This allows any post processors to access the fully decorated json object.
-      String decoratedJsonWithS3key = s3Manager.uploadedToS3(normalizationResult, dassanaDecoratedJson);
-      String finalJson = postProcessor
-          .handlePostProcessor(request, normalizationResult.get(), decoratedJsonWithS3key);
 
-      processingResponse.setDecoratedJson(finalJson);
-      String dassanaEventBridgeBusName = System.getenv().get("dassanaEventBridgeBusName");
-      if (normalizerWorkflow.isPublishToEventBridge() && org.apache.commons.lang3.StringUtils.isNotEmpty(
-          dassanaEventBridgeBusName)) {
-
-        PutEventsRequestEntry putEventsRequestEntry = PutEventsRequestEntry.builder()
-            .eventBusName(dassanaEventBridgeBusName)
-            .detail(finalJson)
-            .source("dassana")
-            .detailType(normalizerId)
-            .build();
-
-        PutEventsResponse putEventsResponse = eventBridgeClient.putEvents(
-            PutEventsRequest.builder().entries(putEventsRequestEntry).build());
-
-        if (putEventsResponse.failedEntryCount() > 0) {
-          throw new RuntimeException(
-              "Unable to send events to eventbridge due to error: ".concat(putEventsResponse.toString()));
-
-        }
+      String workflowId = normalizationResult.get().getWorkflowId();
+      NormalizerWorkflow workflow = (NormalizerWorkflow) contentManagerApi.getWorkflowIdToWorkflowMap(request)
+          .get(workflowId);
+      if (workflow.getPostProcessorSteps().size() > 0) {
+        String decoratedJsonWithS3key = s3Manager.uploadedToS3(normalizationResult, dassanaDecoratedJson);
+        String finalJson = postProcessor
+            .handlePostProcessor(request, normalizationResult.get(), decoratedJsonWithS3key);
+        processingResponse.setDecoratedJson(finalJson);
+      } else {
+        processingResponse.setDecoratedJson(dassanaDecoratedJson);
       }
 
+      eventBridgeHandler.handleEventBridge(processingResponse, normalizerId);
 
     } else {//normalization did not happen
       processingResponse.setNormalizerWorkflow(null);
-      s3Manager.uploadedToS3(normalizationResult, request.getInputJson());
       processingResponse.setDecoratedJson(request.getInputJson());
+      eventBridgeHandler.handleEventBridge(processingResponse, null);
     }
 
     return processingResponse;
@@ -226,30 +203,6 @@ public class RequestProcessor {
       throw normalizerException;
     }
 
-  }
-
-  private boolean skipGeneralContext(Request request, NormalizerWorkflow normalizerWorkflow) {
-
-    if (request.isSkipGeneralContext()) {
-      return true;
-    }
-    return normalizerWorkflow.isSkipGeneralContext();
-  }
-
-  private boolean skipResourceContext(Request request, NormalizerWorkflow normalizerWorkflow) {
-
-    if (request.isSkipResourceContext()) {
-      return true;
-    }
-    return normalizerWorkflow.isSkipResourceContext();
-  }
-
-  private boolean skipPolicyContext(Request request, NormalizerWorkflow normalizerWorkflow) {
-
-    if (request.isSkipPolicyContext()) {
-      return true;
-    }
-    return normalizerWorkflow.isSkipPolicyContext();
   }
 
 }

@@ -1,7 +1,5 @@
 package app.dassana.core.launch.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public class Request {
@@ -13,17 +11,12 @@ public class Request {
   boolean includeAlertInOutput;
   boolean isDefault;
 
-  //content management
-  private boolean skipGeneralContext;
-  private boolean skipResourceContext;
-  private boolean skipPolicyContext;
   private boolean refreshFromS3;
   private List<String> additionalWorkflowYamls;
 
   private String workflowId; //if specified, only this workflow will run
 
   //engine specific
-  private boolean queueProcessing;
   private boolean skipPostProcessor;
 
   public Request(String inputJson) {
@@ -71,33 +64,8 @@ public class Request {
   }
 
 
-  public boolean isSkipPolicyContext() {
-    return skipPolicyContext;
-  }
-
-  public void setSkipPolicyContext(boolean skipPolicyContext) {
-    this.skipPolicyContext = skipPolicyContext;
-  }
-
-  public boolean isSkipGeneralContext() {
-    return skipGeneralContext;
-  }
-
-  public void setSkipGeneralContext(boolean skipGeneralContext) {
-    this.skipGeneralContext = skipGeneralContext;
-  }
-
   public String getInputJson() {
     return inputJson;
-  }
-
-
-  public boolean isQueueProcessing() {
-    return queueProcessing;
-  }
-
-  public void setQueueProcessing(boolean queueProcessing) {
-    this.queueProcessing = queueProcessing;
   }
 
   public boolean isSkipPostProcessor() {
@@ -106,14 +74,6 @@ public class Request {
 
   public void setSkipPostProcessor(boolean skipPostProcessor) {
     this.skipPostProcessor = skipPostProcessor;
-  }
-
-  public boolean isSkipResourceContext() {
-    return skipResourceContext;
-  }
-
-  public void setSkipResourceContext(boolean skipResourceContext) {
-    this.skipResourceContext = skipResourceContext;
   }
 
   public boolean isDefault() {

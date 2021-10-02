@@ -331,7 +331,7 @@ public class ApiHandler extends
 
     }
 
-    //we return the dassana only ONLY when we are asked to not include the original alert
+    //we return the dassana only  when we are asked to not include the original alert
     if (!request.isIncludeAlertInOutput()) {
       if (jsonObject.optJSONObject(DASSANA_KEY) != null) {
         return jsonObject.getJSONObject(DASSANA_KEY).toString();
@@ -399,11 +399,7 @@ public class ApiHandler extends
     }
 
     request.setRefreshFromS3(refreshFromS3);
-
-    request.setQueueProcessing(false);
     request.setSkipPostProcessor(skipPostProcessor);
-    request.setSkipGeneralContext(skipGeneralContext);
-    request.setSkipPolicyContext(skipPolicyContext);
     request.setDefault(isDefault);
 
     return request;

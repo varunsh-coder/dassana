@@ -12,12 +12,14 @@ import static app.dassana.core.workflow.processor.Decorator.DASSANA_KEY;
 import app.dassana.core.api.DassanaWorkflowValidationException;
 import app.dassana.core.contentmanager.RemoteContentDownloadApi;
 import app.dassana.core.contentmanager.infra.S3Downloader;
+import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.workflow.StepRunnerApi;
 import app.dassana.core.workflow.infra.LambdaStepRunner;
 import app.dassana.core.workflow.model.Step;
 import app.dassana.core.workflow.model.StepRunResponse;
 import app.dassana.core.workflow.model.Workflow;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
+import app.dassana.core.workflow.processor.EventBridgeHandler;
 import app.dassana.core.workflow.processor.S3Manager;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import io.micronaut.context.annotation.Replaces;
@@ -195,25 +197,14 @@ public class ApiSqsHandlerTest {
 
 
   }
+  
+  @Singleton
+  @Replaces(EventBridgeHandler.class)
+  public static class FakeEventBridgeHandler extends EventBridgeHandler {
 
-  @Test
-  void testSkipWorkflow() throws IOException {
-
-    Map<String, String> queryParams = helper.getQueryParams(false);
-    String response = helper
-        .executeRunApi(helper.getFileContent("inputs/validWorkflowWithOnlyNormalization.json"), queryParams);
-    JSONObject jsonObject = new JSONObject(response);
-
-    Assertions.assertTrue(jsonObject.getJSONObject("general-context").getString("msg")
-        .contentEquals("Sorry, but no general-context workflow ran for the given alert. Please check filter config"));
-
-    Assertions.assertTrue(jsonObject.getJSONObject("resource-context").getString("msg")
-        .contentEquals("Sorry, but no resource-context workflow ran for the given alert. Please check filter config"));
-
-    Assertions.assertTrue(jsonObject.getJSONObject("policy-context").getString("msg")
-        .contentEquals("Sorry, but no policy-context workflow ran for the given alert. Please check filter config"));
-
-
+    @Override
+    public void handleEventBridge(ProcessingResponse processingResponse, String normalizerId) {
+    }
   }
 
 

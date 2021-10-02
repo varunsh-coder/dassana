@@ -55,8 +55,8 @@ public class RiskEvaluator {
         }
 
       } catch (Exception e) {
-        throw new RuntimeException(String.format("Unable to match rule %s condition %s", riskRule.getName(),
-            riskRule.getCondition()),e);
+        throw new RiskEvalException(String.format("Unable to match rule %s condition %s", riskRule.getName(),
+            riskRule.getCondition()),e, risk.getName());
       }
     }
 
