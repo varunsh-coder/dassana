@@ -8,8 +8,8 @@ filters:
   - match-type: any
     rules:
       - .source == "Prisma Cloud" # SQS as source input
-      - .resource.rrn | contains("rrn") # PC API as source input
-      - .message.resource.rrn | contains("rrn") # Splunk as source input
+      - (.resource and .resource.rrn ) and (.resource.rrn | contains("rrn")) # PC API as source input
+      - (.message and .message.resource and .message.resource.rrn) and (.message.resource.rrn | contains("rrn")) # Splunk as source input
 
 # notice that we are using a look-up step here. This step looks up vendorPolicy in the policy context workflow files and returns service and resource type information
 
