@@ -1,48 +1,11 @@
 from json import loads
-from typing import Dict, List, Any
 
 from aws_lambda_powertools.utilities.parser import event_parser, parse
 from aws_lambda_powertools.utilities.typing import LambdaContext
-from pydantic.main import BaseModel
+from normalize.models import PrismaAlert
 
 from dassana.common.aws_client import parse_arn
 from dassana.common.models import NormalizedOutput
-
-
-class PrismaResourceData(BaseModel):
-    arn: str = None
-    tagSets: Dict[str, str] = {}
-    tags: List[Dict[str, str]] = []
-
-
-class PrismaResource(BaseModel):
-    rrn: str
-    id: str
-    cloudType: str
-    accountId: str
-    region: str
-    regionId: str
-    resourceType: str = None
-    data: PrismaResourceData
-
-
-class Policy(BaseModel):
-    policyId: str = None
-    policyType: str = None
-
-
-class PrismaAlert(BaseModel):
-    id: str = None
-    status: str = None
-    alertId: str = None
-    alertStatus: str = None
-    policy: Policy = None
-    policyId: str = None
-    policyType: str = None
-    message: Dict[Any, Any] = None
-    history: List[Dict[Any, Any]] = None
-    resource: PrismaResource = None
-    tags: List[Dict[Any, Any]] = None
 
 
 @event_parser(model=PrismaAlert)

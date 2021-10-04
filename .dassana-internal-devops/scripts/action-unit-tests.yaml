@@ -2,10 +2,11 @@ name: Dassana Python Action Unit Tests
 on:
   pull_request:
     paths:
-      - "content/actions/**"
+      - "**.py"
       - "content/pkg/deps/python"
     branches:
       - main
+
 jobs:
   test-python-layer-common:
     permissions:
@@ -23,7 +24,7 @@ jobs:
         run: |
           python -m pytest --hypothesis-show-statistics
         working-directory: content/pkg/deps/python
-      - name: Run tests for Dassana Actions in Python
+      - name: Run tests for actions in Python
         run: |
-          PYTHONPATH=../pkg/deps/python pytest --hypothesis-show-statistics
+          PYTHONPATH=content/pkg/deps/python pytest content/actions
         working-directory: content/actions
