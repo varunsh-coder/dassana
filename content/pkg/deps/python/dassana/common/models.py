@@ -24,6 +24,7 @@ class NormalizedOutput(BaseModel):
     alertClassification: AlertClassification = AlertClassification()
     resourceType: str = None
     resourceId: str = None
+    arn: str = None
     tags: List[Dict[str, str]] = []
 
 
