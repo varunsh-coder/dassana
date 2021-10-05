@@ -23,7 +23,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import org.json.JSONObject;
 import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -32,7 +31,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class Workflows {
 
   @Inject private S3Client s3Client;
-  @Inject private DynamoDbClient dynamoDbClient;
 
   @Inject private ContentManager contentManager;
   @Inject private Parser parser;
