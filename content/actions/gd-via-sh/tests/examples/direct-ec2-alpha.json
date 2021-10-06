@@ -1,0 +1,123 @@
+[
+  {
+    "schemaVersion": "2.0",
+    "accountId": "020747060415",
+    "region": "us-east-1",
+    "partition": "aws",
+    "id": "a0bdfff401df680ce958b027abe1c311",
+    "arn": "arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d/finding/a0bdfff401df680ce958b027abe1c311",
+    "type": "UnauthorizedAccess:EC2/SSHBruteForce",
+    "resource": {
+      "resourceType": "Instance",
+      "instanceDetails": {
+        "instanceId": "i-0bc95ef8e97a7d331",
+        "instanceType": "t2.micro",
+        "launchTime": "2021-09-18T23:26:26.000Z",
+        "platform": null,
+        "productCodes": [],
+        "iamInstanceProfile": null,
+        "networkInterfaces": [
+          {
+            "networkInterfaceId": "eni-01047b10b9d535132",
+            "privateIpAddresses": [
+              {
+                "privateDnsName": "ip-172-31-45-232.ec2.internal",
+                "privateIpAddress": "172.31.45.232"
+              }
+            ],
+            "subnetId": "subnet-09fe0358bb0566a46",
+            "vpcId": "vpc-05ec28779c1bc59bf",
+            "privateDnsName": "ip-172-31-45-232.ec2.internal",
+            "securityGroups": [
+              {
+                "groupName": "user-data-stack-SSHSecurityGroup-XMYOJ9CYEACJ",
+                "groupId": "sg-05d5932c7e696826a"
+              }
+            ],
+            "publicIp": "54.196.85.28",
+            "ipv6Addresses": [],
+            "publicDnsName": "ec2-54-196-85-28.compute-1.amazonaws.com",
+            "privateIpAddress": "172.31.45.232"
+          }
+        ],
+        "outpostArn": null,
+        "tags": [
+          {
+            "value": "MyInstance",
+            "key": "aws:cloudformation:logical-id"
+          },
+          {
+            "value": "arn:aws:cloudformation:us-east-1:020747060415:stack/user-data-stack/cf93fbe0-18d7-11ec-8abf-12b9c480101b",
+            "key": "aws:cloudformation:stack-id"
+          },
+          {
+            "value": "user-data-stack",
+            "key": "aws:cloudformation:stack-name"
+          },
+          {
+            "value": "Test-Stack",
+            "key": "Name"
+          }
+        ],
+        "instanceState": "running",
+        "availabilityZone": "us-east-1a",
+        "imageId": "ami-087c17d1fe0178315",
+        "imageDescription": "Amazon Linux 2 AMI 2.0.20210813.1 x86_64 HVM gp2"
+      }
+    },
+    "service": {
+      "serviceName": "guardduty",
+      "detectorId": "a2bdf2d15d3f3187077af621af3e234d",
+      "action": {
+        "actionType": "NETWORK_CONNECTION",
+        "networkConnectionAction": {
+          "connectionDirection": "INBOUND",
+          "remoteIpDetails": {
+            "ipAddressV4": "135.148.62.74",
+            "organization": {
+              "asn": "16276",
+              "asnOrg": "OVH SAS",
+              "isp": "OVH Hosting",
+              "org": "OVH Hosting"
+            },
+            "country": {
+              "countryName": "United States"
+            },
+            "city": {
+              "cityName": ""
+            },
+            "geoLocation": {
+              "lat": 37.751,
+              "lon": -97.822
+            }
+          },
+          "remotePortDetails": {
+            "port": 32782,
+            "portName": "Unknown"
+          },
+          "localPortDetails": {
+            "port": 22,
+            "portName": "SSH"
+          },
+          "protocol": "TCP",
+          "blocked": false,
+          "localIpDetails": {
+            "ipAddressV4": "172.31.45.232"
+          }
+        }
+      },
+      "resourceRole": "TARGET",
+      "additionalInfo": {},
+      "evidence": null,
+      "eventFirstSeen": "2021-09-19T21:00:40.000Z",
+      "eventLastSeen": "2021-09-19T21:30:40.000Z",
+      "archived": false,
+      "count": 2
+    },
+    "severity": 2,
+    "createdAt": "2021-09-19T21:13:20.574Z",
+    "updatedAt": "2021-09-19T21:34:06.139Z",
+    "title": "135.148.62.74 is performing SSH brute force attacks against i-0bc95ef8e97a7d331.",
+    "description": "135.148.62.74 is performing SSH brute force attacks against i-0bc95ef8e97a7d331. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password."
+  }
+]

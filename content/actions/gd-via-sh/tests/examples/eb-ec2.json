@@ -1,0 +1,103 @@
+{
+  "detail-type": "Security Hub Findings - Imported",
+  "source": "aws.securityhub",
+  "time": "2021-07-14T03:54:44Z",
+  "resources": [
+    ""
+  ],
+  "detail": {
+    "findings": [
+      {
+        "SchemaVersion": "2018-10-08",
+        "Id": "arn:aws:guardduty:us-east-1:363265257036:detector/96bad234c3d0033d695e70c93b8741fb/finding/36bc3df32928fe1c98ac2a6d9a48fb56",
+        "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/guardduty",
+        "GeneratorId": "arn:aws:guardduty:us-east-1:363265257036:detector/96bad234c3d0033d695e70c93b8741fb",
+        "AwsAccountId": "363265257036",
+        "Types": [
+          "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+        ],
+        "FirstObservedAt": "2021-03-29T02:46:01Z",
+        "LastObservedAt": "2021-05-30T04:25:48Z",
+        "CreatedAt": "2021-03-29T02:53:15.217Z",
+        "UpdatedAt": "2021-05-30T04:34:19.895Z",
+        "Severity": {
+          "Product": 2,
+          "Label": "LOW",
+          "Normalized": 40
+        },
+        "Title": "217.174.183.70 is performing SSH brute force attacks against i-054474987a390f341.",
+        "Description": "217.174.183.70 is performing SSH brute force attacks against i-054474987a390f341. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password.",
+        "SourceUrl": "https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=current&fId=36bc3df32928fe1c98ac2a6d9a48fb56",
+        "ProductFields": {
+          "aws/guardduty/service/action/networkConnectionAction/remotePortDetails/portName": "Unknown",
+          "aws/guardduty/service/archived": "false",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asnOrg": "Limited Liability Company Telcomnet",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lat": "55.7483",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/ipAddressV4": "217.174.183.70",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lon": "37.6171",
+          "aws/guardduty/service/action/networkConnectionAction/blocked": "false",
+          "aws/guardduty/service/action/networkConnectionAction/remotePortDetails/port": "32776",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/country/countryName": "Russia",
+          "aws/guardduty/service/serviceName": "guardduty",
+          "aws/guardduty/service/evidence": "",
+          "aws/guardduty/service/action/networkConnectionAction/localIpDetails/ipAddressV4": "172.16.4.235",
+          "aws/guardduty/service/detectorId": "96bad234c3d0033d695e70c93b8741fb",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/org": "Limited Liability Company Telcomnet",
+          "aws/guardduty/service/action/networkConnectionAction/connectionDirection": "INBOUND",
+          "aws/guardduty/service/eventFirstSeen": "2021-03-29T02:46:01Z",
+          "aws/guardduty/service/eventLastSeen": "2021-05-30T04:25:48Z",
+          "aws/guardduty/service/action/networkConnectionAction/localPortDetails/portName": "SSH",
+          "aws/guardduty/service/action/actionType": "NETWORK_CONNECTION",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/city/cityName": "Moscow",
+          "aws/guardduty/service/additionalInfo": "",
+          "aws/guardduty/service/resourceRole": "TARGET",
+          "aws/guardduty/service/action/networkConnectionAction/localPortDetails/port": "22",
+          "aws/guardduty/service/action/networkConnectionAction/protocol": "TCP",
+          "aws/guardduty/service/count": "14",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asn": "33904",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/isp": "Limited Liability Company Telcomnet",
+          "aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:363265257036:detector/96bad234c3d0033d695e70c93b8741fb/finding/36bc3df32928fe1c98ac2a6d9a48fb56",
+          "aws/securityhub/ProductName": "GuardDuty",
+          "aws/securityhub/CompanyName": "Amazon"
+        },
+        "Resources": [
+          {
+            "Type": "AwsEc2Instance",
+            "Id": "arn:aws:ec2:us-east-1:363265257036:instance/i-054474987a390f341",
+            "Partition": "aws",
+            "Region": "us-east-1",
+            "Tags": {
+              "Name": "bastion"
+            },
+            "Details": {
+              "AwsEc2Instance": {
+                "Type": "t2.micro",
+                "ImageId": "ami-038f1ca1bd58a5790",
+                "IpV4Addresses": [
+                  "3.87.52.250",
+                  "172.16.4.235"
+                ],
+                "VpcId": "vpc-02400cbe81d28eadc",
+                "SubnetId": "subnet-0fff96f44f61be3c8",
+                "LaunchedAt": "2021-03-14T01:08:43Z"
+              }
+            }
+          }
+        ],
+        "WorkflowState": "NEW",
+        "Workflow": {
+          "Status": "NEW"
+        },
+        "RecordState": "ACTIVE",
+        "FindingProviderFields": {
+          "Severity": {
+            "Label": "LOW"
+          },
+          "Types": [
+            "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "SchemaVersion": "2018-10-08",
+  "Id": "arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d/finding/d4bdf5da6f4790309f903c8c303f82af",
+  "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/guardduty",
+  "ProductName": "GuardDuty",
+  "CompanyName": "Amazon",
+  "Region": "us-east-1",
+  "GeneratorId": "arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d",
+  "AwsAccountId": "020747060415",
+  "Types": [
+    "Effects/Data Exposure/Policy:S3-BucketBlockPublicAccessDisabled"
+  ],
+  "FirstObservedAt": "2021-09-15T22:58:52.000Z",
+  "LastObservedAt": "2021-09-15T23:49:44.000Z",
+  "CreatedAt": "2021-09-15T23:05:04.399Z",
+  "UpdatedAt": "2021-09-15T23:55:38.544Z",
+  "Severity": {
+    "Product": 2,
+    "Label": "LOW",
+    "Normalized": 40
+  },
+  "Title": "Amazon S3 Block Public Access was disabled for S3 bucket new-fixed-bucket-dassana.",
+  "Description": "Amazon S3 Block Public Access was disabled for S3 bucket new-fixed-bucket-dassana by AWSReservedSSO_AdministratorAccess_30c69abce3b2f071 calling PutBucketPublicAccessBlock. If this behavior is not expected, it may indicate a configuration mistake or that your credentials are compromised.",
+  "SourceUrl": "https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=current&fId=d4bdf5da6f4790309f903c8c303f82af",
+  "ProductFields": {
+    "aws/guardduty/service/archived": "false",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/organization/asnOrg": "LEVEL3",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/organization/org": "Level 3 Communications",
+    "aws/guardduty/service/additionalInfo": "",
+    "aws/guardduty/service/resourceRole": "TARGET",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/organization/isp": "Level 3 Communications",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/geoLocation/lat": "37.3177",
+    "aws/guardduty/service/count": "2",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/ipAddressV4": "4.78.242.50",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/country/countryName": "United States",
+    "aws/guardduty/service/action/awsApiCallAction/callerType": "Remote IP",
+    "aws/guardduty/service/action/awsApiCallAction/serviceName": "s3.amazonaws.com",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/city/cityName": "San Jose",
+    "aws/guardduty/service/action/awsApiCallAction/api": "PutBucketPublicAccessBlock",
+    "aws/guardduty/service/serviceName": "guardduty",
+    "aws/guardduty/service/evidence": "",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/geoLocation/lon": "-121.938",
+    "aws/guardduty/service/detectorId": "a2bdf2d15d3f3187077af621af3e234d",
+    "aws/guardduty/service/action/awsApiCallAction/remoteIpDetails/organization/asn": "3356",
+    "aws/guardduty/service/eventFirstSeen": "2021-09-15T22:58:52.000Z",
+    "aws/guardduty/service/action/awsApiCallAction/affectedResources/AWS::S3::Bucket": "new-fixed-bucket-dassana",
+    "aws/guardduty/service/eventLastSeen": "2021-09-15T23:49:44.000Z",
+    "aws/guardduty/service/action/actionType": "AWS_API_CALL",
+    "aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d/finding/d4bdf5da6f4790309f903c8c303f82af",
+    "aws/securityhub/ProductName": "GuardDuty",
+    "aws/securityhub/CompanyName": "Amazon"
+  },
+  "Resources": [
+    {
+      "Type": "AwsIamAccessKey",
+      "Id": "AWS::IAM::AccessKey:ASIAQJVE7AS7SYIEXNFT",
+      "Partition": "aws",
+      "Region": "us-east-1",
+      "Details": {
+        "AwsIamAccessKey": {
+          "PrincipalId": "AROAQJVE7AS7XELRPYV4L:hosein@dassana.io",
+          "PrincipalType": "AssumedRole",
+          "PrincipalName": "AWSReservedSSO_AdministratorAccess_30c69abce3b2f071"
+        }
+      }
+    },
+    {
+      "Type": "AwsS3Bucket",
+      "Id": "arn:aws:s3:::new-fixed-bucket-dassana",
+      "Partition": "aws",
+      "Region": "us-east-1",
+      "Details": {
+        "AwsS3Bucket": {
+          "OwnerId": "07afa653eb948f54d30dd278e27b8d1e7692cc27b9e5ba236483c78fdaabea30",
+          "CreatedAt": "2021-09-15T22:05:33Z"
+        }
+      }
+    }
+  ],
+  "WorkflowState": "NEW",
+  "Workflow": {
+    "Status": "NEW"
+  },
+  "RecordState": "ACTIVE",
+  "FindingProviderFields": {
+    "Severity": {
+      "Label": "LOW"
+    },
+    "Types": [
+      "Effects/Data Exposure/Policy:S3-BucketBlockPublicAccessDisabled"
+    ]
+  }
+}
