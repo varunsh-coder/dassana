@@ -20,10 +20,10 @@ class GuardDutyNormalizerTest(TestCase):
         # assert norm.region == 'ap-northeast-1'
         # assert norm.resourceContainer == '123456789123'
 
-    def print_pretty(norm, input):
+    def print_pretty(self, norm, i):
         print('')
         print('++++++++++++++++++++++++++')
-        print('+++testing input: ' + input)
+        print('+++testing input: ' + i)
         print('+++csp: ' + norm.csp)
         print("+++resource_container: " + norm.resourceContainer)
         print("+++region: " + norm.region)
@@ -32,13 +32,15 @@ class GuardDutyNormalizerTest(TestCase):
         print("+++arn: " + norm.arn)
         print("+++vendorPolicy: " + norm.vendorPolicy)
         print("+++vendorId: " + norm.vendorId)
+        print("+++service: " + norm.service)
+        print("+++resourceType: " + norm.resourceType)
 
-    def test_eventbridge(self):
-        with open('tests/examples/sample-gd.json') as f:
-            alert = load(f)
-            resp = handle(alert, LambdaTestContext('test-guardduty-normalizer'))
-            norm = NormalizedOutput(**resp)
-            self.print_pretty(norm, 'sample-gd.json')
+    # def test_eventbridge(self):
+    #     with open('gd-via-sh/tests/examples/eb-ec2.json') as f:
+    #         alert = load(f)
+    #         resp = handle(alert, LambdaTestContext('test-guardduty-normalizer'))
+            # norm = NormalizedOutput(**resp)
+            # self.print_pretty(norm, 'eb-ec2.json')
             # assert norm.vendorId == 'prisma-cloud'
             # assert norm.alertId == 'P-2388888'
             # assert norm.vendorPolicy == '34064d53-1fd1-42e6-b075-45dce495caca'
@@ -47,12 +49,55 @@ class GuardDutyNormalizerTest(TestCase):
             # assert norm.region == 'ap-northeast-1'
             # assert norm.resourceContainer == '123456789123'
 
-    def test_raw(self):
-        with open('tests/examples/gd-raw.json') as f:
+    # def test_raw_s3_multiple_resource(self):
+        # with open('gd-via-sh/tests/examples/raw-s3-multiple-resource.json') as f:
+        #     alert = load(f)
+        #     resp = handle(alert, LambdaTestContext('test-guardduty-normalizer'))
+    #         norm = NormalizedOutput(**resp)
+    #         self.print_pretty(norm, 'gd-raw.json')
+    #         # assert norm.vendorId == 'prisma-cloud'
+    #         # assert norm.alertId == 'P-2388888'
+    #         # assert norm.vendorPolicy == '34064d53-1fd1-42e6-b075-45dce495caca'
+    #         # assert norm.csp == 'aws'
+    #         # assert norm.resourceId == 'foobar'
+    #         # assert norm.region == 'ap-northeast-1'
+    #         # assert norm.resourceContainer == '123456789123'
+    #
+    # def test_direct(self):
+    #     with open('tests/examples/gd-direct.json') as f:
+    #         alert = load(f)
+    #         print(alert)
+    #         resp = handle(alert, LambdaTestContext('test-guardduty-normalizer'))
+    #         norm = NormalizedOutput(**resp)
+    #         self.print_pretty(norm, 'gd-direct.json')
+    #         # assert norm.vendorId == 'prisma-cloud'
+    #         # assert norm.alertId == 'P-2388888'
+    #         # assert norm.vendorPolicy == '34064d53-1fd1-42e6-b075-45dce495caca'
+    #         # assert norm.csp == 'aws'
+    #         # assert norm.resourceId == 'foobar'
+    #         # assert norm.region == 'ap-northeast-1'
+    #         # assert norm.resourceContainer == '123456789123'
+
+    def test_direct_ec2_alpha(self):
+        with open('gd-via-sh/tests/examples/direct-ec2-alpha.json') as f:
             alert = load(f)
             resp = handle(alert, LambdaTestContext('test-guardduty-normalizer'))
             norm = NormalizedOutput(**resp)
-            self.print_pretty(norm, 'gd-raw.json')
+            self.print_pretty(norm, 'direct-ec2-alpha.json')
+    #         # assert norm.vendorId == 'prisma-cloud'
+    #         # assert norm.alertId == 'P-2388888'
+    #         # assert norm.vendorPolicy == '34064d53-1fd1-42e6-b075-45dce495caca'
+    #         # assert norm.csp == 'aws'
+    #         # assert norm.resourceId == 'foobar'
+    #         # assert norm.region == 'ap-northeast-1'
+    #         # assert norm.resourceContainer == '123456789123'
+
+    def test_raw_ec2_alpha(self):
+        with open('gd-via-sh/tests/examples/raw-ec2-alpha.json') as f:
+            alert = load(f)
+            resp = handle(alert, LambdaTestContext('test-guardduty-normalizer'))
+            norm = NormalizedOutput(**resp)
+            self.print_pretty(norm, 'raw-ec2-alpha.json')
             # assert norm.vendorId == 'prisma-cloud'
             # assert norm.alertId == 'P-2388888'
             # assert norm.vendorPolicy == '34064d53-1fd1-42e6-b075-45dce495caca'
@@ -60,19 +105,3 @@ class GuardDutyNormalizerTest(TestCase):
             # assert norm.resourceId == 'foobar'
             # assert norm.region == 'ap-northeast-1'
             # assert norm.resourceContainer == '123456789123'
-
-    def test_direct(self):
-        with open('tests/examples/gd-direct.json') as f:
-            alert = load(f)
-            print(alert)
-            resp = handle(alert, LambdaTestContext('test-guardduty-normalizer'))
-            norm = NormalizedOutput(**resp)
-            self.print_pretty(norm, 'gd-direct.json')
-            # assert norm.vendorId == 'prisma-cloud'
-            # assert norm.alertId == 'P-2388888'
-            # assert norm.vendorPolicy == '34064d53-1fd1-42e6-b075-45dce495caca'
-            # assert norm.csp == 'aws'
-            # assert norm.resourceId == 'foobar'
-            # assert norm.region == 'ap-northeast-1'
-            # assert norm.resourceContainer == '123456789123'
-
