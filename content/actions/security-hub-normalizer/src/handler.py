@@ -1,4 +1,7 @@
 from json import loads
+from typing import Dict, List, Any, Optional
+
+from pydantic import BaseModel
 from aws_lambda_powertools.utilities.parser import event_parser, parse
 from aws_lambda_powertools.utilities.typing import LambdaContext
 
@@ -6,7 +9,27 @@ from dassana.common.aws_client import parse_arn
 from dassana.common.models import NormalizedOutput
 from dassana.common.aws_client import LambdaTestContext
 
-from normalize.models import SecurityHubAlert
+
+class Resources(BaseModel):
+    Partition: str = None
+    Type: str = None
+    Region: str = None
+    Id: str = None
+
+
+class Detail(BaseModel):
+    findings: List[Dict[Any, Any]] = None
+
+
+class SecurityHubAlert(BaseModel):
+    Id: str = None
+    ProductArn: str = None
+    Region: str = None
+    AwsAccountId: str = None
+    Types: List[str] = []
+    ProductFields: Optional[Dict[str, str]] = None
+    Resources: Optional[List[Resources]]
+    detail: Detail = None
 
 
 @event_parser(model=SecurityHubAlert)
@@ -53,14 +76,5 @@ def handle(event: SecurityHubAlert, context: LambdaContext):
         vendorPolicy=policy_id,
         vendorId='aws-config'
     )
-
-    # print('+++csp: '+'aws')
-    # print("+++resource_container: " + resource_container)
-    # print("+++region: " + region)
-    # print("+++resourceId: " + resource_id)
-    # print("+++alertId: " + event.Id)
-    # print("+++arn: " + resource_arn)
-    # print("+++vendorPolicy: " + policy_id)
-    # print("+++vendorId: " + 'aws-config')
 
     return loads(output.json())

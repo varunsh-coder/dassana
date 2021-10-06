@@ -49,12 +49,10 @@ class GuardDutyDirect(BaseModel):
 
 def handle(event, context: LambdaContext):
     mode = 's' # s --> SecurityHub - we default to raw and event bridge alert format
-    if isinstance(event, list): # direct GuardDuty alert's has [{}] format
-        print("it is list")
+    if isinstance(event, list): # direct GuardDuty alerts have [{}] format
         event = parse(event[0], model=GuardDutyDirect)
-        mode = 'd' # --> since direct alert have different tag names we need flag to distinguish
+        mode = 'd' # -->  flag for direct alerts
     elif isinstance(event, dict): # GuardDuty alerts from SecurityHub will have {} format
-        print("it is dict")
         event = parse(event, model=GuardDutyAlert)
     else:
         raise TypeError("ERROR: input file is not of type List or Dictionary. Please Check.")
@@ -68,7 +66,7 @@ def handle(event, context: LambdaContext):
     if 'ec2' in policy_id.lower(): # EC2
         rt = 'AwsEc2Instance' if mode=='s' else 'instanceDetails'  # direct alerts have different resource name
         if mode=='d': resource = event.resource.instanceDetails  # direct alerts have resource type as a tag
-        service = "ec2"  # we don't need to wait for policy context to set this value since we have the policyId
+        service = "ec2"  # we don't need to wait for policy context step to set this value since we have the policyId
         resource_type = "instance"
     elif 'iam' in policy_id.lower(): # IAM
         rt = 'AwsIamAccessKey' if mode=='s' else 'accessKeyDetails'
@@ -83,11 +81,11 @@ def handle(event, context: LambdaContext):
     else:
         rt = None
 
-    # throws an exception if there were no resource matching with policyId
+    # throws an exception if there were no resources matching with policyId
     if rt is None:
         raise ValueError("ERROR: There were no matching resource with type " + rt)
 
-    if mode=='s': # resources is List in case of Security Hub
+    if mode=='s': # Security Hub alert resources is of type List
         for resource in event.Resources:  # traverse the resources list and match with type from policyId
             if resource.Type == rt:
                 break
