@@ -48,7 +48,7 @@ class GuardDutyDirect(BaseModel):
 
 
 def handle(event, context: LambdaContext):
-    mode = 's' # s --> SecurityHub - we default to raw and event bridge alert format
+    mode = 's' # s --> SecurityHub - we default to raw and event bridge alert format from securityHub findings
     if isinstance(event, list): # direct GuardDuty alerts have [{}] format
         event = parse(event[0], model=GuardDutyDirect)
         mode = 'd' # -->  flag for direct alerts
@@ -61,7 +61,10 @@ def handle(event, context: LambdaContext):
     if (mode=='s') and (event.detail is not None):
         event = parse(event.detail.findings[0], model=GuardDutyAlert)
 
-    policy_id = event.Types[0] if mode=='s' else event.type
+    if mode == 's':
+        policy_id = event.Types[0]
+    else:
+        event.type
 
     if 'ec2' in policy_id.lower(): # EC2
         rt = 'AwsEc2Instance' if mode=='s' else 'instanceDetails'  # direct alerts have different resource name
@@ -83,7 +86,7 @@ def handle(event, context: LambdaContext):
 
     # throws an exception if there were no resources matching with policyId
     if rt is None:
-        raise ValueError("ERROR: There were no matching resource with type " + rt)
+        raise ValueError("ERROR: There were no matching resource with type ")
 
     if mode=='s': # Security Hub alert resources is of type List
         for resource in event.Resources:  # traverse the resources list and match with type from policyId
