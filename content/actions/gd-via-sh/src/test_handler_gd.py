@@ -11,7 +11,7 @@ class GuardDutyNormalizerTest(TestCase):
     def validate_alert_norm(alert):
         print("just an empty shell")
 
-    # for testing purposes
+    ### for testing purposes
     # def print_pretty(self, norm, i):
     #     print('')
     #     print('++++++++++++++++++++++++++')
