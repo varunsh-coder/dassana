@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from dassana.common.aws_client import LambdaTestContext
 from dassana.common.models import NormalizedOutput
-from handler import handle
+from gd_handler import handle
 
 
 class GuardDutyNormalizerTest(TestCase):
