@@ -54,6 +54,7 @@ classes:
         categories:
           - id: brute-force
           - id: unsecured-credentials
+          - id: credentials-from-password-stores
       - id: discovery
         categories:
           - id: network-service-scanning
