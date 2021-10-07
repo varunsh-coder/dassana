@@ -61,10 +61,12 @@ def handle(event, context: LambdaContext):
     if (mode=='s') and (event.detail is not None):
         event = parse(event.detail.findings[0], model=GuardDutyAlert)
 
-    if mode == 's':
+    if mode=='s' and event.Types:
         policy_id = event.Types[0]
+    elif mode=='d':
+        policy_id = event.type
     else:
-        event.type
+        policy_id = ""
 
     if 'ec2' in policy_id.lower(): # EC2
         rt = 'AwsEc2Instance' if mode=='s' else 'instanceDetails'  # direct alerts have different resource name
