@@ -7,10 +7,9 @@ id: aws-gd-via-security-hub # if you change this, do ensure to update /content/p
 filters:
   - match-type: any
     rules:
-      - type == "array" and .[0] and .[0].arn and (.[0].arn | contains ("guardduty")) # direct guardduty alerts will be in array format
-      - type == "object" and .ProductArn and (.ProductArn | contains ("guardduty"))
+      - .ProductArn and (.ProductArn | contains ("guardduty"))
       - |
-        type == "object" and .detail and .detail.findings and .detail.findings[].ProductArn and any(.detail.findings[];.ProductArn | contains ("guardduty"))
+        .detail and .detail.findings and .detail.findings[].ProductArn and any(.detail.findings[];.ProductArn | contains ("guardduty"))
 
 steps:
   - id: resource-info

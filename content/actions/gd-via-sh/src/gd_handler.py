@@ -31,100 +31,85 @@ class GuardDutyAlert(BaseModel):
     Resources: Optional[List[Resources]]
     detail: Detail = None
 
-
-class DirectResource(BaseModel):
-    accessKeyDetails: Optional[Dict[str, str]]
-    s3BucketDetails: Optional[List[Dict[Any, Any]]]
-    instanceDetails: Optional[Dict[Any, Any]]
-
-
-class GuardDutyDirect(BaseModel):
-    accountId: str = None
-    region: str = None
-    type: str = None
-    resource: DirectResource = None
-    arn: str = None
-    id: str = None
-
-
-def handle(event, context: LambdaContext):
-    mode = 's' # s --> SecurityHub - we default to raw and event bridge alert format from securityHub findings
-    if isinstance(event, list): # direct GuardDuty alerts have [{}] format
-        event = parse(event[0], model=GuardDutyDirect)
-        mode = 'd' # -->  flag for direct alerts
-    elif isinstance(event, dict): # GuardDuty alerts from SecurityHub will have {} format
-        event = parse(event, model=GuardDutyAlert)
+## changes the formatting of the policyId to be same across guard duty
+## ex -> 'TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce' to 'UnauthorizedAccess:EC2/SSHBruteForce'
+def normalize_policyId(policyId, resource):
+    # we want to only extract the last part if there are multiple forward slashes
+    if not policyId.rfind('/') == policyId.find('/'):
+        policyId_extracted = policyId.split('/')[-1]
     else:
-        raise TypeError("ERROR: input file is not of type List or Dictionary. Please Check.")
+        policyId_extracted = policyId
+    resource_index = policyId_extracted.lower().rfind(resource) # starting index of the resource
+    hyphen_index = resource_index + len(resource) # index of the hyphen after resource
+    dash_index = policyId_extracted.rfind('-') # index of the last hyphen
+    if (dash_index == hyphen_index): # we want to only change the hyphen after resource
+        s = list(policyId_extracted)
+        s[dash_index] = '/'
+        policy_Id = "".join(s)
+    else:
+        policy_Id = policyId
 
-    # only EventBridge Alert has tags .event.detail.findings[]
-    if (mode=='s') and (event.detail is not None):
+    return policy_Id
+
+
+@event_parser(model=GuardDutyAlert)
+def handle(event: GuardDutyAlert, context: LambdaContext):
+    # only EventBridge Alerts through SecurityHub have the tags .event.detail.findings[]
+    if event.detail is not None:
         event = parse(event.detail.findings[0], model=GuardDutyAlert)
 
-    if mode=='s' and event.Types:
+    if event.Types:
         policy_id = event.Types[0]
-    elif mode=='d':
-        policy_id = event.type
-    else:
-        policy_id = ""
 
+    print(policy_id)
+    # Utilizing PolicyId to find the resource connected to this Alert
     if 'ec2' in policy_id.lower(): # EC2
-        rt = 'AwsEc2Instance' if mode=='s' else 'instanceDetails'  # direct alerts have different resource name
-        if mode=='d': resource = event.resource.instanceDetails  # direct alerts have resource type as a tag
+        rt = 'AwsEc2Instance' # resource names are static and will always be the same based on policyId
         service = "ec2"  # we don't need to wait for policy context step to set this value since we have the policyId
         resource_type = "instance"
+        policy_id = normalize_policyId(policy_id, 'ec2')
     elif 'iam' in policy_id.lower(): # IAM
-        rt = 'AwsIamAccessKey' if mode=='s' else 'accessKeyDetails'
-        if mode == 'd': resource = event.resource.accessKeyDetails
+        rt = 'AwsIamAccessKey'
         service = "iam"
         resource_type = "user"
+        policy_id = normalize_policyId(policy_id, 'iamuser')
     elif 's3' in policy_id.lower(): # S3
-        rt = 'AwsS3Bucket' if mode=='s' else 's3BucketDetails'
-        if mode == 'd': resource = event.resource.s3BucketDetails
+        rt = 'AwsS3Bucket'
         service = "s3"
         resource_type = "bucket"
+        policy_id = normalize_policyId(policy_id, 's3')
     else:
         rt = None
+
+    print(policy_id)
 
     # throws an exception if there were no resources matching with policyId
     if rt is None:
         raise ValueError("ERROR: There were no matching resource with type ")
 
-    if mode=='s': # Security Hub alert resources is of type List
-        for resource in event.Resources:  # traverse the resources list and match with type from policyId
-            if resource.Type == rt:
-                break
+    for resource in event.Resources:  # traverse the resources list and match with type from policyId
+        if resource.Type == rt:
+            break
 
     # instanceDetails and accessKeyDetails resources from GuardDuty direct do not have arn
-    resource_arn = resource.Id if mode=='s' else event.resource.s3BucketDetails['arn'] if rt=='s3BucketDetails' else ''
+    resource_arn = resource.Id if resource.Id else ""
 
     arn_obj = parse_arn(resource_arn) if not resource_arn=='' else None
     if (arn_obj is not None and arn_obj.resource_type):
         resource_id = arn_obj.resource
     else:
-        if mode=='s':
-            resource_info = resource_arn.split(":")[5]
-            resource_id = (resource_info.split("/")[2]) if ('/' in resource_info) else resource_info
-        else: # direct alert has unique tags for each resource type
-            if rt=='instanceDetails': resource_id = event.resource.instanceDetails['instanceId']  # EC2
-            elif rt=='accessKeyDetails': resource_id = event.resource.accessKeyDetails['accessKeyId']  # IAM
-            else: resource_id = event.resource.s3BucketDetails['name']  # S3
+        resource_info = resource_arn.split(":")[5]
+        resource_id = (resource_info.split("/")[2]) if ('/' in resource_info) else resource_info
 
     # many times ARNs do haven't have region e.g. s3 bucket. so we rely on what the finding value is
-    if (mode=='s'):  # raw and eventBridge
-        region = arn_obj.region if arn_obj.region else (resource.Region if resource.Region else None)
-    else:
-        region = event.region  # direct
-
-    alert_id = event.Id if mode=='s' else event.arn
-    resource_container = event.AwsAccountId if mode=='s' else event.accountId
+    region = arn_obj.region if arn_obj.region else (resource.Region if resource.Region else None)
 
     output = NormalizedOutput(
         csp='aws',
-        resourceContainer=resource_container,
+        resourceContainer=event.AwsAccountId,
         region=region,
         resourceId=resource_id,
-        alertId=alert_id,
+        alertId=event.Id,
         arn=resource_arn,
         resourceType=resource_type,
         service=service,
