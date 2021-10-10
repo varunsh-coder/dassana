@@ -476,7 +476,7 @@ Resources:
         detail:
           findings:
             UserDefinedFields:
-              DASSANA_ALERT_PATH: # when Dassana updates the finding, SecurityHub generates BatchImportFinding event which will cause an infitinte loop so we check if the event we received is the one we actually generated
+              DASSANA_ALERT_PATH: # when Dassana updates the finding, SecurityHub generates BatchImportFinding event which will cause an infinite loop, so we check if the event we received is the one we actually generated
                 - exists: false
             ProductArn:
               - !Sub arn:aws:securityhub:${AWS::Region}::product/aws/securityhub
