@@ -697,6 +697,19 @@ Resources:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
+  GetIAMPolicyRisks:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handle
+      Runtime: python3.7
+      CodeUri: ../actions/get-iam-policy-risks
+      MemorySize: 2056
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [DassanaActionsRole, Arn]
+      Timeout: 60
+
   PrismaCloudExtractor:
     Type: AWS::Serverless::Function
     Properties:

@@ -1,8 +1,8 @@
 from hashlib import md5
+from json import dumps
 
 from aws_lambda_powertools.utilities.typing import LambdaContext
-from boto3 import client
-from cachetools import TTLCache, cached
+from cachetools import TTLCache, cached, LRUCache
 
 
 class _HashedTuple(tuple):
@@ -34,7 +34,7 @@ class _HashedTuple(tuple):
 _kwmark = (_HashedTuple,)
 
 
-def generate_hash(client_call, *args, **kwargs) -> hex:
+def generate_hash(func, *args, **kwargs) -> hex:
     """
     Dassana hash function used for caching AWS clients. The hash key is on service, region, and LambdaContext (if
     available). The most common case is to cache SDK clients with hashing on the service and region, and/or
@@ -48,7 +48,7 @@ def generate_hash(client_call, *args, **kwargs) -> hex:
     are unpacked into **kwargs for hash generation (the sorting will ensure 1:1 hashing for identical objects
     regardless of key order).
 
-    :param client_call: function
+    :param func: function
     Not involved in the hashing scheme, it is just included in generate_hash as this function is wired
     into the make_cached_call under configure_ttl_cache.
     :param args: arguments
@@ -64,6 +64,13 @@ def generate_hash(client_call, *args, **kwargs) -> hex:
             **kwargs,
             **context
         }
+    for k, v in dict(kwargs).items():
+        if issubclass(type(v), dict):
+            pop_v = kwargs.pop(k)
+            kwargs = {
+                **kwargs,
+                k: dumps(pop_v, sort_keys=True, default=str).encode('utf-8')
+            }
     return md5(hex(sum(sorted(kwargs.items()), _kwmark).__hash__()).encode()).hexdigest()
 
 
@@ -83,7 +90,26 @@ def configure_ttl_cache(maxsize=1024, ttl=60, hash_op=generate_hash):
     cache = TTLCache(maxsize=maxsize, ttl=ttl)
 
     @cached(cache, key=hash_op)
-    def make_cached_call(client_call, *args, **kwargs) -> client:
-        return client_call(**kwargs)
+    def make_cached_call(func, *args, **kwargs):
+        return func(**kwargs)
+
+    return make_cached_call
+
+
+def configure_lru_cache(maxsize=1024, hash_op=generate_hash):
+    """
+    Decorator that initializes a LRU Cache which is utilized in any subsequent function calls with the hashing key
+    defined generate_hash.
+
+    :param maxsize: maximum size of the LRU cache
+    :param hash_op: function with hashing scheme applying to the same args that make_cached_call consumes
+    :return: a function with another function as its first parameter which calls on keyword arguments
+             f_1(f_2(name1=value1, ..., nameN=valueN), keywords: name1=value1, name2=value2, nameN=valueN) -> f_2
+    """
+    cache = LRUCache(maxsize=maxsize)
+
+    @cached(cache, key=hash_op)
+    def make_cached_call(func, *args, **kwargs):
+        return func(**kwargs)
 
     return make_cached_call
