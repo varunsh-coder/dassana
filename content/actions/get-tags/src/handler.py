@@ -7,7 +7,6 @@ from botocore.exceptions import ClientError
 from aws_lambda_powertools import Logger
 
 from dassana.common.aws_client import DassanaAwsObject, parse_arn
-from dassana.common.cache import configure_ttl_cache
 
 with open('input.json', 'r') as schema:
     schema = load(schema)
@@ -18,9 +17,6 @@ logger = Logger(service='dassana-actions')
 
 def tag_mapping(tags):
     return [{'name': tag['Key'], 'value': tag['Value']} for tag in tags]
-
-
-get_cached_client = configure_ttl_cache(1024, 60)
 
 
 @logger.inject_lambda_context
@@ -38,7 +34,7 @@ def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
         region = event.get('region')
 
     if service == 'iam':
-        client = get_cached_client(dassana_aws.create_aws_client, context=context, service='iam', region=region)
+        client = dassana_aws.create_aws_client(context=context, service='iam', region=region)
         resource_type = arn_component.resource_type
         resource = arn_component.resource
         try:
@@ -60,8 +56,8 @@ def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
             else:
                 raise e
     else:
-        client = get_cached_client(dassana_aws.create_aws_client, context=context, service='resourcegroupstaggingapi',
-                                  region=region)
+        client = dassana_aws.create_aws_client(context=context, service='resourcegroupstaggingapi',
+                                               region=region)
         try:
             resp = client.get_resources(ResourceARNList=[
                 arn

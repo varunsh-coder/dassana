@@ -5,14 +5,10 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_lambda_powertools.utilities.validation import validator
 from dassana.common.aws_client import DassanaAwsObject, parse_arn
 from lib.helper import parse_cloudsplaining
-from dassana.common.cache import configure_ttl_cache, configure_lru_cache
 
 with open('input.json', 'r') as schema:
     schema = load(schema)
     dassana_aws = DassanaAwsObject()
-
-get_cached_client_aws = configure_ttl_cache(1024, 60)
-get_cached_findings = configure_lru_cache(1024)
 
 
 @validator(inbound_schema=schema)
@@ -25,8 +21,8 @@ def handle(event: Dict[str, Any], context: LambdaContext):
     name = iam_arn.resource
     resource_type = iam_arn.resource_type
 
-    client = get_cached_client_aws(dassana_aws.create_aws_client, context=context, service='iam',
-                                   region=event.get('region'))
+    client = dassana_aws.create_aws_client(context=context, service='iam',
+                                           region=event.get('region'))
 
     POLICY_ARN = 'PolicyArn'
     POLICY_NAME = 'PolicyName'
@@ -126,8 +122,8 @@ def handle(event: Dict[str, Any], context: LambdaContext):
         'Statement': policy_statements
     }
 
-    policy_finding = get_cached_findings(parse_cloudsplaining, policy_document=policy_document,
-                                         exclusions_config=exclusions_config)
+    policy_finding = parse_cloudsplaining(policy_document=policy_document,
+                                          exclusions_config=exclusions_config)
 
     response = dumps({
         'PolicyFindings': policy_finding.results

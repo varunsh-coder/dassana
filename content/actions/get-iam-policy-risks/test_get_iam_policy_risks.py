@@ -51,8 +51,8 @@ class IamPolicyRisks(TestCase):
         assert (results.get('CredentialsExposure') == ['ec2:GetPasswordData'])
         assert (len(results.get('InfrastructureModification')) == 274)
 
-    @given(st.lists(st.sampled_from(actions), min_size=1))
-    @settings(max_examples=1024)
+    @given(st.lists(st.sampled_from(actions), min_size=10, max_size=100))
+    @settings(max_examples=10)
     def test_cloudsplaining_parse_complex(self, acts):
         doc = {
             "Statement": [

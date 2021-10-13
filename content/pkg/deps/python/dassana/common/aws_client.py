@@ -1,10 +1,12 @@
+import operator
 import uuid
-from typing import Dict, Any
 
 from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_lambda_powertools.utilities.typing.lambda_client_context import LambdaClientContext
 from boto3 import Session, client
+from cachetools import TTLCache, cachedmethod
 
+from dassana.common.cache import generate_hash
 from dassana.common.models import ArnComponent
 
 
@@ -29,7 +31,11 @@ class LambdaTestContext(LambdaContext):
 class DassanaAwsObject(object):
     def __init__(self):
         self._session = Session()
+        max_cache_size = 1024
+        ttl = 60
+        self.cache = TTLCache(max_cache_size, ttl)
 
+    @cachedmethod(operator.attrgetter('cache'), key=generate_hash)
     def create_aws_client(self, context: LambdaContext, service, region: str) -> client:
         if context is None or context.client_context is None or context.client_context.custom is None or len(
                 context.client_context.custom) == 0:

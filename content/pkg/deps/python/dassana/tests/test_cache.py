@@ -34,7 +34,8 @@ class DassanaCacheTest(TestCase):
         super(DassanaCacheTest, self).__init__(*args, **kwargs)
         name = "dassana-cache-test-lambda-context"
         self.session = TestSession(name)
-        self.get_cached_client = configure_ttl_cache()
+        self.cache_size = 10
+        self.get_cached_client = configure_ttl_cache(self.cache_size)
         self.hash_set = set()
 
     @given(lists(st.uuids(), min_size=3, max_size=3))
@@ -61,12 +62,14 @@ class DassanaCacheTest(TestCase):
 
     @given(
         st.dictionaries(
-            st.sampled_from(['otherName', 'labels']),
+            st.sampled_from(['otherName']),
             st.sampled_from(['ReVe', 'Midzy', 'VIP']),
             min_size=1
         ), st.dictionaries(
             st.sampled_from(['aws_access_key_id', 'aws_secret_access_key', 'aws_session_token']),
-            st.sampled_from(['Army', 'SWITH', 'Blackjack'])
+            st.sampled_from(['Army', 'SWITH', 'Blackjack']),
+            min_size=3,
+            max_size=3
         )
     )
     @settings(deadline=100, derandomize=True, max_examples=1000, verbosity=Verbosity.verbose)
@@ -75,4 +78,5 @@ class DassanaCacheTest(TestCase):
         self.get_cached_client(self.session.create_client, **mapping,
                                context=LambdaTestContext('abc', env=access_keys))
         note(mapping.__str__())
+        print(self.session.miss / 100, 1 - (self.session.miss / 100))
         assert self.session.miss <= 500

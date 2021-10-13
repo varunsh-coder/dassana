@@ -11,10 +11,8 @@ from pydantic.json import IPv4Address
 from json import loads
 
 from dassana.common.aws_client import DassanaAwsObject
-from dassana.common.cache import configure_ttl_cache
 
 logger = Logger(service='dassana-actions')
-get_cached_client = configure_ttl_cache(1024, 60)
 
 with open('input.json', 'r') as schema:
     schema = load(schema)
@@ -48,10 +46,10 @@ def handle(event: Dict[str, Any], context: LambdaContext):
     region = event.get('region')
     event_exceptions = event.get('exceptions', [])
 
-    ec2_client = get_cached_client(dassana_aws.create_aws_client, context=context, service='ec2',
-                                   region=region)
-    elb_client = get_cached_client(dassana_aws.create_aws_client, context=context, service='elbv2',
-                                   region=region)
+    ec2_client = dassana_aws.create_aws_client(context=context, service='ec2',
+                                               region=region)
+    elb_client = dassana_aws.create_aws_client(context=context, service='elbv2',
+                                               region=region)
     lb_paginator = elb_client.get_paginator('describe_load_balancers')
     tg_paginator = elb_client.get_paginator('describe_target_groups')
     page_iterator = lb_paginator.paginate()

@@ -34,7 +34,7 @@ class _HashedTuple(tuple):
 _kwmark = (_HashedTuple,)
 
 
-def generate_hash(func, *args, **kwargs) -> hex:
+def generate_hash(*args, **kwargs) -> hex:
     """
     Dassana hash function used for caching AWS clients. The hash key is on service, region, and LambdaContext (if
     available). The most common case is to cache SDK clients with hashing on the service and region, and/or
@@ -77,10 +77,10 @@ def generate_hash(func, *args, **kwargs) -> hex:
 
 def configure_ttl_cache(maxsize=1024, ttl=60, hash_op=generate_hash):
     """
-    Decorator that initializes a TTL Cache which is utilized in any subsequent function calls with the hashing key
-    defined generate_hash. The following implementation is built as part of higher order functions to enable
-    flexibility: the biggest benefit is caching can be deployed on any function calls throughout Dassana Actions whereby
-    the intention / control flow can be defined on a purpose basis.
+    HOF (i.e higher order function) that initializes a TTL Cache which is utilized in any subsequent function calls
+    with the hashing key defined generate_hash. The following implementation is built as part of higher order
+    functions to enable flexibility: the biggest benefit is caching can be deployed on any function calls throughout
+    Dassana Actions whereby the intention / control flow can be defined on a purpose basis.
 
     :param maxsize: maximum size of the TTL cache
     :param ttl: time to live (in seconds) of items in cache
@@ -99,8 +99,8 @@ def configure_ttl_cache(maxsize=1024, ttl=60, hash_op=generate_hash):
 
 def configure_lru_cache(maxsize=1024, hash_op=generate_hash):
     """
-    Decorator that initializes a LRU Cache which is utilized in any subsequent function calls with the hashing key
-    defined generate_hash.
+    HOF (i.e higher order function) that initializes a LRU Cache which is utilized in any subsequent function calls
+    with the hashing key defined generate_hash.
 
     :param maxsize: maximum size of the LRU cache
     :param hash_op: function with hashing scheme applying to the same args that make_cached_call consumes
