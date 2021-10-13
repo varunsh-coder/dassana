@@ -1826,24 +1826,24 @@ csp:
       - id: 84codes.CloudAMQP
         name: 84codes CloudAMQP
         resource-types:
-          - id: servers
-          - id: operations
           - id: listCommunicationPreference
+          - id: operations
+          - id: servers
           - id: updateCommunicationPreference
       - id: Crypteron.DataSecurity
         name: Crypteron DataSecurity
         resource-types:
           - id: apps
-          - id: operations
           - id: listCommunicationPreference
+          - id: operations
           - id: updateCommunicationPreference
       - id: Dynatrace.Observability
         name: Dynatrace Observability
         resource-types:
-          - id: operations
-          - id: registeredSubscriptions
           - id: locations
           - id: locations/operationStatuses
+          - id: operations
+          - id: registeredSubscriptions
       - id: Microsoft.AAD
         name: Microsoft AAD
         resource-types:
@@ -1855,129 +1855,129 @@ csp:
       - id: Microsoft.ADHybridHealthService
         name: Microsoft ADHybridHealthService
         resource-types:
-          - id: services
-          - id: addsservices
-          - id: configuration
-          - id: operations
-          - id: agents
           - id: aadsupportcases
+          - id: addsservices
+          - id: agents
+          - id: anonymousapiusers
+          - id: configuration
+          - id: logs
+          - id: operations
           - id: reports
           - id: servicehealthmetrics
-          - id: logs
-          - id: anonymousapiusers
+          - id: services
       - id: Microsoft.AISupercomputer
         name: Microsoft AISupercomputer
         resource-types:
+          - id: images
           - id: locations
           - id: locations/instanceTypeSeries
           - id: locations/instanceTypeSeries/instanceTypes
           - id: locations/operationResults
           - id: operations
-          - id: images
       - id: Microsoft.AVS
         name: Microsoft AVS
         resource-types:
-          - id: operations
           - id: locations
-          - id: locations/checkTrialAvailability
           - id: locations/checkQuotaAvailability
+          - id: locations/checkTrialAvailability
+          - id: operations
           - id: privateClouds
-          - id: privateClouds/clusters
-          - id: privateClouds/authorizations
-          - id: privateClouds/hcxEnterpriseSites
-          - id: privateClouds/globalReachConnections
           - id: privateClouds/addons
+          - id: privateClouds/authorizations
+          - id: privateClouds/cloudLinks
+          - id: privateClouds/clusters
+          - id: privateClouds/globalReachConnections
+          - id: privateClouds/hcxEnterpriseSites
           - id: privateClouds/workloadNetworks
           - id: privateClouds/workloadNetworks/dhcpConfigurations
-          - id: privateClouds/workloadNetworks/portMirroringProfiles
-          - id: privateClouds/workloadNetworks/segments
-          - id: privateClouds/workloadNetworks/vmGroups
-          - id: privateClouds/workloadNetworks/gateways
-          - id: privateClouds/workloadNetworks/virtualMachines
           - id: privateClouds/workloadNetworks/dnsServices
           - id: privateClouds/workloadNetworks/dnsZones
-          - id: privateClouds/cloudLinks
+          - id: privateClouds/workloadNetworks/gateways
+          - id: privateClouds/workloadNetworks/portMirroringProfiles
+          - id: privateClouds/workloadNetworks/segments
+          - id: privateClouds/workloadNetworks/virtualMachines
+          - id: privateClouds/workloadNetworks/vmGroups
       - id: Microsoft.Addons
         name: Microsoft Addons
         resource-types:
-          - id: supportProviders
-          - id: operations
           - id: operationResults
+          - id: operations
+          - id: supportProviders
       - id: Microsoft.Advisor
         name: Microsoft Advisor
         resource-types:
-          - id: suppressions
-          - id: configurations
-          - id: metadata
-          - id: recommendations
-          - id: generateRecommendations
-          - id: operations
           - id: advisorScore
+          - id: configurations
+          - id: generateRecommendations
+          - id: metadata
+          - id: operations
+          - id: recommendations
+          - id: suppressions
       - id: Microsoft.AgFoodPlatform
         name: Microsoft AgFoodPlatform
         resource-types:
-          - id: operations
-          - id: farmBeatsExtensionDefinitions
           - id: checkNameAvailability
+          - id: farmBeatsExtensionDefinitions
+          - id: operations
       - id: Microsoft.AlertsManagement
         name: Microsoft AlertsManagement
         resource-types:
-          - id: resourceHealthAlertRules
-          - id: alerts
-          - id: alertsSummary
-          - id: smartGroups
-          - id: smartDetectorAlertRules
-          - id: migrateFromSmartDetection
           - id: actionRules
+          - id: alerts
           - id: alertsList
-          - id: alertsSummaryList
           - id: alertsMetaData
+          - id: alertsSummary
+          - id: alertsSummaryList
+          - id: migrateFromSmartDetection
           - id: operations
+          - id: resourceHealthAlertRules
+          - id: smartDetectorAlertRules
+          - id: smartGroups
       - id: Microsoft.AnalysisServices
         name: Microsoft AnalysisServices
         resource-types:
-          - id: servers
           - id: locations
           - id: locations/checkNameAvailability
           - id: locations/operationresults
           - id: locations/operationstatuses
           - id: operations
+          - id: servers
       - id: Microsoft.AnyBuild
         name: Microsoft AnyBuild
         resource-types:
           - id: Locations
           - id: Locations/OperationStatuses
-          - id: clusters
           - id: Operations
+          - id: clusters
       - id: Microsoft.ApiManagement
         name: Microsoft ApiManagement
         resource-types:
-          - id: service
+          - id: checkFeedbackRequired
+          - id: checkNameAvailability
+          - id: checkServiceNameAvailability
           - id: deletedServices
+          - id: getDomainOwnershipIdentifier
           - id: locations
           - id: locations/deletedServices
-          - id: validateServiceName
-          - id: checkServiceNameAvailability
-          - id: checkNameAvailability
-          - id: reportFeedback
-          - id: checkFeedbackRequired
           - id: operations
-          - id: getDomainOwnershipIdentifier
+          - id: reportFeedback
+          - id: service
           - id: service/eventGridFilters
+          - id: validateServiceName
       - id: Microsoft.AppAssessment
         name: Microsoft AppAssessment
         resource-types:
           - id: Locations
-          - id: operations
           - id: Locations/OperationStatuses
           - id: Locations/osVersions
+          - id: operations
       - id: Microsoft.AppConfiguration
         name: Microsoft AppConfiguration
         resource-types:
-          - id: configurationStores
-          - id: configurationStores/keyValues
-          - id: configurationStores/eventGridFilters
           - id: checkNameAvailability
+          - id: configurationStores
+          - id: configurationStores/eventGridFilters
+          - id: configurationStores/keyValues
           - id: locations
           - id: locations/operationsStatus
           - id: operations
@@ -1987,11 +1987,11 @@ csp:
           - id: Spring
           - id: Spring/apps
           - id: Spring/apps/deployments
-          - id: locations/checkNameAvailability
-          - id: operations
           - id: locations
+          - id: locations/checkNameAvailability
           - id: locations/operationResults
           - id: locations/operationStatus
+          - id: operations
       - id: Microsoft.Attestation
         name: Microsoft Attestation
         resource-types:
@@ -2003,112 +2003,112 @@ csp:
       - id: Microsoft.Authorization
         name: Microsoft Authorization
         resource-types:
-          - id: roleAssignmentScheduleRequests
-          - id: roleEligibilityScheduleRequests
-          - id: roleAssignmentSchedules
-          - id: roleEligibilitySchedules
-          - id: roleAssignmentScheduleInstances
-          - id: roleEligibilityScheduleInstances
-          - id: roleManagementPolicies
-          - id: roleManagementPolicyAssignments
-          - id: eligibleChildResources
-          - id: roleAssignments
-          - id: roleDefinitions
-          - id: classicAdministrators
-          - id: permissions
-          - id: denyAssignments
-          - id: locks
-          - id: operations
-          - id: policyDefinitions
-          - id: policySetDefinitions
-          - id: policyAssignments
-          - id: policyExemptions
-          - id: dataAliases
-          - id: dataPolicyManifests
-          - id: providerOperations
-          - id: elevateAccess
-          - id: checkAccess
-          - id: batchResourceCheckAccess
-          - id: findOrphanRoleAssignments
-          - id: roleAssignmentsUsageMetrics
           - id: accessReviewScheduleDefinitions
           - id: accessReviewScheduleSettings
-          - id: roleAssignmentApprovals
-          - id: privateLinkAssociations
-          - id: resourceManagementPrivateLinks
-          - id: operationStatus
+          - id: batchResourceCheckAccess
+          - id: checkAccess
+          - id: classicAdministrators
+          - id: dataAliases
+          - id: dataPolicyManifests
+          - id: denyAssignments
           - id: diagnosticSettings
           - id: diagnosticSettingsCategories
+          - id: elevateAccess
+          - id: eligibleChildResources
+          - id: findOrphanRoleAssignments
+          - id: locks
+          - id: operationStatus
+          - id: operations
+          - id: permissions
+          - id: policyAssignments
+          - id: policyDefinitions
+          - id: policyExemptions
+          - id: policySetDefinitions
+          - id: privateLinkAssociations
+          - id: providerOperations
+          - id: resourceManagementPrivateLinks
+          - id: roleAssignmentApprovals
+          - id: roleAssignmentScheduleInstances
+          - id: roleAssignmentScheduleRequests
+          - id: roleAssignmentSchedules
+          - id: roleAssignments
+          - id: roleAssignmentsUsageMetrics
+          - id: roleDefinitions
+          - id: roleEligibilityScheduleInstances
+          - id: roleEligibilityScheduleRequests
+          - id: roleEligibilitySchedules
+          - id: roleManagementPolicies
+          - id: roleManagementPolicyAssignments
       - id: Microsoft.Automanage
         name: Microsoft Automanage
         resource-types:
-          - id: configurationProfileAssignments
-          - id: configurationProfileAssignmentIntents
           - id: accounts
-          - id: configurationProfilePreferences
           - id: bestPractices
           - id: bestPractices/versions
+          - id: configurationProfileAssignmentIntents
+          - id: configurationProfileAssignments
+          - id: configurationProfilePreferences
           - id: operations
       - id: Microsoft.Automation
         name: Microsoft Automation
         resource-types:
           - id: automationAccounts
-          - id: automationAccounts/runbooks
           - id: automationAccounts/configurations
-          - id: automationAccounts/webhooks
-          - id: operations
-          - id: automationAccounts/softwareUpdateConfigurations
-          - id: automationAccounts/jobs
-          - id: automationAccounts/privateLinkResources
-          - id: automationAccounts/privateEndpointConnections
-          - id: automationAccounts/privateEndpointConnectionProxies
           - id: automationAccounts/hybridRunbookWorkerGroups
           - id: automationAccounts/hybridRunbookWorkerGroups/hybridRunbookWorkers
+          - id: automationAccounts/jobs
+          - id: automationAccounts/privateEndpointConnectionProxies
+          - id: automationAccounts/privateEndpointConnections
+          - id: automationAccounts/privateLinkResources
+          - id: automationAccounts/runbooks
+          - id: automationAccounts/softwareUpdateConfigurations
+          - id: automationAccounts/webhooks
+          - id: operations
       - id: Microsoft.AutonomousDevelopmentPlatform
         name: Microsoft AutonomousDevelopmentPlatform
         resource-types:
-          - id: operations
+          - id: checknameavailability
           - id: locations
           - id: locations/operationstatuses
-          - id: checknameavailability
+          - id: operations
       - id: Microsoft.AutonomousSystems
         name: Microsoft AutonomousSystems
         resource-types:
-          - id: workspaces
-          - id: workspaces/validateCreateRequest
-          - id: workspaces/operationresults
           - id: operations
+          - id: workspaces
+          - id: workspaces/operationresults
+          - id: workspaces/validateCreateRequest
       - id: Microsoft.AzureActiveDirectory
         name: Microsoft AzureActiveDirectory
         resource-types:
-          - id: guestUsages
           - id: b2cDirectories
-          - id: checkNameAvailability
-          - id: operations
           - id: b2ctenants
+          - id: checkNameAvailability
+          - id: guestUsages
+          - id: operations
       - id: Microsoft.AzureArcData
         name: Microsoft AzureArcData
         resource-types:
+          - id: DataControllers
           - id: Locations
           - id: Locations/OperationStatuses
-          - id: DataControllers
-          - id: SqlManagedInstances
-          - id: PostgresInstances
-          - id: SqlServerInstances
           - id: Operations
+          - id: PostgresInstances
+          - id: SqlManagedInstances
+          - id: SqlServerInstances
       - id: Microsoft.AzureCIS
         name: Microsoft AzureCIS
         resource-types:
-          - id: autopilotEnvironments
           - id: Locations
           - id: Locations/OperationStatuses
+          - id: autopilotEnvironments
           - id: dstsServiceAccounts
           - id: dstsServiceClientIdentities
       - id: Microsoft.AzureData
         name: Microsoft AzureData
         resource-types:
-          - id: sqlServerRegistrations
           - id: operations
+          - id: sqlServerRegistrations
           - id: sqlServerRegistrations/sqlServers
       - id: Microsoft.AzurePercept
         name: Microsoft AzurePercept
@@ -2121,33 +2121,33 @@ csp:
         name: Microsoft AzureSphere
         resource-types:
           - id: catalogs
+          - id: catalogs/certificates
+          - id: catalogs/deployments
+          - id: catalogs/devices
+          - id: catalogs/images
           - id: catalogs/products
           - id: catalogs/products/devicegroups
-          - id: catalogs/devices
           - id: locations
-          - id: catalogs/certificates
-          - id: catalogs/images
-          - id: catalogs/deployments
-          - id: operations
           - id: locations/operationStatuses
+          - id: operations
       - id: Microsoft.AzureStack
         name: Microsoft AzureStack
         resource-types:
-          - id: operations
-          - id: registrations
-          - id: registrations/products
-          - id: registrations/customerSubscriptions
           - id: cloudManifestFiles
           - id: linkedSubscriptions
+          - id: operations
+          - id: registrations
+          - id: registrations/customerSubscriptions
+          - id: registrations/products
       - id: Microsoft.AzureStackHCI
         name: Microsoft AzureStackHCI
         resource-types:
-          - id: operations
-          - id: locations
-          - id: locations/operationstatuses
           - id: clusters
           - id: clusters/arcSettings
           - id: clusters/arcSettings/extensions
+          - id: locations
+          - id: locations/operationstatuses
+          - id: operations
       - id: Microsoft.BackupSolutions
         name: Microsoft BackupSolutions
         resource-types:
@@ -2163,158 +2163,158 @@ csp:
         name: Microsoft Batch
         resource-types:
           - id: batchAccounts
-          - id: batchAccounts/pools
           - id: batchAccounts/certificates
-          - id: operations
+          - id: batchAccounts/pools
           - id: locations
-          - id: locations/quotas
-          - id: locations/checkNameAvailability
           - id: locations/accountOperationResults
-          - id: locations/virtualMachineSkus
+          - id: locations/checkNameAvailability
           - id: locations/cloudServiceSkus
+          - id: locations/quotas
+          - id: locations/virtualMachineSkus
+          - id: operations
       - id: Microsoft.Billing
         name: Microsoft Billing
         resource-types:
-          - id: billingPeriods
-          - id: invoices
-          - id: enrollmentAccounts
-          - id: billingRoleDefinitions
-          - id: billingRoleAssignments
-          - id: createBillingRoleAssignment
-          - id: billingAccounts/createBillingRoleAssignment
-          - id: billingAccounts/billingProfiles/createBillingRoleAssignment
-          - id: billingAccounts/billingProfiles/invoiceSections/createBillingRoleAssignment
-          - id: billingPermissions
-          - id: billingAccounts/billingRoleDefinitions
-          - id: billingAccounts/billingRoleAssignments
-          - id: billingAccounts/billingPermissions
           - id: billingAccounts
-          - id: billingAccounts/policies
-          - id: billingAccounts/operationResults
-          - id: billingAccounts/billingProfiles/billingRoleDefinitions
-          - id: billingAccounts/billingProfiles/billingRoleAssignments
+          - id: billingAccounts/BillingProfiles/patchOperations
+          - id: billingAccounts/agreements
+          - id: billingAccounts/appliedReservationOrders
+          - id: billingAccounts/availableBalance
+          - id: billingAccounts/billingPermissions
+          - id: billingAccounts/billingProfiles
+          - id: billingAccounts/billingProfiles/availableBalance
           - id: billingAccounts/billingProfiles/billingPermissions
-          - id: billingAccounts/customers
+          - id: billingAccounts/billingProfiles/billingRoleAssignments
+          - id: billingAccounts/billingProfiles/billingRoleDefinitions
+          - id: billingAccounts/billingProfiles/billingSubscriptions
+          - id: billingAccounts/billingProfiles/createBillingRoleAssignment
           - id: billingAccounts/billingProfiles/customers
           - id: billingAccounts/billingProfiles/instructions
-          - id: billingAccounts/customers/billingSubscriptions
-          - id: billingAccounts/customers/products
-          - id: billingAccounts/customers/transactions
-          - id: billingAccounts/invoiceSections
           - id: billingAccounts/billingProfiles/invoiceSections
-          - id: billingAccounts/billingProfiles/invoiceSections/billingRoleDefinitions
-          - id: billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments
           - id: billingAccounts/billingProfiles/invoiceSections/billingPermissions
-          - id: billingAccounts/customers/billingPermissions
-          - id: billingAccounts/invoiceSections/elevate
-          - id: billingAccounts/createInvoiceSectionOperations
-          - id: billingAccounts/patchOperations
-          - id: billingAccounts/invoiceSections/patchOperations
-          - id: billingAccounts/invoiceSections/productMoveOperations
-          - id: billingAccounts/invoiceSections/billingSubscriptionMoveOperations
-          - id: billingAccounts/listInvoiceSectionsWithCreateSubscriptionPermission
-          - id: billingAccounts/billingProfiles
-          - id: billingAccounts/BillingProfiles/patchOperations
-          - id: departments
-          - id: billingAccounts/departments
-          - id: billingAccounts/departments/billingRoleDefinitions
-          - id: billingAccounts/departments/billingRoleAssignments
-          - id: billingAccounts/departments/billingPermissions
-          - id: billingAccounts/enrollmentAccounts
-          - id: billingAccounts/departments/enrollmentAccounts
-          - id: billingAccounts/enrollmentAccounts/billingRoleDefinitions
-          - id: billingAccounts/enrollmentAccounts/billingRoleAssignments
-          - id: billingAccounts/enrollmentAccounts/billingPermissions
-          - id: billingAccounts/enrollmentAccounts/billingSubscriptions
-          - id: billingAccounts/departments/billingSubscriptions
-          - id: billingAccounts/billingProfiles/paymentMethods
-          - id: billingAccounts/availableBalance
-          - id: billingAccounts/billingProfiles/availableBalance
-          - id: billingAccounts/invoices
-          - id: billingAccounts/billingProfiles/invoices
-          - id: billingAccounts/transactions
-          - id: billingAccounts/billingProfiles/transactions
-          - id: billingAccounts/invoiceSections/transactions
-          - id: billingAccounts/billingProfiles/invoiceSections/transactions
-          - id: billingAccounts/billingProfiles/invoices/transactions
-          - id: billingAccounts/invoices/transactions
-          - id: billingAccounts/billingProfiles/validateDeleteBillingProfileEligibility
-          - id: billingAccounts/billingProfiles/invoiceSections/validateDeleteInvoiceSectionEligibility
-          - id: billingAccounts/invoices/transactionSummary
-          - id: billingAccounts/billingSubscriptions
-          - id: billingAccounts/billingSubscriptions/invoices
-          - id: billingAccounts/billingProfiles/billingSubscriptions
-          - id: billingAccounts/invoiceSections/billingSubscriptions
+          - id: billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments
+          - id: billingAccounts/billingProfiles/invoiceSections/billingRoleDefinitions
           - id: billingAccounts/billingProfiles/invoiceSections/billingSubscriptions
-          - id: operationStatus
-          - id: operationResults
-          - id: billingAccounts/invoiceSections/products
-          - id: billingAccounts/billingProfiles/invoiceSections/products
-          - id: billingAccounts/invoiceSections/products/updateAutoRenew
-          - id: billingAccounts/billingProfiles/invoiceSections/products/updateAutoRenew
-          - id: billingAccounts/billingProfiles/products
-          - id: billingAccounts/products
-          - id: operations
-          - id: billingAccounts/invoiceSections/initiateTransfer
+          - id: billingAccounts/billingProfiles/invoiceSections/createBillingRoleAssignment
           - id: billingAccounts/billingProfiles/invoiceSections/initiateTransfer
-          - id: billingAccounts/invoiceSections/transfers
+          - id: billingAccounts/billingProfiles/invoiceSections/products
+          - id: billingAccounts/billingProfiles/invoiceSections/products/transfer
+          - id: billingAccounts/billingProfiles/invoiceSections/products/updateAutoRenew
+          - id: billingAccounts/billingProfiles/invoiceSections/transactions
           - id: billingAccounts/billingProfiles/invoiceSections/transfers
-          - id: transfers/acceptTransfer
-          - id: transfers
-          - id: transfers/declineTransfer
-          - id: transfers/validateTransfer
-          - id: billingAccounts/customers/initiateTransfer
-          - id: billingAccounts/customers/transfers
-          - id: billingAccounts/customers/transferSupportedAccounts
-          - id: billingProperty
-          - id: billingAccounts/billingProfiles/policies
-          - id: billingAccounts/customers/policies
+          - id: billingAccounts/billingProfiles/invoiceSections/validateDeleteInvoiceSectionEligibility
+          - id: billingAccounts/billingProfiles/invoices
           - id: billingAccounts/billingProfiles/invoices/pricesheet
+          - id: billingAccounts/billingProfiles/invoices/transactions
+          - id: billingAccounts/billingProfiles/paymentMethodLinks
+          - id: billingAccounts/billingProfiles/paymentMethods
+          - id: billingAccounts/billingProfiles/policies
           - id: billingAccounts/billingProfiles/pricesheet
           - id: billingAccounts/billingProfiles/pricesheetDownloadOperations
-          - id: billingAccounts/invoiceSections/billingSubscriptions/transfer
-          - id: billingAccounts/invoiceSections/products/transfer
-          - id: billingAccounts/billingProfiles/invoiceSections/products/transfer
-          - id: billingAccounts/invoiceSections/productTransfersResults
-          - id: transfers/operationStatus
-          - id: billingAccounts/agreements
-          - id: billingAccounts/lineOfCredit
-          - id: billingAccounts/paymentMethods
-          - id: paymentMethods
-          - id: billingAccounts/billingProfiles/paymentMethodLinks
-          - id: billingAccounts/payableOverage
-          - id: billingAccounts/payNow
-          - id: billingAccounts/reservations
+          - id: billingAccounts/billingProfiles/products
           - id: billingAccounts/billingProfiles/reservations
+          - id: billingAccounts/billingProfiles/transactions
+          - id: billingAccounts/billingProfiles/validateDeleteBillingProfileEligibility
           - id: billingAccounts/billingProfiles/validateDetachPaymentMethodEligibility
-          - id: validateAddress
+          - id: billingAccounts/billingRoleAssignments
+          - id: billingAccounts/billingRoleDefinitions
+          - id: billingAccounts/billingSubscriptions
+          - id: billingAccounts/billingSubscriptions/elevateRole
+          - id: billingAccounts/billingSubscriptions/invoices
+          - id: billingAccounts/createBillingRoleAssignment
+          - id: billingAccounts/createInvoiceSectionOperations
+          - id: billingAccounts/customers
+          - id: billingAccounts/customers/billingPermissions
+          - id: billingAccounts/customers/billingSubscriptions
+          - id: billingAccounts/customers/initiateTransfer
+          - id: billingAccounts/customers/policies
+          - id: billingAccounts/customers/products
+          - id: billingAccounts/customers/transactions
+          - id: billingAccounts/customers/transferSupportedAccounts
+          - id: billingAccounts/customers/transfers
+          - id: billingAccounts/departments
+          - id: billingAccounts/departments/billingPermissions
+          - id: billingAccounts/departments/billingRoleAssignments
+          - id: billingAccounts/departments/billingRoleDefinitions
+          - id: billingAccounts/departments/billingSubscriptions
+          - id: billingAccounts/departments/enrollmentAccounts
+          - id: billingAccounts/enrollmentAccounts
+          - id: billingAccounts/enrollmentAccounts/billingPermissions
+          - id: billingAccounts/enrollmentAccounts/billingRoleAssignments
+          - id: billingAccounts/enrollmentAccounts/billingRoleDefinitions
+          - id: billingAccounts/enrollmentAccounts/billingSubscriptions
+          - id: billingAccounts/invoiceSections
+          - id: billingAccounts/invoiceSections/billingSubscriptionMoveOperations
+          - id: billingAccounts/invoiceSections/billingSubscriptions
+          - id: billingAccounts/invoiceSections/billingSubscriptions/transfer
+          - id: billingAccounts/invoiceSections/elevate
+          - id: billingAccounts/invoiceSections/initiateTransfer
+          - id: billingAccounts/invoiceSections/patchOperations
+          - id: billingAccounts/invoiceSections/productMoveOperations
+          - id: billingAccounts/invoiceSections/productTransfersResults
+          - id: billingAccounts/invoiceSections/products
+          - id: billingAccounts/invoiceSections/products/transfer
+          - id: billingAccounts/invoiceSections/products/updateAutoRenew
+          - id: billingAccounts/invoiceSections/transactions
+          - id: billingAccounts/invoiceSections/transfers
+          - id: billingAccounts/invoices
+          - id: billingAccounts/invoices/transactionSummary
+          - id: billingAccounts/invoices/transactions
+          - id: billingAccounts/lineOfCredit
+          - id: billingAccounts/listInvoiceSectionsWithCreateSubscriptionPermission
+          - id: billingAccounts/operationResults
+          - id: billingAccounts/patchOperations
+          - id: billingAccounts/payNow
+          - id: billingAccounts/payableOverage
+          - id: billingAccounts/paymentMethods
+          - id: billingAccounts/policies
+          - id: billingAccounts/products
+          - id: billingAccounts/promotionalCredits
+          - id: billingAccounts/reservations
+          - id: billingAccounts/transactions
+          - id: billingPeriods
+          - id: billingPermissions
+          - id: billingProperty
+          - id: billingRoleAssignments
+          - id: billingRoleDefinitions
+          - id: createBillingRoleAssignment
+          - id: departments
+          - id: enrollmentAccounts
+          - id: invoices
+          - id: operationResults
+          - id: operationStatus
+          - id: operations
+          - id: paymentMethods
+          - id: promotionalCredits
           - id: promotions
           - id: promotions/checkeligibility
-          - id: billingAccounts/billingSubscriptions/elevateRole
-          - id: billingAccounts/appliedReservationOrders
-          - id: promotionalCredits
-          - id: billingAccounts/promotionalCredits
+          - id: transfers
+          - id: transfers/acceptTransfer
+          - id: transfers/declineTransfer
+          - id: transfers/operationStatus
+          - id: transfers/validateTransfer
+          - id: validateAddress
       - id: Microsoft.Bing
         name: Microsoft Bing
         resource-types:
-          - id: locations
+          - id: accounts
           - id: accounts/skus
           - id: accounts/usages
-          - id: registeredSubscriptions
-          - id: operations
+          - id: locations
           - id: locations/operationStatuses
-          - id: accounts
+          - id: operations
+          - id: registeredSubscriptions
       - id: Microsoft.Blockchain
         name: Microsoft Blockchain
         resource-types:
-          - id: watchers
           - id: blockchainMembers
-          - id: locations/watcherOperationResults
           - id: locations
           - id: locations/blockchainMemberOperationResults
           - id: locations/checkNameAvailability
           - id: locations/listConsortiums
+          - id: locations/watcherOperationResults
           - id: operations
+          - id: watchers
       - id: Microsoft.BlockchainTokens
         name: Microsoft BlockchainTokens
         resource-types:
@@ -2322,13 +2322,13 @@ csp:
       - id: Microsoft.Blueprint
         name: Microsoft Blueprint
         resource-types:
+          - id: blueprintAssignments
+          - id: blueprintAssignments/assignmentOperations
+          - id: blueprintAssignments/operations
           - id: blueprints
           - id: blueprints/artifacts
           - id: blueprints/versions
           - id: blueprints/versions/artifacts
-          - id: blueprintAssignments
-          - id: blueprintAssignments/operations
-          - id: blueprintAssignments/assignmentOperations
           - id: operations
       - id: Microsoft.BotService
         name: Microsoft BotService
@@ -2336,136 +2336,136 @@ csp:
           - id: botServices
           - id: botServices/channels
           - id: botServices/connections
-          - id: listAuthServiceProviders
-          - id: hostSettings
-          - id: checkNameAvailability
-          - id: operations
           - id: botServices/privateEndpointConnectionProxies
           - id: botServices/privateEndpointConnections
           - id: botServices/privateLinkResources
+          - id: checkNameAvailability
+          - id: hostSettings
+          - id: listAuthServiceProviders
           - id: operationResults
+          - id: operations
       - id: Microsoft.Cache
         name: Microsoft Cache
         resource-types:
           - id: Redis
+          - id: Redis/EventGridFilters
           - id: Redis/privateEndpointConnectionProxies
           - id: Redis/privateEndpointConnectionProxies/validate
           - id: Redis/privateEndpointConnections
           - id: Redis/privateLinkResources
-          - id: locations/asyncOperations
-          - id: locations
-          - id: locations/operationResults
-          - id: locations/operationsStatus
-          - id: checkNameAvailability
-          - id: operations
-          - id: redisEnterprise
           - id: RedisEnterprise/privateEndpointConnectionProxies
-          - id: RedisEnterprise/privateEndpointConnectionProxies/validate
           - id: RedisEnterprise/privateEndpointConnectionProxies/operationresults
+          - id: RedisEnterprise/privateEndpointConnectionProxies/validate
           - id: RedisEnterprise/privateEndpointConnections
           - id: RedisEnterprise/privateEndpointConnections/operationresults
           - id: RedisEnterprise/privateLinkResources
-          - id: redisEnterprise/databases
+          - id: checkNameAvailability
+          - id: locations
+          - id: locations/asyncOperations
           - id: locations/checkNameAvailability
-          - id: Redis/EventGridFilters
+          - id: locations/operationResults
+          - id: locations/operationsStatus
+          - id: operations
+          - id: redisEnterprise
+          - id: redisEnterprise/databases
       - id: Microsoft.Capacity
         name: Microsoft Capacity
         resource-types:
+          - id: appliedReservations
+          - id: calculateExchange
+          - id: calculatePrice
+          - id: calculatePurchasePrice
+          - id: catalogs
+          - id: checkBenefitScopes
+          - id: checkOffers
+          - id: checkPurchaseStatus
+          - id: checkScopes
+          - id: commercialReservationOrders
+          - id: exchange
+          - id: listSkus
+          - id: listbenefits
+          - id: operationResults
+          - id: operations
+          - id: ownReservations
+          - id: placePurchaseOrder
+          - id: reservationOrders
+          - id: reservationOrders/availableScopes
+          - id: reservationOrders/calculateRefund
+          - id: reservationOrders/merge
+          - id: reservationOrders/reservations
+          - id: reservationOrders/reservations/availableScopes
+          - id: reservationOrders/reservations/revisions
+          - id: reservationOrders/return
+          - id: reservationOrders/split
+          - id: reservationOrders/swap
+          - id: reservations
           - id: resourceProviders
           - id: resourceProviders/locations
           - id: resourceProviders/locations/serviceLimits
           - id: resourceProviders/locations/serviceLimitsRequests
           - id: resources
-          - id: reservationOrders
-          - id: reservationOrders/reservations
-          - id: listbenefits
-          - id: reservations
-          - id: reservationOrders/reservations/revisions
-          - id: operations
-          - id: catalogs
-          - id: appliedReservations
-          - id: checkOffers
-          - id: checkScopes
-          - id: calculatePrice
-          - id: calculateExchange
-          - id: exchange
-          - id: reservationOrders/calculateRefund
-          - id: reservationOrders/return
-          - id: reservationOrders/split
-          - id: reservationOrders/merge
-          - id: reservationOrders/swap
           - id: validateReservationOrder
-          - id: reservationOrders/availableScopes
-          - id: reservationOrders/reservations/availableScopes
-          - id: commercialReservationOrders
-          - id: calculatePurchasePrice
-          - id: placePurchaseOrder
-          - id: checkPurchaseStatus
-          - id: ownReservations
-          - id: operationResults
-          - id: listSkus
-          - id: checkBenefitScopes
       - id: Microsoft.Cascade
         name: Microsoft Cascade
         resource-types:
-          - id: sites
           - id: Locations
           - id: Locations/operationStatuses
           - id: Operations
+          - id: sites
       - id: Microsoft.Cdn
         name: Microsoft Cdn
         resource-types:
-          - id: profiles
-          - id: profiles/endpoints
-          - id: profiles/endpoints/origins
-          - id: profiles/endpoints/origingroups
-          - id: profiles/endpoints/customdomains
-          - id: operationresults
-          - id: operationresults/profileresults
-          - id: operationresults/profileresults/endpointresults
-          - id: operationresults/profileresults/endpointresults/originresults
-          - id: operationresults/profileresults/endpointresults/origingroupresults
-          - id: operationresults/profileresults/endpointresults/customdomainresults
+          - id: CdnWebApplicationFirewallManagedRuleSets
+          - id: CdnWebApplicationFirewallPolicies
           - id: checkNameAvailability
           - id: checkResourceUsage
-          - id: validateProbe
-          - id: operations
           - id: edgenodes
-          - id: CdnWebApplicationFirewallPolicies
-          - id: CdnWebApplicationFirewallManagedRuleSets
-          - id: profiles/afdendpoints
-          - id: profiles/afdendpoints/routes
-          - id: profiles/customdomains
-          - id: profiles/origingroups
-          - id: profiles/origingroups/origins
-          - id: profiles/rulesets
-          - id: profiles/rulesets/rules
-          - id: profiles/secrets
-          - id: profiles/securitypolicies
+          - id: operationresults
+          - id: operationresults/profileresults
           - id: operationresults/profileresults/afdendpointresults
           - id: operationresults/profileresults/afdendpointresults/routeresults
           - id: operationresults/profileresults/customdomainresults
+          - id: operationresults/profileresults/endpointresults
+          - id: operationresults/profileresults/endpointresults/customdomainresults
+          - id: operationresults/profileresults/endpointresults/origingroupresults
+          - id: operationresults/profileresults/endpointresults/originresults
           - id: operationresults/profileresults/origingroupresults
           - id: operationresults/profileresults/origingroupresults/originresults
           - id: operationresults/profileresults/rulesetresults
           - id: operationresults/profileresults/rulesetresults/ruleresults
           - id: operationresults/profileresults/secretresults
           - id: operationresults/profileresults/securitypoliciesresults
+          - id: operations
+          - id: profiles
+          - id: profiles/afdendpoints
+          - id: profiles/afdendpoints/routes
+          - id: profiles/customdomains
+          - id: profiles/endpoints
+          - id: profiles/endpoints/customdomains
+          - id: profiles/endpoints/origingroups
+          - id: profiles/endpoints/origins
+          - id: profiles/origingroups
+          - id: profiles/origingroups/origins
+          - id: profiles/rulesets
+          - id: profiles/rulesets/rules
+          - id: profiles/secrets
+          - id: profiles/securitypolicies
+          - id: validateProbe
       - id: Microsoft.CertificateRegistration
         name: Microsoft CertificateRegistration
         resource-types:
           - id: certificateOrders
           - id: certificateOrders/certificates
-          - id: validateCertificateRegistrationInformation
           - id: operations
+          - id: validateCertificateRegistrationInformation
       - id: Microsoft.ChangeAnalysis
         name: Microsoft ChangeAnalysis
         resource-types:
+          - id: changeSnapshots
+          - id: changes
+          - id: computeChanges
           - id: operations
           - id: resourceChanges
-          - id: changes
-          - id: changeSnapshots
-          - id: computeChanges
       - id: Microsoft.Chaos
         name: Microsoft Chaos
         resource-types:
@@ -2473,28 +2473,28 @@ csp:
       - id: Microsoft.ClassicCompute
         name: Microsoft ClassicCompute
         resource-types:
-          - id: domainNames
-          - id: domainNames/internalLoadBalancers
+          - id: capabilities
           - id: checkDomainNameAvailability
+          - id: domainNames
+          - id: domainNames/capabilities
+          - id: domainNames/internalLoadBalancers
+          - id: domainNames/serviceCertificates
           - id: domainNames/slots
           - id: domainNames/slots/roles
           - id: domainNames/slots/roles/metricDefinitions
           - id: domainNames/slots/roles/metrics
-          - id: virtualMachines
-          - id: capabilities
-          - id: domainNames/capabilities
-          - id: domainNames/serviceCertificates
+          - id: moveSubscriptionResources
+          - id: operatingSystemFamilies
+          - id: operatingSystems
+          - id: operationStatuses
+          - id: operations
           - id: quotas
+          - id: resourceTypes
+          - id: validateSubscriptionMoveAvailability
+          - id: virtualMachines
           - id: virtualMachines/diagnosticSettings
           - id: virtualMachines/metricDefinitions
           - id: virtualMachines/metrics
-          - id: operations
-          - id: resourceTypes
-          - id: moveSubscriptionResources
-          - id: validateSubscriptionMoveAvailability
-          - id: operationStatuses
-          - id: operatingSystems
-          - id: operatingSystemFamilies
       - id: Microsoft.ClassicInfrastructureMigrate
         name: Microsoft ClassicInfrastructureMigrate
         resource-types:
@@ -2502,42 +2502,42 @@ csp:
       - id: Microsoft.ClassicNetwork
         name: Microsoft ClassicNetwork
         resource-types:
-          - id: virtualNetworks
-          - id: virtualNetworks/virtualNetworkPeerings
-          - id: virtualNetworks/remoteVirtualNetworkPeeringProxies
-          - id: reservedIps
-          - id: quotas
-          - id: gatewaySupportedDevices
-          - id: operations
-          - id: networkSecurityGroups
           - id: capabilities
           - id: expressRouteCrossConnections
           - id: expressRouteCrossConnections/peerings
+          - id: gatewaySupportedDevices
+          - id: networkSecurityGroups
+          - id: operations
+          - id: quotas
+          - id: reservedIps
+          - id: virtualNetworks
+          - id: virtualNetworks/remoteVirtualNetworkPeeringProxies
+          - id: virtualNetworks/virtualNetworkPeerings
       - id: Microsoft.ClassicStorage
         name: Microsoft ClassicStorage
         resource-types:
-          - id: storageAccounts
-          - id: quotas
+          - id: capabilities
           - id: checkStorageAccountAvailability
+          - id: disks
+          - id: images
+          - id: operations
+          - id: osImages
+          - id: osPlatformImages
+          - id: publicImages
+          - id: quotas
+          - id: storageAccounts
+          - id: storageAccounts/blobServices
+          - id: storageAccounts/fileServices
+          - id: storageAccounts/metricDefinitions
+          - id: storageAccounts/metrics
+          - id: storageAccounts/queueServices
           - id: storageAccounts/services
           - id: storageAccounts/services/diagnosticSettings
           - id: storageAccounts/services/metricDefinitions
           - id: storageAccounts/services/metrics
-          - id: storageAccounts/metricDefinitions
-          - id: storageAccounts/metrics
-          - id: capabilities
-          - id: storageAccounts/blobServices
           - id: storageAccounts/tableServices
-          - id: storageAccounts/fileServices
-          - id: storageAccounts/queueServices
-          - id: disks
-          - id: images
-          - id: vmImages
           - id: storageAccounts/vmImages
-          - id: publicImages
-          - id: osImages
-          - id: osPlatformImages
-          - id: operations
+          - id: vmImages
       - id: Microsoft.ClassicSubscription
         name: Microsoft ClassicSubscription
         resource-types:
@@ -2546,12 +2546,12 @@ csp:
         name: Microsoft CloudTest
         resource-types:
           - id: accounts
-          - id: pools
           - id: hostedpools
           - id: images
-          - id: operations
           - id: locations
           - id: locations/operations
+          - id: operations
+          - id: pools
       - id: Microsoft.CodeSigning
         name: Microsoft CodeSigning
         resource-types:
@@ -2562,119 +2562,119 @@ csp:
       - id: Microsoft.Codespaces
         name: Microsoft Codespaces
         resource-types:
-          - id: plans
           - id: operations
+          - id: plans
           - id: registeredSubscriptions
       - id: Microsoft.CognitiveServices
         name: Microsoft CognitiveServices
         resource-types:
           - id: accounts
-          - id: operations
-          - id: locations/operationResults
-          - id: locations
-          - id: locations/deleteVirtualNetworkOrSubnets
-          - id: locations/checkSkuAvailability
-          - id: checkDomainAvailability
-          - id: accounts/privateLinkResources
-          - id: accounts/privateEndpointConnections
           - id: accounts/privateEndpointConnectionProxies
+          - id: accounts/privateEndpointConnections
+          - id: accounts/privateLinkResources
+          - id: checkDomainAvailability
           - id: deletedAccounts
+          - id: locations
+          - id: locations/checkSkuAvailability
+          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/operationResults
           - id: locations/resourceGroups
           - id: locations/resourceGroups/deletedAccounts
+          - id: operations
       - id: Microsoft.Commerce
         name: Microsoft Commerce
         resource-types:
-          - id: UsageAggregates
           - id: RateCard
+          - id: UsageAggregates
           - id: operations
       - id: Microsoft.Communication
         name: Microsoft Communication
         resource-types:
-          - id: Locations
+          - id: CheckNameAvailability
           - id: CommunicationServices
           - id: CommunicationServices/eventGridFilters
+          - id: Locations
+          - id: Locations/operationStatuses
           - id: operations
           - id: registeredSubscriptions
-          - id: Locations/operationStatuses
-          - id: CheckNameAvailability
       - id: Microsoft.Compute
         name: Microsoft Compute
         resource-types:
           - id: availabilitySets
-          - id: virtualMachines
-          - id: virtualMachines/extensions
-          - id: virtualMachineScaleSets
-          - id: virtualMachineScaleSets/extensions
-          - id: virtualMachineScaleSets/virtualMachines
-          - id: virtualMachineScaleSets/virtualMachines/extensions
-          - id: virtualMachineScaleSets/networkInterfaces
-          - id: virtualMachineScaleSets/virtualMachines/networkInterfaces
-          - id: virtualMachineScaleSets/publicIPAddresses
-          - id: locations
-          - id: locations/operations
-          - id: locations/vmSizes
-          - id: locations/runCommands
-          - id: locations/usages
-          - id: locations/virtualMachines
-          - id: locations/virtualMachineScaleSets
-          - id: locations/publishers
-          - id: operations
-          - id: locations/edgeZones
-          - id: locations/edgeZones/publishers
-          - id: restorePointCollections
-          - id: restorePointCollections/restorePoints
-          - id: proximityPlacementGroups
-          - id: sshPublicKeys
           - id: capacityReservationGroups
           - id: capacityReservationGroups/capacityReservations
-          - id: virtualMachines/metricDefinitions
-          - id: locations/spotEvictionRates
-          - id: locations/spotPriceHistory
-          - id: locations/recommendations
-          - id: locations/sharedGalleries
-          - id: sharedVMImages
-          - id: sharedVMImages/versions
-          - id: locations/artifactPublishers
-          - id: locations/capsoperations
+          - id: cloudServices
+          - id: cloudServices/networkInterfaces
+          - id: cloudServices/publicIPAddresses
+          - id: cloudServices/roleInstances
+          - id: cloudServices/roleInstances/networkInterfaces
+          - id: cloudServices/roles
+          - id: diskAccesses
+          - id: diskEncryptionSets
+          - id: disks
           - id: galleries
           - id: galleries/images
           - id: galleries/images/versions
-          - id: locations/galleries
-          - id: disks
-          - id: snapshots
-          - id: locations/diskoperations
-          - id: diskEncryptionSets
-          - id: diskAccesses
-          - id: restorePointCollections/restorePoints/diskRestorePoints
-          - id: cloudServices
-          - id: cloudServices/roles
-          - id: cloudServices/roleInstances
-          - id: locations/csoperations
-          - id: locations/cloudServiceOsVersions
-          - id: locations/cloudServiceOsFamilies
-          - id: cloudServices/networkInterfaces
-          - id: cloudServices/roleInstances/networkInterfaces
-          - id: cloudServices/publicIPAddresses
-          - id: images
-          - id: locations/logAnalytics
           - id: hostGroups
           - id: hostGroups/hosts
+          - id: images
+          - id: locations
+          - id: locations/artifactPublishers
+          - id: locations/capsoperations
+          - id: locations/cloudServiceOsFamilies
+          - id: locations/cloudServiceOsVersions
+          - id: locations/csoperations
+          - id: locations/diskoperations
+          - id: locations/edgeZones
+          - id: locations/edgeZones/publishers
+          - id: locations/galleries
+          - id: locations/logAnalytics
+          - id: locations/operations
+          - id: locations/publishers
+          - id: locations/recommendations
+          - id: locations/runCommands
+          - id: locations/sharedGalleries
+          - id: locations/spotEvictionRates
+          - id: locations/spotPriceHistory
+          - id: locations/usages
+          - id: locations/virtualMachineScaleSets
+          - id: locations/virtualMachines
+          - id: locations/vmSizes
+          - id: operations
+          - id: proximityPlacementGroups
+          - id: restorePointCollections
+          - id: restorePointCollections/restorePoints
+          - id: restorePointCollections/restorePoints/diskRestorePoints
+          - id: sharedVMImages
+          - id: sharedVMImages/versions
+          - id: snapshots
+          - id: sshPublicKeys
+          - id: virtualMachineScaleSets
+          - id: virtualMachineScaleSets/extensions
+          - id: virtualMachineScaleSets/networkInterfaces
+          - id: virtualMachineScaleSets/publicIPAddresses
+          - id: virtualMachineScaleSets/virtualMachines
+          - id: virtualMachineScaleSets/virtualMachines/extensions
+          - id: virtualMachineScaleSets/virtualMachines/networkInterfaces
+          - id: virtualMachines
+          - id: virtualMachines/extensions
+          - id: virtualMachines/metricDefinitions
       - id: Microsoft.ConfidentialLedger
         name: Microsoft ConfidentialLedger
         resource-types:
+          - id: Ledgers
           - id: Locations
           - id: Locations/operationstatuses
-          - id: Ledgers
           - id: checkNameAvailability
       - id: Microsoft.Confluent
         name: Microsoft Confluent
         resource-types:
-          - id: operations
+          - id: agreements
+          - id: checkNameAvailability
           - id: locations
           - id: locations/OperationStatuses
+          - id: operations
           - id: organizations
-          - id: checkNameAvailability
-          - id: agreements
           - id: validations
       - id: Microsoft.ConnectedCache
         name: Microsoft ConnectedCache
@@ -2686,172 +2686,172 @@ csp:
           - id: Locations
           - id: Locations/OperationStatuses
           - id: Operations
-          - id: VirtualMachines
           - id: VCenters/InventoryItems
-          - id: VirtualMachines/HybridIdentityMetadata
+          - id: VirtualMachines
           - id: VirtualMachines/Extensions
           - id: VirtualMachines/GuestAgents
+          - id: VirtualMachines/HybridIdentityMetadata
       - id: Microsoft.ConnectedVehicle
         name: Microsoft ConnectedVehicle
         resource-types:
-          - id: locations
-          - id: operations
           - id: Locations/OperationStatuses
           - id: checkNameAvailability
+          - id: locations
+          - id: operations
           - id: registeredSubscriptions
       - id: Microsoft.Consumption
         name: Microsoft Consumption
         resource-types:
-          - id: Forecasts
           - id: AggregatedCost
-          - id: tenants
-          - id: ReservationRecommendations
-          - id: ReservationRecommendationDetails
-          - id: ReservationSummaries
-          - id: ReservationTransactions
           - id: Balances
+          - id: Budgets
+          - id: Charges
+          - id: CostTags
+          - id: Forecasts
           - id: Marketplaces
+          - id: OperationResults
+          - id: OperationStatus
+          - id: Operations
           - id: Pricesheets
           - id: ReservationDetails
-          - id: Budgets
-          - id: CostTags
+          - id: ReservationRecommendationDetails
+          - id: ReservationRecommendations
+          - id: ReservationSummaries
+          - id: ReservationTransactions
           - id: Tags
           - id: Terms
           - id: UsageDetails
-          - id: Charges
           - id: credits
           - id: events
           - id: lots
           - id: products
-          - id: OperationStatus
-          - id: OperationResults
-          - id: Operations
+          - id: tenants
       - id: Microsoft.ContainerInstance
         name: Microsoft ContainerInstance
         resource-types:
           - id: containerGroups
-          - id: serviceAssociationLinks
           - id: locations
-          - id: locations/capabilities
-          - id: locations/usages
-          - id: locations/operations
-          - id: locations/operationresults
-          - id: operations
           - id: locations/cachedImages
+          - id: locations/capabilities
           - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/operationresults
+          - id: locations/operations
+          - id: locations/usages
+          - id: operations
+          - id: serviceAssociationLinks
       - id: Microsoft.ContainerRegistry
         name: Microsoft ContainerRegistry
         resource-types:
+          - id: checkNameAvailability
+          - id: locations
+          - id: locations/authorize
+          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/operationResults
+          - id: locations/setupAuth
+          - id: operations
           - id: registries
-          - id: registries/connectedRegistries
-          - id: registries/connectedRegistries/deactivate
-          - id: registries/scopeMaps
-          - id: registries/tokens
-          - id: registries/generateCredentials
-          - id: registries/privateEndpointConnections
-          - id: registries/privateEndpointConnectionProxies
-          - id: registries/privateEndpointConnectionProxies/validate
-          - id: registries/privateLinkResources
-          - id: registries/importImage
-          - id: registries/exportPipelines
-          - id: registries/importPipelines
-          - id: registries/pipelineRuns
-          - id: registries/listBuildSourceUploadUrl
-          - id: registries/scheduleRun
-          - id: registries/runs
-          - id: registries/taskRuns
-          - id: registries/taskRuns/listDetails
+          - id: registries/GetCredentials
           - id: registries/agentPools
           - id: registries/agentPools/listQueueStatus
-          - id: registries/runs/listLogSasUrl
-          - id: registries/runs/cancel
-          - id: registries/tasks
-          - id: registries/tasks/listDetails
-          - id: registries/getBuildSourceUploadUrl
-          - id: registries/queueBuild
-          - id: registries/builds
-          - id: registries/builds/getLogLink
-          - id: registries/builds/cancel
           - id: registries/buildTasks
           - id: registries/buildTasks/listSourceRepositoryProperties
           - id: registries/buildTasks/steps
           - id: registries/buildTasks/steps/listBuildArguments
+          - id: registries/builds
+          - id: registries/builds/cancel
+          - id: registries/builds/getLogLink
+          - id: registries/connectedRegistries
+          - id: registries/connectedRegistries/deactivate
+          - id: registries/eventGridFilters
+          - id: registries/exportPipelines
+          - id: registries/generateCredentials
+          - id: registries/getBuildSourceUploadUrl
+          - id: registries/importImage
+          - id: registries/importPipelines
+          - id: registries/listBuildSourceUploadUrl
+          - id: registries/listCredentials
+          - id: registries/listPolicies
+          - id: registries/listUsages
+          - id: registries/pipelineRuns
+          - id: registries/privateEndpointConnectionProxies
+          - id: registries/privateEndpointConnectionProxies/validate
+          - id: registries/privateEndpointConnections
+          - id: registries/privateLinkResources
+          - id: registries/queueBuild
+          - id: registries/regenerateCredential
+          - id: registries/regenerateCredentials
           - id: registries/replications
+          - id: registries/runs
+          - id: registries/runs/cancel
+          - id: registries/runs/listLogSasUrl
+          - id: registries/scheduleRun
+          - id: registries/scopeMaps
+          - id: registries/taskRuns
+          - id: registries/taskRuns/listDetails
+          - id: registries/tasks
+          - id: registries/tasks/listDetails
+          - id: registries/tokens
+          - id: registries/updatePolicies
           - id: registries/webhooks
-          - id: registries/webhooks/ping
           - id: registries/webhooks/getCallbackConfig
           - id: registries/webhooks/listEvents
-          - id: locations/setupAuth
-          - id: locations/authorize
-          - id: locations/operationResults
-          - id: locations/deleteVirtualNetworkOrSubnets
-          - id: registries/GetCredentials
-          - id: registries/listCredentials
-          - id: registries/regenerateCredential
-          - id: registries/listUsages
-          - id: registries/listPolicies
-          - id: registries/updatePolicies
-          - id: registries/regenerateCredentials
-          - id: registries/eventGridFilters
-          - id: checkNameAvailability
-          - id: operations
-          - id: locations
+          - id: registries/webhooks/ping
       - id: Microsoft.ContainerService
         name: Microsoft ContainerService
         resource-types:
           - id: containerServices
-          - id: managedClusters
-          - id: openShiftManagedClusters
-          - id: locations/openShiftClusters
           - id: locations
+          - id: locations/openShiftClusters
           - id: locations/operationresults
           - id: locations/operations
-          - id: operations
           - id: locations/orchestrators
           - id: locations/osOptions
+          - id: managedClusters
+          - id: openShiftManagedClusters
+          - id: operations
           - id: snapshots
       - id: Microsoft.CostManagement
         name: Microsoft CostManagement
         resource-types:
-          - id: Connectors
-          - id: CloudConnectors
+          - id: Alerts
+          - id: BillingAccounts
+          - id: Budgets
           - id: CheckConnectorEligibility
+          - id: CheckNameAvailability
+          - id: CloudConnectors
+          - id: Connectors
+          - id: Departments
+          - id: Dimensions
+          - id: EnrollmentAccounts
+          - id: Exports
           - id: ExternalBillingAccounts
+          - id: ExternalBillingAccounts/Alerts
           - id: ExternalBillingAccounts/Dimensions
-          - id: ExternalBillingAccounts/Query
-          - id: ExternalSubscriptions/Dimensions
-          - id: ExternalSubscriptions/Query
-          - id: ExternalSubscriptions
-          - id: Forecast
-          - id: ExternalSubscriptions/Forecast
           - id: ExternalBillingAccounts/Forecast
+          - id: ExternalBillingAccounts/Query
+          - id: ExternalSubscriptions
+          - id: ExternalSubscriptions/Alerts
+          - id: ExternalSubscriptions/Dimensions
+          - id: ExternalSubscriptions/Forecast
+          - id: ExternalSubscriptions/Query
+          - id: Forecast
+          - id: GenerateDetailedCostReport
+          - id: GenerateReservationDetailsReport
+          - id: Insights
+          - id: OperationResults
+          - id: OperationStatus
+          - id: Query
+          - id: Reportconfigs
+          - id: Reports
+          - id: ReservationDetailsOperationResults
+          - id: ScheduledActions
           - id: Settings
+          - id: Views
+          - id: costAllocationRules
+          - id: fetchPrices
           - id: operations
           - id: register
-          - id: Query
-          - id: Dimensions
-          - id: Budgets
-          - id: ExternalSubscriptions/Alerts
-          - id: ExternalBillingAccounts/Alerts
-          - id: Alerts
           - id: showbackRules
-          - id: costAllocationRules
-          - id: Exports
-          - id: Reports
-          - id: Reportconfigs
-          - id: BillingAccounts
-          - id: Departments
-          - id: EnrollmentAccounts
-          - id: Views
-          - id: ScheduledActions
-          - id: CheckNameAvailability
-          - id: Insights
-          - id: fetchPrices
-          - id: GenerateReservationDetailsReport
-          - id: ReservationDetailsOperationResults
-          - id: GenerateDetailedCostReport
-          - id: OperationStatus
-          - id: OperationResults
       - id: Microsoft.CostManagementExports
         name: Microsoft CostManagementExports
         resource-types:
@@ -2859,18 +2859,18 @@ csp:
       - id: Microsoft.CustomProviders
         name: Microsoft CustomProviders
         resource-types:
-          - id: resourceProviders
           - id: associations
-          - id: operations
           - id: locations
           - id: locations/operationStatuses
+          - id: operations
+          - id: resourceProviders
       - id: Microsoft.CustomerLockbox
         name: Microsoft CustomerLockbox
         resource-types:
-          - id: operations
-          - id: TenantOptedIn
-          - id: EnableLockbox
           - id: DisableLockbox
+          - id: EnableLockbox
+          - id: TenantOptedIn
+          - id: operations
           - id: requests
       - id: Microsoft.D365CustomerInsights
         name: Microsoft D365CustomerInsights
@@ -2880,122 +2880,122 @@ csp:
       - id: Microsoft.DBforMariaDB
         name: Microsoft DBforMariaDB
         resource-types:
-          - id: operations
-          - id: servers
-          - id: servers/recoverableServers
-          - id: servers/virtualNetworkRules
           - id: checkNameAvailability
           - id: locations
-          - id: locations/operationResults
           - id: locations/azureAsyncOperation
+          - id: locations/operationResults
           - id: locations/performanceTiers
-          - id: locations/securityAlertPoliciesAzureAsyncOperation
-          - id: locations/privateEndpointConnectionProxyOperationResults
-          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
-          - id: locations/privateEndpointConnectionOperationResults
           - id: locations/privateEndpointConnectionAzureAsyncOperation
-          - id: locations/securityAlertPoliciesOperationResults
+          - id: locations/privateEndpointConnectionOperationResults
+          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
+          - id: locations/privateEndpointConnectionProxyOperationResults
           - id: locations/recommendedActionSessionsAzureAsyncOperation
           - id: locations/recommendedActionSessionsOperationResults
-          - id: servers/topQueryStatistics
-          - id: servers/queryTexts
-          - id: servers/waitStatistics
-          - id: servers/resetQueryPerformanceInsightData
-          - id: servers/advisors
-          - id: servers/privateLinkResources
-          - id: servers/privateEndpointConnections
-          - id: servers/privateEndpointConnectionProxies
+          - id: locations/securityAlertPoliciesAzureAsyncOperation
+          - id: locations/securityAlertPoliciesOperationResults
           - id: locations/serverKeyAzureAsyncOperation
           - id: locations/serverKeyOperationResults
+          - id: operations
+          - id: servers
+          - id: servers/advisors
+          - id: servers/privateEndpointConnectionProxies
+          - id: servers/privateEndpointConnections
+          - id: servers/privateLinkResources
+          - id: servers/queryTexts
+          - id: servers/recoverableServers
+          - id: servers/resetQueryPerformanceInsightData
           - id: servers/start
           - id: servers/stop
+          - id: servers/topQueryStatistics
+          - id: servers/virtualNetworkRules
+          - id: servers/waitStatistics
       - id: Microsoft.DBforMySQL
         name: Microsoft DBforMySQL
         resource-types:
-          - id: operations
-          - id: servers
+          - id: checkNameAvailability
           - id: flexibleServers
-          - id: servers/recoverableServers
-          - id: servers/virtualNetworkRules
+          - id: getPrivateDnsZoneSuffix
+          - id: locations
+          - id: locations/administratorAzureAsyncOperation
+          - id: locations/administratorOperationResults
+          - id: locations/azureAsyncOperation
           - id: locations/capabilities
           - id: locations/checkNameAvailability
-          - id: checkNameAvailability
-          - id: getPrivateDnsZoneSuffix
           - id: locations/checkVirtualNetworkSubnetUsage
-          - id: locations
           - id: locations/operationResults
-          - id: locations/azureAsyncOperation
-          - id: locations/administratorOperationResults
-          - id: locations/administratorAzureAsyncOperation
-          - id: locations/privateEndpointConnectionProxyOperationResults
-          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
-          - id: locations/privateEndpointConnectionOperationResults
-          - id: locations/privateEndpointConnectionAzureAsyncOperation
           - id: locations/performanceTiers
-          - id: locations/securityAlertPoliciesAzureAsyncOperation
-          - id: locations/securityAlertPoliciesOperationResults
+          - id: locations/privateEndpointConnectionAzureAsyncOperation
+          - id: locations/privateEndpointConnectionOperationResults
+          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
+          - id: locations/privateEndpointConnectionProxyOperationResults
           - id: locations/recommendedActionSessionsAzureAsyncOperation
           - id: locations/recommendedActionSessionsOperationResults
-          - id: servers/topQueryStatistics
-          - id: servers/queryTexts
-          - id: servers/waitStatistics
-          - id: servers/resetQueryPerformanceInsightData
-          - id: servers/advisors
-          - id: servers/privateLinkResources
-          - id: servers/privateEndpointConnections
-          - id: servers/privateEndpointConnectionProxies
-          - id: servers/keys
+          - id: locations/securityAlertPoliciesAzureAsyncOperation
+          - id: locations/securityAlertPoliciesOperationResults
           - id: locations/serverKeyAzureAsyncOperation
           - id: locations/serverKeyOperationResults
+          - id: operations
+          - id: servers
+          - id: servers/advisors
+          - id: servers/keys
+          - id: servers/privateEndpointConnectionProxies
+          - id: servers/privateEndpointConnections
+          - id: servers/privateLinkResources
+          - id: servers/queryTexts
+          - id: servers/recoverableServers
+          - id: servers/resetQueryPerformanceInsightData
           - id: servers/start
           - id: servers/stop
+          - id: servers/topQueryStatistics
           - id: servers/upgrade
+          - id: servers/virtualNetworkRules
+          - id: servers/waitStatistics
       - id: Microsoft.DBforPostgreSQL
         name: Microsoft DBforPostgreSQL
         resource-types:
-          - id: operations
-          - id: servers
-          - id: serversv2
-          - id: serverGroupsv2
-          - id: serverGroups
-          - id: flexibleServers
-          - id: locations/capabilities
-          - id: locations/checkNameAvailability
-          - id: servers/recoverableServers
-          - id: servers/virtualNetworkRules
           - id: checkNameAvailability
+          - id: flexibleServers
           - id: getPrivateDnsZoneSuffix
           - id: locations
-          - id: locations/operationResults
-          - id: locations/azureAsyncOperation
-          - id: locations/administratorOperationResults
           - id: locations/administratorAzureAsyncOperation
+          - id: locations/administratorOperationResults
+          - id: locations/azureAsyncOperation
+          - id: locations/capabilities
+          - id: locations/checkNameAvailability
           - id: locations/checkVirtualNetworkSubnetUsage
-          - id: locations/privateEndpointConnectionProxyOperationResults
-          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
-          - id: locations/privateEndpointConnectionOperationResults
-          - id: locations/privateEndpointConnectionAzureAsyncOperation
+          - id: locations/operationResults
           - id: locations/performanceTiers
-          - id: locations/securityAlertPoliciesAzureAsyncOperation
-          - id: locations/securityAlertPoliciesOperationResults
+          - id: locations/privateEndpointConnectionAzureAsyncOperation
+          - id: locations/privateEndpointConnectionOperationResults
+          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
+          - id: locations/privateEndpointConnectionProxyOperationResults
           - id: locations/recommendedActionSessionsAzureAsyncOperation
           - id: locations/recommendedActionSessionsOperationResults
-          - id: servers/topQueryStatistics
-          - id: servers/queryTexts
-          - id: servers/waitStatistics
-          - id: servers/resetQueryPerformanceInsightData
-          - id: servers/advisors
-          - id: servers/privateLinkResources
-          - id: servers/privateEndpointConnections
-          - id: servers/privateEndpointConnectionProxies
-          - id: servers/keys
+          - id: locations/securityAlertPoliciesAzureAsyncOperation
+          - id: locations/securityAlertPoliciesOperationResults
           - id: locations/serverKeyAzureAsyncOperation
           - id: locations/serverKeyOperationResults
+          - id: operations
+          - id: serverGroups
+          - id: serverGroupsv2
+          - id: servers
+          - id: servers/advisors
+          - id: servers/keys
+          - id: servers/privateEndpointConnectionProxies
+          - id: servers/privateEndpointConnections
+          - id: servers/privateLinkResources
+          - id: servers/queryTexts
+          - id: servers/recoverableServers
+          - id: servers/resetQueryPerformanceInsightData
+          - id: servers/topQueryStatistics
+          - id: servers/virtualNetworkRules
+          - id: servers/waitStatistics
+          - id: serversv2
       - id: Microsoft.Dashboard
         name: Microsoft Dashboard
         resource-types:
-          - id: locations
           - id: checkNameAvailability
+          - id: locations
           - id: locations/operationStatuses
           - id: operations
       - id: Microsoft.DataBox
@@ -3003,52 +3003,52 @@ csp:
         resource-types:
           - id: jobs
           - id: locations
-          - id: locations/validateAddress
+          - id: locations/availableSkus
           - id: locations/checkNameAvailability
           - id: locations/operationresults
-          - id: operations
-          - id: locations/availableSkus
-          - id: locations/validateInputs
           - id: locations/regionConfiguration
+          - id: locations/validateAddress
+          - id: locations/validateInputs
+          - id: operations
       - id: Microsoft.DataBoxEdge
         name: Microsoft DataBoxEdge
         resource-types:
           - id: DataBoxEdgeDevices
           - id: DataBoxEdgeDevices/checkNameAvailability
-          - id: operations
           - id: availableSkus
+          - id: operations
       - id: Microsoft.DataCatalog
         name: Microsoft DataCatalog
         resource-types:
           - id: catalogs
           - id: checkNameAvailability
-          - id: operations
           - id: locations
           - id: locations/jobs
+          - id: operations
       - id: Microsoft.DataCollaboration
         name: Microsoft DataCollaboration
         resource-types:
           - id: listinvitations
           - id: locations
-          - id: locations/operationResults
-          - id: locations/consumerInvitations/reject
           - id: locations/consumerInvitations
+          - id: locations/consumerInvitations/reject
+          - id: locations/operationResults
           - id: operations
       - id: Microsoft.DataFactory
         name: Microsoft DataFactory
         resource-types:
+          - id: checkAzureDataFactoryNameAvailability
+          - id: checkDataFactoryNameAvailability
           - id: dataFactories
-          - id: factories
-          - id: factories/integrationRuntimes
           - id: dataFactories/diagnosticSettings
           - id: dataFactories/metricDefinitions
-          - id: checkDataFactoryNameAvailability
-          - id: checkAzureDataFactoryNameAvailability
           - id: dataFactorySchema
-          - id: operations
+          - id: factories
+          - id: factories/integrationRuntimes
           - id: locations
           - id: locations/configureFactoryRepo
           - id: locations/getFeatureValue
+          - id: operations
       - id: Microsoft.DataLakeAnalytics
         name: Microsoft DataLakeAnalytics
         resource-types:
@@ -3058,97 +3058,97 @@ csp:
           - id: accounts/storageAccounts/containers
           - id: accounts/storageAccounts/containers/listSasTokens
           - id: locations
-          - id: locations/operationresults
-          - id: locations/checkNameAvailability
           - id: locations/capability
+          - id: locations/checkNameAvailability
+          - id: locations/operationresults
           - id: locations/usages
           - id: operations
       - id: Microsoft.DataLakeStore
         name: Microsoft DataLakeStore
         resource-types:
           - id: accounts
-          - id: accounts/firewallRules
           - id: accounts/eventGridFilters
+          - id: accounts/firewallRules
           - id: locations
-          - id: locations/operationresults
-          - id: locations/checkNameAvailability
           - id: locations/capability
-          - id: locations/usages
+          - id: locations/checkNameAvailability
           - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/operationresults
+          - id: locations/usages
           - id: operations
       - id: Microsoft.DataMigration
         name: Microsoft DataMigration
         resource-types:
-          - id: locations
-          - id: services
-          - id: services/projects
-          - id: locations/operationResults
-          - id: locations/operationStatuses
-          - id: locations/checkNameAvailability
-          - id: operations
-          - id: SqlMigrationServices
           - id: DatabaseMigrations
           - id: Locations/OperationTypes
+          - id: SqlMigrationServices
+          - id: locations
+          - id: locations/checkNameAvailability
+          - id: locations/operationResults
+          - id: locations/operationStatuses
+          - id: operations
+          - id: services
+          - id: services/projects
       - id: Microsoft.DataProtection
         name: Microsoft DataProtection
         resource-types:
           - id: BackupVaults
           - id: ResourceGuards
-          - id: operations
           - id: locations
+          - id: locations/checkFeatureSupport
+          - id: locations/checkNameAvailability
           - id: locations/operationResults
           - id: locations/operationStatus
-          - id: locations/checkNameAvailability
-          - id: locations/checkFeatureSupport
+          - id: operations
       - id: Microsoft.DataShare
         name: Microsoft DataShare
         resource-types:
           - id: accounts
           - id: accounts/shares
           - id: accounts/shares/datasets
-          - id: accounts/shares/synchronizationSettings
           - id: accounts/shares/invitations
-          - id: accounts/sharesubscriptions
           - id: accounts/shares/providersharesubscriptions
+          - id: accounts/shares/synchronizationSettings
+          - id: accounts/sharesubscriptions
+          - id: accounts/sharesubscriptions/consumerSourceDataSets
           - id: accounts/sharesubscriptions/datasetmappings
           - id: accounts/sharesubscriptions/triggers
-          - id: accounts/sharesubscriptions/consumerSourceDataSets
           - id: listinvitations
           - id: locations
+          - id: locations/activateEmail
+          - id: locations/consumerInvitations
           - id: locations/operationResults
           - id: locations/registerEmail
-          - id: locations/activateEmail
           - id: locations/rejectInvitation
-          - id: locations/consumerInvitations
           - id: operations
       - id: Microsoft.Databricks
         name: Microsoft Databricks
         resource-types:
-          - id: workspaces
-          - id: workspaces/virtualNetworkPeerings
-          - id: workspaces/dbWorkspaces
-          - id: operations
           - id: locations
-          - id: locations/operationstatuses
           - id: locations/getNetworkPolicies
+          - id: locations/operationstatuses
+          - id: operations
+          - id: workspaces
+          - id: workspaces/dbWorkspaces
+          - id: workspaces/virtualNetworkPeerings
       - id: Microsoft.Datadog
         name: Microsoft Datadog
         resource-types:
-          - id: registeredSubscriptions
+          - id: agreements
           - id: locations
           - id: locations/operationStatuses
-          - id: operations
           - id: monitors
-          - id: monitors/tagRules
-          - id: monitors/listMonitoredResources
-          - id: monitors/listApiKeys
           - id: monitors/getDefaultKey
-          - id: monitors/setDefaultKey
-          - id: monitors/singleSignOnConfigurations
+          - id: monitors/listApiKeys
           - id: monitors/listHosts
           - id: monitors/listLinkedResources
+          - id: monitors/listMonitoredResources
           - id: monitors/refreshSetPasswordLink
-          - id: agreements
+          - id: monitors/setDefaultKey
+          - id: monitors/singleSignOnConfigurations
+          - id: monitors/tagRules
+          - id: operations
+          - id: registeredSubscriptions
       - id: Microsoft.DelegatedNetwork
         name: Microsoft DelegatedNetwork
         resource-types:
@@ -3157,17 +3157,16 @@ csp:
         name: Microsoft DeploymentManager
         resource-types:
           - id: artifactSources
+          - id: operationResults
+          - id: operations
+          - id: rollouts
           - id: serviceTopologies
           - id: serviceTopologies/services
           - id: serviceTopologies/services/serviceUnits
           - id: steps
-          - id: rollouts
-          - id: operationResults
-          - id: operations
       - id: Microsoft.DesktopVirtualization
         name: Microsoft DesktopVirtualization
         resource-types:
-          - id: workspaces
           - id: applicationgroups
           - id: applicationgroups/applications
           - id: applicationgroups/desktops
@@ -3177,8 +3176,9 @@ csp:
           - id: hostpools/sessionhosts
           - id: hostpools/sessionhosts/usersessions
           - id: hostpools/usersessions
-          - id: scalingplans
           - id: operations
+          - id: scalingplans
+          - id: workspaces
       - id: Microsoft.DevOps
         name: Microsoft DevOps
         resource-types:
@@ -3186,154 +3186,154 @@ csp:
       - id: Microsoft.DevTestLab
         name: Microsoft DevTestLab
         resource-types:
-          - id: labs/environments
           - id: labs
-          - id: schedules
-          - id: labs/virtualMachines
+          - id: labs/environments
           - id: labs/serviceRunners
-          - id: operations
+          - id: labs/virtualMachines
           - id: locations
           - id: locations/operations
+          - id: operations
+          - id: schedules
       - id: Microsoft.DeviceUpdate
         name: Microsoft DeviceUpdate
         resource-types:
-          - id: locations
-          - id: locations/operationStatuses
-          - id: operations
           - id: accounts
           - id: accounts/instances
           - id: checkNameAvailability
+          - id: locations
+          - id: locations/operationStatuses
+          - id: operations
           - id: registeredSubscriptions
       - id: Microsoft.Devices
         name: Microsoft Devices
         resource-types:
-          - id: checkNameAvailability
-          - id: checkProvisioningServiceNameAvailability
-          - id: usages
-          - id: operations
-          - id: operationResults
-          - id: locations
-          - id: locations/operationResults
           - id: IotHubs
           - id: IotHubs/eventGridFilters
           - id: IotHubs/failover
-          - id: ProvisioningServices
           - id: IotHubs/securitySettings
+          - id: ProvisioningServices
+          - id: checkNameAvailability
+          - id: checkProvisioningServiceNameAvailability
+          - id: locations
+          - id: locations/operationResults
+          - id: operationResults
+          - id: operations
+          - id: usages
       - id: Microsoft.Diagnostics
         name: Microsoft Diagnostics
         resource-types:
-          - id: Operations
           - id: Locations
           - id: Locations/OperationStatuses
+          - id: Operations
       - id: Microsoft.DigitalTwins
         name: Microsoft DigitalTwins
         resource-types:
+          - id: digitalTwinsInstances
+          - id: digitalTwinsInstances/endpoints
+          - id: digitalTwinsInstances/operationResults
           - id: locations
           - id: locations/checkNameAvailability
-          - id: digitalTwinsInstances
-          - id: digitalTwinsInstances/operationResults
           - id: locations/operationResults
-          - id: digitalTwinsInstances/endpoints
           - id: operations
       - id: Microsoft.DocumentDB
         name: Microsoft DocumentDB
         resource-types:
-          - id: databaseAccounts
+          - id: cassandraClusters
           - id: databaseAccountNames
-          - id: operations
-          - id: operationResults
-          - id: operationsStatus
-          - id: locations/operationsStatus
-          - id: locations/operationResults
+          - id: databaseAccounts
           - id: locations
           - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/operationResults
+          - id: locations/operationsStatus
           - id: locations/restorableDatabaseAccounts
+          - id: operationResults
+          - id: operations
+          - id: operationsStatus
           - id: restorableDatabaseAccounts
-          - id: cassandraClusters
       - id: Microsoft.DomainRegistration
         name: Microsoft DomainRegistration
         resource-types:
+          - id: checkDomainAvailability
           - id: domains
           - id: domains/domainOwnershipIdentifiers
-          - id: topLevelDomains
-          - id: checkDomainAvailability
-          - id: listDomainRecommendations
-          - id: validateDomainRegistrationInformation
           - id: generateSsoRequest
+          - id: listDomainRecommendations
           - id: operations
+          - id: topLevelDomains
+          - id: validateDomainRegistrationInformation
       - id: Microsoft.EdgeOrder
         name: Microsoft EdgeOrder
         resource-types:
           - id: addresses
+          - id: listConfigurations
+          - id: listProductFamilies
+          - id: locations
+          - id: locations/operationresults
+          - id: locations/orders
+          - id: operations
           - id: orderItems
           - id: orders
-          - id: locations
-          - id: locations/orders
-          - id: listProductFamilies
-          - id: listConfigurations
           - id: productFamiliesMetadata
-          - id: operations
-          - id: locations/operationresults
       - id: Microsoft.Elastic
         name: Microsoft Elastic
         resource-types:
-          - id: operations
+          - id: checkNameAvailability
           - id: locations
           - id: locations/operationStatuses
           - id: monitors
           - id: monitors/tagRules
-          - id: checkNameAvailability
+          - id: operations
       - id: Microsoft.EnterpriseKnowledgeGraph
         name: Microsoft EnterpriseKnowledgeGraph
         resource-types:
-          - id: services
-          - id: operations
           - id: locations
           - id: locations/operationResults
+          - id: operations
+          - id: services
       - id: Microsoft.EventGrid
         name: Microsoft EventGrid
         resource-types:
-          - id: locations
-          - id: locations/eventSubscriptions
-          - id: eventSubscriptions
-          - id: topics
           - id: domains
           - id: domains/topics
-          - id: topicTypes
-          - id: operations
-          - id: locations/operationsStatus
-          - id: locations/operationResults
-          - id: locations/topicTypes
+          - id: eventSubscriptions
           - id: extensionTopics
+          - id: locations
+          - id: locations/eventSubscriptions
+          - id: locations/operationResults
+          - id: locations/operationsStatus
+          - id: locations/topicTypes
           - id: operationResults
+          - id: operations
           - id: operationsStatus
-          - id: systemTopics
-          - id: systemTopics/eventSubscriptions
-          - id: partnerRegistrations
           - id: partnerNamespaces
+          - id: partnerNamespaces/eventChannels
+          - id: partnerRegistrations
           - id: partnerTopics
           - id: partnerTopics/eventSubscriptions
-          - id: partnerNamespaces/eventChannels
+          - id: systemTopics
+          - id: systemTopics/eventSubscriptions
+          - id: topicTypes
+          - id: topics
       - id: Microsoft.EventHub
         name: Microsoft EventHub
         resource-types:
-          - id: namespaces
+          - id: availableClusterRegions
+          - id: checkNameAvailability
+          - id: checkNamespaceAvailability
           - id: clusters
+          - id: locations
+          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: namespaces
           - id: namespaces/authorizationrules
-          - id: namespaces/networkrulesets
-          - id: namespaces/privateEndpointConnections
+          - id: namespaces/disasterrecoveryconfigs
+          - id: namespaces/disasterrecoveryconfigs/checkNameAvailability
           - id: namespaces/eventhubs
           - id: namespaces/eventhubs/authorizationrules
           - id: namespaces/eventhubs/consumergroups
-          - id: checkNamespaceAvailability
-          - id: checkNameAvailability
-          - id: sku
+          - id: namespaces/networkrulesets
+          - id: namespaces/privateEndpointConnections
           - id: operations
-          - id: namespaces/disasterrecoveryconfigs
-          - id: namespaces/disasterrecoveryconfigs/checkNameAvailability
-          - id: locations
-          - id: locations/deleteVirtualNetworkOrSubnets
-          - id: availableClusterRegions
+          - id: sku
       - id: Microsoft.Experimentation
         name: Microsoft Experimentation
         resource-types:
@@ -3343,11 +3343,11 @@ csp:
       - id: Microsoft.ExtendedLocation
         name: Microsoft ExtendedLocation
         resource-types:
-          - id: locations
           - id: customLocations
           - id: customLocations/enabledResourceTypes
-          - id: locations/operationsstatus
+          - id: locations
           - id: locations/operationresults
+          - id: locations/operationsstatus
           - id: operations
       - id: Microsoft.Falcon
         name: Microsoft Falcon
@@ -3356,13 +3356,13 @@ csp:
       - id: Microsoft.Features
         name: Microsoft Features
         resource-types:
-          - id: features
-          - id: providers
-          - id: featureProviders
-          - id: subscriptionFeatureRegistrations
-          - id: featureProviderNamespaces
           - id: featureConfigurations
+          - id: featureProviderNamespaces
+          - id: featureProviders
+          - id: features
           - id: operations
+          - id: providers
+          - id: subscriptionFeatureRegistrations
       - id: Microsoft.Fidalgo
         name: Microsoft Fidalgo
         resource-types:
@@ -3372,17 +3372,17 @@ csp:
       - id: Microsoft.FluidRelay
         name: Microsoft FluidRelay
         resource-types:
-          - id: fluidRelayServers
           - id: Operations
+          - id: fluidRelayServers
           - id: fluidRelayServers/fluidRelayContainers
       - id: Microsoft.GuestConfiguration
         name: Microsoft GuestConfiguration
         resource-types:
           - id: guestConfigurationAssignments
-          - id: software
-          - id: softwareUpdates
-          - id: softwareUpdateProfile
           - id: operations
+          - id: software
+          - id: softwareUpdateProfile
+          - id: softwareUpdates
       - id: Microsoft.HDInsight
         name: Microsoft HDInsight
         resource-types:
@@ -3390,24 +3390,24 @@ csp:
           - id: clusters/applications
           - id: clusters/operationresults
           - id: locations
-          - id: locations/capabilities
-          - id: locations/usages
-          - id: locations/billingSpecs
-          - id: locations/operationresults
           - id: locations/azureasyncoperations
+          - id: locations/billingSpecs
+          - id: locations/capabilities
+          - id: locations/checkNameAvailability
+          - id: locations/operationStatuses
+          - id: locations/operationresults
+          - id: locations/usages
           - id: locations/validateCreateRequest
           - id: operations
-          - id: locations/operationStatuses
-          - id: locations/checkNameAvailability
       - id: Microsoft.HanaOnAzure
         name: Microsoft HanaOnAzure
         resource-types:
           - id: hanaInstances
-          - id: sapMonitors
-          - id: locations/operationsStatus
           - id: locations
           - id: locations/operations
+          - id: locations/operationsStatus
           - id: operations
+          - id: sapMonitors
       - id: Microsoft.HardwareSecurityModules
         name: Microsoft HardwareSecurityModules
         resource-types:
@@ -3416,48 +3416,48 @@ csp:
       - id: Microsoft.HealthBot
         name: Microsoft HealthBot
         resource-types:
-          - id: Operations
           - id: Locations
           - id: Locations/OperationStatuses
+          - id: Operations
           - id: healthBots
       - id: Microsoft.HealthcareApis
         name: Microsoft HealthcareApis
         resource-types:
+          - id: checkNameAvailability
+          - id: locations
+          - id: locations/operationresults
+          - id: operations
           - id: services
-          - id: services/privateEndpointConnectionProxies
-          - id: services/privateEndpointConnections
-          - id: services/privateLinkResources
           - id: services/iomtconnectors
           - id: services/iomtconnectors/connections
           - id: services/iomtconnectors/mappings
+          - id: services/privateEndpointConnectionProxies
+          - id: services/privateEndpointConnections
+          - id: services/privateLinkResources
           - id: workspaces
           - id: workspaces/dicomservices
+          - id: workspaces/fhirservices
           - id: workspaces/iotconnectors
           - id: workspaces/iotconnectors/fhirdestinations
-          - id: workspaces/fhirservices
-          - id: locations
-          - id: locations/operationresults
-          - id: checkNameAvailability
-          - id: operations
       - id: Microsoft.HpcWorkbench
         name: Microsoft HpcWorkbench
         resource-types:
-          - id: locations
           - id: Locations/OperationStatuses
+          - id: locations
       - id: Microsoft.HybridCompute
         name: Microsoft HybridCompute
         resource-types:
-          - id: machines
-          - id: machines/privateLinkScopes
-          - id: machines/extensions
           - id: locations
-          - id: locations/operationStatus
           - id: locations/operationResults
+          - id: locations/operationStatus
+          - id: locations/privateLinkScopes
+          - id: machines
+          - id: machines/extensions
+          - id: machines/privateLinkScopes
           - id: operations
           - id: privateLinkScopes
-          - id: privateLinkScopes/privateEndpointConnections
           - id: privateLinkScopes/privateEndpointConnectionProxies
-          - id: locations/privateLinkScopes
+          - id: privateLinkScopes/privateEndpointConnections
       - id: Microsoft.HybridData
         name: Microsoft HybridData
         resource-types:
@@ -3466,9 +3466,9 @@ csp:
       - id: Microsoft.HybridNetwork
         name: Microsoft HybridNetwork
         resource-types:
-          - id: operations
           - id: locations
           - id: locations/OperationStatuses
+          - id: operations
       - id: Microsoft.ImportExport
         name: Microsoft ImportExport
         resource-types:
@@ -3479,24 +3479,24 @@ csp:
       - id: Microsoft.IndustryDataLifecycle
         name: Microsoft IndustryDataLifecycle
         resource-types:
-          - id: custodianCollaboratives/termsOfUseDocuments
+          - id: collaborativeInvitations
           - id: custodianCollaboratives/collaborativeImage
-          - id: custodianCollaboratives/invitations
-          - id: custodianCollaboratives/invitations/termsOfUseDocuments
           - id: custodianCollaboratives/dataModels
           - id: custodianCollaboratives/dataModels/mergePipelines
-          - id: memberCollaboratives
-          - id: dataConsumerCollaboratives
-          - id: collaborativeInvitations
-          - id: locations
-          - id: locations/rejectInvitation
-          - id: locations/generateInvitationAuthCode
-          - id: locations/revokeInvitationAuthCode
-          - id: locations/downloadInvitationFile
-          - id: dataproviders
-          - id: locations/dataPackages
-          - id: memberCollaboratives/sharedDataPackages
+          - id: custodianCollaboratives/invitations
+          - id: custodianCollaboratives/invitations/termsOfUseDocuments
           - id: custodianCollaboratives/receivedDataPackages
+          - id: custodianCollaboratives/termsOfUseDocuments
+          - id: dataConsumerCollaboratives
+          - id: dataproviders
+          - id: locations
+          - id: locations/dataPackages
+          - id: locations/downloadInvitationFile
+          - id: locations/generateInvitationAuthCode
+          - id: locations/rejectInvitation
+          - id: locations/revokeInvitationAuthCode
+          - id: memberCollaboratives
+          - id: memberCollaboratives/sharedDataPackages
           - id: operations
       - id: Microsoft.IntelligentITDigitalTwin
         name: Microsoft IntelligentITDigitalTwin
@@ -3506,300 +3506,300 @@ csp:
         name: Microsoft IoTCentral
         resource-types:
           - id: IoTApps
+          - id: appTemplates
           - id: checkNameAvailability
           - id: checkSubdomainAvailability
           - id: operations
-          - id: appTemplates
       - id: Microsoft.IoTSecurity
         name: Microsoft IoTSecurity
         resource-types:
           - id: Operations
+          - id: alertTypes
           - id: defenderSettings
           - id: locations
           - id: locations/deviceGroups
-          - id: locations/deviceGroups/devices
-          - id: locations/deviceGroups/vulnerabilities
           - id: locations/deviceGroups/alerts
+          - id: locations/deviceGroups/devices
           - id: locations/deviceGroups/recommendations
+          - id: locations/deviceGroups/vulnerabilities
           - id: locations/sites
           - id: locations/sites/sensors
-          - id: sites
-          - id: sensors
           - id: onPremiseSensors
-          - id: alertTypes
           - id: recommendationTypes
+          - id: sensors
+          - id: sites
       - id: Microsoft.KeyVault
         name: Microsoft KeyVault
         resource-types:
-          - id: vaults
-          - id: vaults/secrets
-          - id: vaults/accessPolicies
-          - id: operations
           - id: checkNameAvailability
+          - id: deletedManagedHSMs
           - id: deletedVaults
           - id: locations
-          - id: locations/deletedVaults
           - id: locations/deleteVirtualNetworkOrSubnets
-          - id: locations/operationResults
-          - id: vaults/eventGridFilters
-          - id: managedHSMs
-          - id: deletedManagedHSMs
           - id: locations/deletedManagedHSMs
+          - id: locations/deletedVaults
+          - id: locations/operationResults
+          - id: managedHSMs
+          - id: operations
+          - id: vaults
+          - id: vaults/accessPolicies
+          - id: vaults/eventGridFilters
           - id: vaults/keys
           - id: vaults/keys/versions
+          - id: vaults/secrets
       - id: Microsoft.Kubernetes
         name: Microsoft Kubernetes
         resource-types:
+          - id: Operations
           - id: connectedClusters
           - id: locations
           - id: locations/operationStatuses
           - id: registeredSubscriptions
-          - id: Operations
       - id: Microsoft.KubernetesConfiguration
         name: Microsoft KubernetesConfiguration
         resource-types:
-          - id: sourceControlConfigurations
           - id: extensions
           - id: operations
+          - id: sourceControlConfigurations
       - id: Microsoft.Kusto
         name: Microsoft Kusto
         resource-types:
           - id: clusters
-          - id: clusters/databases
           - id: clusters/attacheddatabaseconfigurations
-          - id: clusters/principalassignments
-          - id: clusters/databases/eventhubconnections
+          - id: clusters/databases
           - id: clusters/databases/dataconnections
+          - id: clusters/databases/eventhubconnections
           - id: clusters/databases/principalassignments
-          - id: locations/operationResults
+          - id: clusters/databases/scripts
+          - id: clusters/principalassignments
           - id: locations
           - id: locations/checkNameAvailability
+          - id: locations/operationResults
           - id: operations
-          - id: clusters/databases/scripts
       - id: Microsoft.LabServices
         name: Microsoft LabServices
         resource-types:
           - id: labaccounts
+          - id: locations
           - id: locations/operations
           - id: operations
           - id: users
-          - id: locations
       - id: Microsoft.Logic
         name: Microsoft Logic
         resource-types:
-          - id: workflows
-          - id: locations/workflows
-          - id: locations
-          - id: operations
           - id: integrationAccounts
           - id: integrationServiceEnvironments
           - id: integrationServiceEnvironments/managedApis
+          - id: locations
+          - id: locations/workflows
+          - id: operations
+          - id: workflows
       - id: Microsoft.Logz
         name: Microsoft Logz
         resource-types:
-          - id: operations
           - id: locations
-          - id: registeredSubscriptions
           - id: locations/operationStatuses
           - id: monitors
-          - id: monitors/tagRules
-          - id: monitors/singleSignOnConfigurations
           - id: monitors/accounts
           - id: monitors/accounts/tagRules
+          - id: monitors/singleSignOnConfigurations
+          - id: monitors/tagRules
+          - id: operations
+          - id: registeredSubscriptions
       - id: Microsoft.MachineLearning
         name: Microsoft MachineLearning
         resource-types:
           - id: Workspaces
-          - id: webServices
-          - id: operations
+          - id: commitmentPlans
           - id: locations
           - id: locations/operations
           - id: locations/operationsStatus
-          - id: commitmentPlans
+          - id: operations
+          - id: webServices
       - id: Microsoft.MachineLearningServices
         name: Microsoft MachineLearningServices
         resource-types:
-          - id: workspaces
-          - id: workspaces/onlineEndpoints
-          - id: workspaces/onlineEndpoints/deployments
-          - id: workspaces/batchEndpoints
-          - id: workspaces/batchEndpoints/deployments
-          - id: workspaces/batchEndpoints/jobs
-          - id: workspaces/batchEndpoints/deployments/jobs
-          - id: workspaces/computes
-          - id: workspaces/jobs
-          - id: workspaces/codes
-          - id: workspaces/codes/versions
-          - id: workspaces/components
-          - id: workspaces/components/versions
-          - id: workspaces/environments
-          - id: workspaces/data
-          - id: workspaces/datasets
-          - id: workspaces/datastores
-          - id: workspaces/eventGridFilters
-          - id: workspaces/models
-          - id: workspaces/models/versions
-          - id: operations
           - id: locations
           - id: locations/computeOperationsStatus
           - id: locations/mfeOperationResults
           - id: locations/mfeOperationsStatus
-          - id: locations/workspaceOperationsStatus
-          - id: locations/usages
-          - id: locations/vmsizes
           - id: locations/quotas
           - id: locations/updatequotas
-          - id: workspaces/linkedServices
+          - id: locations/usages
+          - id: locations/vmsizes
+          - id: locations/workspaceOperationsStatus
+          - id: operations
+          - id: workspaces
+          - id: workspaces/batchEndpoints
+          - id: workspaces/batchEndpoints/deployments
+          - id: workspaces/batchEndpoints/deployments/jobs
+          - id: workspaces/batchEndpoints/jobs
+          - id: workspaces/codes
+          - id: workspaces/codes/versions
+          - id: workspaces/components
+          - id: workspaces/components/versions
+          - id: workspaces/computes
+          - id: workspaces/data
+          - id: workspaces/datasets
+          - id: workspaces/datastores
+          - id: workspaces/environments
+          - id: workspaces/eventGridFilters
+          - id: workspaces/jobs
           - id: workspaces/labelingJobs
+          - id: workspaces/linkedServices
+          - id: workspaces/models
+          - id: workspaces/models/versions
+          - id: workspaces/onlineEndpoints
+          - id: workspaces/onlineEndpoints/deployments
       - id: Microsoft.Maintenance
         name: Microsoft Maintenance
         resource-types:
-          - id: maintenanceConfigurations
-          - id: updates
-          - id: configurationAssignments
           - id: applyUpdates
+          - id: configurationAssignments
+          - id: maintenanceConfigurations
           - id: publicMaintenanceConfigurations
+          - id: updates
       - id: Microsoft.ManagedIdentity
         name: Microsoft ManagedIdentity
         resource-types:
           - id: Identities
-          - id: userAssignedIdentities
           - id: operations
+          - id: userAssignedIdentities
       - id: Microsoft.ManagedServices
         name: Microsoft ManagedServices
         resource-types:
-          - id: registrationDefinitions
-          - id: registrationAssignments
-          - id: operations
           - id: marketplaceRegistrationDefinitions
           - id: operationStatuses
+          - id: operations
+          - id: registrationAssignments
+          - id: registrationDefinitions
       - id: Microsoft.Management
         name: Microsoft Management
         resource-types:
-          - id: resources
-          - id: managementGroups
-          - id: getEntities
-          - id: managementGroups/settings
           - id: checkNameAvailability
+          - id: getEntities
+          - id: managementGroups
+          - id: managementGroups/settings
           - id: operationResults
           - id: operationResults/asyncOperation
           - id: operations
-          - id: tenantBackfillStatus
+          - id: resources
           - id: startTenantBackfill
+          - id: tenantBackfillStatus
       - id: Microsoft.Maps
         name: Microsoft Maps
         resource-types:
           - id: accounts
-          - id: accounts/privateAtlases
           - id: accounts/creators
           - id: accounts/eventGridFilters
+          - id: accounts/privateAtlases
           - id: operations
       - id: Microsoft.Marketplace
         name: Microsoft Marketplace
         resource-types:
-          - id: register
-          - id: privategalleryitems
-          - id: products
-          - id: offers
+          - id: listAvailableOffers
           - id: macc
           - id: offerTypes
           - id: offerTypes/publishers
           - id: offerTypes/publishers/offers
           - id: offerTypes/publishers/offers/plans
+          - id: offerTypes/publishers/offers/plans/agreements
           - id: offerTypes/publishers/offers/plans/configs
           - id: offerTypes/publishers/offers/plans/configs/importImage
-          - id: offerTypes/publishers/offers/plans/agreements
+          - id: offers
           - id: operations
-          - id: listAvailableOffers
+          - id: privateStoreClient
+          - id: privateStores
+          - id: privateStores/AdminRequestApprovals
+          - id: privateStores/RequestApprovals
+          - id: privateStores/billingAccounts
+          - id: privateStores/bulkCollectionsAction
+          - id: privateStores/collections
+          - id: privateStores/collections/offers
+          - id: privateStores/collections/transferOffers
+          - id: privateStores/collectionsToSubscriptionsMapping
+          - id: privateStores/offers
+          - id: privateStores/offers/acknowledgeNotification
+          - id: privateStores/queryApprovedPlans
+          - id: privateStores/queryNotificationsState
+          - id: privateStores/queryOffers
+          - id: privateStores/requestApprovals/query
+          - id: privateStores/requestApprovals/withdrawPlan
+          - id: privategalleryitems
+          - id: products
           - id: publishers
           - id: publishers/offers
           - id: publishers/offers/amendments
-          - id: privateStoreClient
-          - id: privateStores
-          - id: privateStores/offers
-          - id: privateStores/requestApprovals/query
-          - id: privateStores/requestApprovals/withdrawPlan
-          - id: privateStores/RequestApprovals
-          - id: privateStores/queryNotificationsState
-          - id: privateStores/offers/acknowledgeNotification
-          - id: privateStores/AdminRequestApprovals
-          - id: privateStores/collections
-          - id: privateStores/collections/offers
-          - id: privateStores/bulkCollectionsAction
-          - id: privateStores/collections/transferOffers
-          - id: privateStores/queryOffers
-          - id: privateStores/collectionsToSubscriptionsMapping
-          - id: privateStores/billingAccounts
-          - id: privateStores/queryApprovedPlans
+          - id: register
       - id: Microsoft.MarketplaceApps
         name: Microsoft MarketplaceApps
         resource-types:
           - id: classicDevServices
-          - id: operations
           - id: listCommunicationPreference
+          - id: operations
           - id: updateCommunicationPreference
       - id: Microsoft.MarketplaceNotifications
         name: Microsoft MarketplaceNotifications
         resource-types:
-          - id: reviewsnotifications
           - id: operations
+          - id: reviewsnotifications
       - id: Microsoft.MarketplaceOrdering
         name: Microsoft MarketplaceOrdering
         resource-types:
           - id: agreements
-          - id: operations
           - id: offertypes
+          - id: operations
       - id: Microsoft.Media
         name: Microsoft Media
         resource-types:
-          - id: mediaservices
-          - id: videoAnalyzers
-          - id: mediaservices/assets
-          - id: mediaservices/contentKeyPolicies
-          - id: mediaservices/streamingLocators
-          - id: mediaservices/streamingPolicies
-          - id: mediaservices/eventGridFilters
-          - id: mediaservices/transforms
-          - id: mediaservices/transforms/jobs
-          - id: mediaservices/streamingEndpoints
-          - id: mediaservices/liveEvents
-          - id: mediaservices/liveEvents/liveOutputs
-          - id: mediaservices/streamingEndpointOperations
-          - id: mediaservices/liveEventOperations
-          - id: mediaservices/liveOutputOperations
-          - id: mediaservices/privateEndpointConnectionProxies
-          - id: mediaservices/privateEndpointConnections
-          - id: mediaservices/privateEndpointConnectionOperations
-          - id: mediaservices/assets/assetFilters
-          - id: mediaservices/accountFilters
-          - id: videoAnalyzers/accessPolicies
-          - id: videoAnalyzers/edgeModules
-          - id: videoAnalyzers/videos
-          - id: operations
           - id: checknameavailability
           - id: locations
           - id: locations/checkNameAvailability
+          - id: mediaservices
+          - id: mediaservices/accountFilters
+          - id: mediaservices/assets
+          - id: mediaservices/assets/assetFilters
+          - id: mediaservices/contentKeyPolicies
+          - id: mediaservices/eventGridFilters
+          - id: mediaservices/liveEventOperations
+          - id: mediaservices/liveEvents
+          - id: mediaservices/liveEvents/liveOutputs
+          - id: mediaservices/liveOutputOperations
+          - id: mediaservices/privateEndpointConnectionOperations
+          - id: mediaservices/privateEndpointConnectionProxies
+          - id: mediaservices/privateEndpointConnections
+          - id: mediaservices/streamingEndpointOperations
+          - id: mediaservices/streamingEndpoints
+          - id: mediaservices/streamingLocators
+          - id: mediaservices/streamingPolicies
+          - id: mediaservices/transforms
+          - id: mediaservices/transforms/jobs
+          - id: operations
+          - id: videoAnalyzers
+          - id: videoAnalyzers/accessPolicies
+          - id: videoAnalyzers/edgeModules
+          - id: videoAnalyzers/videos
       - id: Microsoft.Migrate
         name: Microsoft Migrate
         resource-types:
-          - id: projects
-          - id: migrateprojects
           - id: assessmentProjects
+          - id: locations
+          - id: locations/assessmentOptions
+          - id: locations/checkNameAvailability
+          - id: locations/rmsOperationResults
+          - id: migrateprojects
           - id: moveCollections
           - id: operations
-          - id: locations
-          - id: locations/checkNameAvailability
-          - id: locations/assessmentOptions
-          - id: locations/rmsOperationResults
+          - id: projects
       - id: Microsoft.MixedReality
         name: Microsoft MixedReality
         resource-types:
           - id: locations
           - id: locations/checkNameAvailability
-          - id: operations
-          - id: spatialAnchorsAccounts
-          - id: remoteRenderingAccounts
           - id: objectAnchorsAccounts
+          - id: operations
+          - id: remoteRenderingAccounts
+          - id: spatialAnchorsAccounts
       - id: Microsoft.MobileNetwork
         name: Microsoft MobileNetwork
         resource-types:
@@ -3809,158 +3809,158 @@ csp:
       - id: Microsoft.NetApp
         name: Microsoft NetApp
         resource-types:
+          - id: locations
+          - id: locations/QuotaLimits
+          - id: locations/checkFilePathAvailability
+          - id: locations/checkNameAvailability
+          - id: locations/checkQuotaAvailability
+          - id: locations/operationResults
+          - id: locations/regionInfo
           - id: netAppAccounts
-          - id: netAppAccounts/snapshotPolicies
-          - id: netAppAccounts/volumeGroups
           - id: netAppAccounts/capacityPools
           - id: netAppAccounts/capacityPools/volumes
           - id: netAppAccounts/capacityPools/volumes/mountTargets
           - id: netAppAccounts/capacityPools/volumes/snapshots
-          - id: locations
-          - id: locations/checkNameAvailability
-          - id: locations/checkFilePathAvailability
+          - id: netAppAccounts/snapshotPolicies
+          - id: netAppAccounts/volumeGroups
           - id: operations
-          - id: locations/checkQuotaAvailability
-          - id: locations/regionInfo
-          - id: locations/QuotaLimits
-          - id: locations/operationResults
       - id: Microsoft.Network
         name: Microsoft Network
         resource-types:
-          - id: virtualNetworks
-          - id: virtualNetworks/taggedTrafficConsumers
-          - id: natGateways
-          - id: publicIPAddresses
-          - id: customIpPrefixes
-          - id: networkInterfaces
-          - id: dscpConfigurations
-          - id: privateEndpoints
-          - id: privateEndpoints/privateLinkServiceProxies
-          - id: privateEndpointRedirectMaps
-          - id: loadBalancers
-          - id: networkSecurityGroups
+          - id: applicationGatewayAvailableRequestHeaders
+          - id: applicationGatewayAvailableResponseHeaders
+          - id: applicationGatewayAvailableServerVariables
+          - id: applicationGatewayAvailableSslOptions
+          - id: applicationGatewayAvailableWafRuleSets
+          - id: applicationGatewayWebApplicationFirewallPolicies
+          - id: applicationGateways
           - id: applicationSecurityGroups
-          - id: serviceEndpointPolicies
-          - id: networkIntentPolicies
-          - id: routeTables
-          - id: publicIPPrefixes
+          - id: azureFirewallFqdnTags
+          - id: azureFirewalls
+          - id: azureWebCategories
+          - id: bastionHosts
+          - id: bgpServiceCommunities
+          - id: checkFrontdoorNameAvailability
+          - id: checkTrafficManagerNameAvailability
+          - id: connections
+          - id: customIpPrefixes
           - id: ddosCustomPolicies
+          - id: ddosProtectionPlans
+          - id: dnsOperationResults
+          - id: dnsOperationStatuses
+          - id: dnszones
+          - id: dnszones/A
+          - id: dnszones/AAAA
+          - id: dnszones/CAA
+          - id: dnszones/CNAME
+          - id: dnszones/MX
+          - id: dnszones/NS
+          - id: dnszones/PTR
+          - id: dnszones/SOA
+          - id: dnszones/SRV
+          - id: dnszones/TXT
+          - id: dnszones/all
+          - id: dnszones/recordsets
+          - id: dscpConfigurations
+          - id: expressRouteCircuits
+          - id: expressRouteGateways
+          - id: expressRoutePortsLocations
+          - id: expressRouteServiceProviders
+          - id: firewallPolicies
+          - id: frontdoorOperationResults
+          - id: frontdoorWebApplicationFirewallManagedRuleSets
+          - id: frontdoorWebApplicationFirewallPolicies
+          - id: frontdoors
+          - id: frontdoors/frontendEndpoints
+          - id: frontdoors/frontendEndpoints/customHttpsConfiguration
+          - id: getDnsResourceReference
+          - id: internalNotify
+          - id: ipAllocations
+          - id: ipGroups
+          - id: loadBalancers
+          - id: localNetworkGateways
+          - id: locations
+          - id: locations/CheckDnsNameAvailability
+          - id: locations/autoApprovedPrivateLinkServices
+          - id: locations/availableDelegations
+          - id: locations/availablePrivateEndpointTypes
+          - id: locations/availableServiceAliases
+          - id: locations/bareMetalTenants
+          - id: locations/batchNotifyPrivateEndpointsForResourceMove
+          - id: locations/batchValidatePrivateEndpointsForResourceMove
+          - id: locations/checkAcceleratedNetworkingSupport
+          - id: locations/checkPrivateLinkServiceVisibility
+          - id: locations/commitInternalAzureNetworkManagerConfiguration
+          - id: locations/effectiveResourceOwnership
+          - id: locations/getAzureNetworkManagerConfiguration
+          - id: locations/internalAzureVirtualNetworkManagerOperation
+          - id: locations/nfvOperationResults
+          - id: locations/nfvOperations
+          - id: locations/operationResults
+          - id: locations/operations
+          - id: locations/privateLinkServices
+          - id: locations/serviceTagDetails
+          - id: locations/serviceTags
+          - id: locations/setAzureNetworkManagerConfiguration
+          - id: locations/setLoadBalancerFrontendPublicIpAddresses
+          - id: locations/setResourceOwnership
+          - id: locations/supportedVirtualMachineSizes
+          - id: locations/usages
+          - id: locations/validateResourceOwnership
+          - id: locations/virtualNetworkAvailableEndpointServices
+          - id: natGateways
+          - id: networkExperimentProfiles
+          - id: networkIntentPolicies
+          - id: networkInterfaces
+          - id: networkProfiles
+          - id: networkSecurityGroups
+          - id: networkVirtualApplianceSkus
+          - id: networkVirtualAppliances
           - id: networkWatchers
           - id: networkWatchers/connectionMonitors
           - id: networkWatchers/flowLogs
           - id: networkWatchers/pingMeshes
-          - id: virtualNetworkGateways
-          - id: localNetworkGateways
-          - id: connections
-          - id: applicationGateways
-          - id: applicationGatewayWebApplicationFirewallPolicies
-          - id: locations
-          - id: locations/operations
-          - id: locations/operationResults
-          - id: locations/CheckDnsNameAvailability
-          - id: locations/setLoadBalancerFrontendPublicIpAddresses
-          - id: locations/usages
-          - id: locations/virtualNetworkAvailableEndpointServices
-          - id: locations/availableDelegations
-          - id: locations/serviceTags
-          - id: locations/availablePrivateEndpointTypes
-          - id: locations/availableServiceAliases
-          - id: locations/checkPrivateLinkServiceVisibility
-          - id: locations/autoApprovedPrivateLinkServices
-          - id: locations/batchValidatePrivateEndpointsForResourceMove
-          - id: locations/batchNotifyPrivateEndpointsForResourceMove
-          - id: locations/supportedVirtualMachineSizes
-          - id: locations/setAzureNetworkManagerConfiguration
-          - id: locations/getAzureNetworkManagerConfiguration
-          - id: locations/checkAcceleratedNetworkingSupport
-          - id: locations/validateResourceOwnership
-          - id: locations/setResourceOwnership
-          - id: locations/effectiveResourceOwnership
           - id: operations
-          - id: dnszones
-          - id: dnsOperationResults
-          - id: dnsOperationStatuses
-          - id: getDnsResourceReference
-          - id: internalNotify
-          - id: dnszones/A
-          - id: dnszones/AAAA
-          - id: dnszones/CNAME
-          - id: dnszones/PTR
-          - id: dnszones/MX
-          - id: dnszones/TXT
-          - id: dnszones/SRV
-          - id: dnszones/SOA
-          - id: dnszones/NS
-          - id: dnszones/CAA
-          - id: dnszones/recordsets
-          - id: dnszones/all
-          - id: privateDnsZones
-          - id: privateDnsZones/virtualNetworkLinks
+          - id: p2sVpnGateways
           - id: privateDnsOperationResults
           - id: privateDnsOperationStatuses
-          - id: privateDnsZonesInternal
+          - id: privateDnsZones
           - id: privateDnsZones/A
           - id: privateDnsZones/AAAA
           - id: privateDnsZones/CNAME
-          - id: privateDnsZones/PTR
           - id: privateDnsZones/MX
-          - id: privateDnsZones/TXT
-          - id: privateDnsZones/SRV
+          - id: privateDnsZones/PTR
           - id: privateDnsZones/SOA
+          - id: privateDnsZones/SRV
+          - id: privateDnsZones/TXT
           - id: privateDnsZones/all
-          - id: virtualNetworks/privateDnsZoneLinks
+          - id: privateDnsZones/virtualNetworkLinks
+          - id: privateDnsZonesInternal
+          - id: privateEndpointRedirectMaps
+          - id: privateEndpoints
+          - id: privateEndpoints/privateLinkServiceProxies
+          - id: privateLinkServices
+          - id: publicIPAddresses
+          - id: publicIPPrefixes
+          - id: routeFilters
+          - id: routeTables
+          - id: securityPartnerProviders
+          - id: serviceEndpointPolicies
+          - id: trafficManagerGeographicHierarchies
+          - id: trafficManagerUserMetricsKeys
           - id: trafficmanagerprofiles
           - id: trafficmanagerprofiles/heatMaps
-          - id: checkTrafficManagerNameAvailability
-          - id: trafficManagerUserMetricsKeys
-          - id: trafficManagerGeographicHierarchies
-          - id: expressRouteCircuits
-          - id: expressRouteServiceProviders
-          - id: applicationGatewayAvailableWafRuleSets
-          - id: applicationGatewayAvailableSslOptions
-          - id: applicationGatewayAvailableServerVariables
-          - id: applicationGatewayAvailableRequestHeaders
-          - id: applicationGatewayAvailableResponseHeaders
-          - id: routeFilters
-          - id: bgpServiceCommunities
-          - id: virtualWans
-          - id: vpnSites
-          - id: vpnServerConfigurations
           - id: virtualHubs
-          - id: vpnGateways
-          - id: p2sVpnGateways
-          - id: expressRouteGateways
-          - id: expressRoutePortsLocations
-          - id: firewallPolicies
-          - id: ipGroups
-          - id: azureWebCategories
-          - id: locations/nfvOperations
-          - id: locations/nfvOperationResults
-          - id: securityPartnerProviders
-          - id: azureFirewalls
-          - id: azureFirewallFqdnTags
+          - id: virtualNetworkGateways
           - id: virtualNetworkTaps
-          - id: privateLinkServices
-          - id: locations/privateLinkServices
-          - id: ddosProtectionPlans
-          - id: networkProfiles
-          - id: frontdoorOperationResults
-          - id: checkFrontdoorNameAvailability
-          - id: frontdoors
-          - id: frontdoors/frontendEndpoints
-          - id: frontdoors/frontendEndpoints/customHttpsConfiguration
-          - id: frontdoorWebApplicationFirewallPolicies
-          - id: frontdoorWebApplicationFirewallManagedRuleSets
-          - id: networkExperimentProfiles
-          - id: locations/bareMetalTenants
-          - id: bastionHosts
+          - id: virtualNetworks
+          - id: virtualNetworks/privateDnsZoneLinks
+          - id: virtualNetworks/taggedTrafficConsumers
           - id: virtualRouters
-          - id: networkVirtualAppliances
-          - id: ipAllocations
-          - id: locations/commitInternalAzureNetworkManagerConfiguration
-          - id: locations/internalAzureVirtualNetworkManagerOperation
-          - id: networkVirtualApplianceSkus
-          - id: locations/serviceTagDetails
+          - id: virtualWans
+          - id: vpnGateways
+          - id: vpnServerConfigurations
+          - id: vpnSites
       - id: Microsoft.NetworkFunction
         name: Microsoft NetworkFunction
         resource-types:
@@ -3968,12 +3968,12 @@ csp:
       - id: Microsoft.NotificationHubs
         name: Microsoft NotificationHubs
         resource-types:
+          - id: checkNameAvailability
+          - id: checkNamespaceAvailability
           - id: namespaces
           - id: namespaces/notificationHubs
-          - id: checkNamespaceAvailability
-          - id: checkNameAvailability
-          - id: operations
           - id: operationResults
+          - id: operations
       - id: Microsoft.ObjectStore
         name: Microsoft ObjectStore
         resource-types:
@@ -3981,11 +3981,11 @@ csp:
       - id: Microsoft.OffAzure
         name: Microsoft OffAzure
         resource-types:
-          - id: VMwareSites
           - id: HyperVSites
-          - id: ServerSites
           - id: ImportSites
           - id: MasterSites
+          - id: ServerSites
+          - id: VMwareSites
           - id: locations
           - id: locations/operationResults
           - id: operations
@@ -3993,93 +3993,93 @@ csp:
         name: Microsoft OpenLogisticsPlatform
         resource-types:
           - id: Locations
+          - id: applicationRegistrationInvites
+          - id: checkNameAvailability
           - id: locations/OperationStatuses
           - id: operations
-          - id: checkNameAvailability
           - id: shareInvites
-          - id: applicationRegistrationInvites
       - id: Microsoft.OperationalInsights
         name: Microsoft OperationalInsights
         resource-types:
-          - id: workspaces
-          - id: querypacks
+          - id: clusters
+          - id: deletedWorkspaces
+          - id: linkTargets
           - id: locations
           - id: locations/operationStatuses
-          - id: workspaces/scopedPrivateLinkProxies
-          - id: workspaces/query
-          - id: workspaces/metadata
-          - id: workspaces/dataSources
-          - id: workspaces/linkedStorageAccounts
-          - id: workspaces/tables
-          - id: workspaces/storageInsightConfigs
-          - id: storageInsightConfigs
-          - id: workspaces/linkedServices
-          - id: linkTargets
-          - id: deletedWorkspaces
           - id: operations
-          - id: clusters
+          - id: querypacks
+          - id: storageInsightConfigs
+          - id: workspaces
           - id: workspaces/dataExports
+          - id: workspaces/dataSources
+          - id: workspaces/linkedServices
+          - id: workspaces/linkedStorageAccounts
+          - id: workspaces/metadata
+          - id: workspaces/query
+          - id: workspaces/scopedPrivateLinkProxies
+          - id: workspaces/storageInsightConfigs
+          - id: workspaces/tables
       - id: Microsoft.OperationsManagement
         name: Microsoft OperationsManagement
         resource-types:
-          - id: solutions
-          - id: managementconfigurations
           - id: managementassociations
-          - id: views
+          - id: managementconfigurations
           - id: operations
+          - id: solutions
+          - id: views
       - id: Microsoft.Peering
         name: Microsoft Peering
         resource-types:
-          - id: peerings
-          - id: peeringLocations
+          - id: cdnPeeringPrefixes
+          - id: checkServiceProviderAvailability
           - id: legacyPeerings
+          - id: lookingGlass
+          - id: operations
           - id: peerAsns
-          - id: peeringServices
+          - id: peeringLocations
           - id: peeringServiceCountries
           - id: peeringServiceLocations
           - id: peeringServiceProviders
-          - id: checkServiceProviderAvailability
-          - id: lookingGlass
-          - id: cdnPeeringPrefixes
-          - id: operations
+          - id: peeringServices
+          - id: peerings
       - id: Microsoft.PolicyInsights
         name: Microsoft PolicyInsights
         resource-types:
-          - id: policyEvents
-          - id: policyStates
-          - id: operations
           - id: asyncOperationResults
-          - id: remediations
-          - id: eventGridFilters
           - id: checkPolicyRestrictions
-          - id: policyTrackedResources
+          - id: eventGridFilters
+          - id: operations
+          - id: policyEvents
           - id: policyMetadata
+          - id: policyStates
+          - id: policyTrackedResources
+          - id: remediations
       - id: Microsoft.Portal
         name: Microsoft Portal
         resource-types:
-          - id: dashboards
-          - id: tenantconfigurations
-          - id: listTenantConfigurationViolations
-          - id: operations
-          - id: locations
           - id: consoles
+          - id: dashboards
+          - id: listTenantConfigurationViolations
+          - id: locations
           - id: locations/consoles
-          - id: userSettings
           - id: locations/userSettings
+          - id: operations
+          - id: tenantconfigurations
+          - id: userSettings
       - id: Microsoft.PowerBI
         name: Microsoft PowerBI
         resource-types:
-          - id: workspaceCollections
           - id: locations
           - id: locations/checkNameAvailability
+          - id: operations
           - id: privateLinkServicesForPowerBI
           - id: privateLinkServicesForPowerBI/operationResults
-          - id: operations
+          - id: workspaceCollections
       - id: Microsoft.PowerBIDedicated
         name: Microsoft PowerBIDedicated
         resource-types:
-          - id: capacities
           - id: autoScaleVCores
+          - id: capacities
           - id: locations
           - id: locations/checkNameAvailability
           - id: locations/operationresults
@@ -4092,87 +4092,87 @@ csp:
       - id: Microsoft.ProjectBabylon
         name: Microsoft ProjectBabylon
         resource-types:
-          - id: operations
           - id: checkNameAvailability
+          - id: operations
       - id: Microsoft.ProviderHub
         name: Microsoft ProviderHub
         resource-types:
-          - id: providerRegistrations
-          - id: operationStatuses
-          - id: providerRegistrations/resourceTypeRegistrations
-          - id: providerRegistrations/defaultRollouts
-          - id: providerRegistrations/customRollouts
-          - id: providerRegistrations/resourceActions
           - id: availableAccounts
+          - id: operationStatuses
+          - id: providerRegistrations
+          - id: providerRegistrations/customRollouts
+          - id: providerRegistrations/defaultRollouts
+          - id: providerRegistrations/resourceActions
+          - id: providerRegistrations/resourceTypeRegistrations
       - id: Microsoft.Purview
         name: Microsoft Purview
         resource-types:
           - id: accounts
-          - id: operations
-          - id: setDefaultAccount
-          - id: removeDefaultAccount
-          - id: getDefaultAccount
           - id: checkNameAvailability
+          - id: getDefaultAccount
           - id: locations
           - id: locations/operationResults
+          - id: operations
+          - id: removeDefaultAccount
+          - id: setDefaultAccount
       - id: Microsoft.Quantum
         name: Microsoft Quantum
         resource-types:
-          - id: Workspaces
-          - id: Operations
           - id: Locations
           - id: Locations/OperationStatuses
-          - id: locations/offerings
           - id: Locations/checkNameAvailability
+          - id: Operations
+          - id: Workspaces
+          - id: locations/offerings
       - id: Microsoft.RecommendationsService
         name: Microsoft RecommendationsService
         resource-types:
-          - id: locations
-          - id: locations/operationStatuses
           - id: accounts
           - id: accounts/modeling
           - id: accounts/serviceEndpoints
-          - id: operations
           - id: checkNameAvailability
+          - id: locations
+          - id: locations/operationStatuses
+          - id: operations
       - id: Microsoft.RecoveryServices
         name: Microsoft RecoveryServices
         resource-types:
-          - id: vaults
-          - id: operations
+          - id: backupProtectedItems
           - id: locations
-          - id: locations/backupStatus
-          - id: locations/checkNameAvailability
-          - id: locations/allocatedStamp
           - id: locations/allocateStamp
-          - id: locations/backupValidateFeatures
-          - id: locations/backupPreValidateProtection
-          - id: locations/backupCrrJobs
-          - id: locations/backupCrrJob
+          - id: locations/allocatedStamp
           - id: locations/backupAadProperties
           - id: locations/backupCrossRegionRestore
+          - id: locations/backupCrrJob
+          - id: locations/backupCrrJobs
           - id: locations/backupCrrOperationResults
           - id: locations/backupCrrOperationsStatus
-          - id: backupProtectedItems
+          - id: locations/backupPreValidateProtection
+          - id: locations/backupStatus
+          - id: locations/backupValidateFeatures
+          - id: locations/checkNameAvailability
+          - id: operations
           - id: replicationEligibilityResults
+          - id: vaults
       - id: Microsoft.RedHatOpenShift
         name: Microsoft RedHatOpenShift
         resource-types:
+          - id: OpenShiftClusters
           - id: locations
           - id: locations/operationresults
           - id: locations/operationsstatus
-          - id: OpenShiftClusters
           - id: operations
       - id: Microsoft.Relay
         name: Microsoft Relay
         resource-types:
+          - id: checkNameAvailability
           - id: namespaces
           - id: namespaces/authorizationrules
-          - id: namespaces/privateEndpointConnections
           - id: namespaces/hybridconnections
           - id: namespaces/hybridconnections/authorizationrules
+          - id: namespaces/privateEndpointConnections
           - id: namespaces/wcfrelays
           - id: namespaces/wcfrelays/authorizationrules
-          - id: checkNameAvailability
           - id: operations
       - id: Microsoft.ResourceConnector
         name: Microsoft ResourceConnector
@@ -4182,65 +4182,65 @@ csp:
       - id: Microsoft.ResourceGraph
         name: Microsoft ResourceGraph
         resource-types:
+          - id: operations
+          - id: queries
+          - id: resourceChangeDetails
+          - id: resourceChanges
           - id: resources
           - id: resourcesHistory
-          - id: resourceChanges
-          - id: resourceChangeDetails
-          - id: operations
           - id: subscriptionsStatus
-          - id: queries
       - id: Microsoft.ResourceHealth
         name: Microsoft ResourceHealth
         resource-types:
           - id: availabilityStatuses
           - id: childAvailabilityStatuses
           - id: childResources
+          - id: emergingissues
           - id: events
           - id: metadata
-          - id: emergingissues
           - id: operations
       - id: Microsoft.Resources
         name: Microsoft Resources
         resource-types:
-          - id: tenants
-          - id: locations
-          - id: operationresults
-          - id: notifyResourceJobs
-          - id: tags
-          - id: checkPolicyCompliance
-          - id: providers
-          - id: checkresourcename
+          - id: bulkDelete
           - id: calculateTemplateHash
-          - id: resources
-          - id: subscriptions
-          - id: subscriptions/resources
-          - id: subscriptions/providers
-          - id: subscriptions/operationresults
-          - id: resourceGroups
-          - id: subscriptions/resourceGroups
-          - id: subscriptions/resourcegroups/resources
-          - id: subscriptions/locations
-          - id: subscriptions/tagnames
-          - id: subscriptions/tagNames/tagValues
+          - id: checkPolicyCompliance
+          - id: checkresourcename
+          - id: deploymentScripts
+          - id: deploymentScripts/logs
           - id: deployments
           - id: deployments/operations
           - id: links
-          - id: operations
-          - id: bulkDelete
-          - id: deploymentScripts
-          - id: deploymentScripts/logs
+          - id: locations
           - id: locations/deploymentScriptOperationResults
+          - id: notifyResourceJobs
+          - id: operationresults
+          - id: operations
+          - id: providers
+          - id: resourceGroups
+          - id: resources
+          - id: subscriptions
+          - id: subscriptions/locations
+          - id: subscriptions/operationresults
+          - id: subscriptions/providers
+          - id: subscriptions/resourceGroups
+          - id: subscriptions/resourcegroups/resources
+          - id: subscriptions/resources
+          - id: subscriptions/tagNames/tagValues
+          - id: subscriptions/tagnames
+          - id: tags
           - id: templateSpecs
           - id: templateSpecs/versions
+          - id: tenants
       - id: Microsoft.SaaS
         name: Microsoft SaaS
         resource-types:
           - id: applications
           - id: checknameavailability
-          - id: saasresources
           - id: operationResults
           - id: operations
           - id: resources
+          - id: saasresources
       - id: Microsoft.ScVmm
         name: Microsoft ScVmm
         resource-types:
@@ -4251,88 +4251,88 @@ csp:
         name: Microsoft Scheduler
         resource-types:
           - id: jobcollections
-          - id: operations
           - id: operationResults
+          - id: operations
       - id: Microsoft.Scom
         name: Microsoft Scom
         resource-types:
+          - id: locations
           - id: locations/operationStatuses
           - id: operations
-          - id: locations
       - id: Microsoft.Search
         name: Microsoft Search
         resource-types:
-          - id: searchServices
-          - id: checkServiceNameAvailability
           - id: checkNameAvailability
-          - id: resourceHealthMetadata
+          - id: checkServiceNameAvailability
           - id: operations
+          - id: resourceHealthMetadata
+          - id: searchServices
       - id: Microsoft.Security
         name: Microsoft Security
         resource-types:
-          - id: operations
-          - id: securityStatuses
-          - id: tasks
-          - id: secureScores
-          - id: secureScores/secureScoreControls
-          - id: secureScoreControls
-          - id: secureScoreControlDefinitions
-          - id: connectors
-          - id: regulatoryComplianceStandards
-          - id: regulatoryComplianceStandards/regulatoryComplianceControls
-          - id: regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments
-          - id: alerts
-          - id: alertsSuppressionRules
-          - id: autoDismissAlertsRules
-          - id: dataCollectionAgents
-          - id: pricings
           - id: AutoProvisioningSettings
           - id: Compliances
-          - id: securityContacts
-          - id: workspaceSettings
-          - id: complianceResults
-          - id: policies
-          - id: assessments
-          - id: assessmentMetadata
-          - id: subAssessments
-          - id: securitySolutions
-          - id: locations/securitySolutions
-          - id: discoveredSecuritySolutions
-          - id: locations/discoveredSecuritySolutions
-          - id: allowedConnections
-          - id: locations/allowedConnections
-          - id: topologies
-          - id: locations/topologies
-          - id: securitySolutionsReferenceData
-          - id: locations/securitySolutionsReferenceData
-          - id: jitPolicies
-          - id: jitNetworkAccessPolicies
-          - id: locations/jitNetworkAccessPolicies
-          - id: locations
-          - id: securityStatusesSummaries
-          - id: applicationWhitelistings
-          - id: locations/applicationWhitelistings
-          - id: locations/alerts
-          - id: locations/tasks
-          - id: externalSecuritySolutions
-          - id: locations/externalSecuritySolutions
           - id: InformationProtectionPolicies
+          - id: adaptiveNetworkHardenings
           - id: advancedThreatProtectionSettings
-          - id: sqlVulnerabilityAssessments
+          - id: alerts
+          - id: alertsSuppressionRules
+          - id: allowedConnections
+          - id: applicationWhitelistings
+          - id: assessmentMetadata
+          - id: assessments
+          - id: autoDismissAlertsRules
+          - id: automations
+          - id: complianceResults
+          - id: connectors
+          - id: dataCollectionAgents
           - id: deviceSecurityGroups
+          - id: discoveredSecuritySolutions
+          - id: externalSecuritySolutions
+          - id: ingestionSettings
           - id: iotSecuritySolutions
           - id: iotSecuritySolutions/analyticsModels
+          - id: iotSecuritySolutions/analyticsModels/aggregatedAlerts
+          - id: iotSecuritySolutions/analyticsModels/aggregatedRecommendations
           - id: iotSecuritySolutions/iotAlertTypes
           - id: iotSecuritySolutions/iotAlerts
           - id: iotSecuritySolutions/iotRecommendationTypes
           - id: iotSecuritySolutions/iotRecommendations
-          - id: iotSecuritySolutions/analyticsModels/aggregatedAlerts
-          - id: iotSecuritySolutions/analyticsModels/aggregatedRecommendations
-          - id: settings
+          - id: jitNetworkAccessPolicies
+          - id: jitPolicies
+          - id: locations
+          - id: locations/alerts
+          - id: locations/allowedConnections
+          - id: locations/applicationWhitelistings
+          - id: locations/discoveredSecuritySolutions
+          - id: locations/externalSecuritySolutions
+          - id: locations/jitNetworkAccessPolicies
+          - id: locations/securitySolutions
+          - id: locations/securitySolutionsReferenceData
+          - id: locations/tasks
+          - id: locations/topologies
+          - id: operations
+          - id: policies
+          - id: pricings
+          - id: regulatoryComplianceStandards
+          - id: regulatoryComplianceStandards/regulatoryComplianceControls
+          - id: regulatoryComplianceStandards/regulatoryComplianceControls/regulatoryComplianceAssessments
+          - id: secureScoreControlDefinitions
+          - id: secureScoreControls
+          - id: secureScores
+          - id: secureScores/secureScoreControls
+          - id: securityContacts
+          - id: securitySolutions
+          - id: securitySolutionsReferenceData
+          - id: securityStatuses
+          - id: securityStatusesSummaries
           - id: serverVulnerabilityAssessments
-          - id: adaptiveNetworkHardenings
-          - id: automations
-          - id: ingestionSettings
+          - id: settings
+          - id: sqlVulnerabilityAssessments
+          - id: subAssessments
+          - id: tasks
+          - id: topologies
+          - id: workspaceSettings
       - id: Microsoft.SecurityDetonation
         name: Microsoft SecurityDetonation
         resource-types:
@@ -4340,41 +4340,48 @@ csp:
       - id: Microsoft.SecurityInsights
         name: Microsoft SecurityInsights
         resource-types:
-          - id: operations
-          - id: alertRules
+          - id: aggregations
           - id: alertRuleTemplates
-          - id: cases
+          - id: alertRules
+          - id: automationRules
           - id: bookmarks
+          - id: cases
           - id: dataConnectors
           - id: dataConnectorsCheckRequirements
           - id: enrichment
           - id: entities
-          - id: incidents
-          - id: officeConsents
-          - id: settings
-          - id: aggregations
           - id: entityQueries
           - id: entityQueryTemplates
-          - id: threatIntelligence
-          - id: automationRules
-          - id: sourceControls
+          - id: incidents
           - id: listrepositories
-          - id: watchlists
-          - id: onboardingStates
           - id: metadata
+          - id: officeConsents
+          - id: onboardingStates
+          - id: operations
+          - id: settings
+          - id: sourceControls
+          - id: threatIntelligence
+          - id: watchlists
       - id: Microsoft.SerialConsole
         name: Microsoft SerialConsole
         resource-types:
           - id: consoleServices
-          - id: serialPorts
           - id: locations
           - id: locations/consoleServices
           - id: operations
+          - id: serialPorts
       - id: Microsoft.ServiceBus
         name: Microsoft ServiceBus
         resource-types:
+          - id: checkNameAvailability
+          - id: checkNamespaceAvailability
+          - id: locations
+          - id: locations/deleteVirtualNetworkOrSubnets
           - id: namespaces
           - id: namespaces/authorizationrules
+          - id: namespaces/disasterrecoveryconfigs
+          - id: namespaces/disasterrecoveryconfigs/checkNameAvailability
+          - id: namespaces/eventgridfilters
           - id: namespaces/networkrulesets
           - id: namespaces/privateEndpointConnections
           - id: namespaces/queues
@@ -4383,16 +4390,9 @@ csp:
           - id: namespaces/topics/authorizationrules
           - id: namespaces/topics/subscriptions
           - id: namespaces/topics/subscriptions/rules
-          - id: checkNamespaceAvailability
-          - id: checkNameAvailability
-          - id: sku
-          - id: premiumMessagingRegions
           - id: operations
-          - id: namespaces/eventgridfilters
-          - id: namespaces/disasterrecoveryconfigs
-          - id: namespaces/disasterrecoveryconfigs/checkNameAvailability
-          - id: locations
-          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: premiumMessagingRegions
+          - id: sku
       - id: Microsoft.ServiceFabric
         name: Microsoft ServiceFabric
         resource-types:
@@ -4401,34 +4401,34 @@ csp:
           - id: locations
           - id: locations/clusterVersions
           - id: locations/environments
-          - id: locations/operations
+          - id: locations/environments/managedClusterVersions
+          - id: locations/managedClusterOperationResults
+          - id: locations/managedClusterOperations
+          - id: locations/managedClusterVersions
           - id: locations/operationResults
-          - id: operations
+          - id: locations/operations
           - id: managedclusters
-          - id: managedclusters/nodetypes
           - id: managedclusters/applicationTypes
           - id: managedclusters/applicationTypes/versions
           - id: managedclusters/applications
           - id: managedclusters/applications/services
-          - id: locations/managedClusterOperations
-          - id: locations/managedClusterOperationResults
-          - id: locations/managedClusterVersions
-          - id: locations/environments/managedClusterVersions
+          - id: managedclusters/nodetypes
+          - id: operations
       - id: Microsoft.ServiceFabricMesh
         name: Microsoft ServiceFabricMesh
         resource-types:
           - id: applications
-          - id: networks
-          - id: volumes
-          - id: secrets
           - id: gateways
           - id: locations
           - id: locations/applicationOperations
-          - id: locations/networkOperations
-          - id: locations/volumeOperations
           - id: locations/gatewayOperations
+          - id: locations/networkOperations
           - id: locations/secretOperations
+          - id: locations/volumeOperations
+          - id: networks
           - id: operations
+          - id: secrets
+          - id: volumes
       - id: Microsoft.ServiceLinker
         name: Microsoft ServiceLinker
         resource-types:
@@ -4439,36 +4439,36 @@ csp:
         name: Microsoft ServicesHub
         resource-types:
           - id: connectors
-          - id: workspaces
-          - id: supportOfferingEntitlement
           - id: operations
+          - id: supportOfferingEntitlement
+          - id: workspaces
       - id: Microsoft.SignalRService
         name: Microsoft SignalRService
         resource-types:
           - id: SignalR
+          - id: SignalR/eventGridFilters
           - id: WebPubSub
           - id: locations
+          - id: locations/checkNameAvailability
           - id: locations/operationResults
           - id: locations/operationStatuses
-          - id: operations
-          - id: locations/checkNameAvailability
           - id: locations/usages
-          - id: SignalR/eventGridFilters
+          - id: operations
       - id: Microsoft.Singularity
         name: Microsoft Singularity
         resource-types:
           - id: accounts
-          - id: accounts/storageContainers
           - id: accounts/accountQuotaPolicies
           - id: accounts/groupPolicies
           - id: accounts/jobs
           - id: accounts/models
+          - id: accounts/storageContainers
+          - id: images
           - id: locations
           - id: locations/instanceTypeSeries
           - id: locations/instanceTypeSeries/instanceTypes
           - id: locations/operationResults
           - id: operations
-          - id: images
       - id: Microsoft.SoftwarePlan
         name: Microsoft SoftwarePlan
         resource-types:
@@ -4477,221 +4477,221 @@ csp:
       - id: Microsoft.Solutions
         name: Microsoft Solutions
         resource-types:
-          - id: applications
           - id: applicationDefinitions
-          - id: locations
+          - id: applications
           - id: jitRequests
+          - id: locations
           - id: locations/operationstatuses
           - id: operations
       - id: Microsoft.Sql
         name: Microsoft Sql
         resource-types:
-          - id: operations
-          - id: locations
-          - id: locations/capabilities
-          - id: locations/databaseAzureAsyncOperation
-          - id: locations/databaseOperationResults
-          - id: locations/serverKeyAzureAsyncOperation
-          - id: locations/serverKeyOperationResults
-          - id: servers/keys
-          - id: servers/encryptionProtector
-          - id: locations/encryptionProtectorOperationResults
-          - id: locations/encryptionProtectorAzureAsyncOperation
-          - id: locations/managedInstanceKeyAzureAsyncOperation
-          - id: locations/managedInstanceKeyOperationResults
-          - id: locations/managedInstanceEncryptionProtectorOperationResults
-          - id: locations/managedInstanceEncryptionProtectorAzureAsyncOperation
-          - id: locations/transparentDataEncryptionAzureAsyncOperation
-          - id: locations/transparentDataEncryptionOperationResults
-          - id: locations/managedtransparentDataEncryptionAzureAsyncOperation
-          - id: locations/managedtransparentDataEncryptionOperationResults
-          - id: servers/tdeCertificates
-          - id: locations/tdeCertAzureAsyncOperation
-          - id: locations/tdeCertOperationResults
-          - id: locations/serverAzureAsyncOperation
-          - id: locations/serverOperationResults
-          - id: locations/usages
           - id: checkNameAvailability
-          - id: servers
-          - id: servers/databases
-          - id: servers/serviceObjectives
-          - id: servers/communicationLinks
-          - id: servers/administrators
-          - id: servers/administratorOperationResults
-          - id: locations/serverAdministratorAzureAsyncOperation
-          - id: locations/serverAdministratorOperationResults
-          - id: servers/restorableDroppedDatabases
-          - id: servers/recoverableDatabases
-          - id: servers/databases/geoBackupPolicies
-          - id: servers/import
-          - id: servers/importExportOperationResults
-          - id: servers/operationResults
-          - id: servers/databases/backupLongTermRetentionPolicies
-          - id: servers/databases/backupShortTermRetentionPolicies
-          - id: servers/databaseSecurityPolicies
-          - id: servers/automaticTuning
-          - id: servers/databases/automaticTuning
-          - id: servers/databases/transparentDataEncryption
-          - id: servers/databases/ledgerDigestUploads
-          - id: locations/ledgerDigestUploadsAzureAsyncOperation
-          - id: locations/ledgerDigestUploadsOperationResults
-          - id: servers/recommendedElasticPools
-          - id: servers/databases/dataMaskingPolicies
-          - id: servers/databases/dataMaskingPolicies/rules
-          - id: servers/databases/securityAlertPolicies
-          - id: servers/securityAlertPolicies
-          - id: servers/databases/auditingSettings
-          - id: servers/auditingSettings
-          - id: servers/extendedAuditingSettings
-          - id: servers/devOpsAuditingSettings
+          - id: instancePools
+          - id: locations
+          - id: locations/administratorAzureAsyncOperation
+          - id: locations/administratorOperationResults
           - id: locations/auditingSettingsAzureAsyncOperation
           - id: locations/auditingSettingsOperationResults
-          - id: locations/extendedAuditingSettingsAzureAsyncOperation
-          - id: locations/extendedAuditingSettingsOperationResults
-          - id: locations/devOpsAuditingSettingsOperationResults
+          - id: locations/capabilities
+          - id: locations/connectionPoliciesAzureAsyncOperation
+          - id: locations/connectionPoliciesOperationResults
+          - id: locations/databaseAzureAsyncOperation
+          - id: locations/databaseOperationResults
+          - id: locations/databaseRestoreAzureAsyncOperation
+          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/deleteVirtualNetworkOrSubnetsAzureAsyncOperation
+          - id: locations/deleteVirtualNetworkOrSubnetsOperationResults
           - id: locations/devOpsAuditingSettingsAzureAsyncOperation
-          - id: locations/elasticPoolAzureAsyncOperation
-          - id: locations/elasticPoolOperationResults
-          - id: servers/elasticpools
-          - id: servers/jobAccounts
-          - id: servers/jobAgents
-          - id: locations/jobAgentOperationResults
-          - id: locations/jobAgentAzureAsyncOperation
-          - id: servers/jobAgents/jobs
-          - id: servers/jobAgents/jobs/steps
-          - id: servers/jobAgents/jobs/executions
-          - id: servers/disasterRecoveryConfiguration
-          - id: servers/dnsAliases
+          - id: locations/devOpsAuditingSettingsOperationResults
           - id: locations/dnsAliasAsyncOperation
           - id: locations/dnsAliasOperationResults
-          - id: servers/failoverGroups
+          - id: locations/elasticPoolAzureAsyncOperation
+          - id: locations/elasticPoolOperationResults
+          - id: locations/encryptionProtectorAzureAsyncOperation
+          - id: locations/encryptionProtectorOperationResults
+          - id: locations/extendedAuditingSettingsAzureAsyncOperation
+          - id: locations/extendedAuditingSettingsOperationResults
           - id: locations/failoverGroupAzureAsyncOperation
           - id: locations/failoverGroupOperationResults
-          - id: locations/firewallRulesOperationResults
           - id: locations/firewallRulesAzureAsyncOperation
-          - id: locations/deleteVirtualNetworkOrSubnets
-          - id: servers/virtualNetworkRules
-          - id: locations/virtualNetworkRulesOperationResults
-          - id: locations/virtualNetworkRulesAzureAsyncOperation
-          - id: locations/deleteVirtualNetworkOrSubnetsOperationResults
-          - id: locations/deleteVirtualNetworkOrSubnetsAzureAsyncOperation
-          - id: locations/databaseRestoreAzureAsyncOperation
-          - id: servers/usages
-          - id: servers/databases/metricDefinitions
-          - id: servers/databases/metrics
-          - id: servers/aggregatedDatabaseMetrics
-          - id: servers/elasticpools/metrics
-          - id: servers/elasticpools/metricdefinitions
-          - id: servers/databases/topQueries
-          - id: servers/databases/topQueries/queryText
-          - id: servers/advisors
-          - id: servers/elasticPools/advisors
-          - id: servers/databases/advisors
-          - id: servers/databases/extensions
-          - id: servers/elasticPoolEstimates
-          - id: servers/databases/auditRecords
-          - id: servers/databases/VulnerabilityAssessmentScans
-          - id: servers/databases/workloadGroups
-          - id: servers/databases/vulnerabilityAssessments
-          - id: servers/vulnerabilityAssessments
-          - id: managedInstances/databases/vulnerabilityAssessments
-          - id: managedInstances/vulnerabilityAssessments
-          - id: servers/databases/VulnerabilityAssessmentSettings
-          - id: servers/databases/VulnerabilityAssessment
-          - id: locations/vulnerabilityAssessmentScanAzureAsyncOperation
-          - id: locations/vulnerabilityAssessmentScanOperationResults
-          - id: servers/databases/recommendedSensitivityLabels
-          - id: servers/databases/syncGroups
-          - id: servers/databases/syncGroups/syncMembers
-          - id: servers/syncAgents
-          - id: instancePools
-          - id: locations/importExportOperationResults
+          - id: locations/firewallRulesOperationResults
           - id: locations/importExportAzureAsyncOperation
-          - id: locations/instancePoolOperationResults
+          - id: locations/importExportOperationResults
+          - id: locations/instanceFailoverGroupAzureAsyncOperation
+          - id: locations/instanceFailoverGroupOperationResults
+          - id: locations/instanceFailoverGroups
           - id: locations/instancePoolAzureAsyncOperation
-          - id: managedInstances
-          - id: managedInstances/administrators
-          - id: managedInstances/databases
-          - id: managedInstances/recoverableDatabases
-          - id: managedInstances/metrics
-          - id: managedInstances/metricDefinitions
-          - id: managedInstances/databases/backupLongTermRetentionPolicies
-          - id: managedInstances/sqlAgent
-          - id: locations/managedInstancePrivateEndpointConnectionProxyOperationResults
-          - id: locations/managedInstancePrivateEndpointConnectionProxyAzureAsyncOperation
-          - id: locations/managedInstancePrivateEndpointConnectionOperationResults
-          - id: locations/managedInstancePrivateEndpointConnectionAzureAsyncOperation
-          - id: locations/longTermRetentionManagedInstances
-          - id: locations/longTermRetentionManagedInstanceBackups
-          - id: locations/managedInstanceLongTermRetentionPolicyOperationResults
-          - id: locations/managedInstanceLongTermRetentionPolicyAzureAsyncOperation
-          - id: locations/longTermRetentionManagedInstanceBackupOperationResults
+          - id: locations/instancePoolOperationResults
+          - id: locations/jobAgentAzureAsyncOperation
+          - id: locations/jobAgentOperationResults
+          - id: locations/ledgerDigestUploadsAzureAsyncOperation
+          - id: locations/ledgerDigestUploadsOperationResults
+          - id: locations/longTermRetentionBackupAzureAsyncOperation
+          - id: locations/longTermRetentionBackupOperationResults
+          - id: locations/longTermRetentionBackups
           - id: locations/longTermRetentionManagedInstanceBackupAzureAsyncOperation
+          - id: locations/longTermRetentionManagedInstanceBackupOperationResults
+          - id: locations/longTermRetentionManagedInstanceBackups
+          - id: locations/longTermRetentionManagedInstances
+          - id: locations/longTermRetentionPolicyAzureAsyncOperation
+          - id: locations/longTermRetentionPolicyOperationResults
+          - id: locations/longTermRetentionServers
           - id: locations/managedDatabaseAzureAsyncOperation
+          - id: locations/managedDatabaseCompleteRestoreAzureAsyncOperation
+          - id: locations/managedDatabaseCompleteRestoreOperationResults
+          - id: locations/managedDatabaseMoveAzureAsyncOperation
+          - id: locations/managedDatabaseMoveOperationResults
           - id: locations/managedDatabaseOperationResults
           - id: locations/managedDatabaseRestoreAzureAsyncOperation
           - id: locations/managedDatabaseRestoreOperationResults
-          - id: locations/managedDatabaseCompleteRestoreAzureAsyncOperation
-          - id: locations/managedDatabaseCompleteRestoreOperationResults
-          - id: locations/managedServerSecurityAlertPoliciesAzureAsyncOperation
-          - id: managedInstances/tdeCertificates
+          - id: locations/managedInstanceAzureAsyncOperation
+          - id: locations/managedInstanceEncryptionProtectorAzureAsyncOperation
+          - id: locations/managedInstanceEncryptionProtectorOperationResults
+          - id: locations/managedInstanceKeyAzureAsyncOperation
+          - id: locations/managedInstanceKeyOperationResults
+          - id: locations/managedInstanceLongTermRetentionPolicyAzureAsyncOperation
+          - id: locations/managedInstanceLongTermRetentionPolicyOperationResults
+          - id: locations/managedInstanceOperationResults
+          - id: locations/managedInstancePrivateEndpointConnectionAzureAsyncOperation
+          - id: locations/managedInstancePrivateEndpointConnectionOperationResults
+          - id: locations/managedInstancePrivateEndpointConnectionProxyAzureAsyncOperation
+          - id: locations/managedInstancePrivateEndpointConnectionProxyOperationResults
           - id: locations/managedInstanceTdeCertAzureAsyncOperation
           - id: locations/managedInstanceTdeCertOperationResults
+          - id: locations/managedServerSecurityAlertPoliciesAzureAsyncOperation
           - id: locations/managedServerSecurityAlertPoliciesOperationResults
-          - id: locations/securityAlertPoliciesAzureAsyncOperation
-          - id: locations/securityAlertPoliciesOperationResults
-          - id: virtualClusters
-          - id: locations/virtualClusterAzureAsyncOperation
-          - id: locations/virtualClusterOperationResults
-          - id: locations/managedInstanceAzureAsyncOperation
-          - id: locations/managedInstanceOperationResults
-          - id: locations/administratorAzureAsyncOperation
-          - id: locations/administratorOperationResults
-          - id: locations/syncGroupOperationResults
-          - id: locations/syncMemberOperationResults
-          - id: locations/syncAgentOperationResults
-          - id: locations/syncDatabaseIds
-          - id: locations/longTermRetentionServers
-          - id: locations/longTermRetentionBackups
-          - id: locations/longTermRetentionPolicyOperationResults
-          - id: locations/longTermRetentionPolicyAzureAsyncOperation
-          - id: locations/longTermRetentionBackupOperationResults
-          - id: locations/longTermRetentionBackupAzureAsyncOperation
-          - id: locations/shortTermRetentionPolicyOperationResults
-          - id: locations/shortTermRetentionPolicyAzureAsyncOperation
-          - id: locations/managedShortTermRetentionPolicyOperationResults
           - id: locations/managedShortTermRetentionPolicyAzureAsyncOperation
-          - id: locations/instanceFailoverGroups
-          - id: locations/instanceFailoverGroupAzureAsyncOperation
-          - id: locations/instanceFailoverGroupOperationResults
-          - id: locations/privateEndpointConnectionProxyOperationResults
-          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
-          - id: locations/privateEndpointConnectionOperationResults
+          - id: locations/managedShortTermRetentionPolicyOperationResults
+          - id: locations/managedtransparentDataEncryptionAzureAsyncOperation
+          - id: locations/managedtransparentDataEncryptionOperationResults
+          - id: locations/notifyAzureAsyncOperation
           - id: locations/outboundFirewallRulesAzureAsyncOperation
           - id: locations/outboundFirewallRulesOperationResults
           - id: locations/privateEndpointConnectionAzureAsyncOperation
-          - id: locations/notifyAzureAsyncOperation
-          - id: locations/serverTrustGroups
-          - id: locations/serverTrustGroupOperationResults
+          - id: locations/privateEndpointConnectionOperationResults
+          - id: locations/privateEndpointConnectionProxyAzureAsyncOperation
+          - id: locations/privateEndpointConnectionProxyOperationResults
+          - id: locations/securityAlertPoliciesAzureAsyncOperation
+          - id: locations/securityAlertPoliciesOperationResults
+          - id: locations/serverAdministratorAzureAsyncOperation
+          - id: locations/serverAdministratorOperationResults
+          - id: locations/serverAzureAsyncOperation
+          - id: locations/serverKeyAzureAsyncOperation
+          - id: locations/serverKeyOperationResults
+          - id: locations/serverOperationResults
           - id: locations/serverTrustGroupAzureAsyncOperation
-          - id: locations/managedDatabaseMoveOperationResults
-          - id: locations/managedDatabaseMoveAzureAsyncOperation
+          - id: locations/serverTrustGroupOperationResults
+          - id: locations/serverTrustGroups
+          - id: locations/shortTermRetentionPolicyAzureAsyncOperation
+          - id: locations/shortTermRetentionPolicyOperationResults
+          - id: locations/syncAgentOperationResults
+          - id: locations/syncDatabaseIds
+          - id: locations/syncGroupOperationResults
+          - id: locations/syncMemberOperationResults
+          - id: locations/tdeCertAzureAsyncOperation
+          - id: locations/tdeCertOperationResults
+          - id: locations/transparentDataEncryptionAzureAsyncOperation
+          - id: locations/transparentDataEncryptionOperationResults
+          - id: locations/usages
+          - id: locations/virtualClusterAzureAsyncOperation
+          - id: locations/virtualClusterOperationResults
+          - id: locations/virtualNetworkRulesAzureAsyncOperation
+          - id: locations/virtualNetworkRulesOperationResults
+          - id: locations/vulnerabilityAssessmentScanAzureAsyncOperation
+          - id: locations/vulnerabilityAssessmentScanOperationResults
+          - id: managedInstances
+          - id: managedInstances/administrators
+          - id: managedInstances/databases
+          - id: managedInstances/databases/backupLongTermRetentionPolicies
+          - id: managedInstances/databases/vulnerabilityAssessments
+          - id: managedInstances/metricDefinitions
+          - id: managedInstances/metrics
+          - id: managedInstances/recoverableDatabases
+          - id: managedInstances/sqlAgent
+          - id: managedInstances/tdeCertificates
+          - id: managedInstances/vulnerabilityAssessments
+          - id: operations
+          - id: servers
+          - id: servers/administratorOperationResults
+          - id: servers/administrators
+          - id: servers/advisors
+          - id: servers/aggregatedDatabaseMetrics
+          - id: servers/auditingSettings
+          - id: servers/automaticTuning
+          - id: servers/communicationLinks
           - id: servers/connectionPolicies
-          - id: locations/connectionPoliciesAzureAsyncOperation
-          - id: locations/connectionPoliciesOperationResults
+          - id: servers/databaseSecurityPolicies
+          - id: servers/databases
+          - id: servers/databases/VulnerabilityAssessment
+          - id: servers/databases/VulnerabilityAssessmentScans
+          - id: servers/databases/VulnerabilityAssessmentSettings
+          - id: servers/databases/advisors
+          - id: servers/databases/auditRecords
+          - id: servers/databases/auditingSettings
+          - id: servers/databases/automaticTuning
+          - id: servers/databases/backupLongTermRetentionPolicies
+          - id: servers/databases/backupShortTermRetentionPolicies
+          - id: servers/databases/dataMaskingPolicies
+          - id: servers/databases/dataMaskingPolicies/rules
+          - id: servers/databases/extensions
+          - id: servers/databases/geoBackupPolicies
+          - id: servers/databases/ledgerDigestUploads
+          - id: servers/databases/metricDefinitions
+          - id: servers/databases/metrics
+          - id: servers/databases/recommendedSensitivityLabels
+          - id: servers/databases/securityAlertPolicies
+          - id: servers/databases/syncGroups
+          - id: servers/databases/syncGroups/syncMembers
+          - id: servers/databases/topQueries
+          - id: servers/databases/topQueries/queryText
+          - id: servers/databases/transparentDataEncryption
+          - id: servers/databases/vulnerabilityAssessments
+          - id: servers/databases/workloadGroups
+          - id: servers/devOpsAuditingSettings
+          - id: servers/disasterRecoveryConfiguration
+          - id: servers/dnsAliases
+          - id: servers/elasticPoolEstimates
+          - id: servers/elasticPools/advisors
+          - id: servers/elasticpools
+          - id: servers/elasticpools/metricdefinitions
+          - id: servers/elasticpools/metrics
+          - id: servers/encryptionProtector
+          - id: servers/extendedAuditingSettings
+          - id: servers/failoverGroups
+          - id: servers/import
+          - id: servers/importExportOperationResults
+          - id: servers/jobAccounts
+          - id: servers/jobAgents
+          - id: servers/jobAgents/jobs
+          - id: servers/jobAgents/jobs/executions
+          - id: servers/jobAgents/jobs/steps
+          - id: servers/keys
+          - id: servers/operationResults
+          - id: servers/recommendedElasticPools
+          - id: servers/recoverableDatabases
+          - id: servers/restorableDroppedDatabases
+          - id: servers/securityAlertPolicies
+          - id: servers/serviceObjectives
+          - id: servers/syncAgents
+          - id: servers/tdeCertificates
+          - id: servers/usages
+          - id: servers/virtualNetworkRules
+          - id: servers/vulnerabilityAssessments
+          - id: virtualClusters
       - id: Microsoft.SqlVirtualMachine
         name: Microsoft SqlVirtualMachine
         resource-types:
-          - id: SqlVirtualMachineGroups
-          - id: SqlVirtualMachines
-          - id: SqlVirtualMachineGroups/AvailabilityGroupListeners
-          - id: operations
           - id: Locations
           - id: Locations/OperationTypes
-          - id: Locations/sqlVirtualMachineOperationResults
-          - id: Locations/sqlVirtualMachineGroupOperationResults
           - id: Locations/availabilityGroupListenerOperationResults
           - id: Locations/registerSqlVmCandidate
+          - id: Locations/sqlVirtualMachineGroupOperationResults
+          - id: Locations/sqlVirtualMachineOperationResults
+          - id: SqlVirtualMachineGroups
+          - id: SqlVirtualMachineGroups/AvailabilityGroupListeners
+          - id: SqlVirtualMachines
+          - id: operations
       - id: Microsoft.StorSimple
         name: Microsoft StorSimple
         resource-types:
@@ -4700,144 +4700,144 @@ csp:
       - id: Microsoft.Storage
         name: Microsoft Storage
         resource-types:
+          - id: checkNameAvailability
           - id: deletedAccounts
-          - id: locations/deletedAccounts
-          - id: storageAccounts
-          - id: operations
+          - id: locations
           - id: locations/asyncoperations
+          - id: locations/checkNameAvailability
+          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/deletedAccounts
+          - id: locations/usages
+          - id: operations
+          - id: storageAccounts
+          - id: storageAccounts/blobServices
+          - id: storageAccounts/fileServices
           - id: storageAccounts/listAccountSas
           - id: storageAccounts/listServiceSas
-          - id: storageAccounts/blobServices
-          - id: storageAccounts/tableServices
           - id: storageAccounts/queueServices
-          - id: storageAccounts/fileServices
-          - id: locations
-          - id: locations/usages
-          - id: locations/deleteVirtualNetworkOrSubnets
-          - id: usages
-          - id: checkNameAvailability
-          - id: locations/checkNameAvailability
           - id: storageAccounts/services
           - id: storageAccounts/services/metricDefinitions
+          - id: storageAccounts/tableServices
+          - id: usages
       - id: Microsoft.StorageCache
         name: Microsoft StorageCache
         resource-types:
           - id: caches
           - id: caches/storageTargets
-          - id: operations
-          - id: usageModels
           - id: locations
           - id: locations/ascoperations
+          - id: operations
+          - id: usageModels
       - id: Microsoft.StoragePool
         name: Microsoft StoragePool
         resource-types:
           - id: diskPools
           - id: diskPools/iscsiTargets
           - id: locations
+          - id: locations/diskPoolZones
           - id: locations/operationResults
           - id: locations/operationsStatus
-          - id: locations/diskPoolZones
           - id: locations/skus
           - id: operations
       - id: Microsoft.StorageSync
         name: Microsoft StorageSync
         resource-types:
+          - id: locations
+          - id: locations/checkNameAvailability
+          - id: locations/operationResults
+          - id: locations/operations
+          - id: locations/workflows
+          - id: operations
           - id: storageSyncServices
+          - id: storageSyncServices/registeredServers
           - id: storageSyncServices/syncGroups
           - id: storageSyncServices/syncGroups/cloudEndpoints
           - id: storageSyncServices/syncGroups/serverEndpoints
-          - id: storageSyncServices/registeredServers
           - id: storageSyncServices/workflows
-          - id: operations
-          - id: locations
-          - id: locations/checkNameAvailability
-          - id: locations/workflows
-          - id: locations/operations
-          - id: locations/operationResults
       - id: Microsoft.StreamAnalytics
         name: Microsoft StreamAnalytics
         resource-types:
-          - id: streamingjobs
           - id: clusters
           - id: clusters/privateEndpoints
           - id: locations
-          - id: locations/quotas
-          - id: locations/testQuery
           - id: locations/compileQuery
+          - id: locations/operationResults
+          - id: locations/quotas
           - id: locations/sampleInput
           - id: locations/testInput
           - id: locations/testOutput
-          - id: locations/operationResults
+          - id: locations/testQuery
           - id: operations
+          - id: streamingjobs
       - id: Microsoft.Subscription
         name: Microsoft Subscription
         resource-types:
+          - id: CreateSubscription
           - id: SubscriptionDefinitions
           - id: SubscriptionOperations
-          - id: CreateSubscription
-          - id: operations
-          - id: cancel
-          - id: rename
-          - id: enable
-          - id: subscriptions
-          - id: aliases
-          - id: operationResults
           - id: acceptChangeTenant
-          - id: changeTenantStatus
-          - id: changeTenantRequest
-          - id: policies
           - id: acceptOwnership
           - id: acceptOwnershipStatus
+          - id: aliases
+          - id: cancel
+          - id: changeTenantRequest
+          - id: changeTenantStatus
+          - id: enable
+          - id: operationResults
+          - id: operations
+          - id: policies
+          - id: rename
+          - id: subscriptions
       - id: Microsoft.Synapse
         name: Microsoft Synapse
         resource-types:
-          - id: workspaces
-          - id: workspaces/bigDataPools
-          - id: workspaces/sqlPools
-          - id: workspaces/sqlDatabases
+          - id: checkNameAvailability
+          - id: kustoOperations
+          - id: locations
+          - id: locations/operationResults
+          - id: locations/operationStatuses
           - id: locations/sqlDatabaseAzureAsyncOperation
           - id: locations/sqlDatabaseOperationResults
           - id: locations/sqlPoolAzureAsyncOperation
           - id: locations/sqlPoolOperationResults
-          - id: workspaces/operationStatuses
-          - id: workspaces/operationResults
-          - id: checkNameAvailability
           - id: operations
-          - id: kustoOperations
           - id: privateLinkHubs
-          - id: locations
-          - id: locations/operationResults
-          - id: locations/operationStatuses
+          - id: workspaces
+          - id: workspaces/bigDataPools
+          - id: workspaces/operationResults
+          - id: workspaces/operationStatuses
+          - id: workspaces/sqlDatabases
+          - id: workspaces/sqlPools
       - id: Microsoft.TestBase
         name: Microsoft TestBase
         resource-types:
           - id: locations
           - id: locations/operationstatuses
-          - id: skus
           - id: operations
+          - id: skus
           - id: testBaseAccounts
-          - id: testBaseAccounts/usages
           - id: testBaseAccounts/availableOSs
-          - id: testBaseAccounts/testTypes
+          - id: testBaseAccounts/customerEvents
+          - id: testBaseAccounts/emailEvents
           - id: testBaseAccounts/flightingRings
           - id: testBaseAccounts/packages
-          - id: testBaseAccounts/packages/osUpdates
-          - id: testBaseAccounts/testSummaries
           - id: testBaseAccounts/packages/favoriteProcesses
+          - id: testBaseAccounts/packages/osUpdates
           - id: testBaseAccounts/packages/testResults
           - id: testBaseAccounts/packages/testResults/analysisResults
-          - id: testBaseAccounts/emailEvents
-          - id: testBaseAccounts/customerEvents
+          - id: testBaseAccounts/testSummaries
+          - id: testBaseAccounts/testTypes
+          - id: testBaseAccounts/usages
       - id: Microsoft.TimeSeriesInsights
         name: Microsoft TimeSeriesInsights
         resource-types:
           - id: environments
-          - id: environments/eventsources
-          - id: environments/referenceDataSets
           - id: environments/accessPolicies
-          - id: environments/privateLinkResources
+          - id: environments/eventsources
           - id: environments/privateEndpointConnectionProxies
           - id: environments/privateEndpointConnections
+          - id: environments/privateLinkResources
+          - id: environments/referenceDataSets
           - id: operations
       - id: Microsoft.VMware
         name: Microsoft VMware
@@ -4849,32 +4849,32 @@ csp:
       - id: Microsoft.VMwareCloudSimple
         name: Microsoft VMwareCloudSimple
         resource-types:
-          - id: virtualMachines
           - id: dedicatedCloudNodes
           - id: dedicatedCloudServices
           - id: locations
-          - id: locations/usages
           - id: locations/availabilities
-          - id: locations/privateClouds
-          - id: locations/privateClouds/virtualNetworks
-          - id: locations/privateClouds/virtualMachineTemplates
-          - id: locations/privateClouds/resourcePools
           - id: locations/operationresults
+          - id: locations/privateClouds
+          - id: locations/privateClouds/resourcePools
+          - id: locations/privateClouds/virtualMachineTemplates
+          - id: locations/privateClouds/virtualNetworks
+          - id: locations/usages
           - id: operations
+          - id: virtualMachines
       - id: Microsoft.VSOnline
         name: Microsoft VSOnline
         resource-types:
           - id: accounts
-          - id: plans
           - id: operations
+          - id: plans
           - id: registeredSubscriptions
       - id: Microsoft.VideoIndexer
         name: Microsoft VideoIndexer
         resource-types:
-          - id: operations
+          - id: checknameavailability
           - id: locations
           - id: locations/operationstatuses
-          - id: checknameavailability
+          - id: operations
       - id: Microsoft.VirtualMachineImages
         name: Microsoft VirtualMachineImages
         resource-types:
@@ -4886,75 +4886,75 @@ csp:
       - id: Microsoft.Web
         name: Microsoft Web
         resource-types:
-          - id: publishingUsers
-          - id: ishostnameavailable
-          - id: validate
-          - id: isusernameavailable
-          - id: generateGithubAccessTokenForAppserviceCLI
-          - id: sourceControls
           - id: availableStacks
-          - id: webAppStacks
-          - id: locations/webAppStacks
-          - id: functionAppStacks
-          - id: locations/functionAppStacks
-          - id: staticSites
-          - id: locations/previewStaticSiteWorkflowFile
-          - id: staticSites/userProvidedFunctionApps
-          - id: staticSites/builds
-          - id: staticSites/builds/userProvidedFunctionApps
-          - id: listSitesAssignedToHostName
-          - id: locations/getNetworkPolicies
-          - id: locations/operations
-          - id: locations/operationResults
-          - id: sites/networkConfig
-          - id: sites/slots/networkConfig
-          - id: sites/hostNameBindings
-          - id: sites/slots/hostNameBindings
-          - id: operations
+          - id: billingMeters
           - id: certificates
-          - id: serverFarms
-          - id: sites
-          - id: sites/slots
-          - id: runtimes
-          - id: recommendations
-          - id: resourceHealthMetadata
-          - id: georegions
-          - id: sites/premieraddons
-          - id: hostingEnvironments
-          - id: hostingEnvironments/multiRolePools
-          - id: hostingEnvironments/workerPools
-          - id: kubeEnvironments
-          - id: deploymentLocations
-          - id: deletedSites
-          - id: locations/deletedSites
-          - id: ishostingenvironmentnameavailable
-          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: checkNameAvailability
+          - id: connectionGateways
           - id: connections
           - id: customApis
-          - id: locations
-          - id: locations/listWsdlInterfaces
-          - id: locations/extractApiDefinitionFromWsdl
-          - id: locations/managedApis
-          - id: locations/runtimes
-          - id: locations/apiOperations
-          - id: connectionGateways
-          - id: locations/connectionGatewayInstallations
-          - id: checkNameAvailability
-          - id: billingMeters
-          - id: verifyHostingEnvironmentVnet
-          - id: serverFarms/eventGridFilters
-          - id: sites/eventGridFilters
-          - id: sites/slots/eventGridFilters
+          - id: deletedSites
+          - id: deploymentLocations
+          - id: functionAppStacks
+          - id: generateGithubAccessTokenForAppserviceCLI
+          - id: georegions
+          - id: hostingEnvironments
           - id: hostingEnvironments/eventGridFilters
+          - id: hostingEnvironments/multiRolePools
+          - id: hostingEnvironments/workerPools
+          - id: ishostingenvironmentnameavailable
+          - id: ishostnameavailable
+          - id: isusernameavailable
+          - id: kubeEnvironments
+          - id: listSitesAssignedToHostName
+          - id: locations
+          - id: locations/apiOperations
+          - id: locations/connectionGatewayInstallations
+          - id: locations/deleteVirtualNetworkOrSubnets
+          - id: locations/deletedSites
+          - id: locations/extractApiDefinitionFromWsdl
+          - id: locations/functionAppStacks
+          - id: locations/getNetworkPolicies
+          - id: locations/listWsdlInterfaces
+          - id: locations/managedApis
+          - id: locations/operationResults
+          - id: locations/operations
+          - id: locations/previewStaticSiteWorkflowFile
+          - id: locations/runtimes
+          - id: locations/webAppStacks
+          - id: operations
+          - id: publishingUsers
+          - id: recommendations
+          - id: resourceHealthMetadata
+          - id: runtimes
+          - id: serverFarms
+          - id: serverFarms/eventGridFilters
           - id: serverFarms/firstPartyApps
           - id: serverFarms/firstPartyApps/keyVaultSettings
+          - id: sites
+          - id: sites/eventGridFilters
+          - id: sites/hostNameBindings
+          - id: sites/networkConfig
+          - id: sites/premieraddons
+          - id: sites/slots
+          - id: sites/slots/eventGridFilters
+          - id: sites/slots/hostNameBindings
+          - id: sites/slots/networkConfig
+          - id: sourceControls
+          - id: staticSites
+          - id: staticSites/builds
+          - id: staticSites/builds/userProvidedFunctionApps
+          - id: staticSites/userProvidedFunctionApps
+          - id: validate
+          - id: verifyHostingEnvironmentVnet
+          - id: webAppStacks
           - id: workerApps
       - id: Microsoft.WindowsESU
         name: Microsoft WindowsESU
         resource-types:
-          - id: Operations
           - id: Locations
           - id: Locations/OperationStatuses
+          - id: Operations
       - id: Microsoft.WindowsIoT
         name: Microsoft WindowsIoT
         resource-types:
@@ -4969,41 +4969,41 @@ csp:
       - id: Microsoft.WorkloadMonitor
         name: Microsoft WorkloadMonitor
         resource-types:
-          - id: operations
           - id: monitors
+          - id: operations
       - id: NGINX.NGINXPLUS
         name: NGINX NGINXPLUS
         resource-types:
-          - id: operations
           - id: locations
           - id: locations/operationStatuses
+          - id: operations
       - id: Paraleap.CloudMonix
         name: Paraleap CloudMonix
         resource-types:
-          - id: services
-          - id: operations
           - id: listCommunicationPreference
+          - id: operations
+          - id: services
           - id: updateCommunicationPreference
       - id: Pokitdok.Platform
         name: Pokitdok Platform
         resource-types:
-          - id: services
-          - id: operations
           - id: listCommunicationPreference
+          - id: operations
+          - id: services
           - id: updateCommunicationPreference
       - id: RavenHq.Db
         name: RavenHq Db
         resource-types:
           - id: databases
-          - id: operations
           - id: listCommunicationPreference
+          - id: operations
           - id: updateCommunicationPreference
       - id: Raygun.CrashReporting
         name: Raygun CrashReporting
         resource-types:
           - id: apps
-          - id: operations
           - id: listCommunicationPreference
+          - id: operations
           - id: updateCommunicationPreference
       - id: Sendgrid.Email
         name: Sendgrid Email
@@ -5013,105 +5013,105 @@ csp:
       - id: Wandisco.Fusion
         name: Wandisco Fusion
         resource-types:
+          - id: Locations
+          - id: Locations/operationStatuses
           - id: fusionGroups
           - id: fusionGroups/azureZones
           - id: fusionGroups/azureZones/plugins
-          - id: fusionGroups/replicationRules
-          - id: Locations
-          - id: Locations/operationStatuses
-          - id: fusionGroups/replicationRules/migrations
-          - id: registeredSubscriptions
           - id: fusionGroups/hiveReplicationRules
           - id: fusionGroups/managedOnPremZones
-          - id: operations
+          - id: fusionGroups/replicationRules
+          - id: fusionGroups/replicationRules/migrations
           - id: migrators
-          - id: migrators/targets
-          - id: migrators/liveDataMigrations
           - id: migrators/exclusionTemplates
+          - id: migrators/liveDataMigrations
           - id: migrators/metadataMigrations
           - id: migrators/metadataTargets
           - id: migrators/pathMappings
+          - id: migrators/targets
+          - id: operations
+          - id: registeredSubscriptions
       - id: microsoft.aadiam
         name: microsoft aadiam
         resource-types:
           - id: azureADMetrics
-          - id: privateLinkForAzureAD
-          - id: tenants
-          - id: operations
           - id: diagnosticSettings
           - id: diagnosticSettingsCategories
+          - id: operations
+          - id: privateLinkForAzureAD
+          - id: tenants
       - id: microsoft.insights
         name: microsoft insights
         resource-types:
-          - id: components
-          - id: components/query
-          - id: components/metadata
-          - id: components/metrics
-          - id: components/events
-          - id: webtests
-          - id: webtests/getTestResultFile
-          - id: scheduledqueryrules
-          - id: components/pricingPlans
-          - id: migrateToNewPricingModel
-          - id: rollbackToLegacyPricingModel
-          - id: listMigrationdate
-          - id: logprofiles
-          - id: migratealertrules
-          - id: metricalerts
-          - id: alertrules
-          - id: autoscalesettings
-          - id: eventtypes
-          - id: locations
-          - id: locations/operationResults
-          - id: vmInsightsOnboardingStatuses
-          - id: operations
-          - id: diagnosticSettings
-          - id: diagnosticSettingsCategories
-          - id: extendedDiagnosticSettings
-          - id: metricDefinitions
-          - id: logDefinitions
-          - id: eventCategories
-          - id: metrics
-          - id: metricbatch
-          - id: metricNamespaces
           - id: actiongroups
           - id: activityLogAlerts
+          - id: alertrules
+          - id: autoscalesettings
           - id: baseline
-          - id: metricbaselines
           - id: calculatebaseline
-          - id: workbooks
-          - id: workbooktemplates
-          - id: myWorkbooks
-          - id: logs
-          - id: transactions
-          - id: topology
-          - id: generateLiveToken
-          - id: dataCollectionRules
-          - id: dataCollectionRuleAssociations
+          - id: components
+          - id: components/events
+          - id: components/linkedstorageaccounts
+          - id: components/metadata
+          - id: components/metrics
+          - id: components/pricingPlans
+          - id: components/query
           - id: dataCollectionEndpoints
           - id: dataCollectionEndpoints/scopedPrivateLinkProxies
-          - id: privateLinkScopes
-          - id: privateLinkScopes/privateEndpointConnections
-          - id: privateLinkScopes/privateEndpointConnectionProxies
-          - id: privateLinkScopes/scopedResources
-          - id: components/linkedstorageaccounts
+          - id: dataCollectionRuleAssociations
+          - id: dataCollectionRules
+          - id: diagnosticSettings
+          - id: diagnosticSettingsCategories
+          - id: eventCategories
+          - id: eventtypes
+          - id: extendedDiagnosticSettings
+          - id: generateLiveToken
+          - id: listMigrationdate
+          - id: locations
+          - id: locations/operationResults
+          - id: logDefinitions
+          - id: logprofiles
+          - id: logs
+          - id: metricDefinitions
+          - id: metricNamespaces
+          - id: metricalerts
+          - id: metricbaselines
+          - id: metricbatch
+          - id: metrics
+          - id: migrateToNewPricingModel
+          - id: migratealertrules
+          - id: myWorkbooks
+          - id: operations
           - id: privateLinkScopeOperationStatuses
+          - id: privateLinkScopes
+          - id: privateLinkScopes/privateEndpointConnectionProxies
+          - id: privateLinkScopes/privateEndpointConnections
+          - id: privateLinkScopes/scopedResources
+          - id: rollbackToLegacyPricingModel
+          - id: scheduledqueryrules
+          - id: topology
+          - id: transactions
+          - id: vmInsightsOnboardingStatuses
+          - id: webtests
+          - id: webtests/getTestResultFile
+          - id: workbooks
+          - id: workbooktemplates
       - id: microsoft.support
         name: microsoft support
         resource-types:
-          - id: operations
           - id: checkNameAvailability
+          - id: lookUpResourceId
+          - id: operationresults
+          - id: operations
+          - id: operationsstatus
           - id: services
           - id: services/problemclassifications
           - id: supporttickets
-          - id: operationresults
-          - id: operationsstatus
-          - id: lookUpResourceId
       - id: microsoft.visualstudio
         name: microsoft visualstudio
         resource-types:
           - id: account
-          - id: operations
-          - id: account/project
           - id: account/extension
+          - id: account/project
           - id: checkNameAvailability
+          - id: operations
