@@ -75,7 +75,7 @@ class IamPolicyRisks(TestCase):
         assert (serv == set(results_t.get('ServicesAffected')))
 
     @given(st.lists(st.sampled_from(actions).filter(lambda x: 'ec2' in x), min_size=1, max_size=1))
-    @settings(max_examples=1024)
+    @settings(max_examples=1024, derandomize=True)
     def test_cloudsplaining_parse_complex_caching(self, acts):
         doc = {
             "Statement": [
