@@ -21,6 +21,13 @@ steps:
         value: .resourceId
       - name: region
         value: .region
+  - id: bucketPolicy
+    uses: GetBucketPolicy
+    with:
+      - name: bucketName
+        value: .resourceId
+      - name: region
+        value: .region
 
 risk-config:
   default-risk: ""
