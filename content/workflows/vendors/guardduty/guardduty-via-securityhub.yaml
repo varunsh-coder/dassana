@@ -24,7 +24,7 @@ steps:
     uses: GetTags
     with:
       - name: arn
-        value: .steps."resource-info".arn
+        value: .steps."resource-info".canonicalId
       - name: region
         value: .steps."resource-info".region
 
