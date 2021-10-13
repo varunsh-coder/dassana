@@ -14,12 +14,14 @@ with open('input.json', 'r') as schema:
 get_cached_client_aws = configure_ttl_cache(1024, 60)
 get_cached_findings = configure_lru_cache(1024)
 
-
 @validator(inbound_schema=schema)
 def handle(event: Dict[str, Any], context: LambdaContext):
     policies = []
     policy_statements = []
     exclusions_config = {}
+    
+    if not event.get('iamArn'):
+	    return {} # Reached when the associated resource does not have an IAM role
 
     iam_arn = parse_arn(event.get('iamArn'))
     name = iam_arn.resource
