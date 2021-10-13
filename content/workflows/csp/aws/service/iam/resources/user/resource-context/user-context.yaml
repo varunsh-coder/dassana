@@ -1,0 +1,46 @@
+schema: 1
+type: resource-context
+
+id: iam-user-context
+name: IAM user resource context
+
+csp: aws
+service: iam
+resource-type: user
+
+filters:
+  - match-type: any
+    rules:
+      - .resourceType == "user" and .csp =="aws" and .service == "iam"
+
+steps:
+  - id: riskyPermissions
+    uses: GetIAMPolicyRisks
+    with:
+      - name: iamArn
+        value: .canonicalId
+      - name: region
+        value: .region
+
+risk-config:
+  default-risk: ""
+  rules:
+    - name: Instance has permissions that allow PrivilegeEscalation
+      condition: .riskyPermissions.result.PolicyFindings.PrivilegeEscalation | length > 0
+      risk: high
+
+    - name: Instance has permissions that allow CredentialsExposure
+      condition: .riskyPermissions.result.PolicyFindings.CredentialsExposure | length > 0
+      risk: high
+
+    - name: Instance has permissions that allow DataExfiltration
+      condition: .riskyPermissions.result.PolicyFindings.DataExfiltration | length > 0
+      risk: medium
+
+    - name: Instance has permissions that allow InfrastructureModification
+      condition: .riskyPermissions.result.PolicyFindings.InfrastructureModification | length > 0
+      risk: low
+
+    - name: Instance has permissions that allow ResourceExposure
+      condition: .riskyPermissions.result.PolicyFindings.ResourceExposure | length > 0
+      risk: low
