@@ -1,16 +1,15 @@
 package app.dassana.core;
 
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import java.io.IOException;
 import javax.inject.Inject;
-
 import org.junit.jupiter.api.Test;
-import java.io.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
-public class DeepValidator {
+public class DeepValidatorTest {
 
   @Inject
   app.dassana.core.api.DeepValidator deepValidator;
