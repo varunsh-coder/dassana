@@ -364,7 +364,7 @@ Resources:
         source:
           - dassana
         detail-type:
-          - aws-gd-via-security-hub
+          - guardduty-via-securityhub
       Targets:
         - Arn:
             Fn::GetAtt:
@@ -456,6 +456,7 @@ Resources:
         Fn::GetAtt:
           - "DassanaEngine"
           - "Arn"
+
   DassanaSecurityHubToSqsRuleForAwsConfig:
     Type: "AWS::Events::Rule"
     Properties:
@@ -536,17 +537,6 @@ Resources:
 
     ### End Dassana Engine Resources ###
     ### Begin Vendor Specific Actions ###
-
-  SecurityHubResExtractor:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: app.dassana.resourceid.sh.App
-      Runtime: java11
-      MemorySize: 256
-      CodeUri: ../actions/security-hub-normalizer/impl/sh-resourceid-extractor
-      Role:
-        Fn::GetAtt: [DassanaActionsRole, Arn]
-      Timeout: 60
 
   SecurityHubUpdateFinding:
     Type: AWS::Serverless::Function
@@ -749,12 +739,27 @@ Resources:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
+  AWSConfigViaSecurityHub:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/ac_handler.handle
+      Runtime: python3.8
+      MemorySize: 128
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      CodeUri: ../actions/aws-config-via-sh
+      Role:
+        Fn::GetAtt: [DassanaActionsRole, Arn]
+      Timeout: 60
+
   GuardDutyExtractor:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.dassana.actions.App::handleRequest
-      Runtime: java11
-      MemorySize: 256
+      Handler: src/gd_handler.handle
+      Runtime: python3.8
+      MemorySize: 128
+      Layers:
+        - !Ref DassanaActionsPythonLayer
       CodeUri: ../actions/gd-via-sh
       Role:
         Fn::GetAtt: [DassanaActionsRole, Arn]

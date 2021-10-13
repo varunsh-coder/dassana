@@ -11,7 +11,7 @@ filters:
 
 steps:
   - id: resource-info
-    uses: SecurityHubResExtractor
+    uses: AWSConfigViaSecurityHub
 
   - id: lookup
     uses: NormalizerLookup
@@ -31,6 +31,8 @@ output:
     value-type: STRING
   - name: alertId
     value: ."resource-info".alertId
+  - name: canonicalId
+    value: ."resource-info".canonicalId
   - name: vendorPolicy
     value: ."resource-info".vendorPolicy
   - name: csp

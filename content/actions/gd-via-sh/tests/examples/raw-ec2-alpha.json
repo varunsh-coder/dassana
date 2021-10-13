@@ -1,0 +1,104 @@
+{
+  "SchemaVersion": "2018-10-08",
+  "Id": "arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d/finding/a0bdfff401df680ce958b027abe1c311",
+  "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/guardduty",
+  "ProductName": "GuardDuty",
+  "CompanyName": "Amazon",
+  "Region": "us-east-1",
+  "GeneratorId": "arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d",
+  "AwsAccountId": "020747060415",
+  "Types": [
+    "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+  ],
+  "FirstObservedAt": "2021-09-19T21:00:40.000Z",
+  "LastObservedAt": "2021-09-19T21:30:40.000Z",
+  "CreatedAt": "2021-09-19T21:13:20.574Z",
+  "UpdatedAt": "2021-09-19T21:34:06.139Z",
+  "Severity": {
+    "Product": 2,
+    "Label": "LOW",
+    "Normalized": 40
+  },
+  "Title": "135.148.62.74 is performing SSH brute force attacks against i-12345678909876543.",
+  "Description": "135.148.62.74 is performing SSH brute force attacks against i-12345678909876543. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password.",
+  "SourceUrl": "https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=current&fId=a0bdfff401df680ce958b027abe1c311",
+  "ProductFields": {
+    "aws/guardduty/service/action/networkConnectionAction/remotePortDetails/portName": "Unknown",
+    "aws/guardduty/service/archived": "false",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asnOrg": "OVH SAS",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lat": "00.751",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/ipAddressV4": "000.000.00.00",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lon": "00.822",
+    "aws/guardduty/service/action/networkConnectionAction/blocked": "false",
+    "aws/guardduty/service/action/networkConnectionAction/remotePortDetails/port": "32782",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/country/countryName": "United States",
+    "aws/guardduty/service/serviceName": "guardduty",
+    "aws/guardduty/service/evidence": "",
+    "aws/guardduty/service/action/networkConnectionAction/localIpDetails/ipAddressV4": "000.00.00.000",
+    "aws/guardduty/service/detectorId": "a2bdf2d15d3f3187077af621af3e234d",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/org": "OVH Hosting",
+    "aws/guardduty/service/action/networkConnectionAction/connectionDirection": "INBOUND",
+    "aws/guardduty/service/eventFirstSeen": "2021-09-19T21:00:40.000Z",
+    "aws/guardduty/service/eventLastSeen": "2021-09-19T21:30:40.000Z",
+    "aws/guardduty/service/action/networkConnectionAction/localPortDetails/portName": "SSH",
+    "aws/guardduty/service/action/actionType": "NETWORK_CONNECTION",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/city/cityName": "",
+    "aws/guardduty/service/additionalInfo": "",
+    "aws/guardduty/service/resourceRole": "TARGET",
+    "aws/guardduty/service/action/networkConnectionAction/localPortDetails/port": "22",
+    "aws/guardduty/service/action/networkConnectionAction/protocol": "TCP",
+    "aws/guardduty/service/count": "2",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asn": "16276",
+    "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/isp": "OVH Hosting",
+    "aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d/finding/a0bdfff401df680ce958b027abe1c311",
+    "aws/securityhub/ProductName": "GuardDuty",
+    "aws/securityhub/CompanyName": "Amazon"
+  },
+  "UserDefinedFields": {
+    "DASSANA_ALERT_PATH": "s3://dassana-stack-test-3-dassanabucket-1jlidt8fd0c2n/alerts/year=2021/month=9/day=30/hour=18/min=13/csp=aws/resource_container=020747060415/region=us-east-1/normalizer_workflow=aws-gd-via-security-hub/alertid=arn:aws:guardduty:us-east-1:020747060415:detector/a2bdf2d15d3f3187077af621af3e234d/finding/a0bdfff401df680ce958b027abe1c311",
+    "DASSANA_POLICY_CONTEXT_RISK": "low",
+    "DASSANA_GENERAL_CONTEXT_RISK": "",
+    "DASSANA_GENERAL_CONTEXT_RISK_CONDITION_NAME": "default",
+    "DASSANA_POLICY_CONTEXT_RISK_CONDITION_NAME": "default"
+  },
+  "Resources": [
+    {
+      "Type": "AwsEc2Instance",
+      "Id": "arn:aws:ec2:us-east-1:020747060415:instance/i-12345678909876543",
+      "Partition": "aws",
+      "Region": "us-east-1",
+      "Tags": {
+        "aws:cloudformation:stack-name": "user-data-stack",
+        "aws:cloudformation:stack-id": "arn:aws:cloudformation:us-east-1:020747060415:stack/user-data-stack/cf93fbe0-18d7-11ec-8abf-12b9c480101b",
+        "aws:cloudformation:logical-id": "MyInstance",
+        "Name": "Test-Stack"
+      },
+      "Details": {
+        "AwsEc2Instance": {
+          "Type": "t2.micro",
+          "ImageId": "ami-12345678909876543",
+          "IpV4Addresses": [
+            "000.00.00.000",
+            "00.000.00.00"
+          ],
+          "VpcId": "vpc-05ec28779c1bc59bf",
+          "SubnetId": "subnet-09fe0358bb0566a46",
+          "LaunchedAt": "2021-09-18T23:26:26.000Z"
+        }
+      }
+    }
+  ],
+  "WorkflowState": "NEW",
+  "Workflow": {
+    "Status": "NEW"
+  },
+  "RecordState": "ACTIVE",
+  "FindingProviderFields": {
+    "Severity": {
+      "Label": "LOW"
+    },
+    "Types": [
+      "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+    ]
+  }
+}

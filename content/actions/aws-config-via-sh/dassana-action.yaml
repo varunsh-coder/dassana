@@ -1,5 +1,5 @@
 schema: 1.0
-id: SecurityHubResExtractor
+id: AWSConfigViaSecurityHub
 name: AWS Config (via SecurityHub) Normalizer
 
 cloud-type: aws
