@@ -172,6 +172,7 @@ Resources:
           dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
           dassanaBucket: !Ref DassanaBucket
           dassanaEventBridgeBusName: !Ref DassanaEventBus
+          dassanaStackName: !Ref AWS::StackName
           version: __version-to-be-replaced-by-cicd__
 
   DassanaBucket:
@@ -444,6 +445,7 @@ Resources:
           dassanaCrossAccountRoleName: !Ref CrossAccountRoleName
           dassanaEventBridgeBusName: !Ref DassanaEventBus
           dassanaBucket: !Ref DassanaBucket
+          dassanaStackName: !Ref AWS::StackName
 
   DassanaEngineToQueueMapping:
     Type: AWS::Lambda::EventSourceMapping
@@ -805,4 +807,3 @@ Outputs:
     Value: !Sub https://console.aws.amazon.com/apigateway/home?region=${AWS::Region}
     Export:
       Name: !Join ["", [{ "Ref": "AWS::StackName" }, "ApiKey"]]
-

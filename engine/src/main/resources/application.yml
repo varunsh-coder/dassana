@@ -27,5 +27,5 @@ env:
   dassanaBucket: ${dassanaBucket}
   dassanaDeadLetterQueue: ${dassanaDeadLetterQueue}
   dassanaEventBridgeBusName: ${dassanaEventBridgeBusName}
-  dassanaStackName: ${DASSANA_STACK_NAME}
+  dassanaStackName: ${dassanaStackName}
   dassanaCrossAccountRoleName: ${dassanaCrossAccountRoleName:""}
