@@ -21,6 +21,20 @@ steps:
         value: .resourceId
       - name: region
         value: .region
+  - id: iamRole
+    uses: GetEc2InstanceIAMrole
+    with:
+      - name: instanceId
+        value: .resourceId
+      - name: region
+        value: .region
+  - id: riskyPermissions
+    uses: GetIAMPolicyRisks
+    with:
+      - name: iamArn
+        value: .steps.iamRole.result.roleArn
+      - name: region
+        value: .region
 
 risk-config:
   default-risk: ""
@@ -33,6 +47,26 @@ risk-config:
       condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == true
       risk: high
 
+    - name: Instance has permissions that allow PrivilegeEscalation
+      condition: .riskyPermissions.result.PolicyFindings.PrivilegeEscalation | length > 0
+      risk: high
+
+    - name: Instance has permissions that allow CredentialsExposure
+      condition: .riskyPermissions.result.PolicyFindings.CredentialsExposure | length > 0
+      risk: high
+
+    - name: Instance has permissions that allow DataExfiltration
+      condition: .riskyPermissions.result.PolicyFindings.DataExfiltration | length > 0
+      risk: medium
+
     - name: is exposed via ALB auth
       condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == false
       risk: medium
+
+    - name: Instance has permissions that allow InfrastructureModification
+      condition: .riskyPermissions.result.PolicyFindings.InfrastructureModification | length > 0
+      risk: low
+      
+    - name: Instance has permissions that allow ResourceExposure
+      condition: .riskyPermissions.result.PolicyFindings.ResourceExposure | length > 0
+      risk: low
