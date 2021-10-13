@@ -8,6 +8,7 @@ from hypothesis import given, note, strategies as st, settings, assume
 from dassana.common.cache import configure_lru_cache
 from dassana.common.timing import timing
 from lib.helper import parse_cloudsplaining
+
 services = get_all_service_prefixes()
 actions = list(get_all_actions())
 
@@ -73,22 +74,3 @@ class IamPolicyRisks(TestCase):
         serv = set(map(lambda x: x.split(':')[0], filtered_vals))
         note(serv.__str__())
         assert (serv == set(results_t.get('ServicesAffected')))
-
-    @given(st.lists(st.sampled_from(actions).filter(lambda x: 'ec2' in x), min_size=1, max_size=1))
-    @settings(max_examples=1024, derandomize=True)
-    def test_cloudsplaining_parse_complex_caching(self, acts):
-        doc = {
-            "Statement": [
-                {
-                    "Action": acts,
-                    "Effect": "Allow",
-                    "Resource": "*"
-                }
-            ]
-        }
-
-        results = self.get_cache_findings(parse_cloudsplaining, policy_document=doc)
-
-    def tearDown(self) -> None:
-        for k, v in filter(lambda x: len(x[1]) > 1, self.timing_list.items()):
-            assert v[0] > max(v[1:])

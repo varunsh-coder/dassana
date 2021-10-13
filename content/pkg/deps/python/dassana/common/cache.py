@@ -1,4 +1,4 @@
-from hashlib import md5
+from hashlib import sha256
 from json import dumps
 
 from aws_lambda_powertools.utilities.typing import LambdaContext
@@ -71,7 +71,8 @@ def generate_hash(func, *args, **kwargs) -> hex:
                 **kwargs,
                 k: dumps(pop_v, sort_keys=True, default=str).encode('utf-8')
             }
-    return md5(hex(sum(sorted(kwargs.items()), _kwmark).__hash__()).encode()).hexdigest()
+
+    return sha256(hex(sum(sorted(kwargs.items()), _kwmark).__hash__()).encode()).hexdigest()
 
 
 def configure_ttl_cache(maxsize=1024, ttl=60, hash_op=generate_hash):

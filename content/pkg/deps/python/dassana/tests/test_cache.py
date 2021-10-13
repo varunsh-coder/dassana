@@ -46,8 +46,8 @@ class DassanaCacheTest(TestCase):
         }
         context = LambdaTestContext('name', env=keys)
         hash_result = generate_hash(lambda x: print('samschai'), context=context)
-        matches = match('^[a-f0-9]{32}$', hash_result)
-        assert matches.pos == 0 and matches.endpos == 32
+        matches = match('^[a-f0-9]{64}$', hash_result)
+        assert matches.pos == 0 and matches.endpos == 64
         assert hash_result not in self.hash_set
         self.hash_set.add(hash_result)
 

@@ -3,7 +3,7 @@ on:
   pull_request:
     paths:
       - "content/actions/**"
-      - "content/pkg/deps/python"
+      - "content/pkg/deps/python/**"
     branches:
       - main
 jobs:
