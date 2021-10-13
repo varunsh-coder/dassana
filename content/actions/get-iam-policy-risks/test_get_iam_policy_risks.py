@@ -16,7 +16,7 @@ class IamPolicyRisks(TestCase):
 
     def setUp(self) -> None:
         lru_cache.clear()
-
+        
     def test_cloudsplaining_parse_simple(self):
         doc = {
             "Statement": [

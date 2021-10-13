@@ -1,8 +1,7 @@
 from re import match
-from time import sleep
-from typing import List, Dict
+from typing import List
 from unittest import TestCase
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from hypothesis import given, strategies as st
 from hypothesis.strategies import lists
@@ -26,11 +25,14 @@ class DassanaCacheTest(TestCase):
             'aws_secret_access_key': ls[1],
             'aws_session_token': ls[2]
         }
-        print(name, ls)
         context = LambdaTestContext(name, env=keys)
-        hash_result = generate_hash(name=name, context=context)
-        matches = match('^[a-f0-9]{64}$', hash_result)
-        print(self.hash_set)
+        hash_result_1 = generate_hash(name=name, context=context)
+        matches = match('^[a-f0-9]{64}$', hash_result_1)
+        # First pass, no hits all misses
         assert matches.pos == 0 and matches.endpos == 64
-        assert hash_result not in self.hash_set
-        self.hash_set.add(hash_result)
+        assert hash_result_1 not in self.hash_set
+        self.hash_set.add(hash_result_1)
+
+        # Second pass, all hits no misses
+        hash_result_2 = generate_hash(name=name, context=context)
+        assert hash_result_2 == hash_result_1

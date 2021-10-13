@@ -1,4 +1,4 @@
-from cachetools import TTLCache, LRUCache
+from cachetools import LRUCache
 
 CACHE_MAX_SIZE = 1024
 
