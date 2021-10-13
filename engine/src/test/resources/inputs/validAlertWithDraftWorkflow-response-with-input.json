@@ -1,4 +1,7 @@
 {
+  "test-hint": {
+    "resource-info": "responses/just-normalization.json"
+  },
   "dassana": {
     "resource-context": {
       "severity": "INFO",
@@ -20,5 +23,8 @@
       "severity": "INFO",
       "msg": "Sorry, but no general-context workflow ran for the given alert. Please check filter config"
     }
+  },
+  "badThingJustHappened": {
+    "description": "fubar"
   }
 }

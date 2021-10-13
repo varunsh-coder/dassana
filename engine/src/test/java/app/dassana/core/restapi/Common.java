@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import software.amazon.awssdk.services.s3.S3Client;
 
 public class Common {
+
   @Singleton
   @Replaces(PostProcessor.class)
   public static class FakePostProcessor extends PostProcessor {
@@ -111,9 +112,16 @@ public class Common {
       super(s3Client);
     }
 
+
     @Override
     public String uploadedToS3(Optional<WorkflowOutputWithRisk> normalizationResult, String jsonToUpload) {
-      return jsonToUpload;
+      String path = getPath(normalizationResult);
+      return getUploadedPath(normalizationResult, jsonToUpload, path);
+    }
+
+    @Override
+    protected String getPath(Optional<WorkflowOutputWithRisk> normalizationResult) {
+      return "foo";
     }
 
     @Override

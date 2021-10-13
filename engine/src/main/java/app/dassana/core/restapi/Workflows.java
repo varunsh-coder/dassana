@@ -9,6 +9,7 @@ import app.dassana.core.launch.model.Request;
 import app.dassana.core.util.StringyThings;
 import app.dassana.core.workflow.model.Workflow;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.micronaut.context.annotation.Value;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -35,7 +36,8 @@ public class Workflows {
   @Inject private ContentManager contentManager;
   @Inject private Parser parser;
 
-  String dassanaBucket = System.getenv().get("dassanaBucket");
+  @Value("${env.dassanaBucket}")
+  String dassanaBucket;
 
 
   @Delete

@@ -23,3 +23,9 @@ micronaut:
   jms:
     sqs:
       enabled: true
+env:
+  dassanaBucket: ${dassanaBucket}
+  dassanaDeadLetterQueue: ${dassanaDeadLetterQueue}
+  dassanaEventBridgeBusName: ${dassanaEventBridgeBusName}
+  dassanaStackName: ${DASSANA_STACK_NAME}
+  dassanaCrossAccountRoleName: ${dassanaCrossAccountRoleName:""}

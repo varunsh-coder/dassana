@@ -7,6 +7,8 @@ import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import io.micronaut.context.annotation.Value;
+import io.micronaut.core.util.StringUtils;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.LinkedList;
@@ -41,6 +43,7 @@ public class S3Manager implements RemoteContentDownloadApi {
   private final S3Client s3Client;
   public static final String WORKFLOW_PATH_IN_S3 = "workflows/";
   public static final String LAST_UPDATED_KEY = "content-last-updated";
+  public static final String ALERT_ID_KEY = "alertId";
 
 
   public S3Manager(S3Client s3Client) {
@@ -51,7 +54,8 @@ public class S3Manager implements RemoteContentDownloadApi {
 
   private static final Logger logger = LoggerFactory.getLogger(S3Manager.class);
 
-  String s3Bucket = System.getenv("dassanaBucket");
+  @Value("${env.dassanaBucket}")
+  String s3Bucket;
 
   LoadingCache<String, Long> cache =
       CacheBuilder.newBuilder().expireAfterAccess(Duration.ofSeconds(30)).build(new CacheLoader<>() {
@@ -61,8 +65,8 @@ public class S3Manager implements RemoteContentDownloadApi {
         }
       });
 
-  public String uploadedToS3(Optional<WorkflowOutputWithRisk> normalizationResult,
-      String jsonToUpload) {
+
+  protected String getPath(Optional<WorkflowOutputWithRisk> normalizationResult) {
 
     DateTime now = DateTime.now(DateTimeZone.UTC);
 
@@ -81,16 +85,31 @@ public class S3Manager implements RemoteContentDownloadApi {
 
     String path;
     if (normalizationResult.isEmpty()) {
-      path = alertsPrefix.concat("/unprocessed/").concat(UUID.randomUUID().toString());
+      path = alertsPrefix.concat("/unprocessed/").concat(getAlertId(null));
     } else {
-      path = alertsPrefix.concat("/".concat(UUID.randomUUID().toString()));
+      path = alertsPrefix.concat("/".concat(getAlertId(normalizationResult.get())));
     }
+    return path;
 
-    PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(s3Bucket).
-        key(path).
-        build();
+  }
 
-    s3Client.putObject(putObjectRequest, RequestBody.fromBytes(jsonToUpload.getBytes()));
+  //if alertId is available, use it, if not, use a random UUID
+  private String getAlertId(WorkflowOutputWithRisk workflowOutputWithRisk) {
+
+    if (workflowOutputWithRisk == null) {
+      return UUID.randomUUID().toString();
+    } else {
+      String alertId = (String) workflowOutputWithRisk.getOutput().get(ALERT_ID_KEY);
+      if (StringUtils.isNotEmpty(alertId)) {
+        return alertId;
+      } else {
+        return UUID.randomUUID().toString();
+      }
+    }
+  }
+
+  protected String getUploadedPath(Optional<WorkflowOutputWithRisk> normalizationResult,
+      String jsonToUpload, String path) {
 
     if (normalizationResult.isPresent()) {
       JSONObject dassanaDecoratedJsonObj = new JSONObject(jsonToUpload);
@@ -101,8 +120,16 @@ public class S3Manager implements RemoteContentDownloadApi {
     } else {
       return jsonToUpload;
     }
+  }
 
-
+  public String uploadedToS3(Optional<WorkflowOutputWithRisk> normalizationResult,
+      String jsonToUpload) {
+    String path = getPath(normalizationResult);
+    PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(s3Bucket).
+        key(path).
+        build();
+    s3Client.putObject(putObjectRequest, RequestBody.fromBytes(jsonToUpload.getBytes()));
+    return getUploadedPath(normalizationResult, jsonToUpload, path);
   }
 
   @Override

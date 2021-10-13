@@ -67,7 +67,7 @@ public class Run {
   public HttpResponse<String> processAlert(@Body Object input, @Nullable @QueryValue("workflowId") String workFlowId,
       @Nullable @QueryValue("includeInputRequest") Boolean includeInputRequest,
       @Nullable @QueryValue("mode") RunMode mode,
-      @Nullable @Header("x-dassana-cache") Boolean useCache) throws Exception {
+      @Nullable @Header("x-dassana-cache") Boolean useCache) {
 
     try {
       //micronaut marshals the requests differently when invoked via AWS API Gateway

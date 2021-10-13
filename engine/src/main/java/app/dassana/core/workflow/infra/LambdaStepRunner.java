@@ -40,8 +40,11 @@ public class LambdaStepRunner implements StepRunnerApi {
   @Inject RuntimeHelper runtimeHelper;
 
 
+
+
   public LambdaStepRunner() {
   }
+
 
   @Cacheable("function-names")
   public String getFunctionNameFromWorkFlow(String uses) {
@@ -173,7 +176,7 @@ public class LambdaStepRunner implements StepRunnerApi {
         contextJson = customObj.toString();
         getRunTimeContextResponse.setCrossAccountRoleUsed(true);
         getRunTimeContextResponse
-            .setCrossAccountRoleName(System.getenv("dassanaCrossAccountRoleName"));
+            .setCrossAccountRoleName(runtimeHelper.getDassanaCrossAccountRoleName());
 
       }
 

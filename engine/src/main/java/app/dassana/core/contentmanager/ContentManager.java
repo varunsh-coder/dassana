@@ -151,12 +151,6 @@ public class ContentManager implements ContentManagerApi {
 
   }
 
-  public Set<CustomWorkflow> getCustomWorkFlowSet(Request request) throws Exception {
-    updateCustomWorkflows(request);
-    return customWorkFlowSet;
-  }
-
-
   @Override
   public Set<Workflow> getWorkflowSet(Request request) throws Exception {
 
@@ -174,8 +168,7 @@ public class ContentManager implements ContentManagerApi {
 
     //if the additional workflows are provided,we use them. This is for the editor.dassana.io use case where we are
     // editing workflows - this occurs when workflow is in draft mode, i.e. modified but not saved
-    if (request != null && request.getAdditionalWorkflowYamls() != null
-        && request.getAdditionalWorkflowYamls().size() > 0) {
+    if (request.getAdditionalWorkflowYamls() != null && request.getAdditionalWorkflowYamls().size() > 0) {
 
       List<String> additionalWorkflowYamls = request.getAdditionalWorkflowYamls();
       //we want to run only the workflow provided, so we clone the workflowSet and add it

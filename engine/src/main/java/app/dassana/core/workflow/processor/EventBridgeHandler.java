@@ -2,6 +2,7 @@ package app.dassana.core.workflow.processor;
 
 import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.RunMode;
+import io.micronaut.context.annotation.Value;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +14,8 @@ import software.amazon.awssdk.services.eventbridge.model.PutEventsResponse;
 @Singleton
 public class EventBridgeHandler {
 
-  private final String dassanaEventBridgeBusName = System.getenv().get("dassanaEventBridgeBusName");
+  @Value("${env.dassanaEventBridgeBusName}")
+  private String dassanaEventBridgeBusName;
 
   @Inject private EventBridgeClient eventBridgeClient;
 

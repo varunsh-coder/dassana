@@ -1,0 +1,9 @@
+micronaut:
+  application:
+    name: engine
+env:
+  dassanaBucket: foo
+  dassanaDeadLetterQueue: foo
+  dassanaEventBridgeBusName: foo
+  dassanaStackName: foo
+  dassanaCrossAccountRoleName: foo

@@ -6,6 +6,7 @@ import app.dassana.core.restapi.Run;
 import app.dassana.core.workflow.processor.RequestProcessor;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent.SQSMessage;
+import io.micronaut.context.annotation.Value;
 import io.micronaut.core.annotation.Introspected;
 import io.micronaut.function.aws.MicronautRequestHandler;
 import java.io.PrintWriter;
@@ -23,7 +24,8 @@ public class SqsHandler extends MicronautRequestHandler<SQSEvent, Void> {
 
   private static final Logger logger = LoggerFactory.getLogger(SqsHandler.class);
 
-  private final String dassanaDeadLetterQueue = System.getenv("dassanaDeadLetterQueue");
+  @Value("${env.dassanaBucket}")
+  private String dassanaDeadLetterQueue;
 
   @Inject private ContentManagerApi contentManager;
   @Inject private RequestProcessor requestProcessor;
@@ -40,7 +42,7 @@ public class SqsHandler extends MicronautRequestHandler<SQSEvent, Void> {
       try {
         String body = message.getBody();
         JSONObject jsonObject = new JSONObject(body);
-        run.processAlert(jsonObject, null, true, RunMode.PROD,true);
+        run.processAlert(jsonObject, null, true, RunMode.PROD, true);
       } catch (Exception e) {
         handleException(e, message.getBody());
       }
