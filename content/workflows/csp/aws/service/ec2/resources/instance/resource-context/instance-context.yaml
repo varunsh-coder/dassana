@@ -59,8 +59,8 @@ risk-config:
       condition: .riskyPermissions.result.PolicyFindings.DataExfiltration | length > 0
       risk: medium
 
-    - name: is exposed via ALB auth
-      condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == false
+    - name: is exposed via ALB and receives authenticated traffic
+      condition: .ec2Exposure.appLayer.behindLoadBalancer ==true and .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == false
       risk: medium
 
     - name: Instance has permissions that allow InfrastructureModification
