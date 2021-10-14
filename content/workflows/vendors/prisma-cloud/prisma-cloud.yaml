@@ -22,10 +22,6 @@ steps:
       - name: input
         value: .steps."resource-info"
 
-skip-general-context: false
-skip-resource-context: false
-skip-policy-context: false
-
 output:
   - name: vendorId
     value: prisma-cloud
