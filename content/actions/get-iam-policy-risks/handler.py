@@ -131,8 +131,6 @@ def handle(event: Dict[str, Any], context: LambdaContext):
     policy_finding = get_cached_findings(parse_cloudsplaining, policy_document=policy_document,
                                          exclusions_config=exclusions_config)
 
-    response = dumps({
-        'PolicyFindings': policy_finding.results
-    }, default=str)
+    response = dumps(policy_finding.results, default=str)
 
     return {"result": loads(response)}

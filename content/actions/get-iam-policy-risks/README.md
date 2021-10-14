@@ -13,25 +13,23 @@ Returns the policies attached to, or inlined in, a given IAM arn, along with [cl
 ```json
 {
   "result": {
-    "PolicyFindings": {
       "ServiceWildcard": [
-        "s3"
+         "s3"
       ],
       "ServicesAffected": [
-        "logs",
-        "lambda"
+         "logs",
+         "lambda"
       ],
       "PrivilegeEscalation": [],
       "ResourceExposure": [],
       "DataExfiltration": [],
       "CredentialsExposure": [],
       "InfrastructureModification": [
-        "logs:PutLogEvents",
-        "lambda:InvokeFunction",
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream"
+         "logs:PutLogEvents",
+         "lambda:InvokeFunction",
+         "logs:CreateLogGroup",
+         "logs:CreateLogStream"
       ]
-    }
   }
 }
 ```
