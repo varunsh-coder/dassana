@@ -1,6 +1,7 @@
 package app.dassana.core.restapi
 
 import app.dassana.core.Helper
+import app.dassana.core.launch.model.RunMode
 import io.micronaut.context.annotation.Requires
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import org.json.JSONObject
@@ -43,6 +44,26 @@ class RunTest extends Specification {
         "validAlertWithDraftWorkflow.json" | "validAlertWithDraftWorkflow-response.json"            | true     | false
         "validAlertWithDraftWorkflow.json" | "validAlertWithDraftWorkflow-response-with-input.json" | false    | true
         "validAlertWithDraftWorkflow.json" | "validAlertWithDraftWorkflow-response-with-input.json" | true     | true
+    }
+
+    @Unroll
+    void "run-workflow-directly"() {
+
+        when:
+        def processAlert = run.processAlert("{}", "foo", true, RunMode.TEST, true)
+
+        then:
+        processAlert.code() == 400
+
+        when:
+        def response = run.processAlert("{}", WorkflowsTest.FOO_NORMALIZER_ID, false, RunMode.TEST, false)
+
+
+        then:
+        response.code() == 200
+
 
     }
+
+
 }

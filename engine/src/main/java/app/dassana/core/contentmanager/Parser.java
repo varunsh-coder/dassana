@@ -264,7 +264,7 @@ public class Parser {
       for (int i = 0; i < optOutputJsonArray.length(); i++) {
         JSONObject outputObj = optOutputJsonArray.getJSONObject(i);
         Output output = new Output();
-        output.setValue(outputObj.getString("value"));
+        output.setValue(String.valueOf(outputObj.get("value")));
         output.setName(outputObj.getString("name"));
         String valueType = outputObj.optString("value-type");
         if (StringUtils.isEmpty(valueType)) {

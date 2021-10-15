@@ -10,7 +10,6 @@ import app.dassana.core.contentmanager.ContentManagerApi;
 import app.dassana.core.launch.model.Request;
 import app.dassana.core.policycontext.model.PolicyContext;
 import app.dassana.core.resource.model.ResourceContext;
-import app.dassana.core.risk.model.CombinedRisk;
 import app.dassana.core.workflow.model.Error;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
 import java.util.HashMap;
@@ -36,7 +35,6 @@ public class Decorator {
       Optional<WorkflowOutputWithRisk> resourceContextWorkflowOutput,
       Optional<WorkflowOutputWithRisk> generalContextWorkflowOutput) throws Exception {
 
-    CombinedRisk combinedRisk = new CombinedRisk();
 
     //put the output back in original data
     var messageBody = new JSONObject(request.getInputJson());
@@ -62,7 +60,6 @@ public class Decorator {
       riskObj.put("name", generalContextWorkflowOutput.get().getRisk().getName());
       generalContextJsonObj.put("risk", riskObj);
       dassanaMap.put(GENERAL_CONTEXT, generalContextJsonObj);
-      combinedRisk.setGeneralContextRisk(generalContextWorkflowOutput.get().getRisk());
       allErrors.addAll(generalContextWorkflowOutput.get().getErrorList());
 
 
@@ -84,7 +81,6 @@ public class Decorator {
       riskObj.put("name", policyContextWorkflowOutput.get().getRisk().getName());
       jsonObject.put("risk", riskObj);
       dassanaMap.put(POLICY_CONTEXT, jsonObject);
-      combinedRisk.setGeneralContextRisk(policyContextWorkflowOutput.get().getRisk());
       allErrors.addAll(policyContextWorkflowOutput.get().getErrorList());
 
 
@@ -106,7 +102,6 @@ public class Decorator {
       riskObj.put("name", resourceContextWorkflowOutput.get().getRisk().getName());
       jsonObject.put("risk", riskObj);
       dassanaMap.put(RESOURCE_CONTEXT, jsonObject);
-      combinedRisk.setResourceContextRisk(resourceContextWorkflowOutput.get().getRisk());
       allErrors.addAll(resourceContextWorkflowOutput.get().getErrorList());
 
     }

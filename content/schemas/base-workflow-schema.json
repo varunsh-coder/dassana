@@ -166,7 +166,7 @@
                         },
                         "value-type": {
                           "type": "string",
-                          "enum": ["JQ", "STRING"]
+                          "enum": ["JQ", "STRING", "INT"]
                         }
                       }
                     }
@@ -223,7 +223,7 @@
             },
             "value-type": {
               "type": "string",
-              "enum": ["JQ", "STRING"]
+              "enum": ["JQ", "STRING", "INT"]
             }
           },
           "additionalProperties": false

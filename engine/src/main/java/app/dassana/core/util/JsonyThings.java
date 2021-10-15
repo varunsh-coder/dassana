@@ -1,6 +1,8 @@
 package app.dassana.core.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.google.gson.Gson;
 import io.micronaut.context.annotation.Factory;
 import javax.inject.Singleton;
@@ -13,7 +15,7 @@ public class JsonyThings {
 
   public static final ObjectMapper MAPPER = new ObjectMapper();
 
-  public static final String MESSAGE="Sorry, Dassana Engine can only process JSON objects";
+  public static final String MESSAGE = "Sorry, Dassana Engine can only process JSON objects";
 
 
   @Singleton
@@ -35,6 +37,11 @@ public class JsonyThings {
 
     }
 
+  }
+
+
+  public static String getYamlFromJson(String json) throws JsonProcessingException {
+    return new YAMLMapper().writeValueAsString(MAPPER.readTree(json));
   }
 
 

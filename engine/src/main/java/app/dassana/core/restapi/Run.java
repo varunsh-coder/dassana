@@ -58,6 +58,7 @@ public class Run {
   @Inject private ContentManager contentManager;
   @Inject private Parser parser;
   @Inject private WorkflowRunner workflowRunner;
+  @Inject private Workflows workflows;
 
 
   private static final Logger logger = LoggerFactory.getLogger(Run.class);
@@ -74,13 +75,6 @@ public class Run {
       String inputBody;
       if (input.getClass() == LinkedHashMap.class) {
         inputBody = gson.toJson(input);
-        //in case we receive json array, we try to take the first element out of the array and assume it to be an
-        // alert. (this is the case with GuardDuty raw findings (as opposed to GuardDuty findings sent to SecurityHub)
-      } else if (input.getClass().getName().contentEquals("java.util.ArrayList")) {
-        String arrayJson = gson.toJson(input);
-        JSONArray jsonArray = new JSONArray(arrayJson);
-        JSONObject jsonObject = jsonArray.getJSONObject(0);
-        inputBody = jsonObject.toString();
       } else {
         inputBody = input.toString();
       }
@@ -110,6 +104,11 @@ public class Run {
       JsonyThings.throwExceptionIfNotValidJsonObj(inputBody);
 
       if (StringUtils.isNotEmpty(workFlowId)) {
+
+        if (workflows.getWorkflow(workFlowId, null).code() != 200) {
+          return HttpResponse.badRequest("Sorry, we couldn't located workflow ".concat(workFlowId));
+        }
+
         request.setWorkflowId(workFlowId);
         requestProcessor.setWorkflows(request);
 

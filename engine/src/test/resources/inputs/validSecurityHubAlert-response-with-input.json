@@ -138,7 +138,7 @@
       },
       "workflowId": "general-context-aws"
     },
-    "alertKey": "s3://foo/foo"
+    "alertKey": "s3://foo/alert/foo"
   },
   "resources": [
     "arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/2.9/finding/877dd463-88ee-4750-a192-2ffdaba013da"

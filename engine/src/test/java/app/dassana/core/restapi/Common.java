@@ -1,7 +1,7 @@
 package app.dassana.core.restapi;
 
-import app.dassana.core.contentmanager.RemoteContentDownloadApi;
-import app.dassana.core.contentmanager.infra.S3Manager;
+import app.dassana.core.client.infra.S3Store;
+import app.dassana.core.contentmanager.infra.S3WorkflowManager;
 import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.Request;
 import app.dassana.core.workflow.StepRunnerApi;
@@ -14,17 +14,74 @@ import app.dassana.core.workflow.processor.EventBridgeHandler;
 import app.dassana.core.workflow.processor.PostProcessor;
 import io.micronaut.context.annotation.Replaces;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 import javax.inject.Singleton;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
-import software.amazon.awssdk.services.s3.S3Client;
 
 public class Common {
+
+
+  @Singleton
+  @Replaces(S3WorkflowManager.class)
+  public static class FakeS3WorkflowManager extends S3WorkflowManager {
+
+    public FakeS3WorkflowManager(S3Store s3Store) {
+      super(s3Store);
+    }
+
+    @Override
+    protected String getPath(Optional<WorkflowOutputWithRisk> normalizationResult) {
+      return "alert/foo";
+    }
+  }
+
+
+  @Singleton
+  @Replaces(S3Store.class)
+  public static class FakeS3Store extends S3Store {
+
+    private final Map<String, Object> inMemStore = new HashMap<>();
+    private long lastUpdated = 0L;
+
+    @Override
+    public Long getLastUpdatedValueFromS3() {
+      return lastUpdated;
+    }
+
+    @Override
+    public List<String> getAllContent() {
+      List<String> objects = new LinkedList<>();
+      for (Entry<String, Object> entry : inMemStore.entrySet()) {
+        String s = entry.getKey();
+        Object o = entry.getValue();
+        if (!s.startsWith("alert/")) {
+          objects.add(o.toString());
+        }
+
+      }
+      return objects;
+    }
+
+    @Override
+    public void upload(String key, String body) {
+      inMemStore.put(key, body);
+      lastUpdated = System.currentTimeMillis();
+    }
+
+    @Override
+    public void delete(String key) {
+      inMemStore.remove(key);
+      lastUpdated = System.currentTimeMillis();
+    }
+  }
+
 
   @Singleton
   @Replaces(PostProcessor.class)
@@ -101,38 +158,6 @@ public class Common {
       return stepRunResponse;
     }
 
-  }
-
-
-  @Singleton
-  @Replaces(RemoteContentDownloadApi.class)
-  public static class FakeS3Manager extends S3Manager {
-
-    public FakeS3Manager(S3Client s3Client) {
-      super(s3Client);
-    }
-
-
-    @Override
-    public String uploadedToS3(Optional<WorkflowOutputWithRisk> normalizationResult, String jsonToUpload) {
-      String path = getPath(normalizationResult);
-      return getUploadedPath(normalizationResult, jsonToUpload, path);
-    }
-
-    @Override
-    protected String getPath(Optional<WorkflowOutputWithRisk> normalizationResult) {
-      return "foo";
-    }
-
-    @Override
-    public List<String> downloadContent() {
-      return new LinkedList<>();
-    }
-
-    @Override
-    public Long getLastUpdated(boolean useCache) throws ExecutionException {
-      return 0L;
-    }
   }
 
 }

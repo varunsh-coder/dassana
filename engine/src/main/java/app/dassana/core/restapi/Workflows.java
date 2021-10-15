@@ -1,8 +1,8 @@
 package app.dassana.core.restapi;
 
-import static app.dassana.core.contentmanager.infra.S3Manager.LAST_UPDATED_KEY;
-import static app.dassana.core.contentmanager.infra.S3Manager.WORKFLOW_PATH_IN_S3;
+import static app.dassana.core.contentmanager.infra.S3WorkflowManager.WORKFLOW_PATH_IN_S3;
 
+import app.dassana.core.client.infra.S3Store;
 import app.dassana.core.contentmanager.ContentManager;
 import app.dassana.core.contentmanager.Parser;
 import app.dassana.core.launch.model.Request;
@@ -19,14 +19,10 @@ import io.micronaut.http.annotation.Delete;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.QueryValue;
-import java.nio.charset.Charset;
 import java.util.Set;
 import javax.inject.Inject;
 import org.json.JSONObject;
-import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Controller("/workflows")
 public class Workflows {
@@ -35,6 +31,7 @@ public class Workflows {
 
   @Inject private ContentManager contentManager;
   @Inject private Parser parser;
+  @Inject private S3Store s3Store;
 
   @Value("${env.dassanaBucket}")
   String dassanaBucket;
@@ -44,17 +41,12 @@ public class Workflows {
   void handleDelete(@QueryValue("workflowId") String workFlowId) {
 
     String key = WORKFLOW_PATH_IN_S3.concat(workFlowId);
-    s3Client.deleteObject(DeleteObjectRequest.builder().bucket(dassanaBucket).key(key).build());
-
-    s3Client.putObject(PutObjectRequest.builder().bucket(dassanaBucket).key(LAST_UPDATED_KEY).build(),
-        RequestBody.empty());
-
-
+    s3Store.delete(key);
   }
 
 
   @Get(produces = MediaType.APPLICATION_YAML)
-  HttpResponse<String> handleGet(@QueryValue("workflowId") String workFlowId,
+  HttpResponse<String> getWorkflow(@QueryValue("workflowId") String workFlowId,
       @QueryValue("default") @Nullable Boolean getDefault) throws Exception {
 
     if (getDefault == null) {
@@ -96,11 +88,7 @@ public class Workflows {
   void handleSaveToS3(@Body String body) throws JsonProcessingException {
     Workflow workflow = parser.getWorkflow(new JSONObject(StringyThings.getJsonFromYaml(body)));
     String key = WORKFLOW_PATH_IN_S3.concat(workflow.getId());
-    PutObjectRequest putObjectRequest = PutObjectRequest.builder().bucket(dassanaBucket).key(key).build();
-    s3Client.putObject(putObjectRequest, RequestBody.fromString(body, Charset.defaultCharset()));
-
-    s3Client.putObject(PutObjectRequest.builder().bucket(dassanaBucket).key(LAST_UPDATED_KEY).build(),
-        RequestBody.empty());
+    s3Store.upload(key, body);
 
   }
 

@@ -5,7 +5,7 @@ import static app.dassana.core.contentmanager.ContentManager.POLICY_CONTEXT;
 import static app.dassana.core.contentmanager.ContentManager.RESOURCE_CONTEXT;
 
 import app.dassana.core.contentmanager.ContentManagerApi;
-import app.dassana.core.contentmanager.infra.S3Manager;
+import app.dassana.core.contentmanager.infra.S3WorkflowManager;
 import app.dassana.core.launch.model.ProcessingResponse;
 import app.dassana.core.launch.model.Request;
 import app.dassana.core.normalize.model.NormalizerWorkflow;
@@ -46,7 +46,7 @@ public class RequestProcessor {
   @Inject private ContentManagerApi contentManagerApi;
   @Inject private Decorator decorator;
   @Inject private PostProcessor postProcessor;
-  @Inject private S3Manager s3Manager;
+  @Inject private S3WorkflowManager s3WorkflowManager;
   @Inject private EventBridgeHandler eventBridgeHandler;
 
 
@@ -169,7 +169,7 @@ public class RequestProcessor {
       String workflowId = normalizationResult.get().getWorkflowId();
       NormalizerWorkflow workflow = (NormalizerWorkflow) request.getWorkflowIdToWorkflowMap().get(workflowId);
       if (workflow.getPostProcessorSteps().size() > 0) {
-        String decoratedJsonWithS3key = s3Manager.uploadedToS3(normalizationResult, dassanaDecoratedJson);
+        String decoratedJsonWithS3key = s3WorkflowManager.uploadedToS3(normalizationResult, dassanaDecoratedJson);
         String finalJson = postProcessor
             .handlePostProcessor(request, normalizationResult.get(), decoratedJsonWithS3key);
         processingResponse.setDecoratedJson(finalJson);

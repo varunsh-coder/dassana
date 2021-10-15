@@ -134,6 +134,6 @@
       },
       "workflowId": "general-context-aws"
     },
-    "alertKey": "s3://foo/foo"
+    "alertKey": "s3://foo/alert/foo"
   }
 }
