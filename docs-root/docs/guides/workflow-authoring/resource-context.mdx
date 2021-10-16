@@ -34,7 +34,7 @@ steps:
 risk-config:
     default-risk: ''
     rules:
-        - name: Can EC2 receive unauthenticated traffic
+        - id: Can EC2 receive unauthenticated traffic
           condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == true
           risk: high
 ```

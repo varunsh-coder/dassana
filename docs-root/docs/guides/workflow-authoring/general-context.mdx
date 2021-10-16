@@ -33,14 +33,14 @@ steps:
 risk-config:
     default-risk: ''
     rules:
-        - name: dev enviornment risk is low
+        - id: dev enviornment risk is low
         // highlight-start
           condition: |-
               .getTags | any( select(.key | test("env" ; "ix")) | select(.value | test("dev" ; "ix")))
         // highlight-end
           risk: low
 
-        - name: prod enviornment risk is high
+        - id: prod enviornment risk is high
           // highlight-start
           condition: |-
               .getTags | any( select(.key | test("env" ; "ix")) | select(.value | test("prod" ; "ix")))
