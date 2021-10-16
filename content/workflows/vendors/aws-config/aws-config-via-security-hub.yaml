@@ -1,0 +1,58 @@
+schema: 1
+type: normalize
+vendor-id: aws-config
+id: aws-config-via-security-hub # if you change this, do ensure to update /content/pkg/template.yaml resource DassanaEventBridgeToAwsConfigSqsQueue
+
+filters:
+  - match-type: any
+    rules:
+      - .detail and .detail.findings and (.detail.findings[].ProductFields.StandardsGuideArn or .detail.findings[].ProductFields.StandardsArn )
+      - .ProductFields and (.ProductFields.StandardsGuideArn or .ProductFields.StandardsArn)
+
+steps:
+  - id: resource-info
+    uses: AWSConfigViaSecurityHub
+
+  - id: lookup
+    uses: NormalizerLookup
+    with:
+      - name: input
+        value: .steps."resource-info"
+
+  - id: getTags # SecurityHub findings for aws config rules doesn't not contain tags many a times so we have an action which takes care of that
+    uses: GetTags
+    with:
+      - name: arn
+        value: .steps."resource-info".canonicalId #notice that when you want to refer to the output of a previous step, you refer to it via JQ expression .step as the previous steps output is available under the `step` JSON key
+
+output:
+  - name: vendorId
+    value: aws-config
+    value-type: STRING
+  - name: alertId
+    value: ."resource-info".alertId
+  - name: canonicalId
+    value: ."resource-info".canonicalId
+  - name: vendorPolicy
+    value: ."resource-info".vendorPolicy
+  - name: csp
+    value: ."resource-info".csp
+  - name: resourceContainer
+    value: ."resource-info".resourceContainer
+  - name: region
+    value: ."resource-info".region
+  - name: service
+    value: ."lookup".service
+  - name: resourceType
+    value: ."lookup".resourceType
+  - name: resourceId
+    value: ."resource-info".resourceId
+  - name: tags
+    value: ."getTags"
+  - name: alertClassification
+    value: ."lookup".alertClassification
+
+post-processor:
+  steps:
+    - id: update-security-hub-finding
+      uses: SecurityHubUpdateFinding

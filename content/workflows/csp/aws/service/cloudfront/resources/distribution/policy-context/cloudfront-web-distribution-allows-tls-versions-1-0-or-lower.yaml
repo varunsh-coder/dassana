@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
 
-id: cloudfront-web-distribution-allows-tls-versions-1.0-or-lower
+id: cloudfront-web-distribution-allows-tls-versions-1-0-or-lower
 name: CloudFront web distribution allows TLS versions 1.0 or lower
 labels:
   - contextualization

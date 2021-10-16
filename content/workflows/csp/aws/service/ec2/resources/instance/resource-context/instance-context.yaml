@@ -39,34 +39,34 @@ steps:
 risk-config:
   default-risk: ""
   rules:
-    - name: Exposed Directly via Public IP
+    - id: exposed-directly-via-public-ip
       condition: .ec2Exposure.direct.isExposed == true
       risk: critical
 
-    - name: Can receive unauthenticated traffic via ALB
+    - id: can-receive-unauthenticated-traffic-via-alb
       condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == true
       risk: high
 
-    - name: Instance has permissions that allow PrivilegeEscalation
+    - id: instance-has-permissions-that-allow-privilege-escalation
       condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
       risk: high
 
-    - name: Instance has permissions that allow CredentialsExposure
+    - id: instance-has-permissions-that-allow-credentials-exposure
       condition: .riskyPermissions.result.CredentialsExposure | length > 0
       risk: high
 
-    - name: Instance has permissions that allow DataExfiltration
+    - id: instance-has-permissions-that-allow-data-exfiltration
       condition: .riskyPermissions.result.DataExfiltration | length > 0
       risk: medium
 
-    - name: is exposed via ALB and receives authenticated traffic
+    - id: is-exposed-via-alb-and-receives-authenticated-traffic
       condition: .ec2Exposure.appLayer.behindLoadBalancer ==true and .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == false
       risk: medium
 
-    - name: Instance has permissions that allow InfrastructureModification
+    - id: instance-has-permissions-that-allow-infrastructure-modification
       condition: .riskyPermissions.result.InfrastructureModification | length > 0
       risk: low
       
-    - name: Instance has permissions that allow ResourceExposure
+    - id: instance-has-permissions-that-allow-resource-exposure
       condition: .riskyPermissions.result.ResourceExposure | length > 0
       risk: low

@@ -44,6 +44,6 @@ steps:
 risk-config:
   default-risk: high
   rules:
-    - name: bucket-has-associated-website
+    - id: bucket-has-associated-website
       condition: ."website-info".bucketWebsiteUrl | length > 0
       risk: low

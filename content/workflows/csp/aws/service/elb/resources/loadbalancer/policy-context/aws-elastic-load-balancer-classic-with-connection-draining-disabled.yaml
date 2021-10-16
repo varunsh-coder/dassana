@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-(classic)-with-connection-draining-disabled
+id: aws-elastic-load-balancer-classic-with-connection-draining-disabled
 name: AWS Elastic Load Balancer (Classic) with connection draining disabled
 labels:
   - contextualization

@@ -21,7 +21,7 @@ filters:
 risk-config:
   default-risk: "" # we recommend that you set the default risk to be empty
   rules:
-    - name: demo-resourceType resources have medium risk. In real world, you will refer to steps output
+    - id: demo-resourcetype-resources-have-medium-risk-in-real-world-you-will-refer-to-steps-output
       condition: .resourceType == "demo-resourceType" # jq expression which must return a true or false output
       risk: medium # valid values are low, medium, high and critical
 

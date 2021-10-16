@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-(elb)-with-acm-certificate-expired-or-expiring-in-90-days
+id: aws-elastic-load-balancer-elb-with-acm-certificate-expired-or-expiring-in-90-days
 name: AWS Elastic Load Balancer (ELB) with ACM certificate expired or expiring in 90 days
 labels:
   - contextualization

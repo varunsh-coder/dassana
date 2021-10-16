@@ -23,7 +23,7 @@ filters:
 risk-config:
   default-risk: "" # we recommend that you set the default risk to be empty
   rules:
-    - name: low risk for demo-service. In real world, you will refer to steps output
+    - id: low-risk-for-demo-service-in-real-world-you-will-refer-to-steps-output
       condition: .service | contains ("demo-service") # jq expression which must return a true or false output
       risk: low # valid values are low, medium, high and critical
 

@@ -32,7 +32,7 @@ filters: # notice that the filter section for policy-context workflows have extr
 risk-config:
   default-risk: ""
   rules:
-    - name: demo region has critical severity. In real world, you will refer to steps output
+    - id: demo-region-has-critical-severity-in-real-world-you-will-refer-to-steps-output
       condition: .region == "demo-region"
       risk: critical
 output:
