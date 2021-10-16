@@ -201,9 +201,7 @@
         "default-risk": {
           "$id": "#/properties/risk-config/properties/default-risk",
           "type": "string",
-          "enum": [ "", "critical", "high", "medium", "low",
-            "accepted"
-          ],
+          "enum": [ "", "critical", "high", "medium", "low", "accepted"],
           "title": "The default-risk schema"
         },
         "rules": {

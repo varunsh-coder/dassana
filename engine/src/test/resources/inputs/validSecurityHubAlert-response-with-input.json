@@ -134,7 +134,7 @@
       "risk": {
         "condition": ".tags | any( select(.name | test(\"env\" ; \"ix\")) | select(.value | test(\"dev\" ; \"ix\")))",
         "riskValue": "low",
-        "name": "dev environment risk is low"
+        "name": "dev-environment-risk-is-low"
       },
       "workflowId": "general-context-aws"
     },

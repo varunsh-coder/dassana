@@ -13,7 +13,7 @@
         "default-risk": {
           "$id": "#/properties/risk-config/properties/default-risk",
           "type": "string",
-          "enum": ["", "critical", "high", "medium", "low"],
+          "enum": ["", "critical", "high", "medium", "low", "accepted"],
           "title": "The default-risk schema"
         },
         "rules": {
@@ -24,9 +24,9 @@
           "items": {
             "$id": "#/properties/risk-config/properties/rules/items/0",
             "type": "object",
-            "required": ["name", "condition", "risk"],
+            "required": ["id", "condition", "risk"],
             "properties": {
-              "name": {
+              "id": {
                 "$id": "#/properties/risk-config/properties/rules/items/0/properties/name",
                 "type": "string",
                 "title": "The name of the rule"
@@ -40,7 +40,7 @@
                 "$id": "#/properties/risk-config/properties/rules/items/0/properties/risk",
                 "type": "string",
                 "title": "The risk schema",
-                "enum": ["", "critical", "high", "medium", "low"]
+                "enum": ["", "critical", "high", "medium", "low", "accepted"]
               }
             },
             "additionalProperties": false
