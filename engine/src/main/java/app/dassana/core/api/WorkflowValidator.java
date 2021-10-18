@@ -53,8 +53,11 @@ public class WorkflowValidator {
     } catch (org.everit.json.schema.ValidationException e) {
       List<Message> messasges = new LinkedList<>();
       List<ValidationException> causingExceptions = e.getCausingExceptions();
-      causingExceptions.forEach(e1 -> messasges.add(new Message(e1.getMessage())));
+//      causingExceptions.forEach(e1 -> messasges.add(new Message(e1.getMessage())));
+      causingExceptions.forEach(e1 -> messasges.add(new Message(e1.getMessage() + " " + e1.getViolatedSchema())));
+//      causingExceptions.forEach(e2 -> System.out.println(e2.getViolatedSchema()));
       DassanaWorkflowValidationException dassanaWorkflowValidationException = new DassanaWorkflowValidationException();
+
       dassanaWorkflowValidationException.setMessages(messasges);
       if (dassanaWorkflowValidationException.getMessages().size() > 0) {
         throw dassanaWorkflowValidationException;
