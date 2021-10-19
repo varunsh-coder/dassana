@@ -239,20 +239,20 @@ Let's take an example from real life [policy context](https://github.com/dassana
 risk-config:
     default-risk: critical
     rules:
-        - name: bucket-has-associated-website
+        - id: bucket-has-associated-website
           condition: ."website-info".bucketWebsiteUrl != null
           risk: low
 ```
 
-`default-risk`: this key tells what should be the risk associated with the workflow if none of the rules match. Possible values are `''` , `critical` , `high`, `medium` and `low`
+`default-risk`: this key tells what should be the risk associated with the workflow if none of the rules match. Possible values are `''` , `accepted`, `critical` , `high`, `medium` and `low`
 
 `rules`: an array of objects with the following keys:
 
-`name`: a friendly name
+`id`: This uniquely identifies the risk. Must be in lower case hyphen pattern.
 
 `condition`: JQ expression which must evaluate to `true` or `false`. Note that `website-info` refers to the step id already defined in the workflow.
 
-`risk` : Possible values are `''` , `critical` , `high`, `medium` and `low`
+`risk` : Possible values are `''` , `accepted`, `critical` , `high`, `medium` and `low`
 
 :::note
 The empty string `''` is meant to describe 'undefined' or 'unknown' risk value.
@@ -269,7 +269,7 @@ We could go about doing this one of two ways:
 Approach 1: 👎
 
 ```yaml
-name: are-enis-attached-to-sg
+id: are-enis-attached-to-sg
 condition: ."list-of-attached-eni".result| length == 0
 risk: low
 ```
@@ -277,7 +277,7 @@ risk: low
 Approach 2: 👍
 
 ```yaml
-name: are-enis-attached-to-sg
+id: are-enis-attached-to-sg
 condition: ."list-of-attached-eni".result| length > 0
 risk: high
 ```

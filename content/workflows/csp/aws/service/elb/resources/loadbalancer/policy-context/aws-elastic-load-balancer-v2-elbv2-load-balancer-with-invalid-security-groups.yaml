@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-v2-(elbv2)-load-balancer-with-invalid-security-groups
+id: aws-elastic-load-balancer-v2-elbv2-load-balancer-with-invalid-security-groups
 name: AWS Elastic Load Balancer v2 (ELBv2) load balancer with invalid security groups
 labels:
   - contextualization

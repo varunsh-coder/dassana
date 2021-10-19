@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-v2-(elbv2)-ssl-negotiation-policy-configured-with-weak-ciphers
+id: aws-elastic-load-balancer-v2-elbv2-ssl-negotiation-policy-configured-with-weak-ciphers
 name: AWS Elastic Load Balancer v2 (ELBv2) SSL negotiation policy configured with weak ciphers
 labels:
   - contextualization

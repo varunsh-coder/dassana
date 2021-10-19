@@ -32,6 +32,6 @@ steps:
 risk-config:
   default-risk: ""
   rules:
-    - name: bucket-is-of-significant-size
+    - id: bucket-is-of-significant-size
       condition: .bucketStats.result.bucketSizeInGB >= 10 or .bucketStats.result.numberOfObjects >= 1000
       risk: high

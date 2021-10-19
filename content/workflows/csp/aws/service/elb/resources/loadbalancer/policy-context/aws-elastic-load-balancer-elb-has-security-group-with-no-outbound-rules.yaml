@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-(elb)-has-security-group-with-no-inbound-rules
-name: AWS Elastic Load Balancer (ELB) has security group with no inbound rules
+id: aws-elastic-load-balancer-elb-has-security-group-with-no-outbound-rules
+name: AWS Elastic Load Balancer (ELB) has security group with no outbound rules
 labels:
   - contextualization
  
@@ -18,10 +18,10 @@ subcategory: firewall
 filters:
   - vendor: prisma-cloud
     policies:
-      - f2b80edb-79d3-4842-b86a-3bbbcfd95c98
+      - bc6fafc0-c5f8-4ddd-b07d-0e4394c06ad0
     match-type: any
     rules:
-      - .vendorId == "prisma-cloud" and .vendorPolicy == "f2b80edb-79d3-4842-b86a-3bbbcfd95c98"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "bc6fafc0-c5f8-4ddd-b07d-0e4394c06ad0"
  
 risk-config:
   default-risk: medium

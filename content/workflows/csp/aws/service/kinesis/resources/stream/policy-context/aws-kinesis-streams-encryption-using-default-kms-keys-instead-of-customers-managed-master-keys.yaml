@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-kinesis-streams-encryption-using-default-kms-keys-instead-of-customer's-managed-master-keys
+id: aws-kinesis-streams-encryption-using-default-kms-keys-instead-of-customers-managed-master-keys
 name: AWS Kinesis streams encryption using default KMS keys instead of Customer's Managed Master Keys
 labels:
   - contextualization

@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-v2-(elbv2)-with-deletion-protection-feature-disabled
+id: aws-elastic-load-balancer-v2-elbv2-with-deletion-protection-feature-disabled
 name: AWS Elastic Load Balancer v2 (ELBv2) with deletion protection feature disabled
 labels:
   - contextualization

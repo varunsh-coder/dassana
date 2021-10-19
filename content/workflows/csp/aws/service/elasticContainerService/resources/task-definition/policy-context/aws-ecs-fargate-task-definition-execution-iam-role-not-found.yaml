@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-ecs/fargate-task-definition-execution-iam-role-not-found
+id: aws-ecs-fargate-task-definition-execution-iam-role-not-found
 name: AWS ECS/Fargate task definition execution IAM Role not found
 labels:
   - contextualization

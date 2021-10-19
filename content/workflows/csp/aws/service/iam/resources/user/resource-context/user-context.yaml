@@ -25,22 +25,22 @@ steps:
 risk-config:
   default-risk: ""
   rules:
-    - name: Instance has permissions that allow PrivilegeEscalation
+    - id: instance-has-permissions-that-allow-privilegeEscalation
       condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
       risk: high
 
-    - name: Instance has permissions that allow CredentialsExposure
+    - id: instance-has-permissions-that-allow-credentials-exposure
       condition: .riskyPermissions.result.CredentialsExposure | length > 0
       risk: high
 
-    - name: Instance has permissions that allow DataExfiltration
+    - id: instance-has-permissions-that-allow-data-exfiltration
       condition: .riskyPermissions.result.DataExfiltration | length > 0
       risk: medium
 
-    - name: Instance has permissions that allow InfrastructureModification
+    - id: instance-has-permissions-that-allow-infrastructure-modification
       condition: .riskyPermissions.result.InfrastructureModification | length > 0
       risk: low
 
-    - name: Instance has permissions that allow ResourceExposure
+    - id: instance-has-permissions-that-allow-resource-exposure
       condition: .riskyPermissions.result.ResourceExposure | length > 0
       risk: low

@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-(classic)-with-cross-zone-load-balancing-disabled
+id: aws-elastic-load-balancer-classic-with-cross-zone-load-balancing-disabled
 name: AWS Elastic Load Balancer (Classic) with cross-zone load balancing disabled
 labels:
   - contextualization

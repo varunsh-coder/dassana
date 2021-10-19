@@ -163,11 +163,11 @@ public class Parser {
       if (rulesJsonArray != null) {
         for (int i = 0; i < rulesJsonArray.length(); i++) {
           JSONObject ruleObj = rulesJsonArray.getJSONObject(i);
-          String name = ruleObj.getString("name");
+          String id = ruleObj.getString("id");
           String condition = ruleObj.getString("condition");
           String risk = ruleObj.getString("risk");
 
-          Rule rule = new Rule(name, condition, risk);
+          Rule rule = new Rule(id, condition, risk);
           riskRules.add(rule);
 
         }

@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-iam-role/user-with-unused-cloudtrail-delete-or-full-permission
+id: aws-iam-role-user-with-unused-cloudtrail-delete-or-full-permission
 name: AWS IAM role/user with unused CloudTrail delete or full permission
 labels:
   - contextualization

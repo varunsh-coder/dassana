@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-(elb)-not-in-use
+id: aws-elastic-load-balancer-elb-not-in-use
 name: AWS Elastic Load Balancer (ELB) not in use
 labels:
   - contextualization

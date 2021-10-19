@@ -17,10 +17,15 @@
     },
     "id": {
       "$id": "#/properties/id",
-      "type": "string",
-      "description": "This id uniquely identifis the workflow. If you want to customize any public (open source) workflows, you can use the same id in your customized workflow and put the workflow in the s3 bucket.",
+      "description": "This id uniquely identifies the workflow. If you want to customize any public (open source) workflows, you can use the same id in your customized workflow and put the workflow in the s3 bucket.",
       "default": "",
-      "pattern": "^[a-zA-Z0-9-_]+$",
+      "allOf": [
+        {
+          "$id": "#/properties/id/allOf/0",
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        }
+      ],
       "examples": ["foo-cloud-normalize"]
     },
     "filters": {
@@ -186,6 +191,57 @@
           }
         ]
       }
+    },
+    "risk-config": {
+      "$id": "#/properties/risk-config",
+      "type": "object",
+      "title": "The risk-config schema",
+      "required": ["default-risk"],
+      "properties": {
+        "default-risk": {
+          "$id": "#/properties/risk-config/properties/default-risk",
+          "type": "string",
+          "enum": [ "", "critical", "high", "medium", "low", "accepted"],
+          "title": "The default-risk schema"
+        },
+        "rules": {
+          "$id": "#/properties/risk-config/properties/rules",
+          "type": "array",
+          "title": "The rules schema",
+          "additionalItems": true,
+          "items": {
+            "$id": "#/properties/risk-config/properties/rules/items/0",
+            "type": "object",
+            "required": [ "id", "condition", "risk" ],
+            "properties": {
+              "id": {
+                "$id": "#/properties/risk-config/properties/rules/items/0/properties/id",
+                "default": "",
+                "allOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-z0-9-]+$"
+                  }
+                ],
+                "title": "The id of the rule"
+              },
+              "condition": {
+                "$id": "#/properties/risk-config/properties/rules/items/0/properties/condition",
+                "type": "string",
+                "title": "The jq condition"
+              },
+              "risk": {
+                "$id": "#/properties/risk-config/properties/rules/items/0/properties/risk",
+                "title": "The risk schema",
+                "type": "string",
+                "enum": [ "", "critical", "high", "medium", "low", "accepted"]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "output": {

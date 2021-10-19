@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-elastic-load-balancer-(classic)-ssl-negotiation-policy-configured-with-insecure-ciphers
+id: aws-elastic-load-balancer-classic-ssl-negotiation-policy-configured-with-insecure-ciphers
 name: AWS Elastic Load Balancer (Classic) SSL negotiation policy configured with insecure ciphers
 labels:
   - contextualization

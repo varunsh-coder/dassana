@@ -15,11 +15,11 @@ filters:
 risk-config:
   default-risk: ""
   rules:
-    - name: dev environment risk is low
+    - id: dev-environment-risk-is-low
       condition: .tags | any( select(.name | test("env" ; "ix")) | select(.value | test("dev" ; "ix")))
       risk: low
 
-    - name: prod environment risk is high
+    - id: prod-environment-risk-is-high
       condition: .tags | any( select(.name | test("env" ; "ix")) | select(.value | test("prod" ; "ix")))
       risk: high
 

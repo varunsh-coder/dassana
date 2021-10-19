@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
  
-id: aws-iam-has-expired-ssl/tls-certificates
+id: aws-iam-has-expired-ssl-tls-certificates
 name: AWS IAM has expired SSL/TLS certificates
 labels:
   - contextualization
