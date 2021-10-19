@@ -19,9 +19,10 @@
       "$id": "#/properties/id",
       "description": "This id uniquely identifies the workflow. If you want to customize any public (open source) workflows, you can use the same id in your customized workflow and put the workflow in the s3 bucket.",
       "default": "",
-      "type": "string",
       "allOf": [
         {
+          "$id": "#/properties/id/allOf/0",
+          "type": "string",
           "pattern": "^[a-z0-9-]+$"
         }
       ],
@@ -241,7 +242,8 @@
                 "$id": "#/properties/risk-config/properties/rules/items/0/properties/risk",
                 "title": "The risk schema",
                 "type": "string",
-                "enum": [ "", "critical", "high", "medium", "low", "accepted"]
+                "enum": [ "", "critical", "high", "medium", "low", "accepted"],
+                "examples": ["low"]
               }
             },
             "additionalProperties": false

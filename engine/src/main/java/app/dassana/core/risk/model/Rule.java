@@ -2,12 +2,12 @@ package app.dassana.core.risk.model;
 
 public class Rule {
 
-  String name;
+  String id;
   String condition;
   String risk;
 
-  public Rule(String name, String condition, String risk) {
-    this.name = name;
+  public Rule(String id, String condition, String risk) {
+    this.id = id;
     this.condition = condition;
     this.risk = risk;
   }
@@ -21,11 +21,11 @@ public class Rule {
   }
 
   public String getName() {
-    return name;
+    return id;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setName(String id) {
+    this.id = id;
   }
 
   public String getCondition() {
