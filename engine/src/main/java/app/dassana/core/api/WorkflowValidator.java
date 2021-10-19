@@ -19,6 +19,7 @@ import app.dassana.core.workflow.model.Workflow;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,6 +28,7 @@ import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 @Singleton
 public class WorkflowValidator {
@@ -51,11 +53,23 @@ public class WorkflowValidator {
     try {
       schema.validate(new JSONObject(json));
     } catch (org.everit.json.schema.ValidationException e) {
-      List<Message> messasges = new LinkedList<>();
+      List<Message> messages = new LinkedList<>();
       List<ValidationException> causingExceptions = e.getCausingExceptions();
-      causingExceptions.forEach(e1 -> messasges.add(new Message(e1.getMessage())));
+
+      // modified below messages to add more descriptive error message in case the enum values are not matching.
+      causingExceptions.forEach(e1 -> {
+        JSONObject violatedSchema = new JSONObject(e1.getViolatedSchema().toString());
+        JSONArray enumArray =  violatedSchema.optJSONArray("enum");
+        if (enumArray != null) {
+          messages.add(new Message(e1.getMessage() + ". Correct enum values are: " + enumArray.toString()));
+        } else {
+          messages.add(new Message(e1.getMessage()));
+        }
+      });
+
       DassanaWorkflowValidationException dassanaWorkflowValidationException = new DassanaWorkflowValidationException();
-      dassanaWorkflowValidationException.setMessages(messasges);
+
+      dassanaWorkflowValidationException.setMessages(messages);
       if (dassanaWorkflowValidationException.getMessages().size() > 0) {
         throw dassanaWorkflowValidationException;
       }

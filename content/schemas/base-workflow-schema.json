@@ -28,6 +28,14 @@
       ],
       "examples": ["foo-cloud-normalize"]
     },
+    "class": {
+      "$id": "#/properties/class",
+      "description": "This value identifies which class the alert belongs to.",
+      "default": "",
+      "type": "string",
+      "enum": [ "risk", "incident" ],
+      "examples": ["risk"]
+    },
     "filters": {
       "$id": "#/properties/filters",
       "type": "array",
