@@ -1,7 +1,7 @@
 package app.dassana.core.risk.model;
 
 public class Risk {
-  String name = "";
+  String id = "";
   String riskValue = "";
   String condition = "";
 
@@ -13,12 +13,12 @@ public class Risk {
     this.condition = condition;
   }
 
-  public String getName() {
-    return name;
+  public String getId() {
+    return id;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getRiskValue() {

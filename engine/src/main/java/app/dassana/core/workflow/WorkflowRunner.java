@@ -27,14 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.google.gson.Gson;
 import io.micronaut.core.util.StringUtils;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.thisptr.jackson.jq.BuiltinFunctionLoader;
@@ -80,7 +75,7 @@ public class WorkflowRunner {
     List<Error> errorList = new LinkedList<>();
     workflowOutputWithRisk.setErrorList(errorList);
 
-    Map<String, Object> stepToOutPutMap = new HashMap<>();
+    Map<String, Object> stepToOutPutMap = new LinkedHashMap<>();
     JSONObject jsonObject;
     JsonyThings.throwExceptionIfNotValidJsonObj(jsonToUse);
     jsonObject = new JSONObject(jsonToUse);
