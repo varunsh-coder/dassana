@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-querying-crypto-affiliated-ip
+name: An EC2 instance may be "crypto-jacked" as it is querying an IP classified as cryptocurrency-related.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: impact
+category: resource-hijacking
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - CryptoCurrency:EC2/BitcoinTool.B
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("CryptoCurrency:EC2/BitcoinTool.B"))
+
+risk-config:
+  default-risk: high

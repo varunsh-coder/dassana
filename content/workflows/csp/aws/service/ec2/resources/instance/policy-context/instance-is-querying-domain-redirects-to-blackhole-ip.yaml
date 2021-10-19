@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-querying-domain-redirects-to-blackhole-ip
+name: An EC2 instance is querying a domain name that redirects to a black hole IP address.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: command-and-control
+category: application-layer-protocol
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Trojan:EC2/BlackholeTraffic!DNS
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Trojan:EC2/BlackholeTraffic!DNS"))
+ 
+risk-config:
+  default-risk: medium

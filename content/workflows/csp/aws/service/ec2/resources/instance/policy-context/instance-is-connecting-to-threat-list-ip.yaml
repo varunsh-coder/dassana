@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-connecting-to-threat-list-ip
+name: An EC2 instance is connecting to an IP address on a custom threat list.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: initial-access
+category: valid-accounts
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - UnauthorizedAccess:EC2/MaliciousIPCaller.Custom
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:EC2/MaliciousIPCaller.Custom"))
+
+risk-config:
+  default-risk: medium

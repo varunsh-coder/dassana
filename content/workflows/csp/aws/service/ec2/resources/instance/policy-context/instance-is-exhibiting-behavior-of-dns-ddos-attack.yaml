@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-exhibiting-behavior-of-dns-ddos-attack
+name: An EC2 instance is exhibiting behavior that could indicate it's being used to launch a DNS-based Denial of Service (DoS) attack.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: impact
+category: network-denial-of-service
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Backdoor:EC2/DenialOfService.Dns
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Backdoor:EC2/DenialOfService.Dns"))
+ 
+risk-config:
+  default-risk: high

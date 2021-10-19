@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-probing-significant-amount-of-ips
+name: A significant number of IP addresses were probed by an EC2 instance.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: impact
+category: resource-hijacking
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Impact:EC2/PortSweep
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Impact:EC2/PortSweep"))
+
+risk-config:
+  default-risk: high

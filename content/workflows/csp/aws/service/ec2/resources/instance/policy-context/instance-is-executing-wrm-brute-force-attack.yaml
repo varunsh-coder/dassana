@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-executing-wrm-brute-force-attack
+name: An EC2 instance is executing an outbound Windows Remote Management brute force attack.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: impact
+category: resource-hijacking
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Impact:EC2/WinRMBruteForce
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Impact:EC2/WinRMBruteForce"))
+ 
+risk-config:
+  default-risk: low

@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-querying-drive-by-download-domain
+name: An EC2 instance is querying a remote host's domain name that is a known source of Drive-By download attacks.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: initial-access
+category: drive-by-compromise
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Trojan:EC2/DriveBySourceTraffic!DNS
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Trojan:EC2/DriveBySourceTraffic!DNS"))
+ 
+risk-config:
+  default-risk: medium

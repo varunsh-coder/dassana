@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: service-disruption-anomaly
+name: An API typically called to disrupt services was invoked anomalously.
+labels:
+  - contextualization
+ 
+csp: aws
+service: iam
+resource-type: user
+ 
+class: incident
+subclass: impact
+category: resource-hijacking
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Impact:IAMUser/AnomalousBehavior
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Impact:IAMUser/AnomalousBehavior"))
+ 
+risk-config:
+  default-risk: high

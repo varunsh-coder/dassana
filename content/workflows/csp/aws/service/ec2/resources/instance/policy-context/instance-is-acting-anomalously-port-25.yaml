@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-acting-anomalously-port-25
+name: An EC2 instance which has no history of traffic over port 25 is now communicating with a remote host on port 25.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: impact
+category: resource-hijacking
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Backdoor:EC2/Spambot
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Backdoor:EC2/Spambot"))
+ 
+risk-config:
+  default-risk: medium

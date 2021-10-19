@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: access-logging-was-disabled-for-bucket
+name: An S3 bucket's server access logging was disabled.
+labels:
+  - contextualization
+
+csp: aws
+service: s3
+resource-type: bucket
+
+class: incident
+subclass: defense-evasion
+category: impair-defenses
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Stealth:S3/ServerAccessLoggingDisabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Stealth:S3/ServerAccessLoggingDisabled"))
+
+risk-config:
+  default-risk: low

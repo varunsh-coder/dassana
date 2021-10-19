@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: api-parrot-linux
+name: A machine running Parrot Linux invoked an IAM API
+labels:
+  - contextualization
+ 
+csp: aws
+service: iam
+resource-type: user
+ 
+class: incident
+subclass: initial-access
+category: valid-accounts
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - PenTest:IAMUser/ParrotLinux
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("PenTest:IAMUser/ParrotLinux"))
+ 
+risk-config:
+  default-risk: medium

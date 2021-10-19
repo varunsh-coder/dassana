@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-querying-phishing-domains
+name: An EC2 instance is querying domains that have been used in phishing attacks.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: initial-access
+category: phishing
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Trojan:EC2/PhishingDomainRequest!DNS
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Trojan:EC2/PhishingDomainRequest!DNS"))
+ 
+risk-config:
+  default-risk: high

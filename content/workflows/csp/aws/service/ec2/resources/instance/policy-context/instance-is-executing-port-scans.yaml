@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-executing-port-scans
+name: An EC2 instance is executing outbound port scans to a remote host.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: discovery
+category: network-service-scanning
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Recon:EC2/Portscan
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Recon:EC2/Portscan"))
+ 
+risk-config:
+  default-risk: medium

@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-associated-with-rdp-brute-force
+name: An EC2 instance was targeted or utilized in a brute-force attack to obtain passwords for an RDP service.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: credential-access
+category: brute-force
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - UnauthorizedAccess:EC2/RDPBruteForce
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:EC2/RDPBruteForce"))
+
+risk-config:
+  default-risk: low

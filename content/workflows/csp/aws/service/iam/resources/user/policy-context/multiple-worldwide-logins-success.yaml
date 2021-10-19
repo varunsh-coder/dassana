@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: multiple-worldwide-logins-success
+name: Many successful console logins have been recorded worldwide.
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: user
+
+class: incident
+subclass: initial-access
+category: valid-accounts
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - UnauthorizedAccess:IAMUser/ConsoleLoginSuccess.B
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:IAMUser/ConsoleLoginSuccess.B"))
+
+risk-config:
+  default-risk: medium

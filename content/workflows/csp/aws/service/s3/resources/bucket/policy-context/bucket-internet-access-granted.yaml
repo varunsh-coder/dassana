@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: bucket-internet-access-granted
+name: An S3 bucket's policy or ACL was modified by an IAM principal making it accessible to the internet.
+labels:
+  - contextualization
+
+csp: aws
+service: s3
+resource-type: bucket
+
+class: incident
+subclass: defense-evasion
+category: impair-defenses
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Policy:S3/BucketAnonymousAccessGranted
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Policy:S3/BucketAnonymousAccessGranted"))
+
+risk-config:
+  default-risk: high

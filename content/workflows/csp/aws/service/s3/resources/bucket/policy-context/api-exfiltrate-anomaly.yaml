@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: api-exfiltrate-anomaly
+name: An S3 API typically used to exfiltrate data was invoked anomalously by an IAM identity
+labels:
+  - contextualization
+ 
+csp: aws
+service: s3
+resource-type: bucket
+ 
+class: incident
+subclass: exfiltration
+category: exfiltration-over-web-service
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Exfiltration:S3/ObjectRead.Unusual
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Exfiltration:S3/ObjectRead.Unusual"))
+ 
+risk-config:
+  default-risk: medium

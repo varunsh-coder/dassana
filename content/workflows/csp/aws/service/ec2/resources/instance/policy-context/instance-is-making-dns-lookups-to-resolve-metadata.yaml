@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-making-dns-lookups-to-resolve-metadata
+name: An EC2 instance is making DNS lookups that resolve to the instance metadata service.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: initial-access
+category: exploit-public-facing-application
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - UnauthorizedAccess:EC2/MetadataDNSRebind
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:EC2/MetadataDNSRebind"))
+ 
+risk-config:
+  default-risk: high

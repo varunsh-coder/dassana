@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: api-malicious-ip
+name: An IP address contained in a custom threat list invoked an S3 API.
+labels:
+  - contextualization
+ 
+csp: aws
+service: s3
+resource-type: bucket
+ 
+class: incident
+subclass: discovery
+category: cloud-service-discovery
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Discovery:S3/MaliciousIPCaller.Custom
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Discovery:S3/MaliciousIPCaller.Custom"))
+ 
+risk-config:
+  default-risk: high
