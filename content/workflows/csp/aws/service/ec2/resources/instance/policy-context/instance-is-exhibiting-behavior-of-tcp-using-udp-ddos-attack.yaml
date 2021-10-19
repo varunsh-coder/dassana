@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: instance-is-exhibiting-behavior-of-tcp-using-udp-ddos-attack
+name: An EC2 instance is exhibiting behavior that suggests it's being used to launch a Denial of Service (DoS) attack
+  on a TCP port using the UDP protocol.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: impact
+category: network-denial-of-service
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Backdoor:EC2/DenialOfService.UdpOnTcpPorts
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Backdoor:EC2/DenialOfService.UdpOnTcpPorts"))
+ 
+risk-config:
+  default-risk: high

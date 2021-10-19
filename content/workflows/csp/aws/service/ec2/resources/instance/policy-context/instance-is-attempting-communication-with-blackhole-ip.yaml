@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-attempting-communication-with-blackhole-ip
+name: An EC2 instance is attempting to communicate with a blackhole IP address.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: command-and-control
+category: application-layer-protocol
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Trojan:EC2/BlackholeTraffic
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Trojan:EC2/BlackholeTraffic"))
+ 
+risk-config:
+  default-risk: medium

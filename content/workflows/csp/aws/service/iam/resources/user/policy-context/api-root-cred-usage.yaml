@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: api-root-cred-usage
+name: An API was called with root account credentials as opposed to least privilege temporary credentials from AWS STS
+labels:
+  - contextualization
+ 
+csp: aws
+service: iam
+resource-type: user
+ 
+class: incident
+subclass: defense-evasion
+category: impair-defenses
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Policy:IAMUser/RootCredentialUsage
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Policy:IAMUser/RootCredentialUsage"))
+ 
+risk-config:
+  default-risk: low

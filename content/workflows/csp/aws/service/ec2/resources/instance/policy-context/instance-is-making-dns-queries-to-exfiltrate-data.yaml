@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-making-dns-queries-to-exfiltrate-data
+name: An EC2 instance is making DNS queries to exfiltrate data.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: exfiltration
+category: exfiltration-over-alternative-protocol
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Trojan:EC2/DNSDataExfiltration
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Trojan:EC2/DNSDataExfiltration"))
+
+risk-config:
+  default-risk: high

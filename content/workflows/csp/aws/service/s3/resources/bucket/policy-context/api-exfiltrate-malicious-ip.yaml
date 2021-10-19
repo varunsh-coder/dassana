@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: api-exfiltrate-malicious-ip
+name: An IP address contained in a custom threat list invoked an S3 API typically used to exfiltrate data.
+labels:
+  - contextualization
+ 
+csp: aws
+service: s3
+resource-type: bucket
+ 
+class: incident
+subclass: exfiltration
+category: exfiltration-over-web-service
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Exfiltration:S3/MaliciousIPCaller
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Exfiltration:S3/MaliciousIPCaller"))
+ 
+risk-config:
+  default-risk: high

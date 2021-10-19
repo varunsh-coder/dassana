@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: api-exfiltration-anomaly
+name: An API typically used in exfiltration stages was invoked anomalously.
+labels:
+  - contextualization
+ 
+csp: aws
+service: iam
+resource-type: user
+ 
+class: incident
+subclass: exfiltration
+category: exfiltration-over-web-service
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Exfiltration:IAMUser/AnomalousBehavior
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Exfiltration:IAMUser/AnomalousBehavior"))
+ 
+risk-config:
+  default-risk: high

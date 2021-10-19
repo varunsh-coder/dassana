@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-acting-anomalously-on-unusual-port
+name: An EC2 instance is interacting with a remote host on an unusual server port.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: command-and-control
+category: non-standard-port
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Behavior:EC2/NetworkPortUnusual
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Behavior:EC2/NetworkPortUnusual"))
+ 
+risk-config:
+  default-risk: medium

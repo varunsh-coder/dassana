@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: api-persistence-anomaly
+name: An API associated with environment persistence tactics was invoked anomalously.
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: user
+
+class: incident
+subclass: persistence
+category: account-manipulation
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Persistence:IAMUser/AnomalousBehavior
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Persistence:IAMUser/AnomalousBehaviorr"))
+
+risk-config:
+  default-risk: medium

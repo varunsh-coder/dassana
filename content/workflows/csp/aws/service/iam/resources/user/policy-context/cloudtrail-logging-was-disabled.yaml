@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: cloudtrail-logging-was-disabled
+name: CloudTrail logging was disabled.
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: user
+
+class: incident
+subclass: defense-evasion
+category: impair-defenses
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Stealth:IAMUser/CloudTrailLoggingDisabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Stealth:IAMUser/CloudTrailLoggingDisabled"))
+
+risk-config:
+  default-risk: low

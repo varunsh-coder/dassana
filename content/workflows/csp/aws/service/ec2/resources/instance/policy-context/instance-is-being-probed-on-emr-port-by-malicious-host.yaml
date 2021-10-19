@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-being-probed-on-emr-port-by-malicious-host
+name: A known malicious host is probing an unprotected EMR related port on an EC2 instance.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: reconnaissance
+category: active-scanning
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Recon:EC2/PortProbeEMRUnprotectedPort
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Recon:EC2/PortProbeEMRUnprotectedPort"))
+
+risk-config:
+  default-risk: high

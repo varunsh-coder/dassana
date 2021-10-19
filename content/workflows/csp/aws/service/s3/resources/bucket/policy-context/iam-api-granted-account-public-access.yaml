@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: iam-api-granted-account-public-access
+name: An S3 API (invoked by an IAM identity) was used to disable an S3 block public access setting for an account's buckets.
+labels:
+  - contextualization
+ 
+csp: aws
+service: s3
+resource-type: bucket
+ 
+class: incident
+subclass: defense-evasion
+category: impair-defenses
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Policy:S3/AccountBlockPublicAccessDisabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Policy:S3/AccountBlockPublicAccessDisabled"))
+ 
+risk-config:
+  default-risk: low

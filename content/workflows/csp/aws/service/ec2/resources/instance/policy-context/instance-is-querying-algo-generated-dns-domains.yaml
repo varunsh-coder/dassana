@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-querying-algo-generated-dns-domains
+name: An EC2 instance is querying algorithmically generated domains which is a sign of malware activity.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: command-and-control
+category: dynamic-resolution
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Trojan:EC2/DGADomainRequest.C!DNS
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Trojan:EC2/DGADomainRequest.C!DNS"))
+ 
+risk-config:
+  default-risk: high

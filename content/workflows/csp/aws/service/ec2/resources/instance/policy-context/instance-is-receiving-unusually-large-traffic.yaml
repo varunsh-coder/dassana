@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-receiving-unusually-large-traffic
+name: A remote host is receiving unusually large amounts of network traffic from an EC2 instance.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: exfiltration
+category: automated-exfiltration
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Behavior:EC2/TrafficVolumeUnusual
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Behavior:EC2/TrafficVolumeUnusual"))
+ 
+risk-config:
+  default-risk: medium

@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: api-privilege-escalation
+name: An API used in privelege escalation techniques was invoked anomalously.
+labels:
+  - contextualization
+ 
+csp: aws
+service: iam
+resource-type: user
+ 
+class: incident
+subclass: privelege-escalation
+category: valid-accounts
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - PrivilegeEscalation:IAMUser/AnomalousBehavior
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("PrivilegeEscalation:IAMUser/AnomalousBehavior"))
+ 
+risk-config:
+  default-risk: medium

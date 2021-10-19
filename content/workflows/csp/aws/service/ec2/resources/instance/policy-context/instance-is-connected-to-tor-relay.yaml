@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-connected-to-tor-relay
+name: EC2 instance is connecting to a Tor network as a Tor relay.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: impact
+category: resource-hijacking
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - UnauthorizedAccess:EC2/TorRelay
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:EC2/TorRelay"))
+ 
+risk-config:
+  default-risk: high

@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-connected-to-tor-guard
+name: An EC2 instance is sending egress traffic to gateway nodes for Tor networks.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: command-and-control
+category: proxy
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - UnauthorizedAccess:EC2/TorClient
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:EC2/TorClient"))
+ 
+risk-config:
+  default-risk: high

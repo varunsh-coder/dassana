@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-querying-low-reputation-abused-domain
+name: An EC2 instance is querying a domain name with a low reputation that is associated with known abused domains.
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: impact
+category: resource-hijacking
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Impact:EC2/AbusedDomainRequest.Reputation
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Impact:EC2/AbusedDomainRequest.Reputation"))
+
+risk-config:
+  default-risk: medium

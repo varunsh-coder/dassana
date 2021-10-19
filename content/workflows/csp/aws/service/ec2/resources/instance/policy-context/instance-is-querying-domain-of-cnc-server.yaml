@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-is-querying-domain-of-cnc-server
+name: An EC2 instance is querying the domain name of a known command and control server.
+labels:
+  - contextualization
+ 
+csp: aws
+service: ec2
+resource-type: instance
+ 
+class: incident
+subclass: command-and-control
+category: application-layer-protocol
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Backdoor:EC2/C&CActivity.B!DNS
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Backdoor:EC2/C&CActivity.B!DNS"))
+ 
+risk-config:
+  default-risk: high

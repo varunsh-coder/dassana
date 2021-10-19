@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: api-kali-linux
+name: A machine running Kali Linux invoked an IAM API
+labels:
+  - contextualization
+ 
+csp: aws
+service: iam
+resource-type: user
+ 
+class: incident
+subclass: initial-access
+category: valid-accounts
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - PenTest:IAMUser/KaliLinux
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("PenTest:IAMUser/KaliLinux"))
+ 
+risk-config:
+  default-risk: medium

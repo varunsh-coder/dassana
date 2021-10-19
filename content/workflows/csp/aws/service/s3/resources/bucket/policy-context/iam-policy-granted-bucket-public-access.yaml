@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+ 
+id: iam-policy-granted-bucket-public-access
+name: An S3 bucket's policies or ACLs were modified by an IAM principal to allow access by all AWS users.
+labels:
+  - contextualization
+ 
+csp: aws
+service: s3
+resource-type: bucket
+ 
+class: incident
+subclass: defense-evasion
+category: impair-defenses
+ 
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Policy:S3/BucketPublicAccessGranted
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Policy:S3/BucketPublicAccessGranted"))
+ 
+risk-config:
+  default-risk: high

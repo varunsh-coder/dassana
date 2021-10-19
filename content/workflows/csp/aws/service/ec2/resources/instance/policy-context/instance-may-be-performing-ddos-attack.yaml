@@ -1,0 +1,26 @@
+schema: 1
+type: policy-context
+
+id: instance-may-be-performing-ddos-attack
+name: An EC2 instance is sending large amounts of egress traffic from an unusual protocol (ex. IGMP) which could mean it's being utilized to launch a Denial of Service (DoS)
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: instance
+
+class: incident
+subclass: impact
+category: network-denial-of-service
+
+filters:
+  - vendor: aws-guardduty
+    policies:
+      - Backdoor:EC2/DenialOfService.UnusualProtocol
+    match-type: any
+    rules:
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Backdoor:EC2/DenialOfService.UnusualProtocol"))
+
+risk-config:
+  default-risk: high
