@@ -66,12 +66,15 @@ def handle(event: AWSConfigAlert, context: LambdaContext):
     aws_account_id = event.AwsAccountId if event.AwsAccountId else None
     resource_container = arn_account_id if arn_account_id else aws_account_id
 
+    # The actual alert ID is just the last part of event.Id
+    alertId = event.Id.split('/')[-1]
+
     output = NormalizedOutput(
         csp='aws',
         resourceContainer=resource_container,
         region=region,
         resourceId=resource_id,
-        alertId=event.Id,
+        alertId=alertId,
         canonicalId=resource_arn,
         vendorPolicy=policy_id,
         vendorId='aws-config'
