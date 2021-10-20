@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: mfa-is-disabled-on-root-account
+name: MFA is disabled on root account
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
+
+filters:
+  - vendor: aws-config
+    policies:
+      - root-account-mfa-enabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("root-account-mfa-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - 478434a1-ff6c-492e-b411-c427c06291d9
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "478434a1-ff6c-492e-b411-c427c06291d9"
+
+risk-config:
+  default-risk: critical

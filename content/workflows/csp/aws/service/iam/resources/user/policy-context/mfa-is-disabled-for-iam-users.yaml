@@ -1,0 +1,35 @@
+schema: 1
+type: policy-context
+
+id: mfa-is-disabled-for-iam-users
+name: MFA is disabled for IAM users
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
+
+filters:
+  - vendor: aws-config
+    policies:
+      - iam-user-mfa-enabled
+      - mfa-enabled-for-iam-console-access
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-user-mfa-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("mfa-enabled-for-iam-console-access"))
+  - vendor: prisma-cloud
+    policies:
+      - 50af1c0a-ab70-44dd-b6f6-3529e795131f
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "50af1c0a-ab70-44dd-b6f6-3529e795131f"
+
+risk-config:
+  default-risk: medium

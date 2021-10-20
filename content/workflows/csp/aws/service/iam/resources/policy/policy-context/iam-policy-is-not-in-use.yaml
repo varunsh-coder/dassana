@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: iam-policy-is-not-in-use
+name: IAM policy is not in use
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: policy
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: aws-config
+    policies:
+      - "iam-policy-in-use"
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-policy-in-use"))
+
+risk-config:
+  default-risk: low

@@ -1,0 +1,41 @@
+schema: 1
+type: policy-context
+
+id: kms-cmk-management-issues
+name: KMS Customer Master Key (CMK) management issues
+labels:
+  - contextualization
+
+csp: aws
+service: kms
+resource-type: key
+
+class: risk
+subclass: config
+category: crypto
+subcategory: key-management
+
+filters:
+  - vendor: aws-config
+    policies:
+      - cmk-backing-key-rotation-enabled # Rotation is not enabled
+      - kms-cmk-not-scheduled-for-deletion # Scheduled for deletion
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("cmk-backing-key-rotation-enabled"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("kms-cmk-not-scheduled-for-deletion"))
+  - vendor: prisma-cloud
+    policies:
+      - 497f7e2c-b702-47c7-9a07-f0f6404ac896 # Rotation is not enabled
+      - 4779ab55-2f4b-48cf-b4a9-828165a73f77 # Scheduled for deletion
+      - 0ee9e44a-bc0f-4eaa-9c1d-7fc4dedc7b39 # Expiring in 30 days
+      - 40edb7ed-948e-4204-a3bb-9597b3e673f2 # Not in use
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "497f7e2c-b702-47c7-9a07-f0f6404ac896"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "4779ab55-2f4b-48cf-b4a9-828165a73f77"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "0ee9e44a-bc0f-4eaa-9c1d-7fc4dedc7b39"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "40edb7ed-948e-4204-a3bb-9597b3e673f2"
+
+risk-config:
+  default-risk: medium

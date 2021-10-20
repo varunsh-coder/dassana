@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: elb-deletion-protection-is-disabled
+name: Elastic Load Balancer deletion protection is disabled
+labels:
+  - contextualization
+
+csp: aws
+service: elb
+resource-type: loadbalancer
+
+class: risk
+subclass: config
+category: networking
+subcategory: availability
+
+filters:
+  - vendor: aws-config
+    policies:
+      - elb-deletion-protection-enabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("elb-deletion-protection-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - 6c729b3e-5f4f-4877-b964-e46d00b1d290
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "6c729b3e-5f4f-4877-b964-e46d00b1d290"
+
+risk-config:
+  default-risk: low

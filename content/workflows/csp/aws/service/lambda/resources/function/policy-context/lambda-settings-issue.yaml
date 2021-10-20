@@ -1,0 +1,31 @@
+schema: 1
+type: policy-context
+
+id: lambda-settings-issue
+name: Lambda settings issue
+labels:
+  - contextualization
+
+csp: aws
+service: lambda
+resource-type: function
+
+class: risk
+subclass: config
+category: uncategorized
+subcategory: best-practice
+
+filters:
+  - vendor: aws-config
+    policies:
+      - lambda-concurrency-check # Function-level concurrency execution limit is not configured
+      - lambda-dlq-check # Dead-letter queue is not set
+      - lambda-function-settings-check # Checks lambda function settings for runtime, role, timeout, and memory size
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("lambda-concurrency-check"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("lambda-dlq-check"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("lambda-function-settings-check"))
+
+risk-config:
+  default-risk: ""

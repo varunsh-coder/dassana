@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: elasticsearch-domain-is-public
+name: elasticsearch-domain-is-public
+labels:
+  - contextualization
+
+csp: aws
+service: elasticsearchService
+resource-type: domain
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: aws-config
+    policies:
+      - elasticsearch-in-vpc-only
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("elasticsearch-in-vpc-only"))
+  - vendor: prisma-cloud
+    policies:
+      - 4b411b41-7f4d-4626-884e-5ba8abd2a739
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "4b411b41-7f4d-4626-884e-5ba8abd2a739"
+
+risk-config:
+  default-risk: medium

@@ -32,4 +32,4 @@ filters:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "3b165f8d-1a65-41db-848d-d3783c4490ce"
 
 risk-config:
-  default-risk: low
+  default-risk: medium

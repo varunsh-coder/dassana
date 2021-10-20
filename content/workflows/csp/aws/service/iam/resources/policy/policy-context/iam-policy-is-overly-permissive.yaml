@@ -1,0 +1,45 @@
+schema: 1
+type: policy-context
+
+id: iam-policy-is-overly-permissive
+name: IAM policy is overly permissive
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: policy
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: aws-config
+    policies:
+      - iam-customer-policy-blocked-kms-actions
+      - iam-inline-policy-blocked-kms-actions
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-customer-policy-blocked-kms-actions"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-inline-policy-blocked-kms-actions"))
+  - vendor: prisma-cloud
+    policies:
+      - 625b4ce5-b8f1-4bdb-8959-7de645095e2b # IAM policy allows assume role permission across all services
+      - e575091e-cf1b-48b1-9b6c-f4831568d59f # IAM policy is overly permissive to all traffic via condition clause
+      - 861c6df0-9663-42aa-b729-5218fccc9b50 # IAM policy overly permissive to STS services
+      - 08f84034-fb56-4eb4-914f-bf1358d0d870 # IAM policy with unused CloudTrail delete or full permission
+      - cd2dd664-59a9-469d-a6d0-d6f4a9f8d94c # SageMaker notebook instance IAM policy overly permissive to all traffic
+      - 1eb7db29-9561-418e-a038-1344c3c79014 # IAM policy allows decryption actions on all KMS keys
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "625b4ce5-b8f1-4bdb-8959-7de645095e2b"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "e575091e-cf1b-48b1-9b6c-f4831568d59f"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "861c6df0-9663-42aa-b729-5218fccc9b50"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "08f84034-fb56-4eb4-914f-bf1358d0d870"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "cd2dd664-59a9-469d-a6d0-d6f4a9f8d94c"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "1eb7db29-9561-418e-a038-1344c3c79014"
+
+risk-config:
+  default-risk: high

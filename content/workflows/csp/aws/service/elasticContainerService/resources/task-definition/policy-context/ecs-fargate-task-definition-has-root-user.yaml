@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: ecs-fargate-task-definition-has-root-user
+name: ECS Fargate task definition has root user
+labels:
+  - contextualization
+
+csp: aws
+service: elasticContainerService
+resource-type: task-definition
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 0ad8c26b-f3b5-4917-b9a4-057f6c2ddebc
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "0ad8c26b-f3b5-4917-b9a4-057f6c2ddebc"
+
+risk-config:
+  default-risk: high

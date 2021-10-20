@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: iam-policy-is-attached-to-user
+name: IAM policy is attached to a user
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: user
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: aws-config
+    policies:
+      - iam-user-no-policies-check
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-user-no-policies-check"))
+  - vendor: prisma-cloud
+    policies:
+      - 2b7e07ba-56c8-42db-8db4-a4b65f5066c4
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
+
+risk-config:
+  default-risk: low

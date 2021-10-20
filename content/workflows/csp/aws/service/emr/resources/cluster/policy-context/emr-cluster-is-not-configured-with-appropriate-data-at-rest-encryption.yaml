@@ -1,0 +1,35 @@
+schema: 1
+type: policy-context
+
+id: emr-cluster-is-not-configured-with-appropriate-data-at-rest-encryption
+name: EMR cluster is not configured with appropriate data at rest encryption
+labels:
+  - contextualization
+
+csp: aws
+service: emr
+resource-type: cluster
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - c5569c38-be41-45d9-bb79-f483ab3ec2ce # CSE CMK encryption for Amazon S3 with EMRFS
+      - 66958003-19e7-4aac-bed2-1d488b25702b # SSE KMS encryption for Amazon S3 with EMRFS
+      - 353d0997-a8e7-4b57-8b2c-0772b21ca53f # Encryption not enabled
+      - 41844ca6-5843-4889-8807-12a0d6e963d7 # Local disk encryption using CMK
+      - 271423dc-295f-40fb-8743-ec07f58e8761 # Local disk encryption not enabled
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "c5569c38-be41-45d9-bb79-f483ab3ec2ce"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "66958003-19e7-4aac-bed2-1d488b25702b"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "353d0997-a8e7-4b57-8b2c-0772b21ca53f"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "41844ca6-5843-4889-8807-12a0d6e963d7"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "271423dc-295f-40fb-8743-ec07f58e8761"
+
+risk-config:
+  default-risk: medium
