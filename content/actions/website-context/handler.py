@@ -9,7 +9,10 @@ from aws_lambda_powertools import Logger
 from dassana.common.aws_client import DassanaAwsObject
 from dassana.common.cache import configure_ttl_cache
 
-with open('input.json', 'r') as schema:
+from os.path import dirname
+from models import BUCKET_WEBSITE_URL
+
+with open('%s/input.json' % dirname(__file__), 'r') as schema:
     schema = load(schema)
     dassana_aws = DassanaAwsObject()
 
@@ -28,10 +31,10 @@ def handle(event: Dict[str, Optional[Any]], context: LambdaContext):
 
     try:
         bucket_website = client.get_bucket_website(Bucket=bucket_name)
-        return {"bucketWebsiteUrl": "%s.s3-website-%s.amazonaws.com" % (bucket_name, region)}
+        return {BUCKET_WEBSITE_URL: "%s.s3-website-%s.amazonaws.com" % (bucket_name, region)}
     except ClientError as e:
         logger.error(e.response)
         if e.response.get('Error').get('Code') in ['NoSuchBucket', 'NoSuchWebsiteConfiguration']:
-            return {"bucketWebsiteUrl": ""}
+            return {BUCKET_WEBSITE_URL: ""}
         else:
             raise Exception(e)

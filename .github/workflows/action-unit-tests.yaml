@@ -16,6 +16,11 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8.11
+      - name: Cache Python dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ env.pythonLocation }}-${{ hashFiles('content/pkg/deps/python/requirements.txt') }}-${{ hashFiles('content/pkg/deps/python/requirements_dev.txt') }}
       - name: Install dev dependencies
         run: pip install -r requirements_dev.txt
         working-directory: content/pkg/deps/python
@@ -28,5 +33,9 @@ jobs:
         working-directory: content/pkg/deps/python
       - name: Run tests for Dassana Actions in Python
         run: |
-          PYTHONPATH=../pkg/deps/python pytest --hypothesis-show-statistics
+          PYTHONPATH=../pkg/deps/python coverage run -m pytest --hypothesis-show-statistics
+        working-directory: content/actions
+      - name: Pytest coverage
+        run: |
+          coverage report
         working-directory: content/actions
