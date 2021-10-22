@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: rds-instance-enhanced-monitoring-is-not-enabled
+name: RDS instance enhanced monitoring is not enabled
+labels:
+  - contextualization
+
+csp: aws
+service: rds
+resource-type: db
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: aws-config
+    policies:
+      - rds-enhanced-monitoring-enabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("rds-enhanced-monitoring-enabled"))
+
+risk-config:
+  default-risk: low

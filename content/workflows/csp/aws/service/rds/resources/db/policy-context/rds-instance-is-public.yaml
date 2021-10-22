@@ -1,14 +1,14 @@
 schema: 1
 type: policy-context
 
-id: redshift-cluster-is-public
-name: Redshift cluster is public
+id: rds-instance-is-public
+name: RDS instance is public
 labels:
   - contextualization
 
 csp: aws
-service: redshift
-resource-type: cluster
+service: rds
+resource-type: db
 
 class: risk
 subclass: config
@@ -18,10 +18,10 @@ subcategory: public-access
 filters:
   - vendor: aws-config
     policies:
-      - redshift-cluster-public-access-check
+      - rds-instance-public-access-check
     match-type: any
     rules:
-      - .vendorId == "aws-config" and (.vendorPolicy |contains ("redshift-cluster-public-access-check"))
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("rds-instance-public-access-check"))
   - vendor: prisma-cloud
     policies:
       - 1bb6005a-dca6-40e2-b0a6-24da968c0808

@@ -1,0 +1,35 @@
+schema: 1
+type: policy-context
+
+id: redshift-cluster-is-not-encrypted
+name: Redshift cluster is not encrypted
+labels:
+  - contextualization
+
+csp: aws
+service: redshift
+resource-type: cluster
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: aws-config
+    policies:
+      - redshift-cluster-kms-enabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("redshift-cluster-kms-enabled"))
+  - vendor: prisma-cloud
+    policies:
+      - 0132bbb2-c733-4c36-9c5d-c58967c7d1a6
+      - dae05966-c2ac-480f-9ef5-50e91fd57782
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "0132bbb2-c733-4c36-9c5d-c58967c7d1a6"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "dae05966-c2ac-480f-9ef5-50e91fd57782"
+
+risk-config:
+  default-risk: ""

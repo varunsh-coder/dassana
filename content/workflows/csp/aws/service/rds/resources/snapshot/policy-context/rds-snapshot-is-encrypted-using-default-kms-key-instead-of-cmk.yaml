@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: rds-snapshot-is-not-encrypted-using-cmk
+name: RDS snapshot is not encrypted using CMK
+labels:
+  - contextualization
+
+csp: aws
+service: rds
+resource-type: snapshot
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 72bb38db-2c62-46a9-b7da-7b253b509885
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "72bb38db-2c62-46a9-b7da-7b253b509885"
+
+risk-config:
+  default-risk: medium

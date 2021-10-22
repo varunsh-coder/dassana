@@ -18,13 +18,13 @@ subcategory: encryption
 filters:
   - vendor: aws-config
     policies:
-      - "rds-snapshot-encrypted"
+      - rds-snapshot-encrypted
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("rds-snapshot-encrypted"))
   - vendor: prisma-cloud
     policies:
-      - "74a52c45-75ae-404f-abf5-84b5cbd3d22f"
+      - 74a52c45-75ae-404f-abf5-84b5cbd3d22f
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "74a52c45-75ae-404f-abf5-84b5cbd3d22f"

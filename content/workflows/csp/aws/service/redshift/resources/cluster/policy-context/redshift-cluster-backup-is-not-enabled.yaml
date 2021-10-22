@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: redshift-cluster-backup-is-not-enabled
+name: Redshift cluster backup is not enabled
+labels:
+  - contextualization
+
+csp: aws
+service: redshift
+resource-type: cluster
+
+class: risk
+subclass: config
+category: storage
+subcategory: availability
+
+filters:
+  - vendor: aws-config
+    policies:
+      - redshift-backup-enabled
+    match-type: any
+    rules:
+      - .vendorId == "aws-config" and (.vendorPolicy |contains ("redshift-backup-enabled"))
+
+risk-config:
+  default-risk: medium
