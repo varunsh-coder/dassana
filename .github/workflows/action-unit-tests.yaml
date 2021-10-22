@@ -33,7 +33,7 @@ jobs:
         working-directory: content/pkg/deps/python
       - name: Run tests for Dassana Actions in Python
         run: |
-          PYTHONPATH=../pkg/deps/python coverage run -m pytest --hypothesis-show-statistics
+          PYTHONPATH=../pkg/deps/python WORKFLOW_DIR=../workflows coverage run -m pytest --hypothesis-show-statistics
         working-directory: content/actions
       - name: Pytest coverage
         run: |
