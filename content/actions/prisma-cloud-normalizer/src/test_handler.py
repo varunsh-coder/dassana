@@ -18,6 +18,7 @@ class PrismaCloudNormalizerTest(TestCase):
         assert norm.resourceId == 'foobar'
         assert norm.region == 'ap-northeast-1'
         assert norm.resourceContainer == '123456789123'
+        assert norm.severity == 'high'
 
     def test_sqs(self):
         with open('prisma-cloud-normalizer/tests/examples/prisma_sqs.json') as f:
