@@ -33,7 +33,7 @@ public class RiskEvaluator {
     Risk risk = new Risk();
     String defaultRisk = input.getDefaultRisk();
     risk.setRiskValue(defaultRisk);
-    risk.setName("default");
+    risk.setId("default");
     List<Rule> riskRules = input.getRiskRules();
 
     for (app.dassana.core.risk.model.Rule riskRule : riskRules) {
@@ -49,14 +49,14 @@ public class RiskEvaluator {
 
         if (result.get()) {
           risk.setRiskValue(riskRule.getRisk());
-          risk.setName(riskRule.getName());
+          risk.setId(riskRule.getName());
           risk.setCondition(condition);
           break;
         }
 
       } catch (Exception e) {
         throw new RiskEvalException(String.format("Unable to match rule %s condition %s", riskRule.getName(),
-            riskRule.getCondition()),e, risk.getName());
+            riskRule.getCondition()),e, risk.getId());
       }
     }
 
