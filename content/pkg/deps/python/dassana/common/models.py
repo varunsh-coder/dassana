@@ -17,7 +17,7 @@ class NormalizedOutput(BaseModel):
     alertId: str
     canonicalId: str = None
     vendorPolicy: str
-    vendorSeverity: str
+    vendorSeverity: str = None
     csp: str = None
     resourceContainer: str
     region: str
