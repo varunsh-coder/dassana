@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: bucket-logging-not-enabled
-name: Bucket logging not enabled
+id: bucket-logging-is-not-enabled
+name: Bucket logging is not enabled
 labels:
   - contextualization
 
@@ -18,16 +18,18 @@ subcategory: logging
 filters:
   - vendor: aws-config
     policies:
-      - "s3-bucket-logging-enabled"
+      - s3-bucket-logging-enabled
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-logging-enabled"))
   - vendor: prisma-cloud
     policies:
-      - "3f141560-9cfc-412a-96cc-2768edfd23ad"
+      - 3f141560-9cfc-412a-96cc-2768edfd23ad
+      - 4daa435b-fa46-457a-9359-6a4b4a43a442
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "3f141560-9cfc-412a-96cc-2768edfd23ad"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "4daa435b-fa46-457a-9359-6a4b4a43a442"
 
 risk-config:
   default-risk: low

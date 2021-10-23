@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: buckets-with-configurations-set-to-host-websites
-name: Bucket with configuration set to host website
+
+id: bucket-has-configuration-to-host-website
+name: Bucket has configuration to host website
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: risk
 subclass: config
 category: uncategorized
 subcategory: best-practice
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "ab0b23a9-1e97-4991-840b-06e7111f38ee"
- 
+
 risk-config:
   default-risk: medium

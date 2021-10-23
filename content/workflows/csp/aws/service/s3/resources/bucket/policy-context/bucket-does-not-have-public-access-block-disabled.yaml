@@ -18,20 +18,22 @@ subcategory: public-access
 filters:
   - vendor: aws-config
     policies:
-      - "s3-account-level-public-access-blocks"
-      - "s3-bucket-level-public-access-prohibited"
+      - s3-account-level-public-access-blocks
+      - s3-bucket-level-public-access-prohibited
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-account-level-public-access-blocks"))
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-level-public-access-prohibited"))
   - vendor: prisma-cloud
     policies:
-      - "34064d53-1fd1-42e6-b075-45dce495caca"
-      - "b76ad441-e715-4fd0-bbc3-cd3b2bee34bf"
+      - 34064d53-1fd1-42e6-b075-45dce495caca
+      - b76ad441-e715-4fd0-bbc3-cd3b2bee34bf
+      - a5fe47e1-54f3-47e1-a2a3-deedfb2f70b2
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "34064d53-1fd1-42e6-b075-45dce495caca"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "b76ad441-e715-4fd0-bbc3-cd3b2bee34bf"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "a5fe47e1-54f3-47e1-a2a3-deedfb2f70b2"
 
 risk-config:
-  default-risk: "medium"
+  default-risk: high

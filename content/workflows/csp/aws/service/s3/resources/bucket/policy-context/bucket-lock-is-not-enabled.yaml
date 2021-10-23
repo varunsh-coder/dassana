@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: s3-bucket-default-lock-enabled
-name: Bucket does not have lock enabled by default
+
+id: bucket-lock-is-not-enabled
+name: Bucket lock is not enabled
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: risk
 subclass: config
 category: storage
 subcategory: availability
- 
+
 filters:
   - vendor: aws-config
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-default-lock-enabled"))
- 
+
 risk-config:
   default-risk: ""

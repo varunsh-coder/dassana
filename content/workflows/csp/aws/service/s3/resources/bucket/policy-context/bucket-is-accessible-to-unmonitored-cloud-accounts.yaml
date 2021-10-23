@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: bucket-accessible-to-unmonitored-cloud-accounts
-name: Bucket accessible to unmonitored cloud accounts
+
+id: bucket-is-accessible-to-unmonitored-cloud-accounts
+name: Bucket is accessible to unmonitored cloud accounts
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: risk
 subclass: config
 category: visibility
 subcategory: hygiene
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "ea712527-83e7-7855-0ec9-1610194a9b9b"
- 
+
 risk-config:
   default-risk: medium

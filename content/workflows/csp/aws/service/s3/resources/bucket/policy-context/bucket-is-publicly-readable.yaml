@@ -1,37 +1,38 @@
 schema: 1
 type: policy-context
- 
-id: bucket-publicly-readable
-name: Bucket publicly readable
+
+id: bucket-is-publicly-readable
+name: Bucket is publicly readable
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: risk
 subclass: config
 category: iam
 subcategory: public-access
- 
+
 filters:
   - vendor: aws-config
     policies:
-      - "s3-bucket-public-read-prohibited"
+      - s3-bucket-public-read-prohibited
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-public-read-prohibited"))
   - vendor: prisma-cloud
     policies:
-      - "e0b4379d-6692-41ab-bd33-10cbac836b1e"
-      - "f0235acc-737d-4a54-8d2c-a05da32663bd"
-      - "630d3779-d932-4fbf-9cce-6e8d793c6916"
+      - e0b4379d-6692-41ab-bd33-10cbac836b1e
+      - f0235acc-737d-4a54-8d2c-a05da32663bd
+      - 630d3779-d932-4fbf-9cce-6e8d793c6916
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "e0b4379d-6692-41ab-bd33-10cbac836b1e"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "f0235acc-737d-4a54-8d2c-a05da32663bd"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "630d3779-d932-4fbf-9cce-6e8d793c6916"
+
 steps:
   - id: website-info
     uses: WebsiteContext
