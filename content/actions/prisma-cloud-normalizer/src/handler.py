@@ -39,7 +39,7 @@ class PrismaAlert(BaseModel):
     policy: Policy = None
     policyId: str = None
     policyType: str = None
-    severity: str = FileNotFoundError
+    severity: str = None
     message: Dict[Any, Any] = None
     history: List[Dict[Any, Any]] = None
     resource: PrismaResource = None
