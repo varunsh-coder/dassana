@@ -65,7 +65,7 @@ def handle(event: PrismaAlert, context: LambdaContext):
     elif event.id and event.policy.policyId:  # Prisma
         alert_id, vendor_policy, vendor_severity = event.id, event.policy.policyId, None
     else:
-        alert_id, vendor_policy = None, None
+        alert_id, vendor_policy, vendor_severity = None, None, None
 
     output = NormalizedOutput(
         vendorId='prisma-cloud',
