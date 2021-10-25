@@ -97,13 +97,18 @@ public class WorkflowValidator {
   public void handleValidate(String workflowAsJson) throws IOException {
 
     Workflow workflow;
+
     try {
       JSONObject jsonObject = new JSONObject(workflowAsJson);
       workflow = parser.getWorkflow(jsonObject);
     } catch (Exception e) {
       DassanaWorkflowValidationException dassanaWorkflowValidationException = new DassanaWorkflowValidationException();
       List<Message> messages = new LinkedList<>();
-      messages.add(new Message(e.getMessage(), Severity.ERROR));
+      String tempMessage = e.getMessage();
+      if (e.getMessage().equals("A JSONObject text must begin with '{' at 1 [character 2 line 1]")) {
+        tempMessage = "Missing required fields: [\"schema\", \"id\", \"filters\", \"type\"]";
+      }
+      messages.add(new Message(tempMessage, Severity.ERROR));
       dassanaWorkflowValidationException.setMessages(messages);
       throw dassanaWorkflowValidationException;
     }
