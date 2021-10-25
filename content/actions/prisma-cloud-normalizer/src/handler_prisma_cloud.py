@@ -39,6 +39,7 @@ class PrismaAlert(BaseModel):
     policy: Policy = None
     policyId: str = None
     policyType: str = None
+    severity: str = None
     message: Dict[Any, Any] = None
     history: List[Dict[Any, Any]] = None
     resource: PrismaResource = None
@@ -49,7 +50,7 @@ class PrismaAlert(BaseModel):
 def handle(event: PrismaAlert, context: LambdaContext):
     if event.message is not None:  # Splunk Event
         event = parse(event.message, model=PrismaAlert)
-
+        vendor_severity = event.severity.lower()
     arn_obj = parse_arn(event.resource.data.arn) if event.resource.data.arn else None
     if (event.tags is not None) and len(event.tags) > 0:
         tags = list(map(lambda x: {
@@ -60,17 +61,18 @@ def handle(event: PrismaAlert, context: LambdaContext):
         tags = []
 
     if event.alertId and event.policyId:  # SQS
-        alert_id, vendor_policy = event.alertId, event.policyId
+        alert_id, vendor_policy, vendor_severity = event.alertId, event.policyId, event.severity.lower()
     elif event.id and event.policy.policyId:  # Prisma
-        alert_id, vendor_policy = event.id, event.policy.policyId
+        alert_id, vendor_policy, vendor_severity = event.id, event.policy.policyId, None
     else:
-        alert_id, vendor_policy = None, None
+        alert_id, vendor_policy, vendor_severity = None, None, None
 
     output = NormalizedOutput(
         vendorId='prisma-cloud',
         alertId=alert_id,
         canonicalId=event.resource.data.arn,
         vendorPolicy=vendor_policy,
+        vendorSeverity=vendor_severity,
         csp=event.resource.cloudType,
         resourceContainer=event.resource.accountId,
         region=event.resource.regionId,
