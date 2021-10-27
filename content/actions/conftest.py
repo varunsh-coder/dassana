@@ -2,6 +2,7 @@ import os
 
 import boto3
 import pytest
+
 from moto import mock_s3, mock_ec2, mock_iam
 
 
@@ -50,6 +51,47 @@ def s3_public_bucket_with_website(s3_client):
         'IndexDocument': {'Suffix': 'index.html'},
     })
     return bucket_name
+
+
+@pytest.fixture()
+def vpc(ec2_client):
+    vpc = ec2_client.create_vpc(
+        CidrBlock='10.0.0.0/16',
+    )
+
+    return vpc
+
+
+@pytest.fixture()
+def networking(ec2_client, vpc):
+    vpc_id = vpc.get('Vpc').get('VpcId')
+    subnet = ec2_client.create_subnet(CidrBlock='10.0.0.0/16', VpcId=vpc_id)
+    subnet_id = subnet.get('Subnet').get('SubnetId')
+    ig = ec2_client.create_internet_gateway()
+    ig_id = ig.get('InternetGateway').get('InternetGatewayId')
+    ec2_client.attach_internet_gateway(InternetGatewayId=ig_id,
+                                       VpcId=vpc.get('Vpc').get('VpcId'))
+    route_table = ec2_client.create_route_table(VpcId=vpc_id)
+    route_table_id = route_table.get('RouteTable').get('RouteTableId')
+    ec2_client.create_route(RouteTableId=route_table_id, DestinationCidrBlock='0.0.0.0/0', GatewayId=ig_id)
+    return {
+        'vpc': {
+            'id': vpc_id,
+            'resp': vpc
+        },
+        'subnet': {
+            'id': subnet_id,
+            'resp': subnet
+        },
+        'ig': {
+            'id': ig_id,
+            'resp': ig
+        },
+        'route_table': {
+            'id': route_table_id,
+            'resp': route_table
+        }
+    }
 
 
 @pytest.fixture()
