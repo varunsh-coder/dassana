@@ -1,0 +1,31 @@
+schema: 1
+type: policy-context
+
+id: disk-is-encrypted-with-default-encryption-key
+name: Disk is encrypted with SSE with PMK instead of SSE with ADE/CMK
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Compute
+resource-type: disks
+
+class: risk
+subclass: config
+category: crypto
+subcategory: key-management
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - a1f899e5-0ff9-4883-a121-75c68cab532a # Disk is unattached and is encrypted with the default encryption key instead of ADE/CMK
+      - 9ff0cb83-da37-40fb-8ba5-011d104393b4 # VM data disk is encrypted with the default encryption key instead of ADE/CMK
+      - bfb072a7-f602-47ad-89ac-a3eb61d3427e # VM OS disk is encrypted with the default encryption key instead of ADE/CMK
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "a1f899e5-0ff9-4883-a121-75c68cab532a"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "9ff0cb83-da37-40fb-8ba5-011d104393b4"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "bfb072a7-f602-47ad-89ac-a3eb61d3427e"
+
+risk-config:
+  default-risk: medium

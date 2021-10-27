@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: postgresql-database-server-allows-access-to-azure-services
+name: PostgreSQL Database server accepts connections from all Azure resources
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.DBforPostgreSQL
+resource-type: servers
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 492e32db-49f1-495d-90f8-d1f84662d210
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "492e32db-49f1-495d-90f8-d1f84662d210"
+
+risk-config:
+  default-risk: medium

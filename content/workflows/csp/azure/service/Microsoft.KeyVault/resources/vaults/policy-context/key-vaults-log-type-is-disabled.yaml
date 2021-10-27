@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: key-vault-log-type-is-disabled
+name: A logging type related to detecting and recording activity in Azure Key vaults is disabled
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.KeyVault
+resource-type: vaults
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 922d0974-a29b-42f5-91ea-99da087a1718 # Diagnostics logs
+      - 56bfe7bb-ef47-4252-a335-9751a4826609 # Audit logs
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "922d0974-a29b-42f5-91ea-99da087a1718"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "56bfe7bb-ef47-4252-a335-9751a4826609"
+
+risk-config:
+  default-risk: low

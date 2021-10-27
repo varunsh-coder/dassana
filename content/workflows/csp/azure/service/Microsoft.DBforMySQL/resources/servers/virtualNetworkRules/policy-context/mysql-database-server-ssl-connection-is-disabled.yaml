@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+ 
+id: mysql-database-server-ssl-connection-is-disabled
+name: Data stream between MYSQL database server and application is not encrypted with SSL
+labels:
+  - contextualization
+ 
+csp: azure
+service: Microsoft.DBforMySQL
+resource-type: servers/virtualNetworkRules
+ 
+class: risk
+subclass: config
+category: networking
+subcategory: encryption
+ 
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - cc96a6d0-3251-4bf9-aaa4-349c34810721
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "cc96a6d0-3251-4bf9-aaa4-349c34810721"
+ 
+risk-config:
+  default-risk: medium

@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: key-vault-keys-have-no-expiration-date
+name: Keys in Azure Key Vault are not forced to rotate regularly
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.KeyVault
+resource-type: vaults/keys
+
+class: risk
+subclass: config
+category: crypto
+subcategory: key-management
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 63505d05-b9b7-4bf3-b028-f95f8a29bc58
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "63505d05-b9b7-4bf3-b028-f95f8a29bc58"
+
+risk-config:
+  default-risk: medium

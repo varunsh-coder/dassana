@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: postgresql-database-server-ssl-connection-is-disabled
+name: Data stream between PostgreSQL database server and application is not encrypted with SSL
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.DBforPostgreSQL
+resource-type: servers
+
+class: risk
+subclass: config
+category: networking
+subcategory: encryption
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - bf4ad407-076c-40b9-a8fa-a0c80352a744
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "bf4ad407-076c-40b9-a8fa-a0c80352a744"
+
+risk-config:
+  default-risk: medium

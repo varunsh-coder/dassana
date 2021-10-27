@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+ 
+id: cosmos-db-private-endpoint-connection-is-not-configured
+name: Azure Cosmos DB allows access from users outside the virtual network or peered virtual networks
+labels:
+  - contextualization
+ 
+csp: azure
+service: Microsoft.DocumentDB
+resource-type: cassandraClusters
+ 
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
+ 
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - ea9d10f0-d8c2-4fde-9541-326a933c48b7
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "ea9d10f0-d8c2-4fde-9541-326a933c48b7"
+ 
+risk-config:
+  default-risk: medium

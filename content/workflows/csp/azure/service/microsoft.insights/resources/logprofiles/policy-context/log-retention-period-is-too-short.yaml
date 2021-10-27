@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: log-retention-period-is-too-short
+name: Log retention period is too short
+labels:
+  - contextualization
+
+csp: azure
+service: microsoft.insights
+resource-type: logprofiles
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - a9937384-1ee3-430c-acda-fb97e357bfcd # < 365 days
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "a9937384-1ee3-430c-acda-fb97e357bfcd"
+
+risk-config:
+  default-risk: medium

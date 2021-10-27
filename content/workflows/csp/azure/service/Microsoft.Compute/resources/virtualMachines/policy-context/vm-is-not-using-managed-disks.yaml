@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: vm-is-not-using-managed-disks
+name: VM is not using managed disks
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Compute
+resource-type: virtualMachines
+
+class: risk
+subclass: config
+category: storage
+subcategory: availability
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 5bb0ad91-f321-452d-9f9c-3efa2752a8be
+      - 3596e236-1c20-4f3f-be6d-a513f0da63e1
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "5bb0ad91-f321-452d-9f9c-3efa2752a8be"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "3596e236-1c20-4f3f-be6d-a513f0da63e1"
+
+risk-config:
+  default-risk: medium

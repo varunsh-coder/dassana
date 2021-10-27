@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: log-profile-is-not-capturing-activities
+name: Log profile failing to capture activities
+labels:
+  - contextualization
+
+csp: azure
+service: microsoft.insights
+resource-type: logprofiles
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 19b8122e-b75e-4899-8619-92628ee6b539
+      - 64f0ec41-cdcb-42e4-b556-eb66946a62ff
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "19b8122e-b75e-4899-8619-92628ee6b539"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "64f0ec41-cdcb-42e4-b556-eb66946a62ff"
+
+risk-config:
+  default-risk: medium

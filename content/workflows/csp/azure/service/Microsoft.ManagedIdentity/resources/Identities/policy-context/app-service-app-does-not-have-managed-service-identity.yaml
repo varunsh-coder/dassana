@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: app-service-app-does-not-have-managed-service-identity
+name: App does not have a managed service identity, resulting in the need to store secrets
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.ManagedIdentity
+resource-type: Identities
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 329e3b79-b374-4434-b7c8-4d292aa4f991 # Web app
+      - ea2b2d97-1ea5-4f98-8f5c-16c978f1ced6 # Function app
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "329e3b79-b374-4434-b7c8-4d292aa4f991"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "ea2b2d97-1ea5-4f98-8f5c-16c978f1ced6"
+
+risk-config:
+  default-risk: medium

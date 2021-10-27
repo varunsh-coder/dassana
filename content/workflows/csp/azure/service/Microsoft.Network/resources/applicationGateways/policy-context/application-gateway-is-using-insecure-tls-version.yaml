@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: application-gateway-is-using-outdated-tls-version
-name: Application Gateway is using outdated TLS version
+id: application-gateway-is-using-insecure-tls-version
+name: Application Gateway is using insecure TLS version
 labels:
   - contextualization
 

@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: aks-cluster-pool-profile-count-is-too-low
+name: Azure AKS cluster pool profile count is too low
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Kubernetes
+resource-type: Operations
+
+class: risk
+subclass: config
+category: networking
+subcategory: availability
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 46e1ba70-fb35-4a44-a551-17ea04c4d8e7 # < 3 nodes
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "46e1ba70-fb35-4a44-a551-17ea04c4d8e7"
+
+risk-config:
+  default-risk: low
