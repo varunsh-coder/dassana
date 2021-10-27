@@ -1,4 +1,5 @@
 import os
+import json
 
 import boto3
 import pytest
@@ -25,6 +26,13 @@ def s3_client(aws_credentials, region):
     with mock_s3():
         yield boto3.client('s3', region_name=region)
 
+@pytest.fixture()
+def s3_plain_bucket(s3_client):
+    bucket_name = 'dassana-plain-bucket'
+    s3_client.create_bucket(
+        Bucket=bucket_name
+    )
+    return bucket_name
 
 @pytest.fixture()
 def ec2_client(aws_credentials, region):

@@ -771,7 +771,7 @@ Resources:
   GetBucketPolicy:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handler.handle
+      Handler: handler_get_bucket_policy.handle
       Runtime: python3.7
       CodeUri: ../actions/get-bucket-policy
       Layers:
