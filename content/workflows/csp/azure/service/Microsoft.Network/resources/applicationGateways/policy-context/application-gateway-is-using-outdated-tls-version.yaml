@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: application-gateway-is-using-outdated-tls-version
+name: Application Gateway is using outdated TLS version
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Network
+resource-type: applicationGateways
+
+class: risk
+subclass: config
+category: networking
+subcategory: encryption
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 8bf20934-38d6-419e-9e0e-b0c7b0c1d238
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "8bf20934-38d6-419e-9e0e-b0c7b0c1d238"
+
+risk-config:
+  default-risk: medium

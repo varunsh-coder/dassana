@@ -1,0 +1,31 @@
+schema: 1
+type: policy-context
+
+id: security-center-contact-information-is-incomplete
+name: Point-of-contact information for Security Center notifications is incomplete
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Security
+resource-type: securityContacts
+
+class: risk
+subclass: config
+category: visibility
+subcategory: hygiene
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 46e24e8c-945c-4048-91f2-800cccf54613 # Contact email is not set
+      - fc914428-2c9a-4240-a3a7-769b85187278 # Email notification for subscription owner is not set
+      - e8799768-aeda-4d42-897a-29ede5798312 # Contact phone number is not set
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "46e24e8c-945c-4048-91f2-800cccf54613"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "fc914428-2c9a-4240-a3a7-769b85187278"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "e8799768-aeda-4d42-897a-29ede5798312"
+
+risk-config:
+  default-risk: medium

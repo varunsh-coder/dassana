@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: security-center-integration-is-disabled
+name: An integration for Azure Security Center which provides additonal monitoring data and defense-in-depth is not enabled.
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Security
+resource-type: settings
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 470796d2-3ed6-40a3-b26a-e882afce4090 # Microsoft Cloud App Security (MCAS)
+      - b7a63b07-551a-4813-82f5-f47b8428e0b3 # Windows Defender ATP (WDATP)
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "470796d2-3ed6-40a3-b26a-e882afce4090"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "b7a63b07-551a-4813-82f5-f47b8428e0b3"
+
+risk-config:
+  default-risk: medium

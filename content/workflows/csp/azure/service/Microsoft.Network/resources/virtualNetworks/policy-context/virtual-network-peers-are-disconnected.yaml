@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: virtual-network-peers-are-disconnected
+name: Virtual network peers are disconnected, likely due to a deleted peering configuration
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Network
+resource-type: virtualNetworks
+
+class: risk
+subclass: config
+category: networking
+subcategory: availability
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 3fc7b5fc-9394-4cb7-9baf-aaccfd38e9d1
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "3fc7b5fc-9394-4cb7-9baf-aaccfd38e9d1"
+
+risk-config:
+  default-risk: medium

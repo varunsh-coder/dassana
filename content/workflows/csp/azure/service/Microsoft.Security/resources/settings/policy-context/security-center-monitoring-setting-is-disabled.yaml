@@ -1,0 +1,39 @@
+schema: 1
+type: policy-context
+
+id: security-center-monitoring-setting-is-disabled
+name: Azure Security Center is not monitoring for some common misconfiguration(s)
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Security
+resource-type: settings
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 7363990f-b1fb-42c8-ad4a-fbb06de0310d # Adaptive application controls monitoring
+      - 6c5091cc-2da3-42b3-877e-42fd7d9e85d6 # Automatic provisioning of monitoring agent
+      - 894e9b34-082b-4c24-ac6f-bdbf44e57ac7 # Disk encryption monitoring
+      - 5315a853-6a6b-43eb-a771-5906f41130b8 # Endpoint protection monitoring
+      - 2436e2a8-95e6-44b7-a4ce-3f95e1a589e4 # JIT network access monitoring
+      - 19f4c5f1-1785-41b6-95be-2a393f537dad # Security configurations monitoring
+      - 57ed6965-ea15-46dc-9a8a-56140ffffc29 # System updates monitoring
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "7363990f-b1fb-42c8-ad4a-fbb06de0310d"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "6c5091cc-2da3-42b3-877e-42fd7d9e85d6"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "894e9b34-082b-4c24-ac6f-bdbf44e57ac7"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "5315a853-6a6b-43eb-a771-5906f41130b8"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "2436e2a8-95e6-44b7-a4ce-3f95e1a589e4"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "19f4c5f1-1785-41b6-95be-2a393f537dad"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "57ed6965-ea15-46dc-9a8a-56140ffffc29"
+
+risk-config:
+  default-risk: medium

@@ -18,14 +18,14 @@ subcategory: authorization
 filters:
   - vendor: aws-config
     policies:
-      - "iam-policy-no-statements-with-admin-access"
+      - iam-policy-no-statements-with-admin-access
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("iam-policy-no-statements-with-admin-access"))
   - vendor: prisma-cloud
     policies:
-      - "d9b86448-11a2-f9d4-74a5-f6fc590caeef"
-      - "3b165f8d-1a65-41db-848d-d3783c4490ce"
+      - d9b86448-11a2-f9d4-74a5-f6fc590caeef
+      - 3b165f8d-1a65-41db-848d-d3783c4490ce
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "d9b86448-11a2-f9d4-74a5-f6fc590caeef"

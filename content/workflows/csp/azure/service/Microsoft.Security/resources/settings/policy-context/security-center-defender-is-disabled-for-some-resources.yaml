@@ -1,0 +1,45 @@
+schema: 1
+type: policy-context
+
+id: security-center-defender-is-disabled-for-some-resources
+name: Some workloads are not being monitored by Azure Defender
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Security
+resource-type: settings
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - c221ce81-99df-487e-8c05-4329335e9f9a # Defender is off
+      - 8953512c-4b2f-4622-a3c8-fff004bfec66 # Defender is off for App Service
+      - c3f78c20-8967-47a0-a02b-1efc3810c666 # Defender is off for Azure SQL database servers
+      - 1d0fa585-6da6-435f-a306-d36d5833f278 # Defender is off for Container Registries
+      - 9706338d-291b-4937-be1e-752e251ac5a7 # Defender is off for Key Vault
+      - e949e77b-376b-4d5e-8634-836d0612d259 # Defender is off for Kubernetes
+      - eb5f5af1-754d-4f6b-9c08-610a6974db16 # Defender is off for Servers
+      - 1f3ae628-17bf-4d0b-b2d1-a0fbb61bf19c # Defender is off for SQL servers on machines
+      - 5436f3cc-3815-44f4-ac09-b8418e1f8e1d # Defender is off for Storage
+      - 8f7eee48-dffb-4f18-9207-8ea48680b0e2 # Defender is off for Azure SQL databases
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "c221ce81-99df-487e-8c05-4329335e9f9a"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "8953512c-4b2f-4622-a3c8-fff004bfec66"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "c3f78c20-8967-47a0-a02b-1efc3810c666"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "1d0fa585-6da6-435f-a306-d36d5833f278"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "9706338d-291b-4937-be1e-752e251ac5a7"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "e949e77b-376b-4d5e-8634-836d0612d259"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "eb5f5af1-754d-4f6b-9c08-610a6974db16"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "1f3ae628-17bf-4d0b-b2d1-a0fbb61bf19c"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "5436f3cc-3815-44f4-ac09-b8418e1f8e1d"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "8f7eee48-dffb-4f18-9207-8ea48680b0e2"
+
+risk-config:
+  default-risk: medium
