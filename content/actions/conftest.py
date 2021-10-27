@@ -2,7 +2,7 @@ import os
 
 import boto3
 import pytest
-from moto import mock_s3
+from moto import mock_s3, mock_ec2, mock_iam
 
 
 @pytest.fixture()
@@ -13,14 +13,28 @@ def aws_credentials():
     os.environ["AWS_SECURITY_TOKEN"] = "testing"
     os.environ["AWS_SESSION_TOKEN"] = "testing"
 
+
 @pytest.fixture()
 def region():
     return 'us-east-1'
+
 
 @pytest.fixture()
 def s3_client(aws_credentials, region):
     with mock_s3():
         yield boto3.client('s3', region_name=region)
+
+
+@pytest.fixture()
+def ec2_client(aws_credentials, region):
+    with mock_ec2():
+        yield boto3.client('ec2', region_name=region)
+
+
+@pytest.fixture()
+def iam_client(aws_credentials, region):
+    with mock_iam():
+        yield boto3.client('iam', region_name=region)
 
 
 @pytest.fixture()

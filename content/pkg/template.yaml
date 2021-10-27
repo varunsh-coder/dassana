@@ -680,7 +680,7 @@ Resources:
   GetEc2InstanceIAMrole:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handler.handle
+      Handler: handler_ec2_role.handle
       Runtime: python3.7
       CodeUri: ../actions/what-is-ec2-role
       Layers:
