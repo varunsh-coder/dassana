@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: app-authentication-is-disabled
+name: App authentication is disabled
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Web
+resource-type: connections
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 5e94790e-0d8b-4001-b97f-b5f7670a9236 # Web app
+      - 90dc2872-7c50-4a57-a2af-4fc6fea535c5 # Function app
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "5e94790e-0d8b-4001-b97f-b5f7670a9236"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "90dc2872-7c50-4a57-a2af-4fc6fea535c5"
+
+risk-config:
+  default-risk: medium

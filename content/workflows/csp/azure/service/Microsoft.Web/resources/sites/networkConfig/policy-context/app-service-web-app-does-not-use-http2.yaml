@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: app-service-app-does-not-use-http2
+name: App Service app does not use HTTP 2.0
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Web
+resource-type: sites/networkConfig
+
+class: risk
+subclass: config
+category: visibility
+subcategory: hygiene
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 4f5c4a28-c3df-4bee-a980-621c794548ed # Web app
+      - 6865e87f-5045-4319-bc32-b659bde8e3a2 # Function app
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "4f5c4a28-c3df-4bee-a980-621c794548ed"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "6865e87f-5045-4319-bc32-b659bde8e3a2"
+
+risk-config:
+  default-risk: medium

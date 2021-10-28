@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: sql-server-firewall-rule-is-overly-permissive
+name: SQL Server Firewall rule is overly permissive
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Sql
+resource-type: servers/virtualNetworkRules
+
+class: risk
+subclass: config
+category: networking
+subcategory: firewall
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 0faffeb6-dbcd-4715-be6e-f9cadc64cfeb # Allows access to any Azure internal resources
+      - d3b3d6ff-5011-49ae-9228-10c6399481b4 # All IPV4 addresses
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "0faffeb6-dbcd-4715-be6e-f9cadc64cfeb"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "d3b3d6ff-5011-49ae-9228-10c6399481b4"
+
+risk-config:
+  default-risk: high

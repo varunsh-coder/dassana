@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: app-client-certificate-is-disabled
+name: App client certificate is disabled
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Web
+resource-type: certificates
+
+class: risk
+subclass: config
+category: iam
+subcategory: authentication
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - b1eec428-ad10-4206-a40e-916dbb0a76bd # Web app
+      - 55c94d7a-9608-4fa7-bd08-d99c05c2678a # Function app
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "b1eec428-ad10-4206-a40e-916dbb0a76bd"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "55c94d7a-9608-4fa7-bd08-d99c05c2678a"
+
+risk-config:
+  default-risk: medium

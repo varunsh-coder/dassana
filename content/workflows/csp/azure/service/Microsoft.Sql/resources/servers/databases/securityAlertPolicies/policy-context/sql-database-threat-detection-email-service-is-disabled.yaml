@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: sql-database-threat-detection-email-service-is-disabled
+name: SQL Database Threat Detection email service is disabled
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Sql
+resource-type: servers/databases/securityAlertPolicies
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 561cd005-12dd-4bb4-b0c7-d6de31e76c69
+      - a4acdd5b-e0bf-488d-8e61-23966f7a007e
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "561cd005-12dd-4bb4-b0c7-d6de31e76c69"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "a4acdd5b-e0bf-488d-8e61-23966f7a007e"
+
+risk-config:
+  default-risk: medium

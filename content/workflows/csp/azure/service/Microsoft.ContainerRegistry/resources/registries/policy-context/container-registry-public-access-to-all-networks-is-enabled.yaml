@@ -1,20 +1,20 @@
 schema: 1
 type: policy-context
- 
-id: container-registries-public-access-to-all-networks-is-enabled
-name: Container in registries can be accessed by public
+
+id: container-registry-public-access-to-all-networks-is-enabled
+name: Container in registry can be accessed by public
 labels:
   - contextualization
- 
+
 csp: azure
 service: Microsoft.ContainerRegistry
 resource-type: registries
- 
+
 class: risk
 subclass: config
 category: iam
 subcategory: public-access
- 
+
 filters:
   - vendor: prisma-cloud
     policies:
@@ -22,6 +22,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "d283949a-7a91-4cc6-883c-944013c38202"
- 
+
 risk-config:
   default-risk: high

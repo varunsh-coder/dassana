@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: sql-server-ads-is-misconfigured
+name: SQL Server advanced data security (ADS) is misconfigured
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Sql
+resource-type: servers/securityAlertPolicies
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 0c9ebc28-a6d6-4c4b-b96d-0911a5e494dc # Does not have an email alert recipient
+      - c9095cf0-3233-4cf8-af1e-ce9457a3a22a # Does not send alerts to service and co-administrators
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "0c9ebc28-a6d6-4c4b-b96d-0911a5e494dc"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "c9095cf0-3233-4cf8-af1e-ce9457a3a22a"
+
+risk-config:
+  default-risk: medium

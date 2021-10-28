@@ -1,0 +1,31 @@
+schema: 1
+type: policy-context
+
+id: storage-account-logging-is-disabled
+name: Storage account logging is disabled
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Storage
+resource-type: storageAccounts
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 85a4a77f-0d46-4c3d-ae8c-37d945a0b44e # Blobs
+      - fde9482f-3ac2-43f6-bda2-bf2013074acd # Queues
+      - f4784022-48f3-4f3b-bc16-2b7fef56aea3 # Tables
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "85a4a77f-0d46-4c3d-ae8c-37d945a0b44e"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "fde9482f-3ac2-43f6-bda2-bf2013074acd"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "f4784022-48f3-4f3b-bc16-2b7fef56aea3"
+
+risk-config:
+  default-risk: medium

@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: network-watcher-nsg-flow-logs-retention-policy-is-too-short
-name: Flow logs settings have a short lived retention policy for Azure Network Watcher
+id: nsg-flow-logs-are-disabled
+name: Flow logs are disabled for network security group
 labels:
   - contextualization
 
@@ -18,10 +18,10 @@ subcategory: logging
 filters:
   - vendor: prisma-cloud
     policies:
-      - 09fcb4f7-59f3-4101-a717-d4f5a5235067 # 90 days
+      - 360ca34f-141e-4772-8e07-52d5a14f2e6f
     match-type: any
     rules:
-      - .vendorId == "prisma-cloud" and .vendorPolicy == "09fcb4f7-59f3-4101-a717-d4f5a5235067"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "360ca34f-141e-4772-8e07-52d5a14f2e6f"
 
 risk-config:
   default-risk: medium

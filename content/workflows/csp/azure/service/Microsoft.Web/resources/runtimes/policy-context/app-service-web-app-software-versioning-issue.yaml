@@ -1,0 +1,33 @@
+schema: 1
+type: policy-context
+
+id: app-service-web-app-software-versioning-issue
+name: App Service Web app software versioning issue
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Web
+resource-type: runtimes
+
+class: risk
+subclass: config
+category: visibility
+subcategory: hygiene
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 629133a3-6e81-4288-bd38-e81cb5b708de # .Net Core
+      - 1accd873-5ac3-4ff6-9729-b0464cb5cf12 # Java
+      - 15ce114a-1f16-4d0a-9ad3-1e674dcd9525 # PHP
+      - 2ca02092-5798-4cee-81cd-add4456253d3 # Python
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "629133a3-6e81-4288-bd38-e81cb5b708de"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "1accd873-5ac3-4ff6-9729-b0464cb5cf12"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "15ce114a-1f16-4d0a-9ad3-1e674dcd9525"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "2ca02092-5798-4cee-81cd-add4456253d3"
+
+risk-config:
+  default-risk: medium

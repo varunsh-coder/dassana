@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: storage-account-container-is-publicly-accessible
+name: Storage account container is publicly accessible
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Storage
+resource-type: storageAccounts
+
+class: risk
+subclass: config
+category: iam
+subcategory: public-access
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 7a506ab4-d0a2-48ee-a6f5-75a97f11397d
+      - 8a2315b0-70b9-477b-bd5c-41cb92a7b726
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "7a506ab4-d0a2-48ee-a6f5-75a97f11397d"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "8a2315b0-70b9-477b-bd5c-41cb92a7b726"
+
+risk-config:
+  default-risk: high

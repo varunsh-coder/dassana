@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: storage-account-encryption-issue
+name: Storage Account encryption issue
+labels:
+  - contextualization
+
+csp: azure
+service: Microsoft.Storage
+resource-type: storageAccounts
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 217f8556-ccdb-4746-b4b7-2237298c81f1 # Activity log has BYOK encryption disabled
+      - 0cd3b371-0969-48ce-9d61-17b61ce9907c # VHD OS disk is not encrypted with CMK
+      - 6ff0fbd8-cc5d-4123-ab41-3b92473e2517 # CMK encryption disabled
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "217f8556-ccdb-4746-b4b7-2237298c81f1"
+
+risk-config:
+  default-risk: medium
