@@ -1,19 +1,19 @@
 schema: 1
 type: policy-context
- 
-id: api-tor-ip
+
+id: s3-api-tor-ip
 name: A Tor exit node IP address invoked an S3 API.
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: incident
 subclass: discovery
 category: cloud-infrastructure-discovery
- 
+
 filters:
   - vendor: aws-guardduty
     policies:
@@ -23,6 +23,6 @@ filters:
     rules:
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Discovery:S3/TorIPCaller"))
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:S3/TorIPCaller"))
- 
+
 risk-config:
   default-risk: medium

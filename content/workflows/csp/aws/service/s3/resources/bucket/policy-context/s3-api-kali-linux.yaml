@@ -1,26 +1,26 @@
 schema: 1
 type: policy-context
- 
-id: api-pentoo-linux
-name: A machine running Pentoo Linux invoked an S3 API.
+
+id: s3-api-kali-linux
+name: A machine running Kali Linux invoked an S3 API.
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: incident
 subclass: discovery
 category: cloud-infrastructure-discovery
- 
+
 filters:
   - vendor: aws-guardduty
     policies:
-      - PenTest:S3/PentooLinux
+      - PenTest:S3/KaliLinux
     match-type: any
     rules:
-      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("PenTest:S3/PentooLinux"))
- 
+      - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("PenTest:S3/KaliLinux"))
+
 risk-config:
   default-risk: medium

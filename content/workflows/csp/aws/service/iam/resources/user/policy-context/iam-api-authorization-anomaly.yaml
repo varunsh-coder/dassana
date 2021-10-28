@@ -1,19 +1,19 @@
 schema: 1
 type: policy-context
- 
-id: api-authorization-anomaly
+
+id: iam-api-authorization-anomaly
 name: An authentication API which returns tokens or sessions, which can be utilized for unauthorized initial access, was invoked anomalously.
 labels:
   - contextualization
- 
+
 csp: aws
 service: iam
 resource-type: user
- 
+
 class: incident
 subclass: initial-access
 category: valid-accounts
- 
+
 filters:
   - vendor: aws-guardduty
     policies:
@@ -21,6 +21,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("InitialAccess:IAMUser/AnomalousBehavior"))
- 
+
 risk-config:
   default-risk: medium

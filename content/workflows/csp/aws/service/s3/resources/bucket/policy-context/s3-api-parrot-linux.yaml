@@ -1,19 +1,19 @@
 schema: 1
 type: policy-context
- 
-id: api-parrot-linux
+
+id: s3-api-parrot-linux
 name: A machine running Parrot Linux invoked an S3 API.
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: incident
 subclass: discovery
 category: cloud-infrastructure-discovery
- 
+
 filters:
   - vendor: aws-guardduty
     policies:
@@ -21,6 +21,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("PenTest:S3/ParrotLinux"))
- 
+
 risk-config:
   default-risk: medium

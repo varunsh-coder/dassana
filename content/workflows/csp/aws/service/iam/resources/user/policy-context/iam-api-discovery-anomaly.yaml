@@ -1,19 +1,19 @@
 schema: 1
 type: policy-context
- 
-id: api-discovery-anomaly
+
+id: iam-api-discovery-anomaly
 name: An API commonly used for resource discovery in attacks was invoked anomalousy.
 labels:
   - contextualization
- 
+
 csp: aws
 service: iam
 resource-type: user
- 
+
 class: incident
 subclass: discovery
 category: cloud-service-discovery
- 
+
 filters:
   - vendor: aws-guardduty
     policies:
@@ -21,6 +21,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Discovery:IAMUser/AnomalousBehavior"))
- 
+
 risk-config:
   default-risk: low

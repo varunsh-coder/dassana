@@ -1,19 +1,19 @@
 schema: 1
 type: policy-context
- 
-id: api-malicious-ip
+
+id: iam-api-malicious-ip
 name: A malicious IP address called an API.
 labels:
   - contextualization
- 
+
 csp: aws
 service: iam
 resource-type: user
- 
+
 class: incident
 subclass: initial-access
 category: valid-accounts
-  
+
 filters:
   - vendor: aws-guardduty
     policies:
@@ -31,6 +31,6 @@ filters:
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:IAMUser/MaliciousIPCaller.Custom"))
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:IAMUser/MaliciousIPCaller"))
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:IAMUser/TorIPCaller"))
- 
+
 risk-config:
   default-risk: medium

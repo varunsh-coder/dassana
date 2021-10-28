@@ -1,19 +1,19 @@
 schema: 1
 type: policy-context
- 
-id: api-discovery-malicious-ip
+
+id: s3-api-discovery-malicious-ip
 name: A known malicious IP address invoked an S3 API typically used to discover resources.
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: incident
 subclass: discovery
 category: cloud-service-discovery
- 
+
 filters:
   - vendor: aws-guardduty
     policies:
@@ -21,6 +21,6 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Discovery:S3/MaliciousIPCaller"))
- 
+
 risk-config:
   default-risk: high

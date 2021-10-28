@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
 
-id: api-persistence-anomaly
+id: iam-api-persistence-anomaly
 name: An API associated with environment persistence tactics was invoked anomalously.
 labels:
   - contextualization

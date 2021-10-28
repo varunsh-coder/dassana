@@ -1,19 +1,19 @@
 schema: 1
 type: policy-context
- 
-id: api-tampering-malicious-ip
+
+id: s3-api-tampering-malicious-ip
 name: A known malicious IP address invoked an S3 API typically used for tampering.
 labels:
   - contextualization
- 
+
 csp: aws
 service: s3
 resource-type: bucket
- 
+
 class: incident
 subclass: impact
 category: resource-hijacking
- 
+
 filters:
   - vendor: aws-guardduty
     policies:
@@ -23,6 +23,6 @@ filters:
     rules:
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("Impact:S3/MaliciousIPCaller"))
       - .vendorId == "aws-guardduty" and (.vendorPolicy | contains("UnauthorizedAccess:S3/MaliciousIPCaller.Custom"))
- 
+
 risk-config:
   default-risk: high
