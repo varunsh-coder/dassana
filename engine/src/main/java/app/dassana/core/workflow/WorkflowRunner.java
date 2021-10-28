@@ -88,7 +88,7 @@ public class WorkflowRunner {
       }
     }
     //.and match input against them
-    Optional<Workflow> matchingWorkflow;
+    Optional<Workflow> matchingWorkflow = null;
 
     //if a workflow has been provided with the request, no need to match anything
     if (StringUtils.isNotEmpty(request.getWorkflowId())) {
@@ -96,7 +96,8 @@ public class WorkflowRunner {
       matchingWorkflow = Optional.of(workflow);
 
     } else {
-      matchingWorkflow = filterMatch.getMatchingWorkflow(candidates, jsonToUse);
+      matchingWorkflow = filterMatch.getMatchingWorkflow(candidates, jsonToUse, errorList);
+
     }
 
     if (matchingWorkflow.isPresent()) {

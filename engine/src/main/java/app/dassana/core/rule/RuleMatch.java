@@ -1,8 +1,14 @@
 package app.dassana.core.rule;
 
+import app.dassana.core.launch.model.Message;
+import app.dassana.core.launch.model.Severity;
 import app.dassana.core.util.JsonyThings;
+import app.dassana.core.workflow.model.Component;
+import app.dassana.core.workflow.model.Error;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Singleton;
 import net.thisptr.jackson.jq.BuiltinFunctionLoader;
@@ -38,11 +44,11 @@ public class RuleMatch {
   }
 
 
-  public boolean ruleMatch(List<String> ruleSet, String jsonData, MatchType matchType) throws Exception {
+  public boolean ruleMatch(List<String> ruleSet, String jsonData, MatchType matchType, String workflowId, String workflowType, List<Error> errorList) throws Exception {
 
     if (matchType.equals(MatchType.ANY)) {
       for (String rule : ruleSet) {
-        boolean matchResult = getMatchResult(rule, jsonData);
+        boolean matchResult = getMatchResult(rule, jsonData, workflowId, workflowType, errorList);
         if (matchResult) {
           return true;
         }
@@ -51,7 +57,7 @@ public class RuleMatch {
     } else if (matchType.equals(MatchType.ALL)) {
 
       for (String rule : ruleSet) {
-        if (!getMatchResult(rule, jsonData)) {
+        if (!getMatchResult(rule, jsonData,  workflowId, workflowType, errorList)) {
           return false;
         }
       }
@@ -64,17 +70,25 @@ public class RuleMatch {
 
   }
 
-  private boolean getMatchResult(String rule, String jsonObj) {
+  private boolean getMatchResult(String rule, String jsonObj, String workflowId, String workflowType, List<Error> errorList) {
 
     try {
       AtomicBoolean result = new AtomicBoolean(false);
       JsonQuery jsonQuery = JsonQuery.compile(rule, Version.LATEST);
       JsonNode in = JsonyThings.MAPPER.readTree(jsonObj);
       Scope childScope = Scope.newChildScope(rootScope);
-      jsonQuery.apply(childScope, in, jsonNode -> result.set(jsonNode.asBoolean()));
+      if (!rule.contains("and") && !rule.contains("==")) throw new Exception(rule);
+        jsonQuery.apply(childScope, in, jsonNode -> {
+          result.set(jsonNode.asBoolean());
+        });
       return result.get();
     } catch (Exception e) {
-      logger.error("Assuming the rule \"{}\" to not match due to error  against {}", rule, jsonObj, e);
+      Error error = new Error(workflowId, workflowType, Component.RULES_CALC, "filters - rules",
+          new Message(String.format("Unable to match %s condition \"%s\", please ensure all rules are evaluating to true / false", "filters -> rules",
+              e.getMessage()), Severity.WARN));
+      if (!errorList.contains(error)) {
+        errorList.add(error);
+      }
       return false;
     }
 
