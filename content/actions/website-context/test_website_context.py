@@ -29,7 +29,7 @@ def input_s3_bucket_does_not_exist(s3_private_bucket, region):
 
 
 def test_handle_website_context_exists(input_s3_with_website):
-    from handler import handle
+    from handler_website_context import handle
     result: Dict = handle(input_s3_with_website, LambdaTestContext('tl', env={}, custom={}))
 
     assert result.get(BUCKET_WEBSITE_URL) == str.format('{bucketName}.s3-website-{region}.amazonaws.com',
@@ -37,12 +37,12 @@ def test_handle_website_context_exists(input_s3_with_website):
 
 
 def test_handle_website_context_does_not_exist(input_s3_without_website):
-    from handler import handle
+    from handler_website_context import handle
     result: Dict = handle(input_s3_without_website, LambdaTestContext('c9', env={}, custom={}))
     assert len(result.get(BUCKET_WEBSITE_URL)) == 0
 
 
 def test_handle_bucket_does_not_exist(input_s3_bucket_does_not_exist):
-    from handler import handle
+    from handler_website_context import handle
     result: Dict = handle(input_s3_bucket_does_not_exist, LambdaTestContext('100t', env={}, custom={}))
     assert len(result.get(BUCKET_WEBSITE_URL)) == 0

@@ -1,12 +1,8 @@
-from typing import Dict
 from unittest import TestCase
 
 from iteration_utilities import flatten
 from policy_sentry.querying.all import get_all_service_prefixes, get_all_actions
 from hypothesis import given, note, strategies as st, settings, assume
-
-from dassana.common.cache import configure_lru_cache
-from dassana.common.timing import timing
 from lib.helper import parse_cloudsplaining
 
 services = get_all_service_prefixes()
@@ -17,15 +13,6 @@ class IamPolicyRisks(TestCase):
 
     def __init__(self, *args, **kwargs):
         super(IamPolicyRisks, self).__init__(*args, **kwargs)
-        self.get_cache_findings = configure_lru_cache()
-        self.timing_list = {}
-        self.get_cache_findings = timing(self.get_cache_findings, self.timing_list,
-                                         args_measure_func=lambda x: x[0].__name__,
-                                         kw_measure_func=
-                                         lambda y=Dict: list(flatten(map(lambda z: z.get('Action'),
-                                                                         y.get(
-                                                                             'policy_document').get(
-                                                                             'Statement')))))
 
     def test_cloudsplaining_parse_simple(self):
         doc = {
@@ -51,8 +38,8 @@ class IamPolicyRisks(TestCase):
         assert (results.get('CredentialsExposure') == ['ec2:GetPasswordData'])
         assert (len(results.get('InfrastructureModification')) == 274)
 
-    @given(st.lists(st.sampled_from(actions), min_size=1))
-    @settings(max_examples=1024)
+    @given(st.lists(st.sampled_from(actions), min_size=50, max_size=100))
+    @settings(max_examples=10)
     def test_cloudsplaining_parse_complex(self, acts):
         doc = {
             "Statement": [

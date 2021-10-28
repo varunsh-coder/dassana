@@ -634,7 +634,7 @@ Resources:
   WebsiteContext:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: handler.handle
+      Handler: handler_website_context.handle
       Runtime: python3.7
       CodeUri: ../actions/website-context
       Layers:
@@ -758,7 +758,7 @@ Resources:
   GetIAMPolicyRisks:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: handler.handle
+      Handler: handler_iam_policy_risks.handle
       Runtime: python3.7
       CodeUri: ../actions/get-iam-policy-risks
       MemorySize: 2056
