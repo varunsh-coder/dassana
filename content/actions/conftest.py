@@ -4,7 +4,7 @@ import json
 import boto3
 import pytest
 
-from moto import mock_s3, mock_ec2, mock_iam
+from moto import mock_s3, mock_ec2, mock_iam, mock_elbv2
 
 
 @pytest.fixture()
@@ -44,6 +44,12 @@ def ec2_client(aws_credentials, region):
 def iam_client(aws_credentials, region):
     with mock_iam():
         yield boto3.client('iam', region_name=region)
+
+
+@pytest.fixture()
+def elb_client(aws_credentials, region):
+    with mock_elbv2():
+        yield boto3.client('elbv2', region_name=region)
 
 
 @pytest.fixture()

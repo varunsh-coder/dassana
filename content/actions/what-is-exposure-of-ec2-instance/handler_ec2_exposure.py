@@ -11,10 +11,9 @@ from pydantic.json import IPv4Address
 from json import loads
 
 from dassana.common.aws_client import DassanaAwsObject
+from os.path import dirname
 
-logger = Logger(service='dassana-actions')
-
-with open('input.json', 'r') as schema:
+with open('%s/input.json' % dirname(__file__), 'r') as schema:
     schema = load(schema)
     dassana_aws = DassanaAwsObject()
 
@@ -37,6 +36,29 @@ class Exposure(BaseModel):
 
     appLayer: AppLayer
     direct: Direct
+
+
+INSTANCE_FILTER = [{
+    'Name': 'instance-state-code',
+    'Values': ['16']
+}]
+
+SG_FILTER = [
+    [{
+        'Name': 'ip-permission.cidr',
+        'Values': [
+            '0.0.0.0/0'
+        ]
+    }],
+    [{
+        'Name': 'ip-permission.ipv6-cidr',
+        'Values': [
+            '::/0'
+        ]
+    }]
+]
+
+logger = Logger(service='dassana-actions')
 
 
 @logger.inject_lambda_context
@@ -149,12 +171,8 @@ def handle(event: Dict[str, Any], context: LambdaContext):
     def evaluate_direct(ec2_resource) -> bool:
         try:
             instance_resp = ec2_client.describe_instances(InstanceIds=[ec2_resource],
-                                                          Filters=[
-                                                              {
-                                                                  'Name': 'instance-state-code',
-                                                                  'Values': ['16']
-                                                              }
-                                                          ])
+                                                          Filters=INSTANCE_FILTER
+                                                          )
         except ClientError as e:
             logger.error(e.response)
             if e.response.get('Error').get('Code') in ['InvalidInstanceID.Malformed', 'InvalidInstanceID.NotFound']:
@@ -171,27 +189,13 @@ def handle(event: Dict[str, Any], context: LambdaContext):
                                x['Instances'])),
             instance_resp['Reservations']))
         groups = list(deepflatten(groups, types=list))
-        filters = [
-            [{
-                'Name': 'ip-permission.cidr',
-                'Values': [
-                    '0.0.0.0/0'
-                ]
-            }],
-            [{
-                'Name': 'ip-permission.ipv6-cidr',
-                'Values': [
-                    '::/0'
-                ]
-            }]
-        ]
 
         open_groups = set(
             map(lambda sg: sg['GroupId'],
                 deepflatten(list(map(lambda filter_sg: ec2_client.describe_security_groups(
                     GroupIds=list(map(lambda group: group['GroupId'], groups)),
                     Filters=filter_sg
-                )['SecurityGroups'], filters)), types=list)))
+                )['SecurityGroups'], SG_FILTER)), types=list)))
 
         public_ip_address = instance_resp.get('Reservations')[0].get('Instances')[0].get(
             'PublicIpAddress')
