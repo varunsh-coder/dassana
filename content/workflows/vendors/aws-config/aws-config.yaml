@@ -10,7 +10,7 @@ filters:
       - .ProductFields and (.ProductFields.StandardsGuideArn or .ProductFields.StandardsArn)
 
 steps:
-  - id: resource-info
+  - id: reso&urce-info
     uses: AWSConfigViaSecurityHub
 
   - id: lookup
