@@ -7,6 +7,7 @@ This Dassana action normalizes GuardDuty Alerts ingested via Security Hub. Here 
   "alertId": "arn:aws:guardduty:us-east-1:1234567891012:detector/96bad234c3d0033d695e70c93b8741fb/finding/36bc3df32928fe1c98ac2a6d9a48fb56",
   "arn": "arn:aws:ec2:us-east-1:1234567891012:instance/i-054474987a390f341",
   "policyId": "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce",
+  "vendorSeverity": "low",
   "csp": "aws",
   "resourceContainer": "1234567891012",
   "region": "us-east-1",

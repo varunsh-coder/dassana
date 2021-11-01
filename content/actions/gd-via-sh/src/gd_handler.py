@@ -27,6 +27,7 @@ class GuardDutyAlert(BaseModel):
     Region: str = None
     AwsAccountId: str = None
     Types: List[str] = []
+    Severity: Dict[str, Any] = None
     ProductFields: Optional[Dict[str, str]] = None
     Resources: Optional[List[Resources]]
     detail: Detail = None
@@ -90,7 +91,7 @@ def handle(event: GuardDutyAlert, context: LambdaContext):
             break
 
     resource_arn = resource.Id if resource.Id else ""
-
+    vendor_severity = event.Severity["Label"].lower()
     arn_obj = parse_arn(resource_arn) if not resource_arn=='' else None
     if (arn_obj is not None and arn_obj.resource_type):
         resource_id = arn_obj.resource
@@ -111,6 +112,7 @@ def handle(event: GuardDutyAlert, context: LambdaContext):
         resourceType=resource_type,
         service=service,
         vendorPolicy=policy_id,
+        vendorSeverity=vendor_severity,
         vendorId='aws-guardduty'
     )
 
