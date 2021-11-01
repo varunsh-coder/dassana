@@ -16,6 +16,7 @@ Here is an example output of a normalizer workflow-
 	"canonicalId": "demo-canonicalId",
 	"service": "demo-service",
 	"vendorPolicy": "dempo-vendorPolicy",
+	"vendorSeverity": "demo-severity",
 	"vendorId": "foo-cloud",
 	"alertId": "demo-alert-id",
 	"resourceContainer": "demo-resourceContainer",
