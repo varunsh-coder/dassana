@@ -4,17 +4,23 @@ This Dassana action normalizes GuardDuty Alerts ingested via Security Hub. Here 
 
 ```json
 {
-  "alertId": "arn:aws:guardduty:us-east-1:1234567891012:detector/96bad234c3d0033d695e70c93b8741fb/finding/36bc3df32928fe1c98ac2a6d9a48fb56",
-  "arn": "arn:aws:ec2:us-east-1:1234567891012:instance/i-054474987a390f341",
-  "policyId": "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce",
-  "vendorSeverity": "low",
   "csp": "aws",
-  "resourceContainer": "1234567891012",
-  "region": "us-east-1",
+  "alertClassification": {
+    "subclass": "",
+    "category": "",
+    "subcategory": "",
+    "classRh": ""
+  },
+  "resourceId": "i-0721cd3d48431cf8f",
+  "canonicalId": "arn:aws:ec2:us-east-1:1234567890:instance/i-0721cd3d48431cf8f",
   "service": "ec2",
+  "vendorPolicy": "UnauthorizedAccess:EC2/SSHBruteForce",
+  "vendorId": "aws-guardduty",
+  "alertId": "arn:aws:guardduty:us-east-1:1234567890:detector/a2bdf2d15d3f3187077af621af3e234d/finding/92be33c9c933159cc5e8eed7a7d42af7",
+  "resourceContainer": "020747060415",
+  "region": "us-east-1",
   "resourceType": "instance",
-  "resourceId": "i-054474987a390f341"
+  "tags": []
 }
 ```
 
-Note there doesn't seem to a obvious `policyId` that we can point to so we use our best judgement and point to the TTP value.

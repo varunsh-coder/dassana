@@ -25,7 +25,7 @@ steps:
 risk-config:
   default-risk: ""
   rules:
-    - id: instance-has-permissions-that-allow-privilegeEscalation
+    - id: instance-has-permissions-that-allow-privilege-escalation
       condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
       risk: high
 

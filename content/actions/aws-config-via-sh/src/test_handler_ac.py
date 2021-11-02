@@ -14,7 +14,7 @@ class AWSConfigNormalizerTest(TestCase):
             resp = handle(alert, LambdaTestContext('aws-config-via-sh'))
             norm = NormalizedOutput(**resp)
             assert norm.vendorId == 'aws-config'
-            assert norm.alertId == 'arn:aws:securityhub:us-east-1:363265257036:subscription/aws-foundational-security-best-practices/v/1.0.0/APIGateway.4/finding/227ca420-48fa-4df8-ad47-f747521d169a'
+            assert norm.alertId == '227ca420-48fa-4df8-ad47-f747521d169a'
             assert norm.vendorPolicy == 'api-gw-associated-with-waf'
             assert norm.vendorSeverity == 'medium'
             assert norm.csp == 'aws'
@@ -28,7 +28,7 @@ class AWSConfigNormalizerTest(TestCase):
             resp = handle(alert, LambdaTestContext('aws-config-via-sh'))
             norm = NormalizedOutput(**resp)
             assert norm.vendorId == 'aws-config'
-            assert norm.alertId == 'arn:aws:securityhub:us-east-1:363265257036:subscription/aws-foundational-security-best-practices/v/1.0.0/EC2.19/finding/a98a1bc3-2bcd-49c0-b40e-edc09c4a059d'
+            assert norm.alertId == 'a98a1bc3-2bcd-49c0-b40e-edc09c4a059d'
             assert norm.vendorPolicy == 'vpc-sg-restricted-common-ports'
             assert norm.vendorSeverity == 'medium'
             assert norm.csp == 'aws'
@@ -42,7 +42,7 @@ class AWSConfigNormalizerTest(TestCase):
             resp = handle(alert, LambdaTestContext('aws-config-via-sh'))
             norm = NormalizedOutput(**resp)
             assert norm.vendorId == 'aws-config'
-            assert norm.alertId == 'arn:aws:securityhub:us-east-1:364056642809:subscription/aws-foundational-security-best-practices/v/1.0.0/S3.2/finding/18136b0e-07c7-400a-aaf4-be492baa3bf6'
+            assert norm.alertId == '18136b0e-07c7-400a-aaf4-be492baa3bf6'
             assert norm.vendorPolicy == 's3-bucket-public-read-prohibited'
             assert norm.vendorSeverity == 'critical'
             assert norm.csp == 'aws'
@@ -56,7 +56,7 @@ class AWSConfigNormalizerTest(TestCase):
             resp = handle(alert, LambdaTestContext('aws-config-via-sh'))
             norm = NormalizedOutput(**resp)
             assert norm.vendorId == 'aws-config'
-            assert norm.alertId == 'arn:aws:securityhub:us-east-1:020747060415:subscription/aws-foundational-security-best-practices/v/1.0.0/S3.2/finding/d0c74471-d0da-40bf-81cd-d871510d49ea'
+            assert norm.alertId == 'd0c74471-d0da-40bf-81cd-d871510d49ea'
             assert norm.vendorPolicy == 's3-bucket-public-read-prohibited'
             assert norm.vendorSeverity == 'critical'
             assert norm.csp == 'aws'

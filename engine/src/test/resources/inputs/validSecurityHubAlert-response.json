@@ -68,7 +68,7 @@
       "risk": {
         "condition": ".\"list-of-attached-eni\".result| length > 0",
         "riskValue": "high",
-        "name": "are-enis-attached-to-sg"
+        "id": "are-enis-attached-to-sg"
       },
       "workflowId": "security-group-is-overly-permissive"
     },
@@ -91,11 +91,6 @@
       },
       "step-output": [
         {
-          "lookup": {
-            "service": "ec2"
-          }
-        },
-        {
           "resource-info": {
             "csp": "aws",
             "resourceId": "sg-0c78a9d8a495828ad",
@@ -107,6 +102,11 @@
             "region": "us-east-1",
             "arn": "arn:aws:ec2:us-east-1:363265257036:security-group/sg-0c78a9d8a495828ad",
             "resourceType": "security-group"
+          }
+        },
+        {
+          "lookup": {
+            "service": "ec2"
           }
         },
         {
@@ -130,7 +130,7 @@
       "risk": {
         "condition": ".tags | any( select(.name | test(\"env\" ; \"ix\")) | select(.value | test(\"dev\" ; \"ix\")))",
         "riskValue": "low",
-        "name": "dev-environment-risk-is-low"
+        "id": "dev-environment-risk-is-low"
       },
       "workflowId": "general-context-aws"
     },

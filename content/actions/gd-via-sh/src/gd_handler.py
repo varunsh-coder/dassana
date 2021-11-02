@@ -102,12 +102,15 @@ def handle(event: GuardDutyAlert, context: LambdaContext):
     # many times ARNs do haven't have region e.g. s3 bucket. so we rely on what the finding value is
     region = arn_obj.region if arn_obj.region else (resource.Region if resource.Region else None)
 
+    # The actual alert ID is just the last part of event.Id
+    alertId = event.Id.split('/')[-1]
+
     output = NormalizedOutput(
         csp='aws',
         resourceContainer=event.AwsAccountId,
         region=region,
         resourceId=resource_id,
-        alertId=event.Id,
+        alertId=alertId,
         canonicalId=resource_arn,
         resourceType=resource_type,
         service=service,

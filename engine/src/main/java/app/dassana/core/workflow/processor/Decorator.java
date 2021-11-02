@@ -53,11 +53,12 @@ public class Decorator {
       generalContextJsonObj.put(WORKFLOW_ID, generalContextWorkflowOutput.get().getWorkflowId());
       generalContextJsonObj.put("workflowType", GENERAL_CONTEXT);
       generalContextJsonObj.put("output", generalContextWorkflowOutput.get().getOutput());
+//      where the workflow steps are coming in ...
       generalContextJsonObj.put("step-output", generalContextWorkflowOutput.get().getStepOutput());
       Map<String, Object> riskObj = new HashMap<>();
       riskObj.put("riskValue", generalContextWorkflowOutput.get().getRisk().getRiskValue());
       riskObj.put("condition", generalContextWorkflowOutput.get().getRisk().getCondition());
-      riskObj.put("name", generalContextWorkflowOutput.get().getRisk().getName());
+      riskObj.put("id", generalContextWorkflowOutput.get().getRisk().getId());
       generalContextJsonObj.put("risk", riskObj);
       dassanaMap.put(GENERAL_CONTEXT, generalContextJsonObj);
       allErrors.addAll(generalContextWorkflowOutput.get().getErrorList());
@@ -78,7 +79,7 @@ public class Decorator {
       Map<String, Object> riskObj = new HashMap<>();
       riskObj.put("riskValue", policyContextWorkflowOutput.get().getRisk().getRiskValue());
       riskObj.put("condition", policyContextWorkflowOutput.get().getRisk().getCondition());
-      riskObj.put("name", policyContextWorkflowOutput.get().getRisk().getName());
+      riskObj.put("id", policyContextWorkflowOutput.get().getRisk().getId());
       jsonObject.put("risk", riskObj);
       dassanaMap.put(POLICY_CONTEXT, jsonObject);
       allErrors.addAll(policyContextWorkflowOutput.get().getErrorList());
@@ -99,7 +100,7 @@ public class Decorator {
       Map<String, Object> riskObj = new HashMap<>();
       riskObj.put("riskValue", resourceContextWorkflowOutput.get().getRisk().getRiskValue());
       riskObj.put("condition", resourceContextWorkflowOutput.get().getRisk().getCondition());
-      riskObj.put("name", resourceContextWorkflowOutput.get().getRisk().getName());
+      riskObj.put("id", resourceContextWorkflowOutput.get().getRisk().getId());
       jsonObject.put("risk", riskObj);
       dassanaMap.put(RESOURCE_CONTEXT, jsonObject);
       allErrors.addAll(resourceContextWorkflowOutput.get().getErrorList());
