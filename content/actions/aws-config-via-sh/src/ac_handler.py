@@ -28,6 +28,8 @@ class AWSConfigAlert(BaseModel):
     AwsAccountId: str = None
     Types: List[str] = []
     ProductFields: Optional[Dict[str, str]] = None
+    FindingProviderFields: Dict[str, Any] = None
+    Severity: Dict[str, Any] = None
     Resources: Optional[List[Resources]]
     detail: Detail = None
 
@@ -52,6 +54,12 @@ def handle(event: AWSConfigAlert, context: LambdaContext):
 
         resource_arn = event.ProductFields['Resources:0/Id']
 
+    # Severity is held inside this field in some alerts
+    if event.FindingProviderFields:
+        vendor_severity = event.FindingProviderFields["Severity"]["Label"].lower()
+    else:
+        vendor_severity = event.Severity["Label"].lower()
+        
     arn_obj = parse_arn(resource_arn) if resource_arn else None
     if arn_obj.resource_type:
         resource_id = arn_obj.resource
@@ -74,6 +82,7 @@ def handle(event: AWSConfigAlert, context: LambdaContext):
         alertId=event.Id,
         canonicalId=resource_arn,
         vendorPolicy=policy_id,
+        vendorSeverity=vendor_severity,
         vendorId='aws-config'
     )
 
