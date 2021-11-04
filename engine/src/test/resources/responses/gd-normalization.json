@@ -1,0 +1,20 @@
+{
+  "csp": "aws",
+  "resourceId": "i-0721cd3d48431cf8f",
+  "canonicalId": "arn:aws:ec2:us-east-1:1234567890:instance/i-0721cd3d48431cf8f",
+  "vendorSeverity": "low",
+  "vendorId": "aws-guardduty",
+  "tags": [],
+  "alertClassification": {
+    "subclass": "",
+    "category": "",
+    "subcategory": "",
+    "classRh": ""
+  },
+  "service": "ec2",
+  "vendorPolicy": "UnauthorizedAccess:EC2/SSHBruteForce",
+  "alertId": "92be33c9c933159cc5e8eed7a7d42af7",
+  "resourceContainer": "1234567890",
+  "region": "us-east-1",
+  "resourceType": "instance"
+}

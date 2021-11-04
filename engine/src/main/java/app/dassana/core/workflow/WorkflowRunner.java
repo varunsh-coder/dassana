@@ -163,7 +163,7 @@ public class WorkflowRunner {
         riskConfig = resPriWorkflow.getRiskConfig();
         try {
           workflowOutputWithRisk
-              .setRisk(getRisk(riskConfig, workflowOutputWithRisk, simpleOutputJson));
+              .setRisk(getRisk(riskConfig, workflowOutputWithRisk, simpleOutputJson, errorList, workflow.getId(), workflow.getType()));
         } catch (RiskEvalException e) {
           Error error = new Error(workflow.getId(), workflow.getType(), Component.RISK_CALC, e.getRuleName(),
               new Message(e.getMessage(), Severity.ERROR));
@@ -245,7 +245,7 @@ public class WorkflowRunner {
   }
 
   private Risk getRisk(RiskConfig riskConfig, WorkflowOutput workflowOutput,
-      String simpleOutputJson) {
+                       String simpleOutputJson, List<Error> errorList, String id, String type) {
     JSONObject requestJsonObjForRiskCalc = new JSONObject();
 
     //the normalized fields should be available for risk rules in addition to the fields returned by steps
@@ -262,7 +262,7 @@ public class WorkflowRunner {
     riskEvalRequest.setJsonData(requestJsonObjForRiskCalc.toString());
     riskEvalRequest.setRiskRules(riskConfig.getRiskRules());
     riskEvalRequest.setDefaultRisk(riskConfig.getDefaultRisk());
-    return riskEvaluator.evaluate(riskEvalRequest);
+    return riskEvaluator.evaluate(riskEvalRequest, errorList, id, type);
   }
 
   private String getPayloadForStep(List<Map<String, String>> fields,

@@ -25,22 +25,26 @@ steps:
 risk-config:
   default-risk: ""
   rules:
-    - id: instance-has-permissions-that-allow-privilege-escalation
-      condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
-      risk: high
+    - id: risky-permissions
+      condition: .riskyPermissions.result | length > 0
+      risk: ""
+      subrules:
+      - id: instance-has-permissions-that-allow-privilege-escalation
+        condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
+        risk: high
 
-    - id: instance-has-permissions-that-allow-credentials-exposure
-      condition: .riskyPermissions.result.CredentialsExposure | length > 0
-      risk: high
+      - id: instance-has-permissions-that-allow-credentials-exposure
+        condition: .riskyPermissions.result.CredentialsExposure | length > 0
+        risk: high
 
-    - id: instance-has-permissions-that-allow-data-exfiltration
-      condition: .riskyPermissions.result.DataExfiltration | length > 0
-      risk: medium
+      - id: instance-has-permissions-that-allow-data-exfiltration
+        condition: .riskyPermissions.result.DataExfiltration | length > 0
+        risk: medium
 
-    - id: instance-has-permissions-that-allow-infrastructure-modification
-      condition: .riskyPermissions.result.InfrastructureModification | length > 0
-      risk: low
+      - id: instance-has-permissions-that-allow-infrastructure-modification
+        condition: .riskyPermissions.result.InfrastructureModification | length > 0
+        risk: low
 
-    - id: instance-has-permissions-that-allow-resource-exposure
-      condition: .riskyPermissions.result.ResourceExposure | length > 0
-      risk: low
+      - id: instance-has-permissions-that-allow-resource-exposure
+        condition: .riskyPermissions.result.ResourceExposure | length > 0
+        risk: low

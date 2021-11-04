@@ -5,7 +5,7 @@ then
 else
     sam="sam"
 fi
-eval $sam build --cached --parallel --region $2 --use-container
+eval $sam build --cached --parallel --region $2 ##--use-container
 cd ../../engine
 mvn clean process-resources -DkskipTests
 rm -rf ../content/pkg/.aws-sam/build/DassanaEngine/content

@@ -16,6 +16,7 @@ import app.dassana.core.resource.model.GeneralContext;
 import app.dassana.core.resource.model.ResourceContext;
 import app.dassana.core.risk.model.RiskConfig;
 import app.dassana.core.risk.model.Rule;
+import app.dassana.core.risk.model.SubRule;
 import app.dassana.core.rule.MatchType;
 import app.dassana.core.workflow.model.Filter;
 import app.dassana.core.workflow.model.Output;
@@ -162,12 +163,30 @@ public class Parser {
 
       if (rulesJsonArray != null) {
         for (int i = 0; i < rulesJsonArray.length(); i++) {
+          List<SubRule> subRules = new LinkedList<>(); // List to store the subrules for each rule
           JSONObject ruleObj = rulesJsonArray.getJSONObject(i);
           String id = ruleObj.getString("id");
           String condition = ruleObj.getString("condition");
           String risk = ruleObj.getString("risk");
 
-          Rule rule = new Rule(id, condition, risk);
+          // gets an-opt array for the sub-risks
+          JSONArray subRulesJsonArray = ruleObj.optJSONArray("subrules");
+
+          // if there are any sub-risks add them to the sub-risks rule
+          if (subRulesJsonArray != null) {
+
+            for (int j = 0; j < subRulesJsonArray.length(); j++) {
+              JSONObject subRuleObj = subRulesJsonArray.getJSONObject(j);
+              String subRuleId = subRuleObj.getString("id");
+              String subRuleCondition = subRuleObj.getString("condition");
+              String subRuleRisk = subRuleObj.getString("risk");
+
+              SubRule subrule = new SubRule(subRuleId, subRuleCondition, subRuleRisk);
+              subRules.add(subrule);
+            }
+
+          }
+          Rule rule = new Rule(id, condition, risk, false, subRules);
           riskRules.add(rule);
 
         }

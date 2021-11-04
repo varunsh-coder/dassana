@@ -74,8 +74,6 @@ public class WorkflowValidator {
         throw dassanaWorkflowValidationException;
       }
     }
-
-
   }
 
   private void initLinters() throws IOException {

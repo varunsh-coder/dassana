@@ -82,6 +82,38 @@ public class ContentManager implements ContentManagerApi {
     }
   }
 
+  public enum RISKS {
+    CRITICAL("critical"),
+    HIGH("high"),
+    MEDIUM("medium"),
+    LOW("low"),
+    ACCEPTED("accepted"),
+    EMPTY("");
+
+    private final String severity;
+
+    RISKS(final String severity) {
+      this.severity = severity;
+    }
+
+    public String getSeverity() {
+      return severity;
+    }
+
+    @Override
+    public String toString() {
+      return severity;
+    }
+
+    // returns a string array of risk severities in descending order (from critical to low)
+    public static String[] getRiskValueArray() {
+      return new String[]{
+              CRITICAL.getSeverity(), HIGH.getSeverity(),
+              MEDIUM.getSeverity(), LOW.getSeverity(),
+              ACCEPTED.getSeverity(), EMPTY.getSeverity()};
+    }
+  }
+
 
   private static final Logger logger = LoggerFactory.getLogger(ContentManager.class);
 

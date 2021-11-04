@@ -1,0 +1,124 @@
+{
+  "dassana": {
+    "resource-context": {
+      "output": {},
+      "step-output": [
+        {
+          "ec2Exposure": {
+            "appLayer": {
+              "canReceiveUnauthenticatedTraffic": false,
+              "behindLoadBalancer": false,
+              "exceptionMatch": false
+            },
+            "direct": {
+              "allowedVia": {
+                "sg": [
+                  "sg-0e04146b91981044f"
+                ]
+              },
+              "publicIp": "32.145.67.890",
+              "isExposed": true
+            }
+          }
+        },
+        {},
+        {
+          "riskyPermissions": {}
+        }
+      ],
+      "workflowType": "resource-context",
+      "risk": {
+        "condition": ".ec2Exposure.direct.isExposed == true",
+        "riskValue": "critical",
+        "id": "exposed-directly-via-public-ip"
+      },
+      "workflowId": "ec2-instance-context"
+    },
+    "policy-context": {
+      "output": {},
+      "step-output": [],
+      "workflowType": "policy-context",
+      "risk": {
+        "condition": "",
+        "riskValue": "low",
+        "id": "default"
+      },
+      "workflowId": "instance-is-associated-with-ssh-brute-force"
+    },
+    "normalize": {
+      "output": {
+        "csp": "aws",
+        "resourceId": "i-0721cd3d48431cf8f",
+        "canonicalId": "arn:aws:ec2:us-east-1:1234567890:instance/i-0721cd3d48431cf8f",
+        "vendorSeverity": "low",
+        "service": "ec2",
+        "vendorPolicy": "UnauthorizedAccess:EC2/SSHBruteForce",
+        "vendorId": "aws-guardduty",
+        "alertId": "92be33c9c933159cc5e8eed7a7d42af7",
+        "resourceContainer": "1234567890",
+        "region": "us-east-1",
+        "resourceType": "instance",
+        "tags": [
+          {
+            "name": "env",
+            "value": "dev"
+          }
+        ]
+      },
+      "step-output": [
+        {
+          "resource-info": {
+            "csp": "aws",
+            "resourceId": "i-0721cd3d48431cf8f",
+            "canonicalId": "arn:aws:ec2:us-east-1:1234567890:instance/i-0721cd3d48431cf8f",
+            "vendorSeverity": "low",
+            "vendorId": "aws-guardduty",
+            "tags": [],
+            "alertClassification": {
+              "subclass": "",
+              "category": "",
+              "subcategory": "",
+              "classRh": ""
+            },
+            "service": "ec2",
+            "vendorPolicy": "UnauthorizedAccess:EC2/SSHBruteForce",
+            "alertId": "92be33c9c933159cc5e8eed7a7d42af7",
+            "resourceContainer": "1234567890",
+            "region": "us-east-1",
+            "resourceType": "instance"
+          }
+        },
+        {
+          "lookup": {
+            "service": "ec2",
+            "resourceType": "instance"
+          }
+        },
+        {
+          "getTags": [
+            {
+              "name": "env",
+              "value": "dev"
+            }
+          ]
+        }
+      ],
+      "workflowType": "normalize",
+      "workflowId": "guardduty-via-securityhub"
+    },
+    "general-context": {
+      "output": {
+        "environment": "dev"
+      },
+      "step-output": [],
+      "workflowType": "general-context",
+      "risk": {
+        "condition": ".tags | any( select(.name | test(\"env\" ; \"ix\")) | select(.value | test(\"dev\" ; \"ix\")))",
+        "riskValue": "low",
+        "id": "dev-environment-risk-is-low"
+      },
+      "workflowId": "general-context-aws"
+    },
+    "alertKey": "s3://foo/alert/foo"
+  }
+}

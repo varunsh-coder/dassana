@@ -1,3 +1,4 @@
 {
-  "service": "ec2"
+  "service": "ec2",
+  "resourceType": "instance"
 }

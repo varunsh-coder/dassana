@@ -13,3 +13,5 @@ engine/src/main/resources/content/**
 .aws-sam/**
 **/.hypothesis/**
 **/__pycache__/**
+.gitignore
+content/pkg/build.sh

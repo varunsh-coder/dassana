@@ -1,0 +1,16 @@
+{
+  "appLayer": {
+    "canReceiveUnauthenticatedTraffic": false,
+    "behindLoadBalancer": false,
+    "exceptionMatch": false
+  },
+  "direct": {
+    "allowedVia": {
+      "sg": [
+        "sg-0e04146b91981044f"
+      ]
+    },
+    "publicIp": "32.145.67.890",
+    "isExposed": true
+  }
+}

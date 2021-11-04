@@ -40,6 +40,8 @@ class RunTest extends Specification {
         "validJsonButNotAnAlert2.json"     | "validJsonButNotAnAlert2-response-with-input.json"     | true     | true
         "validSecurityHubAlert.json"       | "validSecurityHubAlert-response.json"                  | true     | false
         "validSecurityHubAlert.json"       | "validSecurityHubAlert-response-with-input.json"       | true     | true
+        "validGDAlertWithSubRules.json"    | "validGDAlertWithSubRules-response.json"               | true     | false
+        "validGDAlertWithSubRules.json"    | "validGDAlertWithSubRules-response-with-input.json"    | true     | true
         "validAlertWithDraftWorkflow.json" | "validAlertWithDraftWorkflow-response.json"            | false    | false
         "validAlertWithDraftWorkflow.json" | "validAlertWithDraftWorkflow-response.json"            | true     | false
         "validAlertWithDraftWorkflow.json" | "validAlertWithDraftWorkflow-response-with-input.json" | false    | true

@@ -1,8 +1,38 @@
 {
   "dassana": {
     "resource-context": {
-      "severity": "INFO",
-      "msg": "Sorry, but no resource-context workflow ran for the given alert. Please check filter config"
+      "output": {},
+      "step-output": [
+        {
+          "ec2Exposure": {
+            "appLayer": {
+              "canReceiveUnauthenticatedTraffic": false,
+              "behindLoadBalancer": false,
+              "exceptionMatch": false
+            },
+            "direct": {
+              "allowedVia": {
+                "sg": [
+                  "sg-0e04146b91981044f"
+                ]
+              },
+              "publicIp": "32.145.67.890",
+              "isExposed": true
+            }
+          }
+        },
+        {},
+        {
+          "riskyPermissions": {}
+        }
+      ],
+      "workflowType": "resource-context",
+      "risk": {
+        "condition": ".ec2Exposure.direct.isExposed == true",
+        "riskValue": "critical",
+        "id": "exposed-directly-via-public-ip"
+      },
+      "workflowId": "ec2-instance-context"
     },
     "policy-context": {
       "output": {},
@@ -82,6 +112,7 @@
         "alertId": "arn:aws:securityhub:us-east-1:363265257036:subscription/cis-aws-foundations-benchmark/v/1.2.0/4.1/finding/4991510f-77f2-4c48-bbb9-f51697bffa3d",
         "resourceContainer": "363265257036",
         "region": "us-east-1",
+        "resourceType": "instance",
         "tags": [
           {
             "name": "env",
@@ -106,7 +137,8 @@
         },
         {
           "lookup": {
-            "service": "ec2"
+            "service": "ec2",
+            "resourceType": "instance"
           }
         },
         {

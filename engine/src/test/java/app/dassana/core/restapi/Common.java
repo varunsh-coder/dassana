@@ -152,7 +152,18 @@ public class Common {
         stepRunResponse.setResponse(IOUtils.toString(
             Thread.currentThread().getContextClassLoader().getResourceAsStream("responses/lookup.json"),
             Charset.defaultCharset()));
+      }
 
+      if (step.getId().contentEquals("ec2Exposure")) {
+        stepRunResponse.setResponse(IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("responses/ec2-exposure.json"),
+                Charset.defaultCharset()));
+      }
+
+      if (step.getId().contentEquals("riskyPermissions")) {
+        stepRunResponse.setResponse(IOUtils.toString(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("responses/risky-permissions.json"),
+                Charset.defaultCharset()));
       }
 
       return stepRunResponse;

@@ -1,0 +1,101 @@
+{
+  "test-hint": {
+    "resource-info": "responses/gd-normalization.json"
+  },
+  "detail": {
+    "findings": [
+      {
+        "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/guardduty",
+        "Types": [
+          "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+        ],
+        "SourceUrl": "https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=current&fId=92be33c9c933159cc5e8eed7a7d42af7",
+        "Description": "123.45.67.890 is performing SSH brute force attacks against i-0721cd3d48431cf8f. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password.",
+        "SchemaVersion": "2018-10-08",
+        "ProductName": "GuardDuty",
+        "GeneratorId": "arn:aws:guardduty:us-east-1:1234567890:detector/a2bdf2d15d3f3187077af621af3e234d",
+        "FirstObservedAt": "2021-10-10T00:06:44.000Z",
+        "CreatedAt": "2021-10-10T00:21:36.998Z",
+        "RecordState": "ACTIVE",
+        "Title": "123.45.67.890 is performing SSH brute force attacks against i-0721cd3d48431cf8f.",
+        "Workflow": {
+          "Status": "NEW"
+        },
+        "LastObservedAt": "2021-10-21T10:55:01.000Z",
+        "Severity": {
+          "Normalized": 40,
+          "Label": "LOW",
+          "Product": 2
+        },
+        "UpdatedAt": "2021-10-21T11:04:52.154Z",
+        "CompanyName": "Amazon",
+        "FindingProviderFields": {
+          "Types": [
+            "TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+          ],
+          "Severity": {
+            "Label": "LOW"
+          }
+        },
+        "WorkflowState": "NEW",
+        "ProductFields": {
+          "aws/guardduty/service/action/networkConnectionAction/remotePortDetails/portName": "Unknown",
+          "aws/guardduty/service/archived": "false",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asnOrg": "Contabo GmbH",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lat": "49.405",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/ipAddressV4": "123.45.67.890",
+          "aws/securityhub/ProductName": "GuardDuty",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lon": "11.1617",
+          "aws/guardduty/service/action/networkConnectionAction/blocked": "false",
+          "aws/guardduty/service/action/networkConnectionAction/remotePortDetails/port": "33000",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/country/countryName": "Germany",
+          "aws/guardduty/service/serviceName": "guardduty",
+          "aws/guardduty/service/evidence": "",
+          "aws/guardduty/service/action/networkConnectionAction/localIpDetails/ipAddressV4": "321.45.67.890",
+          "aws/guardduty/service/detectorId": "a2bdf2d15d3f3187077af621af3e234d",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/org": "Contabo GmbH",
+          "aws/guardduty/service/action/networkConnectionAction/connectionDirection": "INBOUND",
+          "aws/guardduty/service/eventFirstSeen": "2021-10-10T00:06:44.000Z",
+          "aws/guardduty/service/eventLastSeen": "2021-10-21T10:55:01.000Z",
+          "aws/guardduty/service/action/networkConnectionAction/localPortDetails/portName": "SSH",
+          "aws/guardduty/service/action/actionType": "NETWORK_CONNECTION",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/city/cityName": "Nuremberg",
+          "aws/guardduty/service/additionalInfo": "",
+          "aws/guardduty/service/resourceRole": "TARGET",
+          "aws/guardduty/service/action/networkConnectionAction/localPortDetails/port": "22",
+          "aws/guardduty/service/action/networkConnectionAction/protocol": "TCP",
+          "aws/guardduty/service/count": "13",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asn": "51167",
+          "aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/isp": "Contabo GmbH",
+          "aws/securityhub/CompanyName": "Amazon",
+          "aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:1234567890:detector/a2bdf2d15d3f3187077af621af3e234d/finding/92be33c9c933159cc5e8eed7a7d42af7"
+        },
+        "AwsAccountId": "1234567890",
+        "Region": "us-east-1",
+        "Id": "arn:aws:guardduty:us-east-1:1234567890:detector/a2bdf2d15d3f3187077af621af3e234d/finding/92be33c9c933159cc5e8eed7a7d42af7",
+        "Resources": [
+          {
+            "Partition": "aws",
+            "Type": "AwsEc2Instance",
+            "Details": {
+              "AwsEc2Instance": {
+                "Type": "t2.micro",
+                "VpcId": "vpc-05ec28779c1bc59bf",
+                "ImageId": "ami-02e136e904f3da870",
+                "IpV4Addresses": [
+                  "321.45.67.890",
+                  "32.145.67.890"
+                ],
+                "SubnetId": "subnet-0a8b04fe16dabbe19",
+                "LaunchedAt": "2021-10-07T23:25:32.000Z"
+              }
+            },
+            "Region": "us-east-1",
+            "Id": "arn:aws:ec2:us-east-1:1234567890:instance/i-0721cd3d48431cf8f"
+          }
+        ]
+      }
+    ]
+  }
+}
+
