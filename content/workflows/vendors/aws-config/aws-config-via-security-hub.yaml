@@ -51,6 +51,8 @@ output:
     value: ."getTags"
   - name: alertClassification
     value: ."lookup".alertClassification
+  - name: vendorSeverity
+    value: ."resource-info".vendorSeverity
 
 post-processor:
   steps:

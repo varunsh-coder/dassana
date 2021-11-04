@@ -46,3 +46,5 @@ output:
     value: ."lookup".tags
   - name: alertClassification
     value: ."lookup".alertClassification
+  - name: vendorSeverity
+    value: ."resource-info".vendorSeverity

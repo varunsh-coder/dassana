@@ -25,12 +25,13 @@ filters: # before this workflow can run, Dassana engine will match the input to 
 # 	"resourceId": "demo-resoureceId",
 # 	"canonicalId": "demo-canonicalId",
 # 	"service": "demo-service",
-# 	"vendorPolicy": "depo-vendorPolicy",
+# 	"vendorPolicy": "demo-vendorPolicy",
 # 	"vendorId": "foo-cloud",
 # 	"alertId": "demo-alert-id",
 # 	"resourceContainer": "demo-resourceContainer",
 # 	"region": "demo-region",
-# 	"resourceType": "demo-resourceType"
+# 	"resourceType": "demo-resourceType",
+# 	"vendorSeverity": "demo-severity"
 # }
 
 output:
@@ -63,4 +64,7 @@ output:
     value-type: STRING
   - name: resourceId
     value: demo-resoureceId
+    value-type: STRING
+  - name: vendorSeverity
+    value: demo-severity
     value-type: STRING
