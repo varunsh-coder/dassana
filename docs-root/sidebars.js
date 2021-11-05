@@ -79,7 +79,12 @@ module.exports = {
 				{
 					type: 'category',
 					label: 'Operations',
-					items: ['guides/ops/updating-dassana']
+					items: [
+						'guides/ops/updating-dassana',
+						'guides/ops/troubleshooting',
+						'guides/ops/monitoring',
+						'guides/ops/backup'
+					]
 				}
 			]
 		},
