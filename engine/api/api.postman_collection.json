@@ -1,0 +1,349 @@
+{
+	"info": {
+		"_postman_id": "f583daec-ac67-4325-9b63-dcb71fec6c24",
+		"name": "Dassana API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Core APIs",
+			"item": [
+				{
+					"name": "Ping",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/ping",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"ping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Run All Workflows (do not include orignal json)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-dassana-cache",
+								"value": "false",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{alert-json}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/run?includeInputRequest=false",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"run"
+							],
+							"query": [
+								{
+									"key": "includeInputRequest",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Run All Workflows (include original json)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-dassana-cache",
+								"value": "{{x-dassana-cache}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{alert-json}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/run?includeInputRequest=true",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"run"
+							],
+							"query": [
+								{
+									"key": "includeInputRequest",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Workflow Output",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-dassana-cache",
+								"value": "{{x-dassana-cache}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{alert-json}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/run?workflowId=demo-cloud-resource-context&includeStepOutput=true",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"run"
+							],
+							"query": [
+								{
+									"key": "workflowId",
+									"value": "demo-cloud-resource-context"
+								},
+								{
+									"key": "includeStepOutput",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Workflow By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-dassana-cache",
+								"value": "{{x-dassana-cache}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api-gateway-url}}/workflows?workflowId=foo-cloud-normalize",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"workflows"
+							],
+							"query": [
+								{
+									"key": "workflowId",
+									"value": "foo-cloud-normalize"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"installedVersion\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/version",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"version"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tests",
+			"item": [
+				{
+					"name": "AWS Config S3 Bucket Hosting Website",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Bucket has associated website\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"dassana-bucket-with-website.s3-website-us-west-1.amazonaws.com\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/json;charset=UTF-8",
+								"type": "text"
+							},
+							{
+								"key": "accept-language",
+								"value": "en-GB,en-US;q=0.9,en;q=0.8",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "application/json, text/plain, */*",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"SchemaVersion\": \"2018-10-08\",\n  \"Id\": \"arn:aws:securityhub:us-west-1:536600094836:subscription/aws-foundational-security-best-practices/v/1.0.0/S3.2/finding/b78c0b5a-4500-407a-b591-1c6c0dccde9d\",\n  \"ProductArn\": \"arn:aws:securityhub:us-west-1::product/aws/securityhub\",\n  \"ProductName\": \"Security Hub\",\n  \"CompanyName\": \"AWS\",\n  \"Region\": \"us-west-1\",\n  \"GeneratorId\": \"aws-foundational-security-best-practices/v/1.0.0/S3.2\",\n  \"AwsAccountId\": \"536600094836\",\n  \"Types\": [\n    \"Effects/Data Exposure/AWS-Foundational-Security-Best-Practices\"\n  ],\n  \"FirstObservedAt\": \"2021-10-05T21:00:36.991Z\",\n  \"LastObservedAt\": \"2021-10-05T21:00:40.906Z\",\n  \"CreatedAt\": \"2021-10-05T21:00:36.991Z\",\n  \"UpdatedAt\": \"2021-10-05T21:00:36.991Z\",\n  \"Severity\": {\n    \"Product\": 90,\n    \"Label\": \"CRITICAL\",\n    \"Normalized\": 90,\n    \"Original\": \"CRITICAL\"\n  },\n  \"Title\": \"S3.2 S3 buckets should prohibit public read access\",\n  \"Description\": \"This AWS control checks whether your S3 buckets allow public read access by evaluating the Block Public Access settings, the bucket policy, and the bucket access control list (ACL).\",\n  \"Remediation\": {\n    \"Recommendation\": {\n      \"Text\": \"For directions on how to fix this issue, consult the AWS Security Hub Foundational Security Best Practices documentation.\",\n      \"Url\": \"https://docs.aws.amazon.com/console/securityhub/S3.2/remediation\"\n    }\n  },\n  \"ProductFields\": {\n    \"StandardsArn\": \"arn:aws:securityhub:::standards/aws-foundational-security-best-practices/v/1.0.0\",\n    \"StandardsSubscriptionArn\": \"arn:aws:securityhub:us-west-1:536600094836:subscription/aws-foundational-security-best-practices/v/1.0.0\",\n    \"ControlId\": \"S3.2\",\n    \"RecommendationUrl\": \"https://docs.aws.amazon.com/console/securityhub/S3.2/remediation\",\n    \"RelatedAWSResources:0/name\": \"securityhub-s3-bucket-public-read-prohibited-8a52d554\",\n    \"RelatedAWSResources:0/type\": \"AWS::Config::ConfigRule\",\n    \"StandardsControlArn\": \"arn:aws:securityhub:us-west-1:536600094836:control/aws-foundational-security-best-practices/v/1.0.0/S3.2\",\n    \"aws/securityhub/ProductName\": \"Security Hub\",\n    \"aws/securityhub/CompanyName\": \"AWS\",\n    \"aws/securityhub/annotation\": \"The S3 bucket policy allows public read access.\",\n    \"Resources:0/Id\": \"arn:aws:s3:::dassana-bucket-with-website\",\n    \"aws/securityhub/FindingId\": \"arn:aws:securityhub:us-west-1::product/aws/securityhub/arn:aws:securityhub:us-west-1:536600094836:subscription/aws-foundational-security-best-practices/v/1.0.0/S3.2/finding/b78c0b5a-4500-407a-b591-1c6c0dccde9d\"\n  },\n  \"Resources\": [\n    {\n      \"Type\": \"AwsS3Bucket\",\n      \"Id\": \"arn:aws:s3:::dassana-bucket-with-website\",\n      \"Partition\": \"aws\",\n      \"Region\": \"us-west-1\",\n      \"Details\": {\n        \"AwsS3Bucket\": {\n          \"OwnerId\": \"e358b1b3d851d3086189a3836f73e8f16a4f9828702564be894412ae7bc4e03c\",\n          \"CreatedAt\": \"2021-10-05T20:49:47.000Z\"\n        }\n      }\n    }\n  ],\n  \"Compliance\": {\n    \"Status\": \"FAILED\"\n  },\n  \"WorkflowState\": \"NEW\",\n  \"Workflow\": {\n    \"Status\": \"NEW\"\n  },\n  \"RecordState\": \"ACTIVE\",\n  \"FindingProviderFields\": {\n    \"Severity\": {\n      \"Label\": \"CRITICAL\",\n      \"Original\": \"CRITICAL\"\n    },\n    \"Types\": [\n      \"Effects/Data Exposure/AWS-Foundational-Security-Best-Practices\"\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/run?includeInputRequest=false&includeStepOutput=true",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"run"
+							],
+							"query": [
+								{
+									"key": "includeInputRequest",
+									"value": "false"
+								},
+								{
+									"key": "includeStepOutput",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{dassana-api-key}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
