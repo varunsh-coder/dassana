@@ -69,7 +69,7 @@ jobs:
           mkdir -p htmlReport
       - name: Run Postman collection tests
         run: |
-          newman run engine/api/api.postman_collection.json -e engine/api/env.postman_environment.json --env-var dassana-api-key=${{ secrets.QA_API_KEY }} --env-var api-gateway-url=${{ secrets.QA_API_GATEWAY_URL }} -r junit,htmlextra --reporter-junit-export junitReport/junit.xml > junitReport/junit.xml --reporter-htmlextra-export htmlReport/report.html > htmlReport/report.html
+          newman run engine/api/api.postman_collection.json -e engine/api/env.postman_environment.json --env-var dassana-api-key=${{ secrets.QA_API_KEY }} --env-var api-gateway-url=${{ secrets.QA_API_GATEWAY_URL }} -r junit,htmlextra --reporter-junit-export junitReport/junit.xml > junitReport/junit.xml --reporter-htmlextra-export htmlReport/report.html > htmlReport/report.html --reporter-htmlextra-skipHeaders "x-api-key"
       - name: Configure AWS Credentials for Dassana Prod
         uses: aws-actions/configure-aws-credentials@v1
         with:
