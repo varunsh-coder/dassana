@@ -79,6 +79,7 @@ jobs:
       - name: Deploy!
         if: ${{ !failure() }}
         run: |
+          tag=`git describe --tags`
           cd content/pkg
           aws s3 cp uploaded-template.yaml s3://${{ secrets.SAM_ARTIFACTS_BUCKET }}/$tag/cft.yaml 
       - name: JUnit UI Status
