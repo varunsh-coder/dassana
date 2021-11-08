@@ -4,9 +4,12 @@ import datetime
 
 from aws_lambda_powertools.utilities.typing import LambdaContext
 from aws_lambda_powertools.utilities.validation import validator
+
 from dassana.common.aws_client import DassanaAwsObject
 
-with open('input.json', 'r') as schema:
+from os.path import dirname
+
+with open('%s/input.json' % dirname(__file__), 'r') as schema:
     schema = load(schema)
     dassana_aws = DassanaAwsObject()
 
