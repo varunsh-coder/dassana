@@ -15,3 +15,4 @@ engine/src/main/resources/content/**
 **/__pycache__/**
 .gitignore
 content/pkg/build.sh
+**/.vscode/
