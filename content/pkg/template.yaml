@@ -263,6 +263,7 @@ Resources:
   DassanaInboundQueue:
     Type: AWS::SQS::Queue
     Properties:
+      KmsMasterKeyId: "alias/aws/sqs"
       QueueName:
         !Join ["", [{ "Ref": "AWS::StackName" }, "-DassanaInboundQueue"]]
       VisibilityTimeout: 300
@@ -276,6 +277,7 @@ Resources:
   DassanaUnProcessedAlerts:
     Type: AWS::SQS::Queue
     Properties:
+      KmsMasterKeyId: "alias/aws/sqs"
       QueueName:
         Fn::Join:
           - ""
@@ -285,6 +287,7 @@ Resources:
   DassanaProcessedAlertsForAwsConfig:
     Type: AWS::SQS::Queue
     Properties:
+      KmsMasterKeyId: "alias/aws/sqs"
       QueueName:
         Fn::Join:
           - ""
@@ -294,6 +297,7 @@ Resources:
   DassanaProcessedAlertsForGuardDuty:
     Type: AWS::SQS::Queue
     Properties:
+      KmsMasterKeyId: "alias/aws/sqs"
       QueueName:
         Fn::Join:
           - ""
@@ -303,6 +307,7 @@ Resources:
   DassanaProcessedAlertsForPrismaCloud:
     Type: AWS::SQS::Queue
     Properties:
+      KmsMasterKeyId: "alias/aws/sqs"
       QueueName:
         Fn::Join:
           - ""
@@ -312,6 +317,7 @@ Resources:
   DassanaDeadLetterQueue:
     Type: AWS::SQS::Queue
     Properties:
+      KmsMasterKeyId: "alias/aws/sqs"
       QueueName:
         !Join ["", [{ "Ref": "AWS::StackName" }, "-DassanaDeadLetterQueue"]]
 
@@ -689,7 +695,6 @@ Resources:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
 
-
   GetBucketStats:
     Type: AWS::Serverless::Function
     Properties:
@@ -779,7 +784,6 @@ Resources:
       Role:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
-
 
 ### End Dassana Actions ###
 

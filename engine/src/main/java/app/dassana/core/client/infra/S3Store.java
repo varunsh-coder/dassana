@@ -23,6 +23,7 @@ import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.ServerSideEncryption;
 import software.amazon.awssdk.services.s3.paginators.ListObjectsV2Iterable;
 
 /**
@@ -85,7 +86,9 @@ public class S3Store {
 
   public void upload(String key, String body) {
     s3Client.putObject(
-        PutObjectRequest.builder().bucket(s3Bucket).key(key).build(),
+        PutObjectRequest.builder().bucket(s3Bucket).key(key).
+            serverSideEncryption(ServerSideEncryption.AWS_KMS)
+            .build(),
         RequestBody.fromString(body, Charset.defaultCharset()));
     s3Client.putObject(PutObjectRequest.builder().bucket(s3Bucket).key(LAST_UPDATED_KEY).build(),
         RequestBody.empty());

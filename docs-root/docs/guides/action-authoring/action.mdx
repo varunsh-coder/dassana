@@ -11,6 +11,8 @@ To write actions, the following need to be created:
 3. `README.md` - Describes the purpose of the action
 4. Programming language-specific requirements
 
+Note that usual AWS Lambda [limits](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) apply when using Dassana Actions.
+
 :::info
 
 For a complete list of examples, look at the [available actions in GitHub](https://github.com/dassana-io/dassana/tree/main/content/actions).
@@ -205,7 +207,7 @@ When using python, a `requirements.txt` file is required in the specific action 
 
 Common features shared across Actions:
 
-1) Caching
+1. Caching
 
 The **cachetools** library is used to support caching, which is being used across actions. The most essential use case
 is caching AWS SDK service clients.
@@ -215,6 +217,7 @@ is caching AWS SDK service clients.
     def create_aws_client(self, context: LambdaContext, service, region: str) -> client:
 
 ```
+
 The hashing scheme **generate_hash** essentially ensures that service clients are distributed across
 {account}-{service}-{region}.
 
@@ -225,7 +228,7 @@ However, implicitly enforced is that keyword arguments used after the call (i.e 
 dassana_aws.create_aws_client(context=context, service='s3', region=region) # Keyword Arguments i.e **kwargs
 ```
 
-2) Cross account STS
+2. Cross account STS
 
 Dassana Engine injects STS credentials as part of `env` in LambdaContext, and we retrieve Service clients by searching
 via
