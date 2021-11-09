@@ -23,7 +23,7 @@ def validate_unique_id(steps):
         fail = True
 
 
-for path in glob('content/workflows/policies/csp/aws/**/*.yaml',
+for path in glob('content/workflows/**/*.yaml',
                  recursive=True):
     with open(path, 'r') as f:
         steps = load(f, Loader=FullLoader).get('steps')

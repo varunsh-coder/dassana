@@ -74,28 +74,3 @@ jobs:
       - name: Validate id pattern
         run: |
           python .dassana-internal-devops/scripts/validate-id-patterns.py
-
-#  TODO: rethink JQ validation
-#  validate-jq-rules:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#        with:
-#          persist-credentials: false
-#      - name: Install jq
-#        run: |
-#          apt update && apt install sudo
-#          sudo apt-get update && sudo apt-get install jq -y
-#      - name: Install yq
-#        run: |
-#          sudo wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.6.1/yq_linux_amd64
-#          sudo chmod +x /usr/local/bin/yq
-#      - name: Validate jq rules
-#        run: |
-#          chmod +x .dassana-internal-devops/scripts/validate-policies-rule-grammar.sh
-#          chmod +x .dassana-internal-devops/scripts/validate-vendors-rule-grammar.sh
-#          chmod +x .dassana-internal-devops/scripts/validate-resource-priority-rule-grammar.sh
-#          .dassana-internal-devops/scripts/validate-policies-rule-grammar.sh | jq -s -e 'any(.) | not'
-#          .dassana-internal-devops/scripts/validate-vendors-rule-grammar.sh | jq -s -e 'any(.) | not'
-#          .dassana-internal-devops/scripts/validate-resource-priority-rule-grammar.sh | jq -s -e 'any(.) | not'
