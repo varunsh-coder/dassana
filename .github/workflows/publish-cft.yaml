@@ -118,6 +118,9 @@ jobs:
           repository: dassana-io/web-authoring
           path: web-authoring
           token: ${{ secrets.NODE_AUTH_TOKEN }}
+      - run: |
+          pwd
+          ls ./web-authoring
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
