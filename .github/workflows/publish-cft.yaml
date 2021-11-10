@@ -118,7 +118,6 @@ jobs:
           pwd
           cd ./web-authoring
           pwd
-          npm i
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
