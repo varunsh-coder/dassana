@@ -1,103 +1,126 @@
 name: Build, Test, and Publish Dassana Open Source App as CFT
 on:
-  release:
-    types: [published]
+  [push]
+  # release:
+  #   types: [published]
 jobs:
   build-test-and-publish-cft:
     runs-on: ubuntu-latest
     steps:
+      # - name: Checkout
+      #   uses: actions/checkout@v2.3.1
+      #   with:
+      #     ref: ${{ github.event.inputs.GIT_TAG }}
+      #     persist-credentials: false
+      # - name: Set tag env var
+      #   run: echo "GIT_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      # - uses: actions/setup-java@v2
+      #   with:
+      #     distribution: 'adopt'
+      #     java-version: '11'
+      # - name: Configure AWS Credentials for Dassana Prod
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
+      # - uses: aws-actions/setup-sam@v1
+      # - uses: actions/setup-python@v2
+      #   with:
+      #     python-version: '3.7'
+      # - name: Pack it up!
+      #   run: |
+      #     cd content/pkg
+      #     sam build --cached --parallel --use-container
+      #     cd ../../engine
+      #     mvn  -ntp -B clean compile -DkskipTest
+      #     cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngine/content/
+      #     cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngineApi/content/
+      #     cd ../content/pkg
+      #     tag=`git describe --tags`
+      #     sam package -t .aws-sam/build/template.yaml --s3-bucket ${{ secrets.SAM_ARTIFACTS_BUCKET }}  --s3-prefix $tag --region ${{ secrets.AWS_REGION }} --output-template-file uploaded-template.yaml
+      #     sed -i "s/__version-to-be-replaced-by-cicd__/$tag/g" uploaded-template.yaml
+      #     ts=`date +%s`
+      #     sed -i "s/ApiGatewayDeployment42/ApiGatewayDeployment$ts/g" uploaded-template.yaml
+      # - name: Configure AWS credentials for QA environment
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.QA_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.QA_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.QA_REGION }}
+      # - name: Deploy built CFT to QA environment
+      #   uses: aws-actions/aws-cloudformation-github-deploy@v1.0.4
+      #   with:
+      #     name: Dassana
+      #     template: content/pkg/uploaded-template.yaml
+      #     capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
+      #     no-fail-on-empty-changeset: '1'
+      # - name: Install Node
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: '12.x'
+      # - name: Install newman
+      #   run: |
+      #     npm install -g newman
+      #     npm install -g newman-reporter-htmlextra
+      #     npm install -g newman-reporter-junitfull
+      # - name: Make directories for test results
+      #   run: |
+      #     mkdir -p junitReport
+      #     mkdir -p htmlReport
+      # - name: Run Postman collection tests
+      #   run: |
+      #     newman run engine/api/api.postman_collection.json -e engine/api/env.postman_environment.json --env-var dassana-api-key=${{ secrets.QA_API_KEY }} --env-var api-gateway-url=${{ secrets.QA_API_GATEWAY_URL }} -r junit,htmlextra --reporter-junit-export junitReport/junit.xml > junitReport/junit.xml --reporter-htmlextra-export htmlReport/report.html > htmlReport/report.html --reporter-htmlextra-skipHeaders "x-api-key"
+      # - name: Configure AWS Credentials for Dassana Prod
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
+      # - name: Deploy!
+      #   if: ${{ !failure() }}
+      #   run: |
+      #     tag=`git describe --tags`
+      #     cd content/pkg
+      #     aws s3 cp uploaded-template.yaml s3://${{ secrets.SAM_ARTIFACTS_BUCKET }}/$tag/cft.yaml
+      # - name: JUnit UI Status
+      #   uses: dorny/test-reporter@v1
+      #   if: always()
+      #   with:
+      #     name: Junit UI
+      #     path: junitReport/j*.xml
+      #     reporter: java-junit
+      # - name: Upload JUnit files
+      #   if: always()
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: JUnit Report
+      #     path: junitReport
+      # - name: Upload HTML report
+      #   if: always()
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: HTML Report
+      #     path: htmlReport/*.html
+      # Checkout FE repo dassana-io/web-authoring and run cypress integration tests
       - name: Checkout
-        uses: actions/checkout@v2.3.1
+        uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.inputs.GIT_TAG }}
-          persist-credentials: false
-      - name: Set tag env var
-        run: echo "GIT_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - uses: actions/setup-java@v2
+          repository: dassana-io/web-authoring
+          path: web-authoring
+          token: ${{ secrets.NODE_AUTH_TOKEN }}
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
         with:
-          distribution: "adopt"
-          java-version: "11"
-      - name: Configure AWS Credentials for Dassana Prod
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - uses: aws-actions/setup-sam@v1
-      - uses: actions/setup-python@v2
-        with:
-          python-version: "3.7"
-      - name: Pack it up!
-        run: |
-          cd content/pkg
-          sam build --cached --parallel --use-container
-          cd ../../engine
-          mvn  -ntp -B clean compile -DkskipTest
-          cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngine/content/
-          cp -R ./target/classes/content ../content/pkg/.aws-sam/build/DassanaEngineApi/content/
-          cd ../content/pkg
-          tag=`git describe --tags`
-          sam package -t .aws-sam/build/template.yaml --s3-bucket ${{ secrets.SAM_ARTIFACTS_BUCKET }}  --s3-prefix $tag --region ${{ secrets.AWS_REGION }} --output-template-file uploaded-template.yaml
-          sed -i "s/__version-to-be-replaced-by-cicd__/$tag/g" uploaded-template.yaml
-          ts=`date +%s`
-          sed -i "s/ApiGatewayDeployment42/ApiGatewayDeployment$ts/g" uploaded-template.yaml
-      - name: Configure AWS credentials for QA environment
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.QA_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.QA_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.QA_REGION }}
-      - name: Deploy built CFT to QA environment
-        uses: aws-actions/aws-cloudformation-github-deploy@v1.0.4
-        with:
-          name: Dassana
-          template: content/pkg/uploaded-template.yaml
-          capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
-          no-fail-on-empty-changeset: "1"       
-      - name: Install Node
-        uses: actions/setup-node@v1
-        with: 
-          node-version: '12.x'
-      - name: Install newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-          npm install -g newman-reporter-junitfull
-      - name: Make directories for test results
-        run: |
-          mkdir -p junitReport
-          mkdir -p htmlReport
-      - name: Run Postman collection tests
-        run: |
-          newman run engine/api/api.postman_collection.json -e engine/api/env.postman_environment.json --env-var dassana-api-key=${{ secrets.QA_API_KEY }} --env-var api-gateway-url=${{ secrets.QA_API_GATEWAY_URL }} -r junit,htmlextra --reporter-junit-export junitReport/junit.xml > junitReport/junit.xml --reporter-htmlextra-export htmlReport/report.html > htmlReport/report.html --reporter-htmlextra-skipHeaders "x-api-key"
-      - name: Configure AWS Credentials for Dassana Prod
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}      
-      - name: Deploy!
-        if: ${{ !failure() }}
-        run: |
-          tag=`git describe --tags`
-          cd content/pkg
-          aws s3 cp uploaded-template.yaml s3://${{ secrets.SAM_ARTIFACTS_BUCKET }}/$tag/cft.yaml 
-      - name: JUnit UI Status
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Junit UI
-          path: junitReport/j*.xml
-          reporter: java-junit
-      - name: Upload JUnit files
-        if: always()
-        uses: actions/upload-artifact@v2
-        with: 
-          name: JUnit Report
-          path: junitReport
-      - name: Upload HTML report
-        if: always()
-        uses: actions/upload-artifact@v2
-        with: 
-          name: HTML Report
-          path: htmlReport/*.html
+          browser: chrome
+          config-file: ./cypress.json
+          record: false
+          start: npm start
+          wait-on: 'http://localhost:3006'
+          wait-on-timeout: 120
+        env:
+          CI: true
+          CYPRESS_API_GATEWAY_URL: ${{ secrets.QA_API_GATEWAY_URL }}
+          CYPRESS_API_KEY: ${{ secrets.QA_API_KEY }}
+          FONT_AWESOME_AUTH_TOKEN: ${{ secrets.FONT_AWESOME_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
