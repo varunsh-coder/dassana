@@ -111,7 +111,7 @@ jobs:
           node-version: '12.x'
       - run: |
           npm init -y
-          npm i --save-dev cypress
+          npm i --save-dev cypress typescript
       - name: Checkout
         uses: actions/checkout@v2
         with:
