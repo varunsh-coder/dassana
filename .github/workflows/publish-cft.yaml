@@ -123,11 +123,8 @@ jobs:
         with:
           browser: chrome
           project: ./web-authoring
-          config-file: ./cypress.json
+          config: baseUrl=https://editor.dassana.io/
           record: false
-          start: cd ./web-authoring && npm start
-          wait-on: 'http://localhost:3006'
-          wait-on-timeout: 120
         env:
           CI: true
           CYPRESS_API_GATEWAY_URL: ${{ secrets.QA_API_GATEWAY_URL }}
