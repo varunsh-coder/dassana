@@ -113,6 +113,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - run: npm ci cypress
       - name: Install web-authoring dependencies
         run: |
           pwd
@@ -122,6 +123,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           browser: chrome
+          project: ./web-authoring
           config-file: ./cypress.json
           record: false
           start: pwd && npm start
