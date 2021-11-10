@@ -103,22 +103,21 @@ jobs:
       #     name: HTML Report
       #     path: htmlReport/*.html
       # Checkout FE repo dassana-io/web-authoring and run cypress integration tests
+      - name: Checkout dassana repo
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: |
+          npm init -y
+          npm i --save-dev cypress
       - name: Checkout
         uses: actions/checkout@v2
         with:
           repository: dassana-io/web-authoring
           path: web-authoring
           token: ${{ secrets.NODE_AUTH_TOKEN }}
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-      - run: npm i --save-dev cypress
-      - name: Install web-authoring dependencies
-        run: |
-          pwd
-          cd ./web-authoring
-          pwd
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
