@@ -123,6 +123,7 @@ jobs:
         with:
           browser: chrome
           project: ./web-authoring
+          config-file: ./cypress.json
           config: baseUrl=https://editor.dassana.io/
           record: false
         env:
