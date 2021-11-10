@@ -109,9 +109,16 @@ jobs:
           repository: dassana-io/web-authoring
           path: web-authoring
           token: ${{ secrets.NODE_AUTH_TOKEN }}
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install web-authoring dependencies
         run: |
           pwd
           cd ./web-authoring
+          pwd
+          npm i
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
