@@ -124,7 +124,7 @@ jobs:
           browser: chrome
           config-file: ./cypress.json
           record: false
-          start: npm start
+          start: pwd && npm start
           wait-on: 'http://localhost:3006'
           wait-on-timeout: 120
         env:
