@@ -125,7 +125,7 @@ jobs:
           project: ./web-authoring
           config-file: ./cypress.json
           record: false
-          start: pwd && npm start
+          start: cd ./web-authoring && npm start
           wait-on: 'http://localhost:3006'
           wait-on-timeout: 120
         env:
