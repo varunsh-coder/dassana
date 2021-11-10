@@ -113,7 +113,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - run: npm ci cypress
+      - run: npm i --save-dev cypress
       - name: Install web-authoring dependencies
         run: |
           pwd
