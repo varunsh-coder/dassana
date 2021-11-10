@@ -1,17 +1,17 @@
 name: Build, Test, and Publish Dassana Open Source App as CFT
 on:
-  [push]
+  push
   # release:
   #   types: [published]
 jobs:
   build-test-and-publish-cft:
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v2.3.1
-      #   with:
-      #     ref: ${{ github.event.inputs.GIT_TAG }}
-      #     persist-credentials: false
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          ref: ${{ github.event.inputs.GIT_TAG }}
+          persist-credentials: false
       # - name: Set tag env var
       #   run: echo "GIT_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       # - uses: actions/setup-java@v2
@@ -55,10 +55,10 @@ jobs:
       #     template: content/pkg/uploaded-template.yaml
       #     capabilities: CAPABILITY_NAMED_IAM,CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND
       #     no-fail-on-empty-changeset: '1'
-      # - name: Install Node
-      #   uses: actions/setup-node@v1
-      #   with:
-      #     node-version: '12.x'
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
       # - name: Install newman
       #   run: |
       #     npm install -g newman
@@ -102,25 +102,17 @@ jobs:
       #   with:
       #     name: HTML Report
       #     path: htmlReport/*.html
-      # Checkout FE repo dassana-io/web-authoring and run cypress integration tests
-      - name: Checkout dassana repo
-        uses: actions/checkout@v2
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-      - run: |
+      # Checkout FE repo dassana-io/web-authoring and run cypress integration tests on node
+      - name: Install required dependencies for Cypress
+        run: |
           npm init -y
           npm i --save-dev cypress typescript
-      - name: Checkout
+      - name: Checkout FE repo web-authoring
         uses: actions/checkout@v2
         with:
           repository: dassana-io/web-authoring
           path: web-authoring
           token: ${{ secrets.NODE_AUTH_TOKEN }}
-      - run: |
-          pwd
-          ls ./web-authoring
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
