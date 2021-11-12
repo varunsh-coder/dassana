@@ -31,7 +31,8 @@ filters: # before this workflow can run, Dassana engine will match the input to 
 # 	"resourceContainer": "demo-resourceContainer",
 # 	"region": "demo-region",
 # 	"resourceType": "demo-resourceType",
-# 	"vendorSeverity": "demo-severity"
+# 	"vendorSeverity": "demo-severity",
+#   "alertTime": "demo-alertTime"
 # }
 
 output:
@@ -67,4 +68,7 @@ output:
     value-type: STRING
   - name: vendorSeverity
     value: demo-severity
+    value-type: STRING
+  - name: alertTime
+    value: demo-alertTime
     value-type: STRING

@@ -15,6 +15,7 @@ class GuardDutyNormalizerTest(TestCase):
             norm = NormalizedOutput(**resp)
             assert norm.vendorId == 'aws-guardduty'
             assert norm.alertId == '36bc3df32928fe1c98ac2a6d9a48fb56'
+            assert norm.alertTime == '1616985961'
             assert norm.vendorPolicy == 'UnauthorizedAccess:EC2/SSHBruteForce'
             assert norm.vendorSeverity == 'low'
             assert norm.csp == 'aws'
@@ -29,6 +30,7 @@ class GuardDutyNormalizerTest(TestCase):
             norm = NormalizedOutput(**resp)
             assert norm.vendorId == 'aws-guardduty'
             assert norm.alertId == 'd4bdf5da6f4790309f903c8c303f82af'
+            assert norm.alertTime == '1631746732'
             assert norm.vendorPolicy == 'Policy:S3/BucketBlockPublicAccessDisabled'
             assert norm.vendorSeverity == 'low'
             assert norm.csp == 'aws'
@@ -44,6 +46,7 @@ class GuardDutyNormalizerTest(TestCase):
             norm = NormalizedOutput(**resp)
             assert norm.vendorId == 'aws-guardduty'
             assert norm.alertId == 'a0bdfff401df680ce958b027abe1c311'
+            assert norm.alertTime == '1632085240'
             assert norm.vendorPolicy == 'UnauthorizedAccess:EC2/SSHBruteForce'
             assert norm.vendorSeverity == 'low'
             assert norm.csp == 'aws'

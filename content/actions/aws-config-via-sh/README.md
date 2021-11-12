@@ -13,6 +13,7 @@ Here is a sample output of this action -
   "csp": "aws",
   "resourceContainer": "020747060415",
   "region": "us-east-1",
+  "alertTime": "1615010072772",
   "service": null,
   "alertClassification": {
     "classRh": "",

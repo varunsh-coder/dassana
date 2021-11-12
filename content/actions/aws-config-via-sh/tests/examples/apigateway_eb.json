@@ -21,7 +21,7 @@
           "Status": "FAILED"
         },
         "ProductName": "Security Hub",
-        "FirstObservedAt": "2021-08-07T00:10:26.826Z",
+        "FirstObservedAt": "2021-08-07T00:10:26.826Z",  
         "CreatedAt": "2021-08-07T00:10:26.826Z",
         "LastObservedAt": "2021-08-07T21:54:40.927Z",
         "CompanyName": "AWS",

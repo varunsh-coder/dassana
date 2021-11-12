@@ -12,6 +12,7 @@ This Dassana action normalizes GuardDuty Alerts ingested via Security Hub. Here 
   "csp": "aws",
   "resourceContainer": "020747060415",
   "region": "us-east-1",
+  "alertTime": "1616985961",
   "service": "ec2",
   "alertClassification": {
     "classRh": "",

@@ -1,3 +1,4 @@
+import datetime
 import logging
 from functools import wraps
 from time import time
@@ -22,3 +23,12 @@ def timing(f, measurements: Dict[frozenset, List], args_measure_func=lambda x: N
         return result
 
     return wrap
+
+def get_unix_time(DateTime):
+    split_time = DateTime.split('T')
+    ymd = split_time[0].split('-')
+    hms = split_time[1].split(':')
+    hms[2] = hms[2].replace('Z', '')
+    time = datetime.datetime(int(ymd[0]), int(ymd[1]), int(ymd[2]), int(hms[0]), int(hms[1]), int(round(float(hms[2]))))
+    alert_time = int(time.timestamp())
+    return alert_time

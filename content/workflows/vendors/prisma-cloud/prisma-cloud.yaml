@@ -48,3 +48,5 @@ output:
     value: ."lookup".alertClassification
   - name: vendorSeverity
     value: ."resource-info".vendorSeverity
+  - name: alertTime
+    value: ."resource-info".alertTime

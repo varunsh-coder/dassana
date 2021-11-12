@@ -8,6 +8,7 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from dassana.common.aws_client import parse_arn
 from dassana.common.models import NormalizedOutput
 from dassana.common.aws_client import LambdaTestContext
+from dassana.common.timing import get_unix_time
 
 
 class Resources(BaseModel):
@@ -27,6 +28,7 @@ class AWSConfigAlert(BaseModel):
     Region: str = None
     AwsAccountId: str = None
     Types: List[str] = []
+    FirstObservedAt: str = None
     ProductFields: Optional[Dict[str, str]] = None
     FindingProviderFields: Dict[str, Any] = None
     Severity: Dict[str, Any] = None
@@ -54,12 +56,15 @@ def handle(event: AWSConfigAlert, context: LambdaContext):
 
         resource_arn = event.ProductFields['Resources:0/Id']
 
+    # Changing alert time to Unix
+    alert_time = get_unix_time(event.FirstObservedAt)
+
     # Severity is held inside this field in some alerts
     if event.FindingProviderFields:
         vendor_severity = event.FindingProviderFields["Severity"]["Label"].lower()
     else:
         vendor_severity = event.Severity["Label"].lower()
-        
+    
     arn_obj = parse_arn(resource_arn) if resource_arn else None
     if arn_obj.resource_type:
         resource_id = arn_obj.resource
@@ -83,6 +88,7 @@ def handle(event: AWSConfigAlert, context: LambdaContext):
         region=region,
         resourceId=resource_id,
         alertId=alertId,
+        alertTime=alert_time,
         canonicalId=resource_arn,
         vendorPolicy=policy_id,
         vendorSeverity=vendor_severity,

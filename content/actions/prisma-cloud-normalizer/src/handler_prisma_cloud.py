@@ -40,6 +40,7 @@ class PrismaAlert(BaseModel):
     policyId: str = None
     policyType: str = None
     severity: str = None
+    firstSeen: int = None
     message: Dict[Any, Any] = None
     history: List[Dict[Any, Any]] = None
     resource: PrismaResource = None
@@ -51,6 +52,7 @@ def handle(event: PrismaAlert, context: LambdaContext):
     if event.message is not None:  # Splunk Event
         event = parse(event.message, model=PrismaAlert)
         vendor_severity = event.severity.lower()
+        alert_time = None
     arn_obj = parse_arn(event.resource.data.arn) if event.resource.data.arn else None
     if (event.tags is not None) and len(event.tags) > 0:
         tags = list(map(lambda x: {
@@ -61,11 +63,11 @@ def handle(event: PrismaAlert, context: LambdaContext):
         tags = []
 
     if event.alertId and event.policyId:  # SQS
-        alert_id, vendor_policy, vendor_severity = event.alertId, event.policyId, event.severity.lower()
+        alert_id, vendor_policy, vendor_severity, alert_time = event.alertId, event.policyId, event.severity.lower(), event.firstSeen
     elif event.id and event.policy.policyId:  # Prisma
-        alert_id, vendor_policy, vendor_severity = event.id, event.policy.policyId, None
+        alert_id, vendor_policy, vendor_severity, alert_time = event.id, event.policy.policyId, None, event.firstSeen
     else:
-        alert_id, vendor_policy, vendor_severity = None, None, None
+        alert_id, vendor_policy, vendor_severity, alert_time = None, None, None, None
 
     output = NormalizedOutput(
         vendorId='prisma-cloud',
@@ -76,6 +78,7 @@ def handle(event: PrismaAlert, context: LambdaContext):
         csp=event.resource.cloudType,
         resourceContainer=event.resource.accountId,
         region=event.resource.regionId,
+        alertTime=alert_time,
         service=arn_obj.service if arn_obj is not None else None,
         resourceType=arn_obj.resource_type if arn_obj is not None else None,
         resourceId=arn_obj.resource if arn_obj is not None else event.resource.id,

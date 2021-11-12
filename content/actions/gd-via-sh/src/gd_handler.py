@@ -8,6 +8,7 @@ from aws_lambda_powertools.utilities.typing import LambdaContext
 from dassana.common.aws_client import parse_arn
 from dassana.common.models import NormalizedOutput
 from dassana.common.aws_client import LambdaTestContext
+from dassana.common.timing import get_unix_time
 
 
 class Resources(BaseModel):
@@ -27,6 +28,7 @@ class GuardDutyAlert(BaseModel):
     Region: str = None
     AwsAccountId: str = None
     Types: List[str] = []
+    FirstObservedAt: str = None
     Severity: Dict[str, Any] = None
     ProductFields: Optional[Dict[str, str]] = None
     Resources: Optional[List[Resources]]
@@ -91,6 +93,10 @@ def handle(event: GuardDutyAlert, context: LambdaContext):
             break
 
     resource_arn = resource.Id if resource.Id else ""
+
+    # Changing date time to Unix
+    alert_time = get_unix_time(event.FirstObservedAt)
+
     vendor_severity = event.Severity["Label"].lower()
     arn_obj = parse_arn(resource_arn) if not resource_arn=='' else None
     if (arn_obj is not None and arn_obj.resource_type):
@@ -111,6 +117,7 @@ def handle(event: GuardDutyAlert, context: LambdaContext):
         region=region,
         resourceId=resource_id,
         alertId=alertId,
+        alertTime=alert_time,
         canonicalId=resource_arn,
         resourceType=resource_type,
         service=service,

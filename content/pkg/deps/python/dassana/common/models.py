@@ -21,6 +21,7 @@ class NormalizedOutput(BaseModel):
     csp: str = None
     resourceContainer: str
     region: str
+    alertTime: str = None
     service: str = None
     alertClassification: AlertClassification = AlertClassification()
     resourceType: str = None
