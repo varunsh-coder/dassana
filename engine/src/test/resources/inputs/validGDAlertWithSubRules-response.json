@@ -119,6 +119,6 @@
       },
       "workflowId": "general-context-aws"
     },
-    "alertKey": "s3://foo/alert/foo"
+    "alertKey": "s3://foo/alerts/aws-guardduty/92be33c9c933159cc5e8eed7a7d42af7"
   }
 }

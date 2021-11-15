@@ -27,7 +27,7 @@ public class S3WorkflowManager implements RemoteContentDownloadApi {
   public static final String WORKFLOW_PATH_IN_S3 = "workflows/";
   public static final String LAST_UPDATED_KEY = "content-last-updated";
   public static final String ALERT_ID_KEY = "alertId";
-
+  public static final String VENDOR_ID_KEY = "vendorId";
 
   public S3WorkflowManager(S3Store s3Store) {
     this.s3Store = s3Store;
@@ -44,23 +44,14 @@ public class S3WorkflowManager implements RemoteContentDownloadApi {
         }
       });
 
-
   protected String getPath(Optional<WorkflowOutputWithRisk> normalizationResult) {
 
-    DateTime now = DateTime.now(DateTimeZone.UTC);
+    String vendorId = (String) normalizationResult.get().getOutput().get(VENDOR_ID_KEY);
+    if (! StringUtils.isNotEmpty(vendorId)) {
+      vendorId = "unknownVendor";
+    }
 
-    int min = now.minuteOfHour().get();
-    int hour = now.hourOfDay().get();
-    int day = now.dayOfMonth().get();
-    int month = now.monthOfYear().get();
-    int year = now.year().get();
-
-    String alertsPrefix = "alerts".concat(
-        "/year=".concat(String.valueOf(year)).concat(
-            "/month=").concat(String.valueOf(month)).concat(
-            "/day=").concat(String.valueOf(day)).concat(
-            "/hour=").concat(String.valueOf(hour)).concat(
-            "/min=").concat(String.valueOf(min)));
+    String alertsPrefix = "alerts".concat("/").concat(vendorId);
 
     String path;
     if (normalizationResult.isEmpty()) {
@@ -69,12 +60,10 @@ public class S3WorkflowManager implements RemoteContentDownloadApi {
       path = alertsPrefix.concat("/".concat(getAlertId(normalizationResult.get())));
     }
     return path;
-
   }
 
-  //if alertId is available, use it, if not, use a random UUID
+  // if alertId is available, use it, if not, use a random UUID
   private String getAlertId(WorkflowOutputWithRisk workflowOutputWithRisk) {
-
     if (workflowOutputWithRisk == null) {
       return UUID.randomUUID().toString();
     } else {
@@ -89,7 +78,6 @@ public class S3WorkflowManager implements RemoteContentDownloadApi {
 
   protected String getUploadedPath(Optional<WorkflowOutputWithRisk> normalizationResult,
       String jsonToUpload, String path) {
-
     if (normalizationResult.isPresent()) {
       JSONObject dassanaDecoratedJsonObj = new JSONObject(jsonToUpload);
       JSONObject updatedDassanaObj = dassanaDecoratedJsonObj.getJSONObject(DASSANA_KEY)
@@ -125,11 +113,8 @@ public class S3WorkflowManager implements RemoteContentDownloadApi {
 
   }
 
-
   private Long getLastUpdatedValueFromS3() {
     return s3Store.getLastUpdatedValueFromS3();
-
   }
-
 
 }

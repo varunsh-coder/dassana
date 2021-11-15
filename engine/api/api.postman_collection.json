@@ -233,6 +233,94 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Fetch Fubar From S3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"dassana\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway-url}}/alert?vendorId=foo-cloud-cspm-vendor&alertId=demo-alert-id",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"alert"
+							],
+							"query": [
+								{
+									"key": "vendorId",
+									"value": "foo-cloud-cspm-vendor"
+								},
+								{
+									"key": "alertId",
+									"value": "demo-alert-id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Alert From S3 with wrong alertId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"OutPut is Json\", function () {",
+									"    pm.response.to.be.json;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api-gateway-url}}/alert?vendorId=aws-guardduty&alertId=92be33c9c933159cc5e8eed7a7d42af",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"alert"
+							],
+							"query": [
+								{
+									"key": "vendorId",
+									"value": "aws-guardduty"
+								},
+								{
+									"key": "alertId",
+									"value": "92be33c9c933159cc5e8eed7a7d42af"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

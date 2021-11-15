@@ -14,9 +14,11 @@ import javax.inject.Inject
 @Requires(env = "test")
 class RunTest extends Specification {
 
-
     @Inject
     Run run
+
+    @Inject
+    Alert alert
 
     @Unroll
     void "alert-processing"() {
@@ -60,12 +62,24 @@ class RunTest extends Specification {
         when:
         def response = run.processAlert("{}", WorkflowsTest.FOO_NORMALIZER_ID, false, RunMode.TEST, false)
 
-
         then:
         response.code() == 200
-
-
     }
 
+    @Unroll
+    void "get-alert-from-s3"() {
+
+        when:
+        def s3AlertResponse = alert.getAlert("aws-guardduty", "92be33c9c933159cc5e8eed7a7d42af7")
+        def s3Alert = s3AlertResponse.body()
+
+        def observedResultJsonStr = new JSONObject(s3Alert).toString()
+        def expectedJsonStr = new JSONObject(Helper.getInputFromFile("alert-from-s3.json")).toString()
+
+        then:
+        s3AlertResponse.code() == 200
+        observedResultJsonStr == expectedJsonStr
+
+    }
 
 }

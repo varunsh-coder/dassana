@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.exceptions.HttpStatusException;
 import org.apache.commons.io.IOUtils;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -82,6 +85,30 @@ public class S3Store {
       }
     }//all s3 files have been processed now
     return remoteContent;
+  }
+
+  // fetches the alert from s3 using the uploadedPath as key
+  public String getContent(String key) {
+
+    // string builder object to store the alert
+    StringBuilder alert = new StringBuilder();
+    try {
+      s3Client
+              .getObject(GetObjectRequest.builder().
+                      bucket(s3Bucket).key(key)
+                      .build(), (getObjectResponse, abortableInputStream) -> { //handle the object
+                String customWorkflowFile = IOUtils.toString(abortableInputStream, Charset.defaultCharset());
+                alert.append(customWorkflowFile);
+                return null;
+              });
+    } catch (S3Exception exception) { // using s3.model.S3Exception to catch exceptions
+      int statusCode = exception.toBuilder().statusCode();
+      if (statusCode != 304) { // 304 Not Modified -> following S3Store getAllContent()
+        // using HttpStatusException allows dynamic status code and message
+        throw new HttpStatusException(HttpStatus.valueOf(statusCode), exception.getMessage());
+      }
+    }
+    return alert.toString(); // since alert is in StringBuilder format
   }
 
   public void upload(String key, String body) {

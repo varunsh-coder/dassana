@@ -12,6 +12,7 @@ import app.dassana.core.workflow.model.Workflow;
 import app.dassana.core.workflow.model.WorkflowOutputWithRisk;
 import app.dassana.core.workflow.processor.EventBridgeHandler;
 import app.dassana.core.workflow.processor.PostProcessor;
+import app.dassana.core.restapi.Alert;
 import io.micronaut.context.annotation.Replaces;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -35,11 +36,6 @@ public class Common {
     public FakeS3WorkflowManager(S3Store s3Store) {
       super(s3Store);
     }
-
-    @Override
-    protected String getPath(Optional<WorkflowOutputWithRisk> normalizationResult) {
-      return "alert/foo";
-    }
   }
 
 
@@ -61,7 +57,7 @@ public class Common {
       for (Entry<String, Object> entry : inMemStore.entrySet()) {
         String s = entry.getKey();
         Object o = entry.getValue();
-        if (!s.startsWith("alert/")) {
+        if (!s.startsWith("alerts/")) {
           objects.add(o.toString());
         }
 
@@ -79,6 +75,17 @@ public class Common {
     public void delete(String key) {
       inMemStore.remove(key);
       lastUpdated = System.currentTimeMillis();
+    }
+
+    @Override
+    public String getContent(String key) {
+
+      Object alert = inMemStore.get(key);
+      if (alert != null) {
+        return alert.toString();
+      } else {
+        return "{}";
+      }
     }
   }
 

@@ -168,8 +168,9 @@ public class RequestProcessor {
 
       String workflowId = normalizationResult.get().getWorkflowId();
       NormalizerWorkflow workflow = (NormalizerWorkflow) request.getWorkflowIdToWorkflowMap().get(workflowId);
+      String decoratedJsonWithS3key = s3WorkflowManager.uploadedToS3(normalizationResult, dassanaDecoratedJson);
       if (workflow.getPostProcessorSteps().size() > 0) {
-        String decoratedJsonWithS3key = s3WorkflowManager.uploadedToS3(normalizationResult, dassanaDecoratedJson);
+
         String finalJson = postProcessor
             .handlePostProcessor(request, normalizationResult.get(), decoratedJsonWithS3key);
         processingResponse.setDecoratedJson(finalJson);
