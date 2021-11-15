@@ -1,6 +1,6 @@
 ## Determine the granted permissions and respective least privilege violations for a role, user, or policy
 
-Returns the policies attached to, or inlined in, a given IAM arn, along with [cloudsplaining](https://github.com/salesforce/cloudsplaining) findings. 
+Returns [cloudsplaining](https://github.com/salesforce/cloudsplaining) findings for the policies attached to, or inlined in, a given IAM arn.
 
 ### Sample Input:
 ```json
