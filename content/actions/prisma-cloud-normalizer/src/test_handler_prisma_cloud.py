@@ -22,6 +22,7 @@ class PrismaCloudNormalizerTest(TestCase):
         assert norm.resourceContainer == '123456789123'
         assert norm.vendorSeverity == 'high'
         assert norm.alertTime == None
+        assert norm.alertState == 'ACTIVE'
 
     # Prisma API alert does not contain vendor severity
     @staticmethod
@@ -37,6 +38,7 @@ class PrismaCloudNormalizerTest(TestCase):
         assert norm.resourceContainer == '123456789123'
         assert norm.vendorSeverity == None
         assert norm.alertTime == '1615010072772'
+        assert norm.alertState == 'ACTIVE'
 
     @staticmethod
     def validate_alert_prisma_sqs(alert):  
@@ -51,6 +53,7 @@ class PrismaCloudNormalizerTest(TestCase):
         assert norm.resourceContainer == '123456789123'
         assert norm.vendorSeverity == 'high'
         assert norm.alertTime == '1629947769576'
+        assert norm.alertState == 'ACTIVE'
 
     def test_sqs(self):
         with open('prisma-cloud-normalizer/tests/examples/prisma_sqs.json') as f:

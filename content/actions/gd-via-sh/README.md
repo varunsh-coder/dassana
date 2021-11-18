@@ -13,6 +13,7 @@ This Dassana action normalizes GuardDuty Alerts ingested via Security Hub. Here 
   "resourceContainer": "020747060415",
   "region": "us-east-1",
   "alertTime": "1616985961",
+  "alertState": "ACTIVE",
   "service": "ec2",
   "alertClassification": {
     "classRh": "",

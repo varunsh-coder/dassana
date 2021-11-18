@@ -22,6 +22,7 @@ class NormalizedOutput(BaseModel):
     resourceContainer: str
     region: str
     alertTime: str = None
+    alertState: str = None
     service: str = None
     alertClassification: AlertClassification = AlertClassification()
     resourceType: str = None

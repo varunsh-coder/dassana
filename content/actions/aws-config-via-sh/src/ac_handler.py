@@ -1,3 +1,4 @@
+from enum import Enum
 from json import loads
 from typing import Dict, List, Any, Optional
 
@@ -21,7 +22,6 @@ class Resources(BaseModel):
 class Detail(BaseModel):
     findings: List[Dict[Any, Any]] = None
 
-
 class AWSConfigAlert(BaseModel):
     Id: str = None
     ProductArn: str = None
@@ -32,6 +32,7 @@ class AWSConfigAlert(BaseModel):
     ProductFields: Optional[Dict[str, str]] = None
     FindingProviderFields: Dict[str, Any] = None
     Severity: Dict[str, Any] = None
+    RecordState: str = None
     Resources: Optional[List[Resources]]
     detail: Detail = None
 
@@ -65,6 +66,8 @@ def handle(event: AWSConfigAlert, context: LambdaContext):
     else:
         vendor_severity = event.Severity["Label"].lower()
     
+    record_state = event.RecordState
+
     arn_obj = parse_arn(resource_arn) if resource_arn else None
     if arn_obj.resource_type:
         resource_id = arn_obj.resource
@@ -92,6 +95,7 @@ def handle(event: AWSConfigAlert, context: LambdaContext):
         canonicalId=resource_arn,
         vendorPolicy=policy_id,
         vendorSeverity=vendor_severity,
+        alertState=record_state,
         vendorId='aws-config'
     )
 

@@ -21,6 +21,7 @@ class TestPrismaLookup:
                     "csp": "aws",
                     "resourceContainer": "foobar",
                     "region": "eu-central-1",
+                    "alertState": "ACTIVE",
                     "alertTime": "1632085240",
                     "service": "ec2",
                     "alertClassification": {
@@ -81,6 +82,7 @@ class TestGuarddutyLookup:
                 "vendorId": "aws-guardduty",
                 "vendorSeverity": "high",
                 "alertId": "arn:aws:guardduty:us-east-1:foobar:detector/foobar",
+                "alertState": "ACTIVE",
                 "alertTime": "1632085240",
                 "resourceContainer": "foobar",
                 "region": "us-east-1",

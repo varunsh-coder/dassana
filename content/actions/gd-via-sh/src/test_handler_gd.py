@@ -22,6 +22,7 @@ class GuardDutyNormalizerTest(TestCase):
             assert norm.resourceId == 'i-12345678909876543'
             assert norm.region == 'us-east-1'
             assert norm.resourceContainer == '363265257036'
+            assert norm.alertState == 'ACTIVE'
 
     def test_raw_s3_multiple_resource(self):
         with open('gd-via-sh/tests/examples/raw-s3-multiple-resource.json') as f:
@@ -37,6 +38,8 @@ class GuardDutyNormalizerTest(TestCase):
             assert norm.resourceId == 'new-fixed-bucket-dassana'
             assert norm.region == 'us-east-1'
             assert norm.resourceContainer == '020747060415'
+            assert norm.alertState == 'ACTIVE'
+
 
 
     def test_raw_ec2_alpha(self):
@@ -53,3 +56,4 @@ class GuardDutyNormalizerTest(TestCase):
             assert norm.resourceId == 'i-12345678909876543'
             assert norm.region == 'us-east-1'
             assert norm.resourceContainer == '020747060415'
+            assert norm.alertState == 'ACTIVE'

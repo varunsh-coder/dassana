@@ -1,3 +1,4 @@
+from enum import Enum
 from json import loads
 from typing import Dict, Any, List
 
@@ -31,6 +32,12 @@ class Policy(BaseModel):
     policyType: str = None
 
 
+class alertState(Enum):
+    open = "ACTIVE"
+    snoozed = "ACTIVE"
+    resolved = "INACTIVE"
+    dismissed = "INACTIVE"
+
 class PrismaAlert(BaseModel):
     id: str = None
     status: str = None
@@ -51,8 +58,7 @@ class PrismaAlert(BaseModel):
 def handle(event: PrismaAlert, context: LambdaContext):
     if event.message is not None:  # Splunk Event
         event = parse(event.message, model=PrismaAlert)
-        vendor_severity = event.severity.lower()
-        alert_time = None
+        alert_time, alert_status, vendor_severity = None, alertState[event.alertStatus].value, event.severity.lower()
     arn_obj = parse_arn(event.resource.data.arn) if event.resource.data.arn else None
     if (event.tags is not None) and len(event.tags) > 0:
         tags = list(map(lambda x: {
@@ -63,11 +69,11 @@ def handle(event: PrismaAlert, context: LambdaContext):
         tags = []
 
     if event.alertId and event.policyId:  # SQS
-        alert_id, vendor_policy, vendor_severity, alert_time = event.alertId, event.policyId, event.severity.lower(), event.firstSeen
+        alert_id, vendor_policy, vendor_severity, alert_time, alert_status = event.alertId, event.policyId, event.severity.lower(), event.firstSeen, alertState[event.alertStatus].value
     elif event.id and event.policy.policyId:  # Prisma
-        alert_id, vendor_policy, vendor_severity, alert_time = event.id, event.policy.policyId, None, event.firstSeen
+        alert_id, vendor_policy, vendor_severity, alert_time, alert_status = event.id, event.policy.policyId, None, event.firstSeen, alertState[event.status].value
     else:
-        alert_id, vendor_policy, vendor_severity, alert_time = None, None, None, None
+        alert_id, vendor_policy, vendor_severity, alert_time, alert_status = None, None, None, None, None
 
     output = NormalizedOutput(
         vendorId='prisma-cloud',
@@ -79,6 +85,7 @@ def handle(event: PrismaAlert, context: LambdaContext):
         resourceContainer=event.resource.accountId,
         region=event.resource.regionId,
         alertTime=alert_time,
+        alertState=alert_status,
         service=arn_obj.service if arn_obj is not None else None,
         resourceType=arn_obj.resource_type if arn_obj is not None else None,
         resourceId=arn_obj.resource if arn_obj is not None else event.resource.id,

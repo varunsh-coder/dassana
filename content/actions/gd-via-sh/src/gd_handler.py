@@ -32,6 +32,7 @@ class GuardDutyAlert(BaseModel):
     Severity: Dict[str, Any] = None
     ProductFields: Optional[Dict[str, str]] = None
     Resources: Optional[List[Resources]]
+    RecordState: str = None
     detail: Detail = None
 
 
@@ -97,6 +98,8 @@ def handle(event: GuardDutyAlert, context: LambdaContext):
     # Changing date time to Unix
     alert_time = get_unix_time(event.FirstObservedAt)
 
+    record_state = event.RecordState
+
     vendor_severity = event.Severity["Label"].lower()
     arn_obj = parse_arn(resource_arn) if not resource_arn=='' else None
     if (arn_obj is not None and arn_obj.resource_type):
@@ -123,6 +126,7 @@ def handle(event: GuardDutyAlert, context: LambdaContext):
         service=service,
         vendorPolicy=policy_id,
         vendorSeverity=vendor_severity,
+        alertState=record_state,
         vendorId='aws-guardduty'
     )
 

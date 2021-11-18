@@ -14,6 +14,7 @@ Here is a sample output of this action -
   "resourceContainer": "020747060415",
   "region": "us-east-1",
   "alertTime": "1615010072772",
+  "alertState": "ACTIVE",
   "service": null,
   "alertClassification": {
     "classRh": "",

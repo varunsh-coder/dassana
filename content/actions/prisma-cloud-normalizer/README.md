@@ -17,6 +17,7 @@ This action extracts and normalizes alerts from Prisma Cloud into Dassana-esque 
 	"vendorPolicy": "34064d53-1fd1-42e6-b075-45dce495caca",
 	"vendorId": "prisma-cloud",
 	"alertId": "P-2388888",
+	"alertState": "ACTIVE",
     "alertTime": "1615010072772",
 	"resourceContainer": "032584774331",
 	"region": "us-east-2",

@@ -55,6 +55,8 @@ output:
     value: ."resource-info".vendorSeverity
   - name: alertTime
     value: ."resource-info".alertTime
+  - name: alertState
+    value: ."resource-info".alertState
 
 post-processor:
   steps:
