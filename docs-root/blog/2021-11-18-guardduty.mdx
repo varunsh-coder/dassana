@@ -1,0 +1,912 @@
+---
+slug: guardduty
+title: Contextualizing threats discovered by AWS GuardDuty
+author: Parth Shah
+author_title: Co-Founder & Head of Product and Engineering
+author_url: https://github.com/parth-dassana
+author_image_url: https://avatars.githubusercontent.com/u/68707443?v=4
+tags: [aws, contextualization, guardduty, iam, s3, ec2]
+no_comments: false
+---
+
+We are excited to announce support for [AWS GuardDuty](https://aws.amazon.com/guardduty/).
+
+> Amazon GuardDuty is a threat detection service that continuously monitors your AWS accounts and workloads for malicious activity and delivers detailed security findings for visibility and remediation.
+
+GuardDuty focuses on three resources, namely, S3 buckets, EC2 instances, and IAM users. There is a lot of context one could add depending on the kind of policy in question. However, if we had to add context on a policy-by-policy basis (which is possible btw), it would take quite some time to cover all 75 policies!
+
+What if we took a different approach? What if we started by adding context based on the resource type in question? That would essentially reduce the scope of adding context down to three resource types.
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+<Tabs
+	defaultValue='before'
+	values={[
+		{ label: 'Before', value: 'before' },
+		{ label: 'After', value: 'after' }
+	]}
+>
+	<TabItem value='before'>
+
+```json title="EC2 SSH Brute Force"
+{
+	"SchemaVersion": "2018-10-08",
+	"Id": "arn:aws:guardduty:us-east-1:xxxxxxxxxxxx:detector/babd3e77a9eac4e9e65abbc61ec0c518/finding/b2be0c21b0f68fe8195f6e4e6a8a7e49",
+	"ProductArn": "arn:aws:securityhub:us-east-1::product/aws/guardduty",
+	"ProductName": "GuardDuty",
+	"CompanyName": "Amazon",
+	"Region": "us-east-1",
+	"GeneratorId": "arn:aws:guardduty:us-east-1:xxxxxxxxxxxx:detector/babd3e77a9eac4e9e65abbc61ec0c518",
+	"AwsAccountId": "xxxxxxxxxxxx",
+	"Types": ["TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"],
+	"FirstObservedAt": "2021-09-24T14:28:00.000Z",
+	"LastObservedAt": "2021-10-03T19:07:46.000Z",
+	"CreatedAt": "2021-09-24T14:44:01.645Z",
+	"UpdatedAt": "2021-10-03T19:16:55.022Z",
+	"Severity": {
+		"Product": 2,
+		"Label": "LOW",
+		"Normalized": 40
+	},
+	"Title": "31.184.198.71 is performing SSH brute force attacks against i-yyyyyyyyyyyy.",
+	"Description": "31.184.198.71 is performing SSH brute force attacks against i-yyyyyyyyyyyy. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password.",
+	"SourceUrl": "https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=current&fId=b2be0c21b0f68fe8195f6e4e6a8a7e49",
+	"ProductFields": {
+		"aws/guardduty/service/action/networkConnectionAction/remotePortDetails/portName": "Unknown",
+		"aws/guardduty/service/archived": "false",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asnOrg": "Petersburg Internet Network ltd.",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lat": "55.7483",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/ipAddressV4": "31.184.198.71",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lon": "37.6171",
+		"aws/guardduty/service/action/networkConnectionAction/blocked": "false",
+		"aws/guardduty/service/action/networkConnectionAction/remotePortDetails/port": "2233",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/country/countryName": "Russia",
+		"aws/guardduty/service/serviceName": "guardduty",
+		"aws/guardduty/service/evidence": "",
+		"aws/guardduty/service/action/networkConnectionAction/localIpDetails/ipAddressV4": "172.31.30.207",
+		"aws/guardduty/service/detectorId": "babd3e77a9eac4e9e65abbc61ec0c518",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/org": "Petersburg Internet Network Hosting",
+		"aws/guardduty/service/action/networkConnectionAction/connectionDirection": "INBOUND",
+		"aws/guardduty/service/eventFirstSeen": "2021-09-24T14:28:00.000Z",
+		"aws/guardduty/service/eventLastSeen": "2021-10-03T19:07:46.000Z",
+		"aws/guardduty/service/action/networkConnectionAction/localPortDetails/portName": "SSH",
+		"aws/guardduty/service/action/actionType": "NETWORK_CONNECTION",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/city/cityName": "Moscow",
+		"aws/guardduty/service/additionalInfo": "",
+		"aws/guardduty/service/resourceRole": "TARGET",
+		"aws/guardduty/service/action/networkConnectionAction/localPortDetails/port": "22",
+		"aws/guardduty/service/action/networkConnectionAction/protocol": "TCP",
+		"aws/guardduty/service/count": "7",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asn": "34665",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/isp": "Petersburg Internet Network Hosting",
+		"aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:xxxxxxxxxxxx:detector/babd3e77a9eac4e9e65abbc61ec0c518/finding/b2be0c21b0f68fe8195f6e4e6a8a7e49",
+		"aws/securityhub/ProductName": "GuardDuty",
+		"aws/securityhub/CompanyName": "Amazon"
+	},
+	"Resources": [
+		{
+			"Type": "AwsEc2Instance",
+			"Id": "arn:aws:ec2:us-east-1:xxxxxxxxxxxx:instance/i-yyyyyyyyyyyy",
+			"Partition": "aws",
+			"Region": "us-east-1",
+			"Tags": {
+				"Name": "splunk"
+			},
+			"Details": {
+				"AwsEc2Instance": {
+					"Type": "t2.medium",
+					"ImageId": "ami-vvvvvvvvvv",
+					"IpV4Addresses": ["172.31.30.207", "54.147.62.225"],
+					"IamInstanceProfileArn": "arn:aws:iam::xxxxxxxxxxxx:instance-profile/my-role",
+					"VpcId": "vpc-zzzzzzzzzz",
+					"SubnetId": "subnet-wwwwwwwwww",
+					"LaunchedAt": "2021-09-14T23:04:37.000Z"
+				}
+			}
+		}
+	],
+	"WorkflowState": "NEW",
+	"Workflow": {
+		"Status": "NEW"
+	},
+	"RecordState": "ACTIVE",
+	"FindingProviderFields": {
+		"Severity": {
+			"Label": "LOW"
+		},
+		"Types": ["TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"]
+	}
+}
+```
+
+  </TabItem>
+	<TabItem value='after'>
+
+```json title="EC2 SSH Brute Force Contextualized"
+{
+  // highlight-start
+	"dassana": {
+		"resource-context": {
+			"output": {},
+			"step-output": [
+				{
+					"ec2Exposure": {
+						"appLayer": {
+							"canReceiveUnauthenticatedTraffic": false,
+							"behindLoadBalancer": false,
+							"exceptionMatch": false
+						},
+						"direct": {
+							"allowedVia": {
+								"sg": [
+									"sg-wwwwwwwwww"
+								]
+							},
+							"publicIp": "54.87.17.187",
+							"isExposed": true
+						}
+					}
+				},
+				{
+					"iamRole": {
+						"result": {
+							"roleArn": "arn:aws:iam::xxxxxxxxxxxx:role/my-role",
+							"roleName": "my-role"
+						}
+					}
+				},
+				{
+          "riskyPermissions": {
+            "result": {
+              "ResourceExposure": [
+                "iam:DeleteUserPolicy",
+                "apigateway:UpdateRestApiPolicy",
+                "iam:DeleteGroupPolicy",
+                "iam:DeletePolicy",
+                ...
+              ],
+              "PrivilegeEscalation": [
+                {
+                  "type": "CreateAccessKey",
+                  "actions": ["iam:createaccesskey"]
+                },
+                {
+                  "type": "CreateLoginProfile",
+                  "actions": ["iam:createloginprofile"]
+                },,
+                ...
+              ],
+              "DataExfiltration": [
+                "ssm:GetParameter",
+                "s3:GetObject",
+                "ssm:GetParameters",
+                "secretsmanager:GetSecretValue",
+                "ssm:GetParametersByPath",
+                ...
+              ],
+              "CredentialsExposure": [
+                "redshift:GetClusterCredentials",
+                "sts:AssumeRole",
+                "iam:UpdateAccessKey",
+                ...
+              ],
+              "InfrastructureModification": [...],
+              "ServicesAffected": [...],
+              "ServiceWildcard": [...]
+            }
+          }
+				}
+			],
+			"workflowType": "resource-context",
+			"risk": {
+				"condition": ".ec2Exposure.direct.isExposed == true",
+				"riskValue": "critical",
+				"id": "exposed-directly-via-public-ip"
+			},
+			"workflowId": "ec2-instance-context"
+		},
+		"policy-context": {
+			"output": {},
+			"step-output": [],
+			"workflowType": "policy-context",
+			"risk": {
+				"condition": "",
+				"riskValue": "low",
+				"id": "default"
+			},
+			"workflowId": "instance-is-associated-with-ssh-brute-force"
+		},
+		"normalize": {
+			"output": {
+				"csp": "aws",
+				"resourceId": "i-yyyyyyyyyyyy",
+				"canonicalId": "arn:aws:ec2:us-east-1:xxxxxxxxxxxx:instance/i-yyyyyyyyyyyy",
+				"vendorSeverity": "low",
+				"vendorId": "aws-guardduty",
+				"tags": [
+					{
+						"name": "env",
+						"value": "prod"
+					},
+					{
+						"name": "Name",
+						"value": "splunk"
+					}
+				],
+				"alertClassification": {
+					"subclass": "credential-access",
+					"category": "brute-force",
+					"subcategory": "",
+					"class": "incident"
+				},
+				"service": "ec2",
+				"vendorPolicy": "UnauthorizedAccess:EC2/SSHBruteForce",
+				"alertId": "b2be0c21b0f68fe8195f6e4e6a8a7e49",
+				"resourceContainer": "xxxxxxxxxxxx",
+				"region": "us-east-1",
+				"resourceType": "instance"
+			},
+			"step-output": [
+				{
+					"resource-info": {
+						"csp": "aws",
+						"resourceId": "i-yyyyyyyyyyyy",
+						"canonicalId": "arn:aws:ec2:us-east-1:xxxxxxxxxxxx:instance/i-yyyyyyyyyyyy",
+						"vendorSeverity": "low",
+						"vendorId": "aws-guardduty",
+						"tags": [],
+						"alertClassification": {
+							"subclass": "",
+							"category": "",
+							"subcategory": "",
+							"classRh": ""
+						},
+						"service": "ec2",
+						"vendorPolicy": "UnauthorizedAccess:EC2/SSHBruteForce",
+						"alertId": "b2be0c21b0f68fe8195f6e4e6a8a7e49",
+						"resourceContainer": "xxxxxxxxxxxx",
+						"region": "us-east-1",
+						"resourceType": "instance"
+					}
+				},
+				{
+					"lookup": {
+						"csp": "aws",
+						"resourceId": "i-yyyyyyyyyyyy",
+						"canonicalId": "arn:aws:ec2:us-east-1:xxxxxxxxxxxx:instance/i-yyyyyyyyyyyy",
+						"vendorSeverity": "low",
+						"vendorId": "aws-guardduty",
+						"tags": [],
+						"alertClassification": {
+							"subclass": "credential-access",
+							"category": "brute-force",
+							"subcategory": "",
+							"class": "incident"
+						},
+						"service": "ec2",
+						"vendorPolicy": "UnauthorizedAccess:EC2/SSHBruteForce",
+						"alertId": "b2be0c21b0f68fe8195f6e4e6a8a7e49",
+						"resourceContainer": "xxxxxxxxxxxx",
+						"region": "us-east-1",
+						"resourceType": "instance"
+					}
+				},
+				{
+					"getTags": [
+						{
+							"name": "env",
+							"value": "prod"
+						},
+						{
+							"name": "Name",
+							"value": "splunk"
+						}
+					]
+				}
+			],
+			"workflowType": "normalize",
+			"post-processor": {
+				"update-security-hub-finding": []
+			},
+			"workflowId": "guardduty-via-securityhub"
+		},
+		"general-context": {
+			"output": {
+				"environment": "prod"
+			},
+			"step-output": [],
+			"workflowType": "general-context",
+			"risk": {
+				"condition": ".tags | any( select(.name | test(\"env\" ; \"ix\")) | select(.value | test(\"prod\" ; \"ix\")))",
+				"riskValue": "high",
+				"id": "prod-environment-risk-is-high"
+			},
+			"workflowId": "general-context-aws"
+		},
+		"alertKey": "s3://dassana-dassanabucket-uuuuuuuuuu/alerts/year=2021/month=11/day=19/hour=17/min=23/b2be0c21b0f68fe8195f6e4e6a8a7e49"
+	},
+  // highlight-end
+	"ProductArn": "arn:aws:securityhub:us-east-1::product/aws/guardduty",
+	"Types": [
+		"TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+	],
+	"SourceUrl": "https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=current&fId=b2be0c21b0f68fe8195f6e4e6a8a7e49",
+	"Description": "31.184.198.71 is performing SSH brute force attacks against i-yyyyyyyyyyyy. Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password.",
+	"ProductName": "GuardDuty",
+	"FirstObservedAt": "2021-09-24T14:28:00.000Z",
+	"CreatedAt": "2021-09-24T14:44:01.645Z",
+	"LastObservedAt": "2021-10-03T19:07:46.000Z",
+	"UserDefinedFields": {
+		"DASSANA_POLICY_CONTEXT_CATEGORY": "brute-force",
+		"DASSANA_ALERT_PATH": "s3://dassana-dassanabucket-uuuuuuuuuu/alerts/year=2021/month=9/day=24/hour=14/min=50/csp=aws/resource_container=xxxxxxxxxxxx/region=us-east-1/normalizer_workflow=aws-gd-via-security-hub/alertid=arn:aws:guardduty:us-east-1:xxxxxxxxxxxx:detector/babd3e77a9eac4e9e65abbc61ec0c518/finding/b2be0c21b0f68fe8195f6e4e6a8a7e49",
+		"DASSANA_POLICY_CONTEXT_RISK": "",
+		"DASSANA_GENERAL_CONTEXT_RISK": "",
+		"DASSANA_GENERAL_CONTEXT_RISK_CONDITION_NAME": "default",
+		"DASSANA_POLICY_CONTEXT_RISK_CONDITION_NAME": "default",
+		"DASSANA_POLICY_CONTEXT_SUB_CATEGORY": ""
+	},
+	"CompanyName": "Amazon",
+	"FindingProviderFields": {
+		"Types": [
+			"TTPs/Initial Access/UnauthorizedAccess:EC2-SSHBruteForce"
+		],
+		"Severity": {
+			"Label": "LOW"
+		}
+	},
+	"ProductFields": {
+		"aws/guardduty/service/action/networkConnectionAction/remotePortDetails/portName": "Unknown",
+		"aws/guardduty/service/archived": "false",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asnOrg": "Petersburg Internet Network ltd.",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lat": "55.7483",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/ipAddressV4": "31.184.198.71",
+		"aws/securityhub/ProductName": "GuardDuty",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/geoLocation/lon": "37.6171",
+		"aws/guardduty/service/action/networkConnectionAction/blocked": "false",
+		"aws/guardduty/service/action/networkConnectionAction/remotePortDetails/port": "2233",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/country/countryName": "Russia",
+		"aws/guardduty/service/serviceName": "guardduty",
+		"aws/guardduty/service/evidence": "",
+		"aws/guardduty/service/action/networkConnectionAction/localIpDetails/ipAddressV4": "172.31.30.207",
+		"aws/guardduty/service/detectorId": "babd3e77a9eac4e9e65abbc61ec0c518",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/org": "Petersburg Internet Network Hosting",
+		"aws/guardduty/service/action/networkConnectionAction/connectionDirection": "INBOUND",
+		"aws/guardduty/service/eventFirstSeen": "2021-09-24T14:28:00.000Z",
+		"aws/guardduty/service/eventLastSeen": "2021-10-03T19:07:46.000Z",
+		"aws/guardduty/service/action/networkConnectionAction/localPortDetails/portName": "SSH",
+		"aws/guardduty/service/action/actionType": "NETWORK_CONNECTION",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/city/cityName": "Moscow",
+		"aws/guardduty/service/additionalInfo": "",
+		"aws/guardduty/service/resourceRole": "TARGET",
+		"aws/guardduty/service/action/networkConnectionAction/localPortDetails/port": "22",
+		"aws/guardduty/service/action/networkConnectionAction/protocol": "TCP",
+		"aws/guardduty/service/count": "7",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/asn": "34665",
+		"aws/guardduty/service/action/networkConnectionAction/remoteIpDetails/organization/isp": "Petersburg Internet Network Hosting",
+		"aws/securityhub/CompanyName": "Amazon",
+		"aws/securityhub/FindingId": "arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:xxxxxxxxxxxx:detector/babd3e77a9eac4e9e65abbc61ec0c518/finding/b2be0c21b0f68fe8195f6e4e6a8a7e49"
+	},
+	"SchemaVersion": "2018-10-08",
+	"GeneratorId": "arn:aws:guardduty:us-east-1:xxxxxxxxxxxx:detector/babd3e77a9eac4e9e65abbc61ec0c518",
+	"RecordState": "ACTIVE",
+	"Title": "31.184.198.71 is performing SSH brute force attacks against i-yyyyyyyyyyyy.",
+	"Workflow": {
+		"Status": "NEW"
+	},
+	"Severity": {
+		"Normalized": 40,
+		"Label": "LOW",
+		"Product": 2
+	},
+	"UpdatedAt": "2021-10-03T19:16:55.022Z",
+	"WorkflowState": "NEW",
+	"AwsAccountId": "xxxxxxxxxxxx",
+	"Region": "us-east-1",
+	"Id": "arn:aws:guardduty:us-east-1:xxxxxxxxxxxx:detector/babd3e77a9eac4e9e65abbc61ec0c518/finding/b2be0c21b0f68fe8195f6e4e6a8a7e49",
+	"Resources": [
+		{
+			"Partition": "aws",
+			"Type": "AwsEc2Instance",
+			"Details": {
+				"AwsEc2Instance": {
+					"Type": "t2.medium",
+					"VpcId": "vpc-zzzzzzzzzz",
+					"ImageId": "ami-vvvvvvvvvv",
+					"IpV4Addresses": [
+						"172.31.30.207",
+						"54.147.62.225"
+					],
+					"SubnetId": "subnet-wwwwwwwwww",
+					"LaunchedAt": "2021-09-14T23:04:37.000Z",
+					"IamInstanceProfileArn": "arn:aws:iam::xxxxxxxxxxxx:instance-profile/my-role"
+				}
+			},
+			"Region": "us-east-1",
+			"Id": "arn:aws:ec2:us-east-1:xxxxxxxxxxxx:instance/i-yyyyyyyyyyyy",
+			"Tags": {
+				"Name": "splunk"
+			}
+		}
+	]
+}
+```
+
+  </TabItem>
+</Tabs>
+
+<!--truncate-->
+
+:::note
+
+If you haven't read last week's [Cloudsplaining blog entry](https://docs.dassana.io/blog/cloudsplaining), I highly recommend that you do since the following content builds on that story.
+
+:::
+
+## Contextualizing S3 Buckets
+
+Here is my resource context workflow for S3 buckets. This workflow runs for every alert tied to an S3 bucket regardless of the policy in question.
+
+```yaml
+schema: 1
+type: resource-context
+
+id: s3-bucket-context
+name: S3 bucket resource context
+
+csp: aws
+service: s3
+resource-type: bucket
+
+filters:
+    - match-type: any
+      rules:
+          - .resourceType == "bucket" and .csp =="aws"
+
+steps:
+    - id: bucketStats
+      uses: GetBucketStats
+      with:
+          - name: bucketName
+            value: .resourceId
+          - name: region
+            value: .region
+    - id: bucketPolicy
+      uses: GetBucketPolicy
+      with:
+          - name: bucketName
+            value: .resourceId
+          - name: region
+            value: .region
+
+risk-config:
+    default-risk: ''
+    rules:
+        - id: bucket-is-of-significant-size
+          condition: .bucketStats.result.bucketSizeInGB >= 10 or .bucketStats.result.numberOfObjects >= 1000
+          risk: high
+```
+
+Let's take a look at the `steps`:
+
+```yaml
+steps:
+    - id: bucketStats
+      uses: GetBucketStats
+      with:
+          - name: bucketName
+            value: .resourceId
+          - name: region
+            value: .region
+    - id: bucketPolicy
+      uses: GetBucketPolicy
+      with:
+          - name: bucketName
+            value: .resourceId
+          - name: region
+            value: .region
+```
+
+Each step is essentially just running a lambda function (aka action) behind the scenes to grab some context. In the case of S3 buckets, we are running two actions:
+
+1. `GetBucketStats` - This [action](https://github.com/dassana-io/dassana/tree/main/content/actions/get-bucket-stats) gets size related statistics for an S3 bucket.
+
+The output of this action looks like the following:
+
+```json
+{
+	"result": {
+		"bucketSizeInGB": 0.000466,
+		"numberOfObjects": 287
+	}
+}
+```
+
+2. `GetBucketPolicy` - This [action](https://github.com/dassana-io/dassana/tree/main/content/actions/get-bucket-policy) retrieves the bucket policy.
+
+Now that we have all of this juicy context in hand, we can write rules to assess the risk of the S3 bucket:
+
+```yaml
+risk-config:
+    default-risk: ''
+    rules:
+        - id: bucket-is-of-significant-size
+          condition: .bucketStats.result.bucketSizeInGB >= 10 or .bucketStats.result.numberOfObjects >= 1000
+          risk: high
+```
+
+In my case, I'm setting the risk of larger buckets to high as there is a lot of content inside them. I'm not leveraging the bucket policy in my example. However, if I wanted to, I could easily add rules to check and see if multiple accounts are sharing the S3 bucket. If so, the S3 bucket would be higher in resource priority compared to other S3 buckets.
+
+## Contextualizing EC2 Instances
+
+In the case of EC2 instances, here is what my resource context workflow looks like:
+
+```yaml
+schema: 1
+type: resource-context
+
+id: ec2-instance-context
+name: EC2 instance resource context
+
+csp: aws
+service: ec2
+resource-type: instance
+
+filters:
+    - match-type: any
+      rules:
+          - .resourceType == "instance" and .csp =="aws"
+
+steps:
+    - id: ec2Exposure
+      uses: WhatIsEc2Exposure
+      with:
+          - name: instanceId
+            value: .resourceId
+          - name: region
+            value: .region
+    - id: iamRole
+      uses: GetEc2InstanceIAMrole
+      with:
+          - name: instanceId
+            value: .resourceId
+          - name: region
+            value: .region
+    - id: riskyPermissions
+      uses: GetIAMPolicyRisks
+      with:
+          - name: iamArn
+            value: .steps.iamRole.result.roleArn
+          - name: region
+            value: .region
+
+risk-config:
+    default-risk: ''
+    rules:
+        - id: exposure
+          condition: .ec2Exposure | length > 0
+          risk: ''
+          subrules:
+              - id: exposed-directly-via-public-ip
+                condition: .ec2Exposure.direct.isExposed == true
+                risk: critical
+
+              - id: can-receive-unauthenticated-traffic-via-alb
+                condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == true
+                risk: high
+
+              - id: is-exposed-via-alb-and-receives-authenticated-traffic
+                condition: .ec2Exposure.appLayer.behindLoadBalancer == true and .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == false
+                risk: medium
+
+        - id: risky-permissions
+          condition: .riskyPermissions | length > 0
+          risk: ''
+          subrules:
+              - id: instance-has-permissions-that-allow-privilege-escalation
+                condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
+                risk: high
+
+              - id: instance-has-permissions-that-allow-credentials-exposure
+                condition: .riskyPermissions.result.CredentialsExposure | length > 0
+                risk: high
+
+              - id: instance-has-permissions-that-allow-data-exfiltration
+                condition: .riskyPermissions.result.DataExfiltration | length > 0
+                risk: medium
+
+              - id: instance-has-permissions-that-allow-infrastructure-modification
+                condition: .riskyPermissions.result.InfrastructureModification | length > 0
+                risk: low
+
+              - id: instance-has-permissions-that-allow-resource-exposure
+                condition: .riskyPermissions.result.ResourceExposure | length > 0
+                risk: low
+```
+
+Let's take a look at the `steps`:
+
+```yaml
+steps:
+    - id: ec2Exposure
+      uses: WhatIsEc2Exposure
+      with:
+          - name: instanceId
+            value: .resourceId
+          - name: region
+            value: .region
+    - id: iamRole
+      uses: GetEc2InstanceIAMrole
+      with:
+          - name: instanceId
+            value: .resourceId
+          - name: region
+            value: .region
+    - id: riskyPermissions
+      uses: GetIAMPolicyRisks
+      with:
+          - name: iamArn
+            value: .steps.iamRole.result.roleArn
+          - name: region
+            value: .region
+```
+
+1. `WhatIsEc2Exposure` - This [action](https://github.com/dassana-io/dassana/tree/main/content/actions/what-is-exposure-of-ec2-instance) returns the exposure of an EC2 instance to the internet. Even though [VPC Reachability Analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html) can help you identify the network path, the VPC Reachability Analyzer service does not handle the use case of instances behind ALB.
+
+On a high level, the action answers the following questions for an instance:
+
+-   Is the instance attached to an internet-facing Load Balancer as a target?
+    -   Does the LoadBalancer have any authentication type rules?
+        authenticate-cognito / authenticate-oidc
+-   Is the instance attached to security group that has ingress rules permitting traffic from the Internet?
+-   Does the EC2 instance have a public IP?
+
+The output of this action looks like the following:
+
+```json
+{
+	"appLayer": {
+		"type": "internet-facing",
+		"canReceiveUnauthenticatedTraffic": false,
+		"authConfig": {
+			"Type": "authenticate-oidc",
+			"AuthenticateOidcConfig": {
+				"Issuer": "https://accounts.google.com",
+				"AuthorizationEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+				"TokenEndpoint": "https://oauth2.googleapis.com/token",
+				"UserInfoEndpoint": "https://openidconnect.googleapis.com/v1/userinfo",
+				"ClientId": "XXX.apps.googleusercontent.com",
+				"SessionCookieName": "AWSELBAuthSessionCookie",
+				"Scope": "openid",
+				"SessionTimeout": 604800,
+				"OnUnauthenticatedRequest": "authenticate"
+			},
+			"Order": 1
+		}
+	},
+	"direct": {
+		"publicIp": "3.223.222.223",
+		"allowedVia": {
+			"sg": []
+		},
+		"isExposed": true
+	}
+}
+```
+
+2. `GetEc2InstanceIAMrole` - This [action](https://github.com/dassana-io/dassana/tree/main/content/actions/what-is-ec2-role) gets the IAM role attached to the EC2 instance.
+
+The output of this action looks like the following:
+
+```json
+{
+	"result": {
+		"roleArn": "arn:aws:iam::yyyyyyyyyy:role/my-overly-permissive-role",
+		"roleName": "my-overly-permissive-role"
+	}
+}
+```
+
+3. `GetIAMPolicyRisks` - This [action](https://github.com/dassana-io/dassana/tree/main/content/actions/get-iam-policy-risks) runs [cloudsplaining](https://github.com/salesforce/cloudsplaining) on the `roleArn` (which we received thanks to the `GetEc2InstanceIAMrole` action) to help identify risky permissions.
+
+The output of this action looks like the following (truncated for readability):
+
+```json
+{
+  "result": {
+    "ResourceExposure": [
+      "iam:DeleteUserPolicy",
+      "apigateway:UpdateRestApiPolicy",
+      "iam:DeleteGroupPolicy",
+      "iam:DeletePolicy",
+      ...
+    ],
+    "PrivilegeEscalation": [
+      {
+        "type": "CreateAccessKey",
+        "actions": ["iam:createaccesskey"]
+      },
+      {
+        "type": "CreateLoginProfile",
+        "actions": ["iam:createloginprofile"]
+      },,
+      ...
+    ],
+    "DataExfiltration": [
+      "ssm:GetParameter",
+      "s3:GetObject",
+      "ssm:GetParameters",
+      "secretsmanager:GetSecretValue",
+      "ssm:GetParametersByPath",
+      ...
+    ],
+    "CredentialsExposure": [
+      "redshift:GetClusterCredentials",
+      "sts:AssumeRole",
+      "iam:UpdateAccessKey",
+      ...
+    ],
+    "InfrastructureModification": [...],
+    "ServicesAffected": [...],
+    "ServiceWildcard": [...]
+  }
+}
+```
+
+Now let's take a look at the rules:
+
+```yaml
+risk-config:
+    default-risk: ''
+    rules:
+        - id: exposure
+          condition: .ec2Exposure | length > 0
+          risk: ''
+          subrules:
+              - id: exposed-directly-via-public-ip
+                condition: .ec2Exposure.direct.isExposed == true
+                risk: critical
+
+              - id: can-receive-unauthenticated-traffic-via-alb
+                condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == true
+                risk: high
+
+              - id: is-exposed-via-alb-and-receives-authenticated-traffic
+                condition: .ec2Exposure.appLayer.behindLoadBalancer == true and .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == false
+                risk: medium
+
+        - id: risky-permissions
+          condition: .riskyPermissions | length > 0
+          risk: ''
+          subrules:
+              - id: instance-has-permissions-that-allow-privilege-escalation
+                condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
+                risk: high
+
+              - id: instance-has-permissions-that-allow-credentials-exposure
+                condition: .riskyPermissions.result.CredentialsExposure | length > 0
+                risk: high
+
+              - id: instance-has-permissions-that-allow-data-exfiltration
+                condition: .riskyPermissions.result.DataExfiltration | length > 0
+                risk: medium
+
+              - id: instance-has-permissions-that-allow-infrastructure-modification
+                condition: .riskyPermissions.result.InfrastructureModification | length > 0
+                risk: low
+
+              - id: instance-has-permissions-that-allow-resource-exposure
+                condition: .riskyPermissions.result.ResourceExposure | length > 0
+                risk: low
+```
+
+I have a set of rules assessing the EC2 instance based on how exposed it is:
+
+```yaml
+- id: exposure
+  condition: .ec2Exposure | length > 0
+  risk: ''
+  subrules:
+      - id: exposed-directly-via-public-ip
+        condition: .ec2Exposure.direct.isExposed == true
+        risk: critical
+
+      - id: can-receive-unauthenticated-traffic-via-alb
+        condition: .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == true
+        risk: high
+
+      - id: is-exposed-via-alb-and-receives-authenticated-traffic
+        condition: .ec2Exposure.appLayer.behindLoadBalancer == true and .ec2Exposure.appLayer.canReceiveUnauthenticatedTraffic == false
+        risk: medium
+```
+
+I have another set of rules assessing the EC2 instance based on the risky permissions assigned to its role:
+
+```yaml
+- id: risky-permissions
+  condition: .riskyPermissions | length > 0
+  risk: ''
+  subrules:
+      - id: instance-has-permissions-that-allow-privilege-escalation
+        condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
+        risk: high
+
+      - id: instance-has-permissions-that-allow-credentials-exposure
+        condition: .riskyPermissions.result.CredentialsExposure | length > 0
+        risk: high
+
+      - id: instance-has-permissions-that-allow-data-exfiltration
+        condition: .riskyPermissions.result.DataExfiltration | length > 0
+        risk: medium
+
+      - id: instance-has-permissions-that-allow-infrastructure-modification
+        condition: .riskyPermissions.result.InfrastructureModification | length > 0
+        risk: low
+
+      - id: instance-has-permissions-that-allow-resource-exposure
+        condition: .riskyPermissions.result.ResourceExposure | length > 0
+        risk: low
+```
+
+As you can see, adding a little bit of context to an EC2 instance goes a long way in figuring out which EC2 instance to investigate when getting bombarded by a bunch of alerts.
+
+## Contextualizing IAM Users
+
+Here's my IAM user resource context file:
+
+```yaml
+schema: 1
+type: resource-context
+
+id: iam-user-context
+name: IAM user resource context
+
+csp: aws
+service: iam
+resource-type: user
+
+filters:
+    - match-type: any
+      rules:
+          - .resourceType == "user" and .csp =="aws" and .service == "iam"
+
+steps:
+    - id: riskyPermissions
+      uses: GetIAMPolicyRisks
+      with:
+          - name: iamArn
+            value: .canonicalId
+          - name: region
+            value: .region
+
+risk-config:
+    default-risk: ''
+    rules:
+        - id: risky-permissions
+          condition: .riskyPermissions.result | length > 0
+          risk: ''
+          subrules:
+              - id: instance-has-permissions-that-allow-privilege-escalation
+                condition: .riskyPermissions.result.PrivilegeEscalation | length > 0
+                risk: high
+
+              - id: instance-has-permissions-that-allow-credentials-exposure
+                condition: .riskyPermissions.result.CredentialsExposure | length > 0
+                risk: high
+
+              - id: instance-has-permissions-that-allow-data-exfiltration
+                condition: .riskyPermissions.result.DataExfiltration | length > 0
+                risk: medium
+
+              - id: instance-has-permissions-that-allow-infrastructure-modification
+                condition: .riskyPermissions.result.InfrastructureModification | length > 0
+                risk: low
+
+              - id: instance-has-permissions-that-allow-resource-exposure
+                condition: .riskyPermissions.result.ResourceExposure | length > 0
+                risk: low
+```
+
+For IAM user-related alerts, I'm essentially just running the [cloudsplaining action](https://github.com/dassana-io/dassana/tree/main/content/actions/get-iam-policy-risks) and then adding rules based on risky permissions (identical to what we did for EC2 instances).
+
+Just these three files alone help cover every single GuardDuty policy by adding some table stakes context! That's it for today! Until next time.
