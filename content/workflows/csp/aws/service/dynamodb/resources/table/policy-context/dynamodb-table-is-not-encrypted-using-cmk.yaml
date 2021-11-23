@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: dynamodb-table-is-not-encrypted-using-cmk
+name: DynamoDB table is not encrypted using CMK
+labels:
+  - contextualization
+
+csp: aws
+service: dynamodb
+resource-type: table
+
+class: risk
+subclass: config
+category: crypto
+subcategory: key-management
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_119 # Ensure DynamoDB table is encrypted using CMK
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "CKV_AWS_119"
+
+risk-config:
+  default-risk: ""

@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: rds-tls-is-disabled
+name: RDS TLS is disabled
+labels:
+  - contextualization
+
+csp: aws
+service: rds
+resource-type: db
+
+class: risk
+subclass: config
+category: networking
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_90 # DocDB TLS is not disabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_90"
+
+risk-config:
+  default-risk: medium

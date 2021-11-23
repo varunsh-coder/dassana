@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: qldb-permissions-mode-is-not-standard
+name: QLDB permissions mode is not STANDARD
+labels:
+  - contextualization
+
+csp: aws
+service: qldb
+resource-type: ledger
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_170 # Ensure QLDB ledger permissions is set to STANDARD
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_170"
+
+risk-config:
+  default-risk: ""

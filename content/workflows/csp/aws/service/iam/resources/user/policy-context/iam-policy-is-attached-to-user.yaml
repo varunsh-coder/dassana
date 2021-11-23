@@ -28,6 +28,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "2b7e07ba-56c8-42db-8db4-a4b65f5066c4"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_40
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_40"
 
 risk-config:
   default-risk: low

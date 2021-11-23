@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: eks-cluster-security-group-is-overly-permissive-to-all-traffic
-name: EKS cluster security group is overly permissive to all traffic
+id: eks-cluster-security-group-is-overly-permissive
+name: EKS cluster security group is overly permissive
 labels:
   - contextualization
 
@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "5cc78081-1006-4874-8b13-bd01583888c4"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_100 # EKS Node group allows SSH access from all sources
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_100"
 
 risk-config:
   default-risk: medium

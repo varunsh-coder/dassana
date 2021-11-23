@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: efs-encryption-in-transit-is-disabled
+name: Elastic File System (EFS) encryption in transit is disabled
+labels:
+  - contextualization
+
+csp: aws
+service: efs
+resource-type: file-system
+
+class: risk
+subclass: config
+category: networking
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_97
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_97"
+
+risk-config:
+  default-risk: medium

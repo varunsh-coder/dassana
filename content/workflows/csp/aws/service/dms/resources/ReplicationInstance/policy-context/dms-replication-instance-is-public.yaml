@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("dms-replication-not-public"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_89 
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_89"
 
 risk-config:
   default-risk: critical

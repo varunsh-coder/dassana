@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: elasticsearch-domain-index-slow-logs-is-disabled
-name: Elasticsearch domain Index slow logs is disabled
+id: elasticsearch-log-type-is-disabled
+name: Elasticsearch domain has a log type disabled
 labels:
   - contextualization
 
@@ -18,10 +18,18 @@ subcategory: logging
 filters:
   - vendor: prisma-cloud
     policies:
-      - 050f3fd0-f587-49cb-9717-889d4e6590a5
+      - 050f3fd0-f587-49cb-9717-889d4e6590a5 # Index slow logs is disabled
+      - 59c82c7e-2884-4c65-a307-eba3a6fc27d7 # Search slow logs is disabled
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "050f3fd0-f587-49cb-9717-889d4e6590a5"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "59c82c7e-2884-4c65-a307-eba3a6fc27d7"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_84 # Error, slow, index, or audit logs is disabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_84"
 
 risk-config:
   default-risk: low

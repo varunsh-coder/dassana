@@ -1,0 +1,46 @@
+schema: 1
+type: normalize
+
+vendor-id: checkov
+id: checkov
+
+filters:
+  - match-type: any
+    rules:
+      - .Source == "checkov"
+
+# notice that we are using a look-up step here. This step looks up vendorPolicy in the policy context workflow files and returns service and resource type information
+
+steps:
+  - id: resource-info
+    uses: CheckovCFTNormalizer
+  - id: lookup
+    uses: NormalizerLookup
+    with:
+      - name: input
+        value: .steps."resource-info"
+
+output:
+  - name: vendorId
+    value: checkov
+    value-type: STRING
+  - name: alertId
+    value: ."lookup".alertId
+  - name: vendorPolicy
+    value: ."lookup".vendorPolicy
+  - name: csp
+    value: ."lookup".csp
+  - name: resourceContainer
+    value: ."lookup".resourceContainer
+  - name: region
+    value: ."lookup".region
+  - name: service
+    value: ."lookup".service
+  - name: resourceType
+    value: ."lookup".resourceType
+  - name: resourceId
+    value: ."lookup".resourceId
+  - name: alertClassification
+    value: ."lookup".alertClassification
+  - name: alertTime
+    value: ."resource-info".alertTime

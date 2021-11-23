@@ -1,7 +1,7 @@
 schema: 1
 type: policy-context
 
-id: lambda-env-var-is-not-encrypted-using-cmk
+id: lambda-env-var-is-not-securely-encrypted
 name: Lambda environment variable is not encrypted at-rest using CMK
 labels:
   - contextualization
@@ -18,10 +18,19 @@ subcategory: encryption
 filters:
   - vendor: prisma-cloud
     policies:
-      - 052c5035-c362-452d-b0dc-31aa3eff4aae
+      - 052c5035-c362-452d-b0dc-31aa3eff4aae # Env var is not encrypted using CMK
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "052c5035-c362-452d-b0dc-31aa3eff4aae"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_173 # Env var is not encrypted using CMK
+      - CKV_AWS_45 # Env var is in plain-text (hard-coded)
+
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_173"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_45"
 
 risk-config:
   default-risk: low

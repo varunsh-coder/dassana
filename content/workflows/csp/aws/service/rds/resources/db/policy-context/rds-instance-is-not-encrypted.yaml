@@ -28,6 +28,14 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "34fa9efb-d18f-41e4-b93f-2f7e5378752c"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_16 # Ensure RDS is encrypted at rest
+      - CKV_AWS_74 # Ensure DocDB is encrypted at rest
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_16"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_74"
 
 risk-config:
   default-risk: medium

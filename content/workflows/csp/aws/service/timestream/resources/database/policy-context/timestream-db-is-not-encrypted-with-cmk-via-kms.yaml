@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: timestream-db-is-not-encrypted-with-cmk-via-kms
+name: Timestream database is not encrypted with CMK via KMS
+labels:
+  - contextualization
+
+csp: aws
+service: timestream
+resource-type: database
+
+class: risk
+subclass: config
+category: crypto
+subcategory: key-management
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_160 # Ensure Timestream DB is encrypted with KMS CMK
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_160"
+
+risk-config:
+  default-risk: medium

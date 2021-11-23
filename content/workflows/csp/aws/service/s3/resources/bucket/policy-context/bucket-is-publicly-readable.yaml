@@ -32,6 +32,12 @@ filters:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "e0b4379d-6692-41ab-bd33-10cbac836b1e"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "f0235acc-737d-4a54-8d2c-a05da32663bd"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "630d3779-d932-4fbf-9cce-6e8d793c6916"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_20 # Ensure S3 bucket doesn't allow READ perms to all
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_20"
 
 steps:
   - id: website-info

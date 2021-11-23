@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: qldb-ledger-deletion-protection-is-disabled
+name: QLDB ledger does not have deletion protection enabled
+labels:
+  - contextualization
+
+csp: aws
+service: qldb
+resource-type: ledger
+
+class: risk
+subclass: config
+category: storage
+subcategory: availability
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_172 # Ensure QLDB ledger deletion protection is enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_172"
+
+risk-config:
+  default-risk: ""

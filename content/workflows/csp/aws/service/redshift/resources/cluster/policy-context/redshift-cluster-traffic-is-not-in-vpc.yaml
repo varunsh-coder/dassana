@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: redshift-cluster-enhanced-vpc-routing-is-not-enabled
-name: Redshift cluster enhanced VPC routing is not enabled
+id: redshift-cluster-traffic-is-not-in-vpc
+name: Redshift cluster traffic may be routed through the internet
 labels:
   - contextualization
 
@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("redshift-enhanced-vpc-routing-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_154 # Redshift deployed outside a VPC
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_154"
 
 risk-config:
   default-risk: high

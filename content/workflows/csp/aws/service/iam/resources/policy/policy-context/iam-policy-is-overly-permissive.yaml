@@ -40,6 +40,24 @@ filters:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "08f84034-fb56-4eb4-914f-bf1358d0d870"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "cd2dd664-59a9-469d-a6d0-d6f4a9f8d94c"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "1eb7db29-9561-418e-a038-1344c3c79014"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_111 # IAM policy allows modification of resource-based policies without constraint
+      - CKV_AWS_107 # IAM policy allows credentials to be returned in an API response
+      - CKV_AWS_108 # IAM policy allows data exfiltration
+      - CKV_AWS_109 # IAM policy allows permissions management without constraints
+      - CKV_AWS_110 # IAM policy allows privilege escalation
+      - CKV_AWS_62 # IAM policy allows full admin privileges
+      - CKV_AWS_63 # IAM policy contains wildcard action
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_111"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_107"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_108"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_109"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_110"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_62"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_63"
 
 risk-config:
   default-risk: high

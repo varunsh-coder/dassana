@@ -1,0 +1,28 @@
+schema: 1
+type: policy-context
+
+id: ecr-repository-is-not-encrypted-with-kms
+name: ECR repository is not encrypted with KMS
+labels:
+  - contextualization
+
+csp: aws
+service: elasticContainerRegistry
+resource-type: repository
+
+class: risk
+subclass: config
+category: crypto
+subcategory: key-management
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_136 # Ensure ECR is encrypted with KMS rather than AWS-managed key
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_136"
+
+
+risk-config:
+  default-risk: high

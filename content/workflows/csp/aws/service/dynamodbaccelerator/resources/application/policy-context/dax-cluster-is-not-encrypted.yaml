@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("dax-encryption-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_47
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_47"
 
 risk-config:
   default-risk: medium

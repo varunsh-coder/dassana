@@ -22,6 +22,14 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("rds-logging-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_104 # DocDB doesn't have audit logs enabled
+      - CKV_AWS_85 # DocDB doesn't have logging enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_104"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_85"
 
 risk-config:
   default-risk: medium

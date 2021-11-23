@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "4d0841e4-c65b-47b0-b8df-12c619d91c4c"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_123 # Ensure endpoint service is configured for manual acceptance
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_123"
 
 risk-config:
   default-risk: medium

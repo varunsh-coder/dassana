@@ -784,6 +784,18 @@ Resources:
       Role:
         Fn::GetAtt: [DassanaActionsRole, Arn]
       Timeout: 60
+  
+  CheckovCFTNormalizer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler_checkov_cft_normalizer.handle
+      Runtime: python3.7
+      CodeUri: ../actions/checkov-cft-normalizer
+      Layers:
+        - !Ref DassanaActionsPythonLayer
+      Role:
+        Fn::GetAtt: [DassanaActionsRole, Arn]
+      Timeout: 60
 
 ### End Dassana Actions ###
 

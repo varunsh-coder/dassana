@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: backup-vault-not-encrypted-with-cmk-via-kms
+name: Backup Vault is not encrypted with a CMK via KMS
+labels:
+  - contextualization
+
+csp: aws
+service: dynamodb
+resource-type: table
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_166 # Ensure Backup vault is encrypted at rest using KMS CMK
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_166"
+
+risk-config:
+  default-risk: medium

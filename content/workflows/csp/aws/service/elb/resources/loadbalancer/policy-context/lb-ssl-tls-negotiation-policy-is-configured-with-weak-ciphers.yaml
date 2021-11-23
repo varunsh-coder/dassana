@@ -1,0 +1,36 @@
+schema: 1
+type: policy-context
+
+id: lb-ssl-tls-negotiation-policy-is-configured-with-weak-ciphers
+name: Load Balancer SSL or TLS negotiation policy is configured with weak ciphers
+labels:
+  - contextualization
+
+csp: aws
+service: elb
+resource-type: loadbalancer
+
+class: risk
+subclass: config
+category: networking
+subcategory: encryption
+
+filters:
+  - vendor: prisma-cloud
+    policies:
+      - 19eaf735-4d0e-4490-bfaf-669b8bc52d72 # ELBv2 configured with SSL negotiation policy containing weak ciphers
+      - fed45316-6cae-4dac-aa57-fb451bacb149 # ELB (classic) configured with SSL negotiation policy containing weak ciphers
+    match-type: any
+    rules:
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "19eaf735-4d0e-4490-bfaf-669b8bc52d72"
+      - .vendorId == "prisma-cloud" and .vendorPolicy == "fed45316-6cae-4dac-aa57-fb451bacb149"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_103 # ALB is using TLS v1.2
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_103"
+
+
+risk-config:
+  default-risk: medium

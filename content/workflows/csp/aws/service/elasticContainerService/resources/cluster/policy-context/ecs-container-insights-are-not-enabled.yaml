@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: ecs-container-insights-are-not-enabled
+name: ECS insights not enabled
+labels:
+  - contextualization
+
+csp: aws
+service: elasticContainerService
+resource-type: cluster
+
+class: risk
+subclass: config
+category: visibility
+subcategory: monitoring
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_65
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_65"
+
+risk-config:
+  default-risk: medium

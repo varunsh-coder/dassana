@@ -36,6 +36,12 @@ filters:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "4779ab55-2f4b-48cf-b4a9-828165a73f77"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "0ee9e44a-bc0f-4eaa-9c1d-7fc4dedc7b39"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "40edb7ed-948e-4204-a3bb-9597b3e673f2"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_7 # Rotation is not enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_7"
 
 risk-config:
   default-risk: medium

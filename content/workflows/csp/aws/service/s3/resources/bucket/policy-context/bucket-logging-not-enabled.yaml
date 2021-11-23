@@ -30,6 +30,11 @@ filters:
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "3f141560-9cfc-412a-96cc-2768edfd23ad"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "4daa435b-fa46-457a-9359-6a4b4a43a442"
-
+  - vendor: checkov
+    policies:
+      - CKV_AWS_18 # Ensure S3 bucket access logging is enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_18"
 risk-config:
   default-risk: low

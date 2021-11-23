@@ -22,6 +22,14 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("api-gw-execution-logging-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_76 # Gateway V1 Access logs not enabled
+      - CKV_AWS_95 # Gateway V2 Access logs not enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_76"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_95"
 
 risk-config:
   default-risk: medium

@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: alb-does-not-have-http-redirection
-name: ALB allows http connections without https redirection
+id: alb-allows-http
+name: ALB allows http connections
 labels:
   - contextualization
 
@@ -28,6 +28,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "81c50f65-faa1-4d66-b8e2-d26eaeb08447"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_2 # Ensure ALB protocol is https
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_2"
 
 risk-config:
   default-risk: medium

@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: workspace-volume-is-not-encrypted
+name: Workspace volume is not encrypted
+labels:
+  - contextualization
+
+csp: aws
+service: amg
+resource-type: workspace
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_155 # Ensure user volumes are encrypted
+      - CKV_AWS_156 # Ensure root volumes are encrypted
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_155"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_156"
+
+risk-config:
+  default-risk: medium

@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("elasticsearch-node-to-node-encryption-check"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_6
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_6"
 
 risk-config:
   default-risk: medium

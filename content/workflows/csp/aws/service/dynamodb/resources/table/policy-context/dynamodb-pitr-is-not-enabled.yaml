@@ -22,6 +22,15 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("dynamodb-pitr-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_165 # Ensure DynamoDB PITR is enabled (Global Table)
+      - CKV_AWS_28 # Ensure DynamoDB PITR is enabled
+
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_165"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_28"
 
 risk-config:
   default-risk: medium

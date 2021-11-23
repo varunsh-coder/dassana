@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "1a2df8bc-9c9f-457a-95be-360f8514b043"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_158 # Ensure Log group is encrypted by KMS
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_158"
 
 risk-config:
   default-risk: low

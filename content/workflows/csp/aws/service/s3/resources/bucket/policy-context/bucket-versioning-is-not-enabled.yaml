@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("s3-bucket-versioning-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_21 # Ensure S3 bucket has versioning enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_21"
 
 risk-config:
   default-risk: ""

@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: cloudfront-web-distribution-allows-tls-versions-1-0-or-lower
-name: CloudFront web distribution allows TLS versions 1.0 or lower
+id: cloudfront-web-distribution-allows-outdated-tls-versions
+name: CloudFront web distribution allows outdated TLS versions
 labels:
   - contextualization
 
@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "45e37556-3d26-4cdb-8780-5b7fc5f60e01"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_174 # Verify Cloudfront distribution is using TLS v1.2
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_174"
 
 risk-config:
   default-risk: medium

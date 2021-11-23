@@ -8,7 +8,7 @@ labels:
 
 csp: aws
 service: apiGateway
-resource-type: Stages
+resource-type: Stage
 
 class: risk
 subclass: config
@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("api-gw-cache-enabled-and-encrypted"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_120 # Ensure API Gateway caching is enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_120"
 
 risk-config:
   default-risk: ""

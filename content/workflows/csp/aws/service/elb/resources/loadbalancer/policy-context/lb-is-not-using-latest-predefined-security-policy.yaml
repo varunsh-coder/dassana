@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: elb-is-not-using-latest-predefined-security-policy
-name: Elastic Load Balancer (ELB) is not using latest predefined security policy
+id: lb-is-not-using-latest-predefined-security-policy
+name: Load Balancer is not using latest predefined security policy
 labels:
   - contextualization
 
@@ -24,8 +24,8 @@ filters:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("elb-predefined-security-policy-ssl-check"))
   - vendor: prisma-cloud
     policies:
-      - ac5232af-7c3c-4134-866c-988757ce16d7
-      - cc5a49ce-509c-4779-bb00-e1fc6fc6b10c
+      - ac5232af-7c3c-4134-866c-988757ce16d7 # NLB is not using latest predfined security policy
+      - cc5a49ce-509c-4779-bb00-e1fc6fc6b10c # ALB is not using latest predefined security policy
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "ac5232af-7c3c-4134-866c-988757ce16d7"

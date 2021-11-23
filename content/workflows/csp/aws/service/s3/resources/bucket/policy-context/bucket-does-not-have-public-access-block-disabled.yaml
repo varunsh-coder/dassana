@@ -34,6 +34,18 @@ filters:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "34064d53-1fd1-42e6-b075-45dce495caca"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "b76ad441-e715-4fd0-bbc3-cd3b2bee34bf"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "a5fe47e1-54f3-47e1-a2a3-deedfb2f70b2"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_53 # Block public ACLs
+      - CKV_AWS_54 # Ignore public policy
+      - CKV_AWS_55 # Ignore public ACLs
+      - CKV_AWS_56 # 'restrict_public_bucket' enable
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_53"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_54"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_55"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_56"
 
 risk-config:
   default-risk: high

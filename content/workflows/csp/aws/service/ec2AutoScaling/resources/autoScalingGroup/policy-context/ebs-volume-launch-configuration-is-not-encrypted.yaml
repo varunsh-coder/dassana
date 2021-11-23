@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: ebs-volume-launch-configuration-is-not-encrypted
+name: EBS volume does not have an encrypted launch configuration
+labels:
+  - contextualization
+
+csp: aws
+service: ec2AutoScaling
+resource-type: launchConfiguration
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_8
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_8"
+
+risk-config:
+  default-risk: low

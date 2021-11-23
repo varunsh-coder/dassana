@@ -1,0 +1,28 @@
+schema: 1
+type: policy-context
+
+id: ecr-image-scan-on-push-is-disabled
+name: ECR image scanning on push is not enabled
+labels:
+  - contextualization
+
+csp: aws
+service: elasticContainerRegistry
+resource-type: repository
+
+class: risk
+subclass: config
+category: visibility
+subcategory: hygiene
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_163 # Ensure ECR image scanning on push is enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_163"
+
+
+risk-config:
+  default-risk: high

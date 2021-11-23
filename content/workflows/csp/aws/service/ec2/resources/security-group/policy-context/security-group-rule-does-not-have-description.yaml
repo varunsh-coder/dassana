@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: security-group-rule-does-not-have-description
+name: Security group rule does not have a description
+labels:
+  - contextualization
+
+csp: aws
+service: ec2
+resource-type: security-group
+
+class: risk
+subclass: config
+category: visibility
+subcategory: hygiene 
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_23 # Ensure SG rule has a name
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_23"
+
+risk-config:
+  default-risk: high

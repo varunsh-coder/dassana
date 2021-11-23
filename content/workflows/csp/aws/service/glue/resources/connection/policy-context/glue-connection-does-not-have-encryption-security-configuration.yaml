@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: glue-connection-does-not-have-encryption-security-configuration
+name: Glue connection does not encryption security configuration
+labels:
+  - contextualization
+
+csp: aws
+service: glue
+resource-type: connection
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_99
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_99"
+
+risk-config:
+  default-risk: medium

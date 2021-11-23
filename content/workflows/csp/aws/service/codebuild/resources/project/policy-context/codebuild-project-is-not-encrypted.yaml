@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: codebuild-project-is-not-encrypted
+name: Codebuild project is not encrypted
+labels:
+  - contextualization
+
+csp: aws
+service: codebuild
+resource-type: project
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_78
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_78"
+
+risk-config:
+  default-risk: critical

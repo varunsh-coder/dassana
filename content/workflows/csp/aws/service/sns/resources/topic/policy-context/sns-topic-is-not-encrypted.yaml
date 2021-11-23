@@ -28,6 +28,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "23eea561-008b-498f-a2ff-8acc02aac35f"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_26 # Ensure all data in SNS topic is encrypted
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_26"
 
 risk-config:
   default-risk: medium

@@ -1,0 +1,29 @@
+schema: 1
+type: policy-context
+
+id: iam-role-allows-all-services-principals-to-assume
+name: IAM role allows all services or principals to assume it
+labels:
+  - contextualization
+
+csp: aws
+service: iam
+resource-type: role
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_60 # Only allow specific services/principals to assume
+      - CKV_AWS_61 # Only allow specific services/principals in account to assume
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_60"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_61"
+
+risk-config:
+  default-risk: medium

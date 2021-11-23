@@ -26,6 +26,12 @@ filters:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("lambda-concurrency-check"))
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("lambda-dlq-check"))
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("lambda-function-settings-check"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_116 # Dead Letter Queue is not configured
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_116"
 
 risk-config:
   default-risk: ""

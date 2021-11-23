@@ -6,3 +6,5 @@
   name: AWS GuardDuty
 - id: prisma-cloud
   name: Prisma Cloud
+- id: checkov
+  name: Checkov

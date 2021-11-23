@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("rds-cluster-iam-authentication-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_162 # Ensure RDS cluster has IAM auth enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_162"
 
 risk-config:
   default-risk: medium

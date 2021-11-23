@@ -22,6 +22,13 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "fd782eca-2dba-47b2-b0f4-f949a7916215"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_30 # Elasticache replication group encrypted-in-transit
+      - CKV_AWS_31 # Elasticache replication group encrypted-in-transit and contains auth token
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_31"
 
 risk-config:
   default-risk: medium

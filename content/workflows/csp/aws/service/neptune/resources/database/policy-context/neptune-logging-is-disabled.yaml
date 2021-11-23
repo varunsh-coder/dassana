@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: neptune-logging-is-disabled
+name: Neptune logging is disabled
+labels:
+  - contextualization
+
+csp: aws
+service: neptune
+resource-type: database
+
+class: risk
+subclass: config
+category: visibility
+subcategory: logging
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_101 # Neptune logging is disabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_101"
+
+risk-config:
+  default-risk: ""

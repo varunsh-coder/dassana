@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "aws-config" and (.vendorPolicy |contains ("alb-http-drop-invalid-header-enabled"))
+  - vendor: checkov
+    policies:
+      - CKV_AWS_131 # Ensure HTTP headers are dropped
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_131"
 
 risk-config:
   default-risk: medium

@@ -28,6 +28,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "c5305272-a732-4e8e-8427-6a9701cd2a6f"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_157 # Ensure RDS instance has Multi-AZ enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_157"
 
 risk-config:
   default-risk: medium

@@ -30,6 +30,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "7913fcbf-b679-5aac-d979-1b6817becb22"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_19 # Ensure bucket has server-side encryption enabled
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_19"
 
 risk-config:
   default-risk: ""

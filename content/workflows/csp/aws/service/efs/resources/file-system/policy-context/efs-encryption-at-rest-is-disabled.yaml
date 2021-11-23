@@ -1,8 +1,8 @@
 schema: 1
 type: policy-context
 
-id: efs-encryption-is-disabled
-name: Elastic File System (EFS) encryption is disabled
+id: efs-encryption-at-rest-is-disabled
+name: Elastic File System (EFS) encryption-at-rest is disabled
 labels:
   - contextualization
 
@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "a7451ade-75eb-4e3e-b996-c2b0d5fdd329"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_42
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_42"
 
 risk-config:
   default-risk: medium

@@ -30,6 +30,14 @@ filters:
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "b675c604-e886-43aa-a60f-a9ad1f3742d3"
       - .vendorId == "prisma-cloud" and .vendorPolicy == "f2a2bcf1-2966-4cb5-9230-bd39c9903a02"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_91 # ELBv2 access logging not enabled
+      - CKV_AWS_92 # ELB access logging not enabledResourceTypes
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_91"
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_92"
 
 risk-config:
   default-risk: medium

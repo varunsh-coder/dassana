@@ -28,6 +28,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "6960be11-e3a6-46cc-bf66-933c57c2af5d"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_3 # Ensure all data in EBS is encrypted
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_3"
 
 risk-config:
   default-risk: medium

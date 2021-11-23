@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: neptune-storage-is-not-encrypted
+name: Neptune storage is not encrypted
+labels:
+  - contextualization
+
+csp: aws
+service: neptune
+resource-type: database
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_44
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_44"
+
+risk-config:
+  default-risk: ""

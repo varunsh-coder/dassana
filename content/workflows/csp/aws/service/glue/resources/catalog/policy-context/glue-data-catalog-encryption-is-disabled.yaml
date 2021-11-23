@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: glue-data-catalog-encryption-is-disabled
+name: Glue data catalog does not have encryption enabled
+labels:
+  - contextualization
+
+csp: aws
+service: glue
+resource-type: catalog
+
+class: risk
+subclass: config
+category: storage
+subcategory: encryption
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_94 
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_94"
+
+risk-config:
+  default-risk: medium

@@ -28,6 +28,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "1bb6005a-dca6-40e2-b0a6-24da968c0808"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_17 # Ensure all data in DynamoDB is not publicly accessible
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_17"
 
 risk-config:
   default-risk: critical

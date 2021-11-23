@@ -1,0 +1,27 @@
+schema: 1
+type: policy-context
+
+id: athena-workgroup-allows-client-disabling-encryption
+name: Athena workgroup allows client disabling encryption
+labels:
+  - contextualization
+
+csp: aws
+service: athena
+resource-type: workgroup
+
+class: risk
+subclass: config
+category: iam
+subcategory: authorization
+
+filters:
+  - vendor: checkov
+    policies:
+      - CKV_AWS_82
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_82"
+
+risk-config:
+  default-risk: medium

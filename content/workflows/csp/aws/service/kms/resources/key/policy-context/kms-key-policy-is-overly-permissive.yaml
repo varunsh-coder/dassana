@@ -22,6 +22,12 @@ filters:
     match-type: any
     rules:
       - .vendorId == "prisma-cloud" and .vendorPolicy == "2b68ad79-4c8b-48dd-8459-2d86203e862b"
+  - vendor: checkov
+    policies:
+      - CKV_AWS_33 # KMS key contains wildcard principal
+    match-type: any
+    rules:
+      - .vendorId == "checkov" and .vendorPolicy == "CKV_AWS_33"
 
 risk-config:
   default-risk: high
