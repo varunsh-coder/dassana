@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f583daec-ac67-4325-9b63-dcb71fec6c24",
+		"_postman_id": "ee800b92-67e9-44ed-92ca-ccbb71c33356",
 		"name": "Dassana API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -395,6 +395,143 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Prisma S3 Bucket with Static Site",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"const alertClassification = pm.response.json().dassana.normalize.output.alertClassification;\r",
+									"pm.test(\"Alert classified correctly\", function() {\r",
+									"    pm.expect(alertClassification.subclass).to.eql(\"config\");\r",
+									"    pm.expect(alertClassification.category).to.eql(\"iam\");\r",
+									"    pm.expect(alertClassification.subcategory).to.eql(\"public-access\");\r",
+									"    pm.expect(alertClassification.class).to.eql(\"risk\");\r",
+									"})\r",
+									"\r",
+									"const stepOutput = pm.response.json().dassana[\"resource-context\"][\"step-output\"]\r",
+									"pm.test(\"Bucket policy action works as expected\", function() {\r",
+									"    pm.expect(stepOutput[1].bucketPolicy).to.have.all.keys('result');\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Website context action retrieves website url\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"dassana-bucket-with-website.s3-website-us-west-1.amazonaws.com\");\r",
+									"});\r",
+									"\r",
+									"const generalRisk = pm.response.json().dassana[\"general-context\"][\"risk\"]\r",
+									"pm.test(\"General context risk is correct\", function() {\r",
+									"    pm.expect(generalRisk.riskValue).to.eql(\"high\");\r",
+									"})\r",
+									"\r",
+									"const resourceRisk = pm.response.json().dassana[\"resource-context\"][\"risk\"]\r",
+									"pm.test(\"Resource context risk is correct\", function() {\r",
+									"    pm.expect(resourceRisk.riskValue).to.eql(\"\");\r",
+									"})\r",
+									"\r",
+									"const policyRisk = pm.response.json().dassana[\"policy-context\"][\"risk\"]\r",
+									"pm.test(\"Policy context risk is correct\", function() {\r",
+									"    pm.expect(policyRisk.riskValue).to.eql(\"low\");\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"alertStatus\": \"open\",\r\n  \"reason\": \"SCHEDULED\",\r\n  \"resourceId\": \"dassana-bucket-with-website\",\r\n  \"alertRuleName\": \"PC to Dassana to Splunk\",\r\n  \"alertRemediationImpact\": null,\r\n  \"accountName\": \"P Personal\",\r\n  \"hasFinding\": false,\r\n  \"resourceRegionId\": \"us-west-1\",\r\n  \"alertRemediationCli\": null,\r\n  \"source\": \"Prisma Cloud\",\r\n  \"cloudType\": \"aws\",\r\n  \"complianceMetadata\": [\r\n    {\r\n      \"requirementName\": \"Collection\",\r\n      \"standardName\": \"MITRE ATT&CK v6.3\",\r\n      \"requirementId\": \"TA0009\"\r\n    },\r\n    {\r\n      \"requirementName\": \"Principle 1 - Accountability\",\r\n      \"standardName\": \"PIPEDA\",\r\n      \"requirementId\": \"4.1\"\r\n    },\r\n    {\r\n      \"requirementName\": \"Technology Operations Management\",\r\n      \"standardName\": \"Risk Management in Technology (RMiT)\",\r\n      \"requirementId\": \"10\"\r\n    },\r\n    {\r\n      \"requirementName\": \"California Civil Code Section 1798.150\",\r\n      \"standardName\": \"CCPA 2018\",\r\n      \"requirementId\": \"1798.150\"\r\n    },\r\n    {\r\n      \"requirementName\": \"ACCESS CONTROL\",\r\n      \"standardName\": \"NIST 800-53 Rev 5\",\r\n      \"requirementId\": \"AC\"\r\n    }\r\n  ],\r\n  \"callbackUrl\": \"https://app2.prismacloud.io/alerts/overview?filters#alert.id[0]=P-1695&timeRange[type]=to_now&timeRange[value]=epoch\",\r\n  \"alertId\": \"P-1695\",\r\n  \"policyLabels\": [],\r\n  \"alertAttribution\": {},\r\n  \"severity\": \"high\",\r\n  \"policyName\": \"AWS S3 Bucket has Global GET Permissions enabled via bucket policy\",\r\n  \"resource\": {\r\n    \"data\": {\r\n      \"owner\": {\r\n        \"displayName\": \"gk+parthaws\",\r\n        \"id\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\"\r\n      },\r\n      \"tags\": [\r\n        {\r\n          \"value\": \"prod\",\r\n          \"key\": \"env\"\r\n        }\r\n      ],\r\n      \"bucketName\": \"dassana-bucket-with-website\",\r\n      \"denyUnencryptedUploadsPolicies\": [],\r\n      \"accountLevelPublicAccessBlockConfiguration\": {\r\n        \"blockPublicPolicy\": false,\r\n        \"restrictPublicBuckets\": false,\r\n        \"blockPublicAcls\": false,\r\n        \"ignorePublicAcls\": false\r\n      },\r\n      \"acl\": {\r\n        \"owner\": {\r\n          \"displayName\": \"gk+parthaws\",\r\n          \"id\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\"\r\n        },\r\n        \"grants\": [\r\n          {\r\n            \"grantee\": {\r\n              \"identifier\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\",\r\n              \"displayName\": \"gk+parthaws\",\r\n              \"typeIdentifier\": \"id\"\r\n            },\r\n            \"permission\": \"FullControl\"\r\n          }\r\n        ],\r\n        \"grantsAsList\": [\r\n          {\r\n            \"grantee\": {\r\n              \"identifier\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\",\r\n              \"displayName\": \"gk+parthaws\",\r\n              \"typeIdentifier\": \"id\"\r\n            },\r\n            \"permission\": \"FullControl\"\r\n          }\r\n        ],\r\n        \"requesterCharged\": false\r\n      },\r\n      \"creationDate\": \"2021-08-26T17:20:25.000Z\",\r\n      \"policyStatus\": {\r\n        \"isPublic\": true\r\n      },\r\n      \"sseAlgorithm\": \"None\",\r\n      \"loggingConfiguration\": {\r\n        \"targetGrants\": [\r\n          {\r\n            \"grantee\": {\r\n              \"identifier\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\",\r\n              \"displayName\": \"gk+parthaws\",\r\n              \"typeIdentifier\": \"id\"\r\n            },\r\n            \"permission\": \"FullControl\"\r\n          }\r\n        ]\r\n      },\r\n      \"policyAvailable\": true,\r\n      \"accountId\": \"536600094836\",\r\n      \"websiteConfiguration\": {\r\n        \"indexDocumentSuffix\": \"index.html\",\r\n        \"routingRules\": []\r\n      },\r\n      \"versioningConfiguration\": {\r\n        \"status\": \"Off\"\r\n      },\r\n      \"kmsMasterKeyID\": \"None\",\r\n      \"policy\": {\r\n        \"Version\": \"2012-10-17\",\r\n        \"Statement\": [\r\n          {\r\n            \"Action\": [\r\n              \"s3:GetObject\",\r\n              \"s3:GetObjectVersion\"\r\n            ],\r\n            \"Resource\": \"arn:aws:s3:::dassana-blog-static-site/*\",\r\n            \"Effect\": \"Allow\",\r\n            \"Principal\": \"*\",\r\n            \"Sid\": \"PublicRead\"\r\n          }\r\n        ]\r\n      }\r\n    },\r\n    \"resourceTs\": 1631758402352,\r\n    \"url\": \"https://console.aws.amazon.com/s3/buckets/dassana-blog-static-site/?region=us-east-1#\",\r\n    \"rrn\": \"rrn::storageBucket:us-east-1:461092258297::dassana-blog-static-site\",\r\n    \"cloudAccountGroups\": [\r\n      \"Test\"\r\n    ],\r\n    \"accountId\": \"536600094836\",\r\n    \"resourceTags\": {\r\n      \"env\": \"dev\"\r\n    },\r\n    \"regionId\": \"us-west-1\",\r\n    \"cloudType\": \"aws\",\r\n    \"resourceApiName\": \"aws-s3api-get-bucket-acl\",\r\n    \"name\": \"dassana-bucket-with-website\",\r\n    \"additionalInfo\": {},\r\n    \"id\": \"dassana-bucket-with-website\",\r\n    \"region\": \"AWS Virginia\",\r\n    \"account\": \"P Personal\",\r\n    \"resourceType\": \"STORAGE_BUCKET\"\r\n  },\r\n  \"firstSeen\": 1629947769576,\r\n  \"alertRemediationCliDescription\": null,\r\n  \"resourceName\": \"dassana-bucket-with-website\",\r\n  \"alertDismissalNote\": null,\r\n  \"resourceRegion\": \"AWS Virginia\",\r\n  \"tags\": [\r\n    {\r\n      \"value\": \"prod\",\r\n      \"key\": \"env\"\r\n    }\r\n  ],\r\n  \"policyDescription\": \"This policy identifies the S3 Bucket(s) which will allow any unauthenticated user to GET objects from a bucket. These permissions permit anyone, malicious or not, to GET objects from your S3 bucket if they can guess the namespace. Since the S3 service does not protect the namespace other than with ACLs and Bucket Policy, you risk loss or compromise of critical data by leaving this open.\",\r\n  \"policyRecommendation\": \"1. Log into your AWS console and select the S3 service.\\n2. Choose the reported bucket.\\n3. Click Properties in the upper right of the window, and expand the 'Permissions' object.\\n4. Select 'Edit Bucket Policy' and consider defining what explicit 'Principal' should have the ability to GET objects in your S3 bucket. You may also want to specifically limit the 'Principal' ability to perform specific GET functions, without the wild card.\",\r\n  \"accountId\": \"536600094836\",\r\n  \"lastSeen\": 1631764964198,\r\n  \"policyId\": \"f0235acc-737d-4a54-8d2c-a05da32663bd\",\r\n  \"resourceCloudService\": \"Amazon S3\",\r\n  \"alertTs\": 1629947769576,\r\n  \"policyType\": \"config\",\r\n  \"findingSummary\": {},\r\n  \"resourceType\": \"Managed Storage Bucket\",\r\n  \"alertRuleId\": \"bd4c60d0-ed86-4b3f-9074-a98d62a9e740\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/run?includeInputRequest=false&includeStepOutput=true",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"run"
+							],
+							"query": [
+								{
+									"key": "includeInputRequest",
+									"value": "false"
+								},
+								{
+									"key": "includeStepOutput",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Input Parameters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const apiResponse = pm.response.json();",
+									"pm.test(\"Include Input Request Parameter works\", function() {",
+									"    pm.expect(Object.keys(apiResponse).length).to.be.above(1);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"alertStatus\": \"open\",\n  \"reason\": \"SCHEDULED\",\n  \"resourceId\": \"dassana-bucket-with-website\",\n  \"alertRuleName\": \"PC to Dassana to Splunk\",\n  \"alertRemediationImpact\": null,\n  \"accountName\": \"P Personal\",\n  \"hasFinding\": false,\n  \"resourceRegionId\": \"us-west-1\",\n  \"alertRemediationCli\": null,\n  \"source\": \"Prisma Cloud\",\n  \"cloudType\": \"aws\",\n  \"complianceMetadata\": [\n    {\n      \"requirementName\": \"Collection\",\n      \"standardName\": \"MITRE ATT&CK v6.3\",\n      \"requirementId\": \"TA0009\"\n    },\n    {\n      \"requirementName\": \"Principle 1 - Accountability\",\n      \"standardName\": \"PIPEDA\",\n      \"requirementId\": \"4.1\"\n    },\n    {\n      \"requirementName\": \"Technology Operations Management\",\n      \"standardName\": \"Risk Management in Technology (RMiT)\",\n      \"requirementId\": \"10\"\n    },\n    {\n      \"requirementName\": \"California Civil Code Section 1798.150\",\n      \"standardName\": \"CCPA 2018\",\n      \"requirementId\": \"1798.150\"\n    },\n    {\n      \"requirementName\": \"ACCESS CONTROL\",\n      \"standardName\": \"NIST 800-53 Rev 5\",\n      \"requirementId\": \"AC\"\n    }\n  ],\n  \"callbackUrl\": \"https://app2.prismacloud.io/alerts/overview?filters#alert.id[0]=P-1695&timeRange[type]=to_now&timeRange[value]=epoch\",\n  \"alertId\": \"P-1695\",\n  \"policyLabels\": [],\n  \"alertAttribution\": {},\n  \"severity\": \"high\",\n  \"policyName\": \"AWS S3 Bucket has Global GET Permissions enabled via bucket policy\",\n  \"resource\": {\n    \"data\": {\n      \"owner\": {\n        \"displayName\": \"gk+parthaws\",\n        \"id\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\"\n      },\n      \"tags\": [\n        {\n          \"value\": \"prod\",\n          \"key\": \"env\"\n        }\n      ],\n      \"bucketName\": \"dassana-bucket-with-website\",\n      \"denyUnencryptedUploadsPolicies\": [],\n      \"accountLevelPublicAccessBlockConfiguration\": {\n        \"blockPublicPolicy\": false,\n        \"restrictPublicBuckets\": false,\n        \"blockPublicAcls\": false,\n        \"ignorePublicAcls\": false\n      },\n      \"acl\": {\n        \"owner\": {\n          \"displayName\": \"gk+parthaws\",\n          \"id\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\"\n        },\n        \"grants\": [\n          {\n            \"grantee\": {\n              \"identifier\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\",\n              \"displayName\": \"gk+parthaws\",\n              \"typeIdentifier\": \"id\"\n            },\n            \"permission\": \"FullControl\"\n          }\n        ],\n        \"grantsAsList\": [\n          {\n            \"grantee\": {\n              \"identifier\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\",\n              \"displayName\": \"gk+parthaws\",\n              \"typeIdentifier\": \"id\"\n            },\n            \"permission\": \"FullControl\"\n          }\n        ],\n        \"requesterCharged\": false\n      },\n      \"creationDate\": \"2021-08-26T17:20:25.000Z\",\n      \"policyStatus\": {\n        \"isPublic\": true\n      },\n      \"sseAlgorithm\": \"None\",\n      \"loggingConfiguration\": {\n        \"targetGrants\": [\n          {\n            \"grantee\": {\n              \"identifier\": \"97042e15a6ef94fc6ebc1f124101cc6c8284bb85f4d32ecbd6d943bed1884811\",\n              \"displayName\": \"gk+parthaws\",\n              \"typeIdentifier\": \"id\"\n            },\n            \"permission\": \"FullControl\"\n          }\n        ]\n      },\n      \"policyAvailable\": true,\n      \"accountId\": \"536600094836\",\n      \"websiteConfiguration\": {\n        \"indexDocumentSuffix\": \"index.html\",\n        \"routingRules\": []\n      },\n      \"versioningConfiguration\": {\n        \"status\": \"Off\"\n      },\n      \"kmsMasterKeyID\": \"None\",\n      \"policy\": {\n        \"Version\": \"2012-10-17\",\n        \"Statement\": [\n          {\n            \"Action\": [\n              \"s3:GetObject\",\n              \"s3:GetObjectVersion\"\n            ],\n            \"Resource\": \"arn:aws:s3:::dassana-blog-static-site/*\",\n            \"Effect\": \"Allow\",\n            \"Principal\": \"*\",\n            \"Sid\": \"PublicRead\"\n          }\n        ]\n      }\n    },\n    \"resourceTs\": 1631758402352,\n    \"url\": \"https://console.aws.amazon.com/s3/buckets/dassana-blog-static-site/?region=us-east-1#\",\n    \"rrn\": \"rrn::storageBucket:us-east-1:461092258297::dassana-blog-static-site\",\n    \"cloudAccountGroups\": [\n      \"Test\"\n    ],\n    \"accountId\": \"536600094836\",\n    \"resourceTags\": {\n      \"env\": \"dev\"\n    },\n    \"regionId\": \"us-west-1\",\n    \"cloudType\": \"aws\",\n    \"resourceApiName\": \"aws-s3api-get-bucket-acl\",\n    \"name\": \"dassana-bucket-with-website\",\n    \"additionalInfo\": {},\n    \"id\": \"dassana-bucket-with-website\",\n    \"region\": \"AWS Virginia\",\n    \"account\": \"P Personal\",\n    \"resourceType\": \"STORAGE_BUCKET\"\n  },\n  \"firstSeen\": 1629947769576,\n  \"alertRemediationCliDescription\": null,\n  \"resourceName\": \"dassana-bucket-with-website\",\n  \"alertDismissalNote\": null,\n  \"resourceRegion\": \"AWS Virginia\",\n  \"tags\": [\n    {\n      \"value\": \"prod\",\n      \"key\": \"env\"\n    }\n  ],\n  \"policyDescription\": \"This policy identifies the S3 Bucket(s) which will allow any unauthenticated user to GET objects from a bucket. These permissions permit anyone, malicious or not, to GET objects from your S3 bucket if they can guess the namespace. Since the S3 service does not protect the namespace other than with ACLs and Bucket Policy, you risk loss or compromise of critical data by leaving this open.\",\n  \"policyRecommendation\": \"1. Log into your AWS console and select the S3 service.\\n2. Choose the reported bucket.\\n3. Click Properties in the upper right of the window, and expand the 'Permissions' object.\\n4. Select 'Edit Bucket Policy' and consider defining what explicit 'Principal' should have the ability to GET objects in your S3 bucket. You may also want to specifically limit the 'Principal' ability to perform specific GET functions, without the wild card.\",\n  \"accountId\": \"536600094836\",\n  \"lastSeen\": 1631764964198,\n  \"policyId\": \"f0235acc-737d-4a54-8d2c-a05da32663bd\",\n  \"resourceCloudService\": \"Amazon S3\",\n  \"alertTs\": 1629947769576,\n  \"policyType\": \"config\",\n  \"findingSummary\": {},\n  \"resourceType\": \"Managed Storage Bucket\",\n  \"alertRuleId\": \"bd4c60d0-ed86-4b3f-9074-a98d62a9e740\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/run?includeInputRequest=true&includeStepOutput=true",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"run"
+							],
+							"query": [
+								{
+									"key": "includeInputRequest",
+									"value": "true"
+								},
+								{
+									"key": "includeStepOutput",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
@@ -432,6 +569,16 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "dassana-api-key",
+			"value": "7TtxVlHJJs37MkMO4O90r1A2mXdoVekN2iP0SKCg"
+		},
+		{
+			"key": "api-gateway-url",
+			"value": "https://vw1iwqwqgf.execute-api.us-east-1.amazonaws.com/v1"
 		}
 	]
 }
