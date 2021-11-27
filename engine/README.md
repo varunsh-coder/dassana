@@ -4,7 +4,7 @@ Follow these steps to run Dassana Engine in your IDE. The engine will execute Da
 to deploy Dassana CFT template in your account first. Refer to
 instructions [here](https://docs.dassana.io/docs/getting-started/installation)
 
-Set the following env vars before running `app.dassana.core.launch.App` (which invokes the Dassana Engine api) :
+Set the following env vars before running `app.dassana.core.runmanager.launch.App` (which invokes the Dassana Engine api) :
 
 ```bash 
 AWS_REGION=<region>;

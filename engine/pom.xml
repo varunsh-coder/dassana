@@ -349,12 +349,12 @@
         </executions>
         <configuration>
           <excludes>
-            <exclude>app/dassana/core/launch/**</exclude>
-            <exclude>app/dassana/core/workflow/infra/**</exclude>
-            <exclude>app/dassana/core/api/PingHandler.class</exclude>
-            <exclude>app/dassana/core/client/infra/**</exclude>
-            <exclude>app/dassana/core/contentmanager/infra/**</exclude>
-            <exclude>app.dassana.core.workflow.processor.S3Manager.class</exclude>
+            <exclude>app/dassana/core/runmanager/launch/**</exclude>
+            <exclude>app/dassana/core/runmanager/workflow/infra/**</exclude>
+            <exclude>app/dassana/core/runmanager/api/PingHandler.class</exclude>
+            <exclude>app/dassana/core/runmanager/client/infra/**</exclude>
+            <exclude>app/dassana/core/runmanager/contentmanager/infra/**</exclude>
+            <exclude>app.dassana.core.workflowmanager.workflow.processor.S3Manager.class</exclude>
           </excludes>
         </configuration>
       </plugin>

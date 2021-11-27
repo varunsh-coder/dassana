@@ -157,7 +157,7 @@ Resources:
     Metadata:
       BuildMethod: makefile
     Properties:
-      Handler: app.dassana.core.restapi.Application
+      Handler: app.dassana.core.runmanager.restapi.Application
       Layers:
         - !Ref DassanaEngineJavaLayer
       Runtime: java11
@@ -436,7 +436,7 @@ Resources:
     Metadata:
       BuildMethod: makefile
     Properties:
-      Handler: app.dassana.core.launch.SqsHandler
+      Handler: app.dassana.core.runmanager.launch.SqsHandler
       Layers:
         - !Ref DassanaEngineJavaLayer
       Runtime: java11
