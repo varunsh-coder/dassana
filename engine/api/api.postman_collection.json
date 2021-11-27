@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ee800b92-67e9-44ed-92ca-ccbb71c33356",
+		"_postman_id": "839f8b7e-d61c-4499-913f-6c789dfbbd45",
 		"name": "Dassana API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -492,8 +492,17 @@
 									"",
 									"const apiResponse = pm.response.json();",
 									"pm.test(\"Include Input Request Parameter works\", function() {",
+									"    //Check if alert keys were included along with dassana output",
 									"    pm.expect(Object.keys(apiResponse).length).to.be.above(1);",
-									"})"
+									"})",
+									"",
+									"const dassanaResponse = apiResponse.dassana;",
+									"pm.test(\"Include Step Output Parameter works\", function() {",
+									"    pm.expect(dassanaResponse[\"general-context\"]).to.have.property(\"step-output\");",
+									"    pm.expect(dassanaResponse[\"resource-context\"]).to.have.property(\"step-output\");",
+									"    pm.expect(dassanaResponse[\"policy-context\"]).to.have.property(\"step-output\");",
+									"})",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -523,6 +532,82 @@
 								{
 									"key": "includeInputRequest",
 									"value": "true"
+								},
+								{
+									"key": "includeStepOutput",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AWS Config Security Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const apiResponse = pm.response.json().dassana;",
+									"const alertClassification = apiResponse.normalize.output.alertClassification;",
+									"pm.test(\"Alert classified correctly\", function() {",
+									"    pm.expect(alertClassification.subclass).to.eql(\"config\");",
+									"    pm.expect(alertClassification.category).to.eql(\"networking\");",
+									"    pm.expect(alertClassification.subcategory).to.eql(\"firewall\");",
+									"    pm.expect(alertClassification.class).to.eql(\"risk\");",
+									"})",
+									"",
+									"function eni_action_deep_search(steps) {",
+									"    for(i = 0; i < steps.length; i++) {",
+									"        var stepOutput = Object.keys(steps[i])[0]",
+									"        if(stepOutput == 'list-of-attached-eni') {",
+									"            if(steps[i]['list-of-attached-eni']['result'].length > 0) {",
+									"                return true",
+									"            }",
+									"        }",
+									"    }",
+									"    return false",
+									"}",
+									"",
+									"pm.test(\"Attached ENI Action ran correctly\", function() {",
+									"    pm.expect(eni_action_deep_search(apiResponse['policy-context']['step-output'])).to.eql(true)",
+									"})",
+									"",
+									"pm.test(\"Policy Context Risk set correctly\", function() {",
+									"    pm.expect(apiResponse['policy-context']['risk']['riskValue']).to.eql('high')",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"SchemaVersion\": \"2018-10-08\",\n  \"Id\": \"arn:aws:securityhub:us-east-1:536600094836:subscription/aws-foundational-security-best-practices/v/1.0.0/EC2.18/finding/1be6c89a-f11d-4a00-ae28-10a16380bd85\",\n  \"ProductArn\": \"arn:aws:securityhub:us-east-1::product/aws/securityhub\",\n  \"ProductName\": \"Security Hub\",\n  \"CompanyName\": \"AWS\",\n  \"Region\": \"us-east-1\",\n  \"GeneratorId\": \"aws-foundational-security-best-practices/v/1.0.0/EC2.18\",\n  \"AwsAccountId\": \"536600094836\",\n  \"Types\": [\n    \"Software and Configuration Checks/Industry and Regulatory Standards/AWS-Foundational-Security-Best-Practices\"\n  ],\n  \"FirstObservedAt\": \"2021-11-26T05:21:44.301Z\",\n  \"LastObservedAt\": \"2021-11-27T01:37:02.857Z\",\n  \"CreatedAt\": \"2021-11-26T05:21:44.301Z\",\n  \"UpdatedAt\": \"2021-11-27T01:36:58.517Z\",\n  \"Severity\": {\n    \"Product\": 70,\n    \"Label\": \"HIGH\",\n    \"Normalized\": 70,\n    \"Original\": \"HIGH\"\n  },\n  \"Title\": \"EC2.18 Security groups should only allow unrestricted incoming traffic for authorized ports\",\n  \"Description\": \"This control checks whether the security groups allow unrestricted incoming traffic. The control fails if ports allow unrestricted traffic on ports other than 80 and 443, which are default values for parameter authorizedTcpPorts.\",\n  \"Remediation\": {\n    \"Recommendation\": {\n      \"Text\": \"For directions on how to fix this issue, consult the AWS Security Hub Foundational Security Best Practices documentation.\",\n      \"Url\": \"https://docs.aws.amazon.com/console/securityhub/EC2.18/remediation\"\n    }\n  },\n  \"ProductFields\": {\n    \"StandardsArn\": \"arn:aws:securityhub:::standards/aws-foundational-security-best-practices/v/1.0.0\",\n    \"StandardsSubscriptionArn\": \"arn:aws:securityhub:us-east-1:536600094836:subscription/aws-foundational-security-best-practices/v/1.0.0\",\n    \"ControlId\": \"EC2.18\",\n    \"RecommendationUrl\": \"https://docs.aws.amazon.com/console/securityhub/EC2.18/remediation\",\n    \"RelatedAWSResources:0/name\": \"securityhub-vpc-sg-open-only-to-authorized-ports-df5d7820\",\n    \"RelatedAWSResources:0/type\": \"AWS::Config::ConfigRule\",\n    \"StandardsControlArn\": \"arn:aws:securityhub:us-east-1:536600094836:control/aws-foundational-security-best-practices/v/1.0.0/EC2.18\",\n    \"aws/securityhub/ProductName\": \"Security Hub\",\n    \"aws/securityhub/CompanyName\": \"AWS\",\n    \"aws/securityhub/annotation\": \"No tcp ['22'] port is authorized to be open, according to authorizedTcpPorts values ['80,443'] parameter.\",\n    \"Resources:0/Id\": \"arn:aws:ec2:us-east-1:536600094836:security-group/sg-078a4a71c2a7f2e42\",\n    \"aws/securityhub/FindingId\": \"arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:536600094836:subscription/aws-foundational-security-best-practices/v/1.0.0/EC2.18/finding/1be6c89a-f11d-4a00-ae28-10a16380bd85\"\n  },\n  \"Resources\": [\n    {\n      \"Type\": \"AwsEc2SecurityGroup\",\n      \"Id\": \"arn:aws:ec2:us-east-1:536600094836:security-group/sg-078a4a71c2a7f2e42\",\n      \"Partition\": \"aws\",\n      \"Region\": \"us-east-1\",\n      \"Details\": {\n        \"AwsEc2SecurityGroup\": {\n          \"GroupName\": \"launch-wizard-1\",\n          \"GroupId\": \"sg-078a4a71c2a7f2e42\",\n          \"OwnerId\": \"536600094836\",\n          \"VpcId\": \"vpc-0667efee3351564be\",\n          \"IpPermissions\": [\n            {\n              \"IpProtocol\": \"tcp\",\n              \"FromPort\": 22,\n              \"ToPort\": 22,\n              \"IpRanges\": [\n                {\n                  \"CidrIp\": \"0.0.0.0/0\"\n                }\n              ]\n            }\n          ],\n          \"IpPermissionsEgress\": [\n            {\n              \"IpProtocol\": \"-1\",\n              \"IpRanges\": [\n                {\n                  \"CidrIp\": \"0.0.0.0/0\"\n                }\n              ]\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"Compliance\": {\n    \"Status\": \"FAILED\"\n  },\n  \"WorkflowState\": \"NEW\",\n  \"Workflow\": {\n    \"Status\": \"NEW\"\n  },\n  \"RecordState\": \"ACTIVE\",\n  \"FindingProviderFields\": {\n    \"Severity\": {\n      \"Label\": \"HIGH\",\n      \"Original\": \"HIGH\"\n    },\n    \"Types\": [\n      \"Software and Configuration Checks/Industry and Regulatory Standards/AWS-Foundational-Security-Best-Practices\"\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-gateway-url}}/run?includeInputRequest=false&includeStepOutput=true",
+							"host": [
+								"{{api-gateway-url}}"
+							],
+							"path": [
+								"run"
+							],
+							"query": [
+								{
+									"key": "includeInputRequest",
+									"value": "false"
 								},
 								{
 									"key": "includeStepOutput",
