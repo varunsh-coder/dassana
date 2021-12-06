@@ -13,7 +13,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: step-security/harden-runner@main
+      - uses: step-security/harden-runner@v1
+        with:
+          allowed-endpoints: 
+            coveralls.io:443
+            github.com:443
+            jitpack.io:443
+            repo.maven.apache.org:443
       - uses: actions/checkout@v2
       - name: Set up JDK 11
         uses: actions/setup-java@v2
